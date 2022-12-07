@@ -19,7 +19,13 @@ import {GymClassTextCardList} from '../app_components/Cards/cardList';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
-import {ImageBackground, Keyboard, Pressable, View} from 'react-native';
+import {
+  ImageBackground,
+  Keyboard,
+  Pressable,
+  TouchableHighlight,
+  View,
+} from 'react-native';
 import {
   useFavoriteGymMutation,
   useGetGymDataViewQuery,
@@ -148,11 +154,6 @@ const GymScreen: FunctionComponent<Props> = ({navigation, route: {params}}) => {
               }}>
               <RegularText textStyles={{textAlign: 'center'}}>
                 {title}{' '}
-                {data?.user_is_owner
-                  ? '(Owner)'
-                  : data?.user_is_coach
-                  ? '(Coach)'
-                  : 'notoner'}
               </RegularText>
             </View>
           </ScrollView>
@@ -162,23 +163,27 @@ const GymScreen: FunctionComponent<Props> = ({navigation, route: {params}}) => {
           {dataGymFavs &&
           !isLoadingGymFavs &&
           isFavorited(dataGymFavs.favorite_gyms) ? (
-            <View style={{alignItems: 'center'}}>
-              <IconButton
-                style={{height: 24}}
-                icon={<Icon name="star" color="red" style={{fontSize: 24}} />}
-                onPress={() => unfavoriteGymMutation(favObj)}
-              />
-              <SmallText>Unfavorite</SmallText>
-            </View>
+            <TouchableHighlight onPress={() => unfavoriteGymMutation(favObj)}>
+              <View style={{alignItems: 'center'}}>
+                <IconButton
+                  style={{height: 24}}
+                  icon={<Icon name="star" color="red" style={{fontSize: 24}} />}
+                />
+                <SmallText>Unfavorite</SmallText>
+              </View>
+            </TouchableHighlight>
           ) : (
-            <View style={{alignItems: 'center'}}>
-              <IconButton
-                style={{height: 24}}
-                icon={<Icon name="star" color="white" style={{fontSize: 24}} />}
-                onPress={() => favoriteGymMutation(favObj)}
-              />
-              <SmallText>Favorite</SmallText>
-            </View>
+            <TouchableHighlight onPress={() => favoriteGymMutation(favObj)}>
+              <View style={{alignItems: 'center'}}>
+                <IconButton
+                  style={{height: 24}}
+                  icon={
+                    <Icon name="star" color="white" style={{fontSize: 24}} />
+                  }
+                />
+                <SmallText>Favorite</SmallText>
+              </View>
+            </TouchableHighlight>
           )}
         </View>
       </View>

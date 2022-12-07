@@ -133,7 +133,7 @@ export const GymClassTextCard: FunctionComponent<{
             <View style={{flex: 3, height: '100%', justifyContent: 'center'}}>
               <RegularText
                 textStyles={{paddingLeft: 16, textAlignVertical: 'center'}}>
-                {props.card.title}: {props.card.id}
+                {props.card.title}
               </RegularText>
             </View>
             <LogoImage source={{uri: logoURL}} />

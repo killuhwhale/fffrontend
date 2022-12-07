@@ -51,7 +51,7 @@ const AddItem: FunctionComponent<{
   // Needs duration and SSID feature.
 
   const initWorkoutName = 0;
-  const initWeight = '';
+  const initWeight = '0';
   const initWeightUnit = 'kg';
   const initPercentOfWeightUnit = '';
   const initSets = '0';
@@ -175,28 +175,28 @@ const AddItem: FunctionComponent<{
       if (item.sets === 0) {
         item.sets = 1; // ensure there is at least 1 set.
       }
-
-      if (QuantityLabels[showQuantity] == 'Reps' && parseInt(item.reps) === 0) {
-        item.reps = '1';
-      } else if (
-        QuantityLabels[showQuantity] == 'Duration' &&
-        parseInt(item.duration) === 0
-      ) {
-        item.duration = '1';
-      } else if (
-        QuantityLabels[showQuantity] == 'Distance' &&
-        parseInt(item.distance) === 0
-      ) {
-        item.distance = '1';
-      }
     } else if (WORKOUT_TYPES[props.schemeType] == REPS_W) {
     } else if (WORKOUT_TYPES[props.schemeType] == ROUNDS_W) {
     } else if (WORKOUT_TYPES[props.schemeType] == DURATION_W) {
     }
 
+    if (QuantityLabels[showQuantity] == 'Reps' && parseInt(item.reps) === 0) {
+      item.reps = '1';
+    } else if (
+      QuantityLabels[showQuantity] == 'Duration' &&
+      parseInt(item.duration) === 0
+    ) {
+      item.duration = '1';
+    } else if (
+      QuantityLabels[showQuantity] == 'Distance' &&
+      parseInt(item.distance) === 0
+    ) {
+      item.distance = '1';
+    }
+
     console.log('_Adding item: ', item);
 
-    // Checks if reps and weights match the repScheme
+    // // Checks if reps and weights match the repScheme
     const {success, errorType, errorMsg} = props.onAddItem(item);
 
     if (success) {

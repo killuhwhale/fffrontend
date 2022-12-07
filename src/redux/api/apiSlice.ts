@@ -435,6 +435,10 @@ export const apiSlice = createApi({
       query: id => {
         return {url: `workoutGroups/${id}/user_workouts/`};
       },
+      providesTags: (result, error, arg) => {
+        console.log('Providing tags to users own workout group', arg);
+        return [{type: 'WorkoutGroupWorkouts', id: arg}];
+      },
     }),
     createWorkoutGroup: builder.mutation({
       query: (data = {}) => ({
@@ -499,13 +503,15 @@ export const apiSlice = createApi({
         data: data,
         params: {contentType: 'multipart/form-data'},
       }),
-      invalidatesTags: (result, error, arg) => {
-        if (error) {
-          return [];
-        }
-        const data = new Map<string, string>(arg._aprts);
-        return [{type: 'WorkoutGroupWorkouts', id: data.get('group')}];
-      },
+      // When creating a workout, we create it and then create the items immediately after.
+      // So we will invalidate on createWorkoutTtems
+      // invalidatesTags: (result, error, arg) => {
+      //   if (error) {
+      //     return [];
+      //   }
+      //   const data = new Map<string, string>(arg._aprts);
+      //   return [{type: 'WorkoutGroupWorkouts', id: data.get('group')}];
+      // },
     }),
     deleteWorkout: builder.mutation({
       query: arg => {
@@ -537,7 +543,7 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: (resut, error, arg) => {
         const data = new Map<string, string>(arg._parts);
-        console.log('APISLICECreate workoutItems data: ', data);
+        console.log('APISLICECreate invaldiate workoutGroup : ', data);
         return [{type: 'WorkoutGroupWorkouts', id: data.get('workout_group')}];
       },
     }),

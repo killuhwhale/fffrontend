@@ -2,6 +2,8 @@
 
 # FitForm
 
+// sudo keytool -genkey -v -keystore fitform-upload-key.keystore -alias fitform-signing-key -keyalg RSA -keysize 2048 -validity 10000
+
 brew install node
 brew install watchman
 
@@ -27,6 +29,10 @@ npx react-native run-android --active-arch-only
 
 npx react-native run-ios --udid CCF49CB5-3952-4D51-8830-27A2BA1FEB1B
 
+cd android/ && ./gradlew clean && cd .. && npx react-native run-android --active-arch-only
+
+cd android/ && ./gradlew clean && ./gradlew bundleRelease && cd .. && npx react-native run-android --variant=release
+
 import { GymCardProps } from "../app_components/Cards/types"
 import { get, post } from "../utils/fetchAPI"
 
@@ -34,9 +40,33 @@ const LIST_GYMS = "http://localhost:8000/gyms/";
 
 TODOs
 
-    Deployment:
+User should know when they've created a workout when viewing list of compelted workouts. - It is hard to tell the difference from class workouts vs workouts created by the user - Maybe use different colored backgrounds for the cards - Add something to indicate if they created the workout.
 
-        # https://reactnative.dev/docs/signed-apk-android#adding-signing-config-to-your-apps-gradle-config
+Bugs:
+
+    - Horizontal slider,
+    - When the slider has 3 items, and the workouts change, and the new list has 4 or more items,
+    - The user Cant move to last item
+
+
+    - Finish Updating processWorkoutStats & processMultiWorkoutStats  w/ CalcWorkoutStats
+
+    - CoachModal is broken.
+
+    - StatsScreen
+        -  Totals Graph -> TotaltTime needs units
+
+    - CompleteWorkoutScreen
+        - Duration/ Distance units should at least be shown to the user instead of a number
+            - 400 what? Meters Miles ft seconds reps?
+
+
+    Deployment:
+    # https://reactnative.dev/docs/signed-apk-android#adding-signing-config-to-your-apps-gradle-config
+
+        ios
+            - Complete workoutu Screen
+                - Picker for weight unit
 
         Android
             - Apply for app store
@@ -44,6 +74,14 @@ TODOs
         iOS:
             - Apply for app store
 
+    Problems:
+        - Images are not showing up
+        - Coaches modal gymClassScreen neeeds to be fixed
+        - Og button on Wrkoutscreen needs larger target area
+        - Need More workout items
+        - Need workout itenm information
+            - Description Images.
+            - Infographs?
 
 
 

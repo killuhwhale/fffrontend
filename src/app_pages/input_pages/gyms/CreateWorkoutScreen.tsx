@@ -108,11 +108,12 @@ const RepSheme: FunctionComponent<{
           borderRadius: 8,
           paddingHorizontal: 8,
         }}
+        fontSize={mdFontSize}
         leading={
           <Icon
             name="person"
             color={theme.palette.text}
-            style={{fontSize: 16}}
+            style={{fontSize: mdFontSize}}
           />
         }
       />
@@ -149,11 +150,12 @@ const RoundSheme: FunctionComponent<{
           borderRadius: 8,
           paddingHorizontal: 8,
         }}
+        fontSize={mdFontSize}
         leading={
           <Icon
             name="person"
             color={theme.palette.text}
-            style={{fontSize: 16}}
+            style={{fontSize: mdFontSize}}
           />
         }
       />
@@ -180,11 +182,12 @@ const TimeSheme: FunctionComponent<{
           borderRadius: 8,
           paddingHorizontal: 8,
         }}
+        fontSize={mdFontSize}
         leading={
           <Icon
             name="person"
             color={theme.palette.text}
-            style={{fontSize: 16}}
+            style={{fontSize: mdFontSize}}
           />
         }
       />
@@ -314,14 +317,12 @@ const ItemPanel: FunctionComponent<{
       <View style={{position: 'absolute', top: 6, left: 6, flex: 1}}>
         <SmallText>{idx}</SmallText>
       </View>
-      <View style={{flex: 1}}>
-        <SmallText>
-          {item.name.name} ({item.id})
-        </SmallText>
+      <View style={{flex: 2}}>
+        <SmallText>{item.name.name}</SmallText>
       </View>
       <View
         style={{
-          flex: 4,
+          flex: 5,
           width: '100%',
           alignItems: 'center',
           justifyContent: 'center',
@@ -340,16 +341,23 @@ const ItemPanel: FunctionComponent<{
                   ? COLORSPALETTE[item.ssid]
                   : theme.palette.text
               }
-              style={{fontSize: 40}}
+              style={{fontSize: 40, marginBottom: 6}}
             />
             {schemeType == 0 && item.ssid >= 0 ? (
-              <SmallText
-                textStyles={{
-                  color: COLORSPALETTE[item.ssid],
-                  textAlign: 'center',
+              <View
+                style={{
+                  position: 'absolute',
+                  left: 12,
+                  bottom: 0,
                 }}>
-                SS
-              </SmallText>
+                <SmallText
+                  textStyles={{
+                    color: COLORSPALETTE[item.ssid],
+                    textAlign: 'center',
+                  }}>
+                  SS
+                </SmallText>
+              </View>
             ) : (
               <></>
             )}
@@ -541,6 +549,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
       console.log('Workout res', createdWorkout);
 
       items.forEach((item, idx) => {
+        console.log('Creating item: ', item);
         item.order = idx;
         item.workout = createdWorkout.id;
       });
@@ -590,7 +599,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
     _item.duration = jList(_item.duration);
     _item.distance = jList(_item.distance);
 
-    console.log('Adding item: ', _item);
+    console.log('~~~~Adding item: ', _item);
     setItems([...items, _item]);
     return {success: true, errorType: -1, errorMsg: ''};
   };
@@ -614,6 +623,21 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
       newItems[idx] = newItem;
       setItems(newItems);
     }
+  };
+
+  const [allowMarkConstant, setAllowMarkConstant] = useState(false);
+
+  const updateItemConstant = (idx: number) => {
+    if (idx < 0 || idx >= items.length) {
+      return;
+    }
+
+    const item = {...items[idx]};
+    item.constant = !item.constant;
+    const newItems = [...items];
+    newItems[idx] = item;
+    setItems(newItems);
+    console.log('Toggled item as constant', item);
   };
 
   return (
@@ -713,10 +737,16 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
         </View>
         <AddItem onAddItem={addWorkoutItem} schemeType={schemeType} />
 
-        <View style={{flex: schemeType == 0 ? 2 : 1}}>
+        <View style={{flex: 2}}>
           {schemeType == 0 ? (
-            <View>
-              <SmallText textStyles={{color: theme.palette.text}}>
+            <View
+              style={{
+                width: '100%',
+                justifyContent: 'center',
+                alignItems: 'baseline',
+              }}>
+              <SmallText
+                textStyles={{color: theme.palette.text, textAlign: 'left'}}>
                 Add Superset
               </SmallText>
               <Switch
@@ -726,6 +756,32 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
                   if (!v) {
                     setCurColor(-1);
                   }
+                }}
+                trackColor={{
+                  true: theme.palette.primary.contrastText,
+                  false: theme.palette.lightGray,
+                }}
+                thumbColor={
+                  showAddSSID ? theme.palette.primary.main : theme.palette.gray
+                }
+              />
+            </View>
+          ) : schemeType === 1 ? (
+            <View
+              style={{
+                width: '100%',
+                justifyContent: 'center',
+                alignItems: 'baseline',
+              }}>
+              <SmallText
+                textStyles={{color: theme.palette.text, textAlign: 'left'}}>
+                Mark item as constant
+              </SmallText>
+              <Switch
+                value={allowMarkConstant}
+                onValueChange={v => {
+                  console.log('Allow mark constant', v);
+                  setAllowMarkConstant(v);
                 }}
                 trackColor={{
                   true: theme.palette.primary.contrastText,
@@ -789,7 +845,11 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
                   <AnimatedButton
                     title={item.name.name}
                     style={{width: '100%'}}
-                    onFinish={() => removeItem(idx)}
+                    onFinish={() =>
+                      allowMarkConstant
+                        ? updateItemConstant(idx)
+                        : removeItem(idx)
+                    }
                     key={`itemz_${idx}_${Math.random()}`}>
                     <View
                       style={{
@@ -805,8 +865,8 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
                         <Icon
                           name="person"
                           color={
-                            item.ssid >= 0
-                              ? COLORSPALETTE[item.ssid]
+                            item.constant
+                              ? COLORSPALETTE[0]
                               : theme.palette.text
                           }
                         />

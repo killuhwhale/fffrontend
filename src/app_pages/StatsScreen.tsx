@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useState} from 'react';
+import React, {FunctionComponent, useMemo, useState} from 'react';
 import {ScrollView, TouchableWithoutFeedback, View} from 'react-native';
 import styled from 'styled-components/native';
 import {useTheme} from 'styled-components';
@@ -7,6 +7,7 @@ import {
   Container,
   SCREEN_HEIGHT,
   processMultiWorkoutStats,
+  CalcWorkoutStats,
 } from '../app_components/shared';
 import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
@@ -59,30 +60,65 @@ const StatsScreen: FunctionComponent<Props> = ({
       endDate: dateFormat(endDate),
     });
 
-  let allWorkouts: WorkoutCardProps[] = [];
-  let workoutTagStats: {}[] = [];
-  let workoutNameStats: {}[] = [];
-  let tags = {};
-  let names = {};
+  const [allWorkouts, workoutTagStats, workoutNameStats] = useMemo(() => {
+    if (data && data.length > 0) {
+      let allWorkouts: WorkoutCardProps[] = [];
+      let workoutTagStats: {}[] = [];
+      let workoutNameStats: {}[] = [];
+      const calc = new CalcWorkoutStats();
 
-  // process selected workouts, tally up by name and tag(category)
-  if (data && data.length > 0) {
-    data.forEach(workoutGroup => {
-      allWorkouts.push(...workoutGroup.completed_workouts); // Collect all workouts for bar data
-      const [__tags, __names] = processMultiWorkoutStats(
-        workoutGroup.completed_workouts,
-      );
+      data.forEach(workoutGroup => {
+        allWorkouts.push(...workoutGroup.completed_workouts); // Collect all workouts for bar data
 
-      // For bar Line data, series data.
-      workoutTagStats.push({...__tags, date: workoutGroup.date});
-      workoutNameStats.push({...__names, date: workoutGroup.date});
-    });
+        calc.calcMulti(workoutGroup.completed_workouts);
+        workoutTagStats.push({...calc.tags, date: workoutGroup.date});
+        workoutNameStats.push({...calc.names, date: workoutGroup.date});
+        calc.reset();
 
-    const [_tags, _names] = processMultiWorkoutStats(allWorkouts);
+        // const [__tags, __names] = processMultiWorkoutStats(
+        //   workoutGroup.completed_workouts,
+        // );
 
-    tags = _tags;
-    names = _names;
-  }
+        // For bar Line data, series data.
+        // workoutTagStats.push({...__tags, date: workoutGroup.date});
+        // workoutNameStats.push({...__names, date: workoutGroup.date});
+      });
+      return [allWorkouts, workoutTagStats, workoutNameStats];
+    }
+    return [[], [], []];
+  }, [data]);
+
+  const [tags, names] = useMemo(() => {
+    const calc = new CalcWorkoutStats();
+    calc.calcMulti(allWorkouts);
+
+    // const [_tags, _names] = processMultiWorkoutStats(allWorkouts);
+    // console.log('ALLLLLWORKOUTS', _tags, _names);
+    // return [_tags, _names];
+
+    return [calc.tags, calc.names];
+  }, [allWorkouts, data]);
+
+  // !! BELOW CODE IS REPACED BY THE MEMOIZED FUCNTIONS ABOVE !!
+
+  // // process selected workouts, tally up by name and tag(category)
+  // if (data && data.length > 0) {
+  //   data.forEach(workoutGroup => {
+  //     allWorkouts.push(...workoutGroup.completed_workouts); // Collect all workouts for bar data
+  //     const [__tags, __names] = processMultiWorkoutStats(
+  //       workoutGroup.completed_workouts,
+  //     );
+
+  //     // For bar Line data, series data.
+  //     workoutTagStats.push({...__tags, date: workoutGroup.date});
+  //     workoutNameStats.push({...__names, date: workoutGroup.date});
+  //   });
+
+  //   const [_tags, _names] = processMultiWorkoutStats(allWorkouts);
+
+  //   tags = _tags;
+  //   names = _names;
+  // }
 
   const tagLabels: string[] = Array.from(new Set(Object.keys(tags)));
   const nameLabels: string[] = Array.from(new Set(Object.keys(names)));

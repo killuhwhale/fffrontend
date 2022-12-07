@@ -44,6 +44,7 @@ import greenGrad from './../../assets/bgs/greenGrad.png';
 import Input from '../app_components/Input/input';
 import DeleteActionCancelModal from '../app_components/modals/deleteByNameModal';
 import FilterItemsModal from '../app_components/modals/filterItemsModal';
+import {TouchableHighlight} from 'react-native-gesture-handler';
 export type Props = StackScreenProps<RootStackParamList, 'GymClassScreen'>;
 
 const GymClassScreenContainer = styled(Container)`
@@ -268,23 +269,29 @@ const GymClassScreen: FunctionComponent<Props> = ({
           {dataGymClassFavs &&
           !isLoadingGymClassFavs &&
           isFavorited(dataGymClassFavs?.favorite_gym_classes) ? (
-            <View style={{alignItems: 'center'}}>
-              <IconButton
-                style={{height: 24}}
-                icon={<Icon name="star" color="red" style={{fontSize: 24}} />}
-                onPress={() => unfavoriteGymClassMutation(favObj)}
-              />
-              <SmallText>Unfavorite</SmallText>
-            </View>
+            <TouchableHighlight
+              onPress={() => unfavoriteGymClassMutation(favObj)}>
+              <View style={{alignItems: 'center'}}>
+                <IconButton
+                  style={{height: 24}}
+                  icon={<Icon name="star" color="red" style={{fontSize: 24}} />}
+                />
+                <SmallText>Unfavorite</SmallText>
+              </View>
+            </TouchableHighlight>
           ) : (
-            <View style={{alignItems: 'center'}}>
-              <IconButton
-                style={{height: 24}}
-                icon={<Icon name="star" color="white" style={{fontSize: 24}} />}
-                onPress={() => favoriteGymClassMutation(favObj)}
-              />
-              <SmallText>Favorite</SmallText>
-            </View>
+            <TouchableHighlight
+              onPress={() => favoriteGymClassMutation(favObj)}>
+              <View style={{alignItems: 'center'}}>
+                <IconButton
+                  style={{height: 24}}
+                  icon={
+                    <Icon name="star" color="white" style={{fontSize: 24}} />
+                  }
+                />
+                <SmallText>Favorite</SmallText>
+              </View>
+            </TouchableHighlight>
           )}
         </View>
       </View>
@@ -299,42 +306,44 @@ const GymClassScreen: FunctionComponent<Props> = ({
             flex: 1,
           }}>
           {data?.user_is_owner ? (
-            <View style={{paddingHorizontal: 8}}>
-              <IconButton
-                style={{height: 24}}
-                icon={
-                  <Icon
-                    name="ios-stopwatch-outline"
-                    color={theme.palette.primary.main}
-                    style={{fontSize: 24}}
-                  />
-                }
-                onPress={() => setShowCoachModal(true)}
-              />
-              <SmallText>
-                Coaches: {allCoaches?.length ? allCoaches.length : 0}
-              </SmallText>
-            </View>
+            <TouchableHighlight onPress={() => setShowCoachModal(true)}>
+              <View style={{paddingHorizontal: 8}}>
+                <IconButton
+                  style={{height: 24}}
+                  icon={
+                    <Icon
+                      name="ios-stopwatch-outline"
+                      color={theme.palette.primary.main}
+                      style={{fontSize: 24}}
+                    />
+                  }
+                />
+                <SmallText>
+                  Coaches: {allCoaches?.length ? allCoaches.length : 0}
+                </SmallText>
+              </View>
+            </TouchableHighlight>
           ) : (
             <></>
           )}
           {data?.user_is_owner || data?.user_is_coach ? (
-            <View style={{paddingHorizontal: 8}}>
-              <IconButton
-                style={{height: 24}}
-                icon={
-                  <Icon
-                    name="ios-people-outline"
-                    color={theme.palette.secondary.main}
-                    style={{fontSize: 24}}
-                  />
-                }
-                onPress={() => setShowMembersModal(true)}
-              />
-              <SmallText>
-                Members: {allMembers?.length ? allMembers.length : 0}
-              </SmallText>
-            </View>
+            <TouchableHighlight onPress={() => setShowMembersModal(true)}>
+              <View style={{paddingHorizontal: 8}}>
+                <IconButton
+                  style={{height: 24}}
+                  icon={
+                    <Icon
+                      name="ios-people-outline"
+                      color={theme.palette.secondary.main}
+                      style={{fontSize: 24}}
+                    />
+                  }
+                />
+                <SmallText>
+                  Members: {allMembers?.length ? allMembers.length : 0}
+                </SmallText>
+              </View>
+            </TouchableHighlight>
           ) : (
             <></>
           )}

@@ -676,11 +676,6 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
   //     isSuccess: workoutGroupSuccess, isError: workoutGroupErr,
   //     error: workoutGroupError } = useGetUsersWorkoutGroupsQuery("");
 
-  // console.log('Profile data: ', data, dataWG, dataGymFavs, dataGymClassFavs);
-  console.log(
-    'Profile data: ',
-    dataWG?.workout_groups.completed_workout_groups,
-  );
   // Access/ send actions
   const dispatch = useAppDispatch();
   const [modalVisible, setModalVisible] = useState(false);

@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useState} from 'react';
+import React, {FunctionComponent, useMemo, useState} from 'react';
 import styled from 'styled-components/native';
 import {
   COMPLETED_WORKOUT_MEDIA,
@@ -8,6 +8,7 @@ import {
   SCREEN_WIDTH,
   WORKOUT_MEDIA,
   processMultiWorkoutStats,
+  CalcWorkoutStats,
 } from '../app_components/shared';
 import {
   SmallText,
@@ -30,7 +31,7 @@ import {
   WorkoutGroupProps,
 } from '../app_components/Cards/types';
 import {ScrollView} from 'react-native-gesture-handler';
-import {TouchableWithoutFeedback, View} from 'react-native';
+import {TouchableHighlight, TouchableWithoutFeedback, View} from 'react-native';
 import {
   useDeleteCompletedWorkoutGroupMutation,
   useDeleteWorkoutGroupMutation,
@@ -43,9 +44,10 @@ import {
 } from '../redux/api/apiSlice';
 import {Button, IconButton, Switch} from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {StatsPanel} from './WorkoutDetailScreen';
+
 import {MediaURLSlider} from '../app_components/MediaSlider/MediaSlider';
 import {ActionCancelModal} from './Profile';
+import {StatsPanel} from '../app_components/Stats/StatsPanel';
 export type Props = StackScreenProps<RootStackParamList, 'WorkoutScreen'>;
 
 const Row = styled.View`
@@ -58,8 +60,6 @@ const WorkoutScreenContainer = styled(Container)`
   justify-content: space-between;
   width: 100%;
 `;
-
-// sudo keytool -genkey -v -keystore fitform-upload-key.keystore -alias fitform-signing-key -keyalg RSA -keysize 2048 -validity 10000
 
 /**
  *  TODO()
@@ -219,10 +219,17 @@ const WorkoutScreen: FunctionComponent<Props> = ({
     ? workoutGroup.completed_workouts
     : [];
 
-  const [tags, names] = processMultiWorkoutStats(workouts);
+  // Replaced with Memo below
+  // const [tags, names] = processMultiWorkoutStats(workouts);
+  const [tags, names] = useMemo(() => {
+    const calc = new CalcWorkoutStats();
+    calc.calcMulti(workouts);
 
-  console.log('Stats: ', tags, names);
-  console.log('WorkoutScreen data: ', oGData);
+    return [calc.tags, calc.names];
+  }, [workouts]);
+
+  // console.log('Stats: ', tags, names);
+  // console.log('WorkoutScreen data: ', oGData);
 
   const openCreateWorkoutScreenForStandard = () => {
     navigation.navigate('CreateWorkoutScreen', {
@@ -319,37 +326,37 @@ const WorkoutScreen: FunctionComponent<Props> = ({
           }}>
           <View style={{flex: 1, justifyContent: 'center', width: '100%'}}>
             {oGIsSuccess && completedIsSuccess ? (
-              <View style={{width: '100%', alignItems: 'center'}}>
-                <IconButton
-                  style={{height: 24}}
-                  icon={
-                    <Icon
-                      name="podium"
-                      color={
-                        showingOGWorkoutGroup && !oGIsLoading
-                          ? theme.palette.text
-                          : 'red'
-                      }
-                      style={{fontSize: 24}}
-                    />
-                  }
-                  onPress={() =>
-                    setShowingOGWorkoutGroup(!showingOGWorkoutGroup)
-                  }
-                />
-                <SmallText textStyles={{textAlign: 'center'}}>
-                  {showingOGWorkoutGroup && !oGIsLoading ? 'og' : 'completed'}
-                </SmallText>
-              </View>
+              <TouchableHighlight
+                onPress={() =>
+                  setShowingOGWorkoutGroup(!showingOGWorkoutGroup)
+                }>
+                <View style={{width: '100%', alignItems: 'center'}}>
+                  <IconButton
+                    style={{height: 24}}
+                    icon={
+                      <Icon
+                        name="podium"
+                        color={
+                          showingOGWorkoutGroup && !oGIsLoading
+                            ? theme.palette.text
+                            : 'red'
+                        }
+                        style={{fontSize: 24}}
+                      />
+                    }
+                  />
+                  <SmallText textStyles={{textAlign: 'center'}}>
+                    {showingOGWorkoutGroup && !oGIsLoading ? 'og' : 'completed'}
+                  </SmallText>
+                </View>
+              </TouchableHighlight>
             ) : (
               <></>
             )}
           </View>
           <View style={{flex: 3}}>
             <ScrollView horizontal>
-              <RegularText>
-                {workoutGroup.title} ({workoutGroup.id})
-              </RegularText>
+              <RegularText>{workoutGroup.title}</RegularText>
             </ScrollView>
           </View>
 

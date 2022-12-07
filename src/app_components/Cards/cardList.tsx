@@ -22,13 +22,8 @@ import {
   ItemPanel,
   ItemString,
 } from '../../app_pages/input_pages/gyms/CreateWorkoutScreen';
-import {
-  NamePanelItem,
-  TagPanelItem,
-  WorkoutStats,
-} from '../../app_pages/WorkoutDetailScreen';
 import {View} from 'react-native';
-// import { PickerListItem } from "../../app_pages/StatsScreen";
+import {NamePanelItem, TagPanelItem, WorkoutStats} from '../Stats/StatsPanel';
 
 export const StyledList = styled.FlatList`
   width: 100%;

@@ -1,11 +1,7 @@
 import React, {FunctionComponent} from 'react';
 import {useTheme} from 'styled-components';
-import styled from 'styled-components/native';
-import {Container} from '../shared';
-import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
 import {RootStackParamList} from '../../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
-import {useNavigation} from '@react-navigation/native';
 export type Props = StackScreenProps<RootStackParamList, 'Header'>;
 import {NavigationContext} from '@react-navigation/native';
 import {AppBar, IconButton} from '@react-native-material/core';

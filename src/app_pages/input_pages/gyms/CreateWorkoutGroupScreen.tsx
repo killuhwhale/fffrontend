@@ -1,32 +1,15 @@
-import React, {
-  FunctionComponent,
-  useState,
-  useContext,
-  useCallback,
-  useRef,
-} from 'react';
+import React, {FunctionComponent, useState, useCallback} from 'react';
 import styled from 'styled-components/native';
-import {Image, Modal, Platform, StyleSheet, View, Switch} from 'react-native';
+import {View} from 'react-native';
 import {Container, SCREEN_HEIGHT} from '../../../app_components/shared';
-import {
-  SmallText,
-  RegularText,
-  LargeText,
-  TitleText,
-} from '../../../app_components/Text/Text';
-import {
-  AppBar,
-  Button,
-  IconButton,
-  TextInput,
-} from '@react-native-material/core';
+import {SmallText, RegularText} from '../../../app_components/Text/Text';
+import {Button, TextInput} from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
-import {Picker} from '@react-native-picker/picker';
 import DocumentPicker from 'react-native-document-picker';
 
 import {useTheme} from 'styled-components';
-import {useAppSelector, useAppDispatch} from '../../../redux/hooks';
+import {useAppDispatch} from '../../../redux/hooks';
 import {useCreateWorkoutGroupMutation} from '../../../redux/api/apiSlice';
 import {MediaSlider} from '../../../app_components/MediaSlider/MediaSlider';
 
@@ -43,10 +26,6 @@ const PageContainer = styled(Container)`
   background-color: ${props => props.theme.palette.backgroundColor};
   justify-content: space-between;
   width: 100%;
-`;
-const Touchable = styled.TouchableHighlight`
-  height: 100%;
-  border-radius: 25px;
 `;
 
 const MediaPicker: FunctionComponent<{
