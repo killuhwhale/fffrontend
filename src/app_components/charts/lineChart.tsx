@@ -138,7 +138,9 @@ const TotalsLineChart: FunctionComponent<{
         <RegularText>Totals by date</RegularText>
 
         <HorizontalPicker
-          key={`magic${showTags}`}
+          key={`hp_${showTags}_${
+            showTags ? props.tagLabels.length : props.nameLabels.length
+          }`}
           data={
             showTags && props.tagLabels.length > 0
               ? props.tagLabels
@@ -184,7 +186,7 @@ const TotalsLineChart: FunctionComponent<{
             }}
           />
           <HorizontalPicker
-            key={'LineChart'}
+            key={`hpDataTypes_${__filteredDataTypesAbbrev.length}`}
             data={__filteredDataTypesAbbrev}
             onChange={setShowLineChartDataType}
           />

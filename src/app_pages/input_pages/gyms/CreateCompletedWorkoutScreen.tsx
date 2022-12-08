@@ -6,8 +6,11 @@ import {TouchableHighlight, View} from 'react-native';
 import {
   Container,
   displayJList,
+  DISTANCE_UNITS,
+  DURATION_UNITS,
   DURATION_W,
   jList,
+  mdFontSize,
   numFilter,
   numFilterWithSpaces,
   REPS_W,
@@ -88,17 +91,34 @@ const EditWorkoutItem: FunctionComponent<{
 }> = props => {
   const theme = useTheme();
   const {workoutItem, schemeType} = props;
-  const {sets, reps, duration, distance, weights, weight_unit, percent_of} =
-    workoutItem;
+  const {
+    id,
+    sets,
+    reps,
+    duration,
+    distance,
+    weights,
+    weight_unit,
+    percent_of,
+    duration_unit,
+    distance_unit,
+  } = workoutItem;
 
   const weightUnitPickRef = useRef<any>();
+  const durationUnitPickRef = useRef<any>();
+  const distanceUnitPickRef = useRef<any>();
 
   const [newWeights, setNewWeights] = useState(jListToNumStr(weights)); // Json string list of numbers.
+  const [newWeightUnit, setNewWeightUnit] = useState(weight_unit);
+  const [oldWeightUnit, setOldWeightUnit] = useState(weight_unit);
   const [newSets, setNewSets] = useState(sets); // Need this for Standard workouts.
   const [newReps, setNewReps] = useState(jListToNumStr(reps));
   const [newDuration, setNewDuration] = useState(jListToNumStr(duration));
+  const [newDurationUnit, setNewDurationUnit] = useState(duration_unit);
+  const [oldDurationUnit, setOldDurationUnit] = useState(duration_unit);
   const [newDistance, setNewDistance] = useState(jListToNumStr(distance));
-  const [newWeightUnit, setNewWeightUnit] = useState(weight_unit);
+  const [newDistanceUnit, setNewDistanceUnit] = useState(distance_unit);
+  const [oldDistanceUnit, setOldDistanceUnit] = useState(distance_unit);
   const [newPercentOf, setNewPercentOf] = useState(percent_of);
 
   const [weightsError, setWeightsError] = useState('');
@@ -113,6 +133,12 @@ const EditWorkoutItem: FunctionComponent<{
   const [hasDistance, _hasDistance] = useState(JSON.parse(distance)[0] != 0);
   const [hasSets, _hasSets] = useState(sets != 0);
 
+  console.log(
+    'Dur unit:',
+    hasDuration,
+    duration_unit,
+    DURATION_UNITS[duration_unit],
+  );
   const editItemWidth = '65%';
   return (
     <View style={{width: '100%'}}>
@@ -233,6 +259,7 @@ const EditWorkoutItem: FunctionComponent<{
       ) : (
         <></>
       )}
+
       {hasDuration ? (
         <View
           style={{
@@ -242,56 +269,97 @@ const EditWorkoutItem: FunctionComponent<{
             justifyContent: 'space-between',
             width: '90%',
           }}>
-          <SmallText textStyles={{textAlign: 'center'}}>Duration</SmallText>
+          <SmallText textStyles={{textAlign: 'center'}}>
+            Duration ({DURATION_UNITS[oldDurationUnit]})
+          </SmallText>
           <View
             style={{
               marginHorizontal: 8,
               marginBottom: 8,
               width: editItemWidth,
+              flexDirection: 'row',
             }}>
-            <Input
-              inputStyles={{textAlign: 'center'}}
-              containerStyle={[
-                numberInputStyle.containerStyle,
-                {borderRadius: 4, backgroundColor: theme.palette.lightGray},
-              ]}
-              onChangeText={t => {
-                let val = '';
+            <View style={{flex: 3}}>
+              <Input
+                inputStyles={{textAlign: 'center'}}
+                containerStyle={[
+                  numberInputStyle.containerStyle,
+                  {borderRadius: 4, backgroundColor: theme.palette.lightGray},
+                ]}
+                onChangeText={t => {
+                  let val = '';
 
-                if (
-                  WORKOUT_TYPES[props.schemeType] == STANDARD_W ||
-                  WORKOUT_TYPES[props.schemeType] == REPS_W ||
-                  WORKOUT_TYPES[props.schemeType] == DURATION_W
-                ) {
-                  val = numFilter(t);
-                } else {
-                  val = numFilterWithSpaces(t);
-                }
+                  if (
+                    WORKOUT_TYPES[props.schemeType] == STANDARD_W ||
+                    WORKOUT_TYPES[props.schemeType] == REPS_W ||
+                    WORKOUT_TYPES[props.schemeType] == DURATION_W
+                  ) {
+                    val = numFilter(t);
+                  } else {
+                    val = numFilterWithSpaces(t);
+                  }
 
-                const {success, errorType, errorMsg} = props.editItem(
-                  props.workoutIdx,
-                  props.itemIdx,
-                  'duration',
-                  val,
-                );
-                if (!success) {
-                  setDurationError(errorMsg);
-                } else {
-                  setDurationError('');
-                }
-                setNewDuration(val);
-              }}
-              value={newDuration}
-              label="Duration"
-              isError={durationError.length > 0}
-              helperText={durationError}
-            />
+                  const {success, errorType, errorMsg} = props.editItem(
+                    props.workoutIdx,
+                    props.itemIdx,
+                    'duration',
+                    val,
+                  );
+                  if (!success) {
+                    setDurationError(errorMsg);
+                  } else {
+                    setDurationError('');
+                  }
+                  setNewDuration(val);
+                }}
+                fontSize={mdFontSize}
+                value={newDuration}
+                label="Duration"
+                isError={durationError.length > 0}
+                helperText={durationError}
+              />
+            </View>
+            <View style={{flex: 3}}>
+              <Picker
+                ref={durationUnitPickRef}
+                selectedValue={newDurationUnit}
+                style={pickerStyle.containerStyle}
+                itemStyle={[
+                  pickerStyle.itemStyle,
+                  {
+                    height: '100%',
+                    color: theme.palette.text,
+                    backgroundColor: theme.palette.gray,
+                  },
+                ]}
+                onValueChange={(itemValue, itemIndex) => {
+                  setNewDurationUnit(itemValue);
+
+                  props.editItem(
+                    props.workoutIdx,
+                    props.itemIdx,
+                    'duration_unit',
+                    itemIndex,
+                  );
+                }}>
+                {DURATION_UNITS.map((unit, i) => {
+                  return (
+                    <Picker.Item
+                      key={`${id}_duration_${unit}`}
+                      label={unit}
+                      value={i}
+                    />
+                  );
+                })}
+              </Picker>
+            </View>
           </View>
         </View>
       ) : (
         <></>
       )}
-      {hasDistance && props.schemeType !== 0 ? (
+
+      {hasDistance ? (
         <View
           style={{
             flexDirection: 'row',
@@ -300,57 +368,98 @@ const EditWorkoutItem: FunctionComponent<{
             justifyContent: 'space-between',
             width: '90%',
           }}>
-          <SmallText textStyles={{textAlign: 'center'}}>Distance</SmallText>
+          <SmallText textStyles={{textAlign: 'center'}}>
+            Distance ({DISTANCE_UNITS[oldDistanceUnit]})
+          </SmallText>
           <View
             style={{
               marginHorizontal: 8,
               marginBottom: 8,
               width: editItemWidth,
+              flexDirection: 'row',
             }}>
-            <Input
-              inputStyles={{textAlign: 'center'}}
-              containerStyle={[
-                numberInputStyle.containerStyle,
-                {borderRadius: 4, backgroundColor: theme.palette.lightGray},
-              ]}
-              label="Distance"
-              value={newDistance}
-              isError={distanceError.length > 0}
-              helperText={distanceError}
-              onChangeText={(t: string) => {
-                let val = '';
-                if (
-                  WORKOUT_TYPES[props.schemeType] == STANDARD_W ||
-                  WORKOUT_TYPES[props.schemeType] == REPS_W ||
-                  WORKOUT_TYPES[props.schemeType] == DURATION_W
-                ) {
-                  // updateItem('distance', numFilter(t))
-                  val = numFilter(t);
-                } else {
-                  // updateItem('distance', numFilterWithSpaces(t))
-                  val = numFilterWithSpaces(t);
-                }
-                const {success, errorType, errorMsg} = props.editItem(
-                  props.workoutIdx,
-                  props.itemIdx,
-                  'distance',
-                  val,
-                );
+            <View style={{flex: 3}}>
+              <Input
+                fontSize={mdFontSize}
+                inputStyles={{textAlign: 'center'}}
+                containerStyle={[
+                  numberInputStyle.containerStyle,
+                  {borderRadius: 4, backgroundColor: theme.palette.lightGray},
+                ]}
+                label="Distance"
+                value={newDistance}
+                isError={distanceError.length > 0}
+                helperText={distanceError}
+                onChangeText={(t: string) => {
+                  let val = '';
+                  if (
+                    WORKOUT_TYPES[props.schemeType] == STANDARD_W ||
+                    WORKOUT_TYPES[props.schemeType] == REPS_W ||
+                    WORKOUT_TYPES[props.schemeType] == DURATION_W
+                  ) {
+                    // updateItem('distance', numFilter(t))
+                    val = numFilter(t);
+                  } else {
+                    // updateItem('distance', numFilterWithSpaces(t))
+                    val = numFilterWithSpaces(t);
+                  }
+                  const {success, errorType, errorMsg} = props.editItem(
+                    props.workoutIdx,
+                    props.itemIdx,
+                    'distance',
+                    val,
+                  );
 
-                if (!success) {
-                  setDistanceError(errorMsg);
-                } else {
-                  setDistanceError('');
-                }
+                  if (!success) {
+                    setDistanceError(errorMsg);
+                  } else {
+                    setDistanceError('');
+                  }
 
-                setNewDistance(val);
-              }}
-            />
+                  setNewDistance(val);
+                }}
+              />
+            </View>
+            <View style={{flex: 3}}>
+              <Picker
+                ref={distanceUnitPickRef}
+                selectedValue={newDistanceUnit}
+                style={pickerStyle.containerStyle}
+                itemStyle={[
+                  pickerStyle.itemStyle,
+                  {
+                    height: '100%',
+                    color: theme.palette.text,
+                    backgroundColor: theme.palette.gray,
+                  },
+                ]}
+                onValueChange={(itemValue, itemIndex) => {
+                  setNewDistanceUnit(itemValue);
+
+                  props.editItem(
+                    props.workoutIdx,
+                    props.itemIdx,
+                    'distance_unit',
+                    itemIndex,
+                  );
+                }}>
+                {DISTANCE_UNITS.map((unit, i) => {
+                  return (
+                    <Picker.Item
+                      key={`${id}_distance_${unit}`}
+                      label={unit}
+                      value={i}
+                    />
+                  );
+                })}
+              </Picker>
+            </View>
           </View>
         </View>
       ) : (
         <></>
       )}
+
       {
         <View
           style={{
@@ -420,7 +529,9 @@ const EditWorkoutItem: FunctionComponent<{
             justifyContent: 'space-between',
             width: '90%',
           }}>
-          <SmallText textStyles={{textAlign: 'center'}}>Weight Unit</SmallText>
+          <SmallText textStyles={{textAlign: 'center'}}>
+            Weight Unit ({oldWeightUnit})
+          </SmallText>
           <View
             style={{
               marginHorizontal: 8,
@@ -490,7 +601,7 @@ const EditWorkoutItem: FunctionComponent<{
                   {WEIGHT_UNITS.map((unit, i) => {
                     return (
                       <Picker.Item
-                        key={`rest_${unit}`}
+                        key={`${id}_weight_${unit}`}
                         label={unit}
                         value={unit}
                       />
@@ -598,7 +709,15 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
 
     const item = workout.workout_items[itemIdx];
     console.log('Settings key', key, value, item);
-    if (['sets', 'weight_unit', 'percent_of'].indexOf(key) >= 0) {
+    if (
+      [
+        'sets',
+        'weight_unit',
+        'percent_of',
+        'duration_unit',
+        'distance_unit',
+      ].indexOf(key) >= 0
+    ) {
       item[key] = value;
     } else {
       item[key] = jList(value);
@@ -729,22 +848,19 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
             style={{height: SCREEN_HEIGHT * 0.06, transform: [{scale: 0.65}]}}
           />
         </View>
-        <View style={{flex: 5}}>
-          <ScrollView>
-            <View style={{flex: 1}}>
-              <MediaPicker
-                setState={setFiles.bind(this)}
-                title="Select Media"
-              />
-            </View>
-            {files && files.length > 0 ? (
-              <View style={{flex: 1}}>
-                <MediaSlider data={files} />
-              </View>
-            ) : (
-              <></>
-            )}
 
+        <View style={{flex: 1}}>
+          <MediaPicker setState={setFiles.bind(this)} title="Select Media" />
+        </View>
+        {files && files.length > 0 ? (
+          <View style={{flex: 3}}>
+            <MediaSlider data={files} />
+          </View>
+        ) : (
+          <></>
+        )}
+        <View style={{flex: 4}}>
+          <ScrollView>
             <View style={{flex: 3}}>
               <RegularText>Edit workouts below</RegularText>
 
@@ -772,6 +888,10 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
                 );
               })}
             </View>
+          </ScrollView>
+        </View>
+        <View style={{flex: 6}}>
+          <ScrollView>
             <View>
               {selectedIdxIsvalid() ? (
                 selectedWorkout.workout_items?.map((item, i) => {

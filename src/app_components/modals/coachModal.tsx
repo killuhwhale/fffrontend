@@ -123,160 +123,155 @@ const ManageCoachesModal: FunctionComponent<{
       visible={props.modalVisible}
       onRequestClose={props.onRequestClose}>
       <View style={centeredViewStyle.centeredView}>
-        <View style={{backgroundColor: theme.palette.darkGray}}>
+        <View
+          style={[
+            settingsModalViewStyle.settingsModalView,
+
+            {backgroundColor: theme.palette.darkGray},
+          ]}>
           <View
-            style={[
-              settingsModalViewStyle.settingsModalView,
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginBottom: 12,
+              flex: 1,
+            }}>
+            <RegularText>Manage Coaches</RegularText>
+          </View>
 
-              {backgroundColor: theme.palette.darkGray},
-            ]}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginBottom: 12,
-                flex: 1,
-              }}>
-              <RegularText>Manage Coaches</RegularText>
-            </View>
-
-            <View style={{flex: 6, width: '100%'}}>
-              {!usersLoading ? (
-                <View style={{justifyContent: 'flex-start'}}>
-                  <View style={{height: 40, marginTop: 16}}>
-                    <Input
-                      onChangeText={filterText}
-                      value={term}
-                      containerStyle={{
-                        width: '100%',
-                        backgroundColor: theme.palette.lightGray,
-                        borderRadius: 8,
-                        paddingHorizontal: 8,
-                      }}
-                      fontSize={mdFontSize}
-                      leading={
-                        <Icon
-                          name="search"
-                          style={{fontSize: mdFontSize}}
-                          color={theme.palette.text}
-                        />
-                      }
-                      label=""
-                      placeholder="Search users"
-                    />
-                  </View>
-
-                  <Picker
-                    ref={pickerRef}
-                    style={{
-                      height: 180,
-                      transform: [{scaleX: 0.9}, {scaleY: 0.9}],
+          <View style={{flex: 6, width: '100%'}}>
+            {!usersLoading ? (
+              <View style={{justifyContent: 'flex-start'}}>
+                <View style={{height: 40, marginTop: 16}}>
+                  <Input
+                    onChangeText={filterText}
+                    value={term}
+                    containerStyle={{
+                      width: '100%',
+                      backgroundColor: theme.palette.lightGray,
+                      borderRadius: 8,
+                      paddingHorizontal: 8,
                     }}
-                    itemStyle={{
-                      height: '100%',
-                      fontSize: 16,
-                      color: theme.palette.text,
-                      backgroundColor: theme.palette.backgroundColor,
-                    }}
-                    selectedValue={newCoach}
-                    onValueChange={(itemValue, itemIndex) =>
-                      setNewCoach(itemValue)
-                    }>
-                    {filterResult.map(filtered_index => {
-                      const user = data[filtered_index];
-                      return (
-                        <Picker.Item
-                          style={{height: 5}}
-                          key={user.id}
-                          label={user.username}
-                          value={filtered_index}
-                        />
-                      );
-                    })}
-                  </Picker>
-                  <Button
-                    title="Add Coach"
-                    onPress={addNewCoach}
-                    style={{backgroundColor: theme.palette.lightGray}}
+                    fontSize={mdFontSize}
+                    leading={
+                      <Icon
+                        name="search"
+                        style={{fontSize: mdFontSize}}
+                        color={theme.palette.text}
+                      />
+                    }
+                    label=""
+                    placeholder="Search users"
                   />
                 </View>
-              ) : (
-                <></>
-              )}
-            </View>
-            <View style={{flex: 1, width: '100%'}}>
-              <RegularText textStyles={{alignSelf: 'flex-start'}}>
-                Coaches
-              </RegularText>
-            </View>
 
-            {!coachesLoading ? (
-              <View style={{backgroundColor: 'green', flex: 2, width: '100%'}}>
-                <ScrollView
-                  style={{width: '100%', backgroundColor: 'green'}}
-                  contentContainerStyle={{justifyContent: 'center'}}>
-                  {allCoaches?.map((coach, i) => {
-                    console.log('C :: ', coach);
+                <Picker
+                  ref={pickerRef}
+                  style={{
+                    height: 180,
+                    transform: [{scaleX: 0.9}, {scaleY: 0.9}],
+                  }}
+                  itemStyle={{
+                    height: '100%',
+                    fontSize: 16,
+                    color: theme.palette.text,
+                    backgroundColor: theme.palette.backgroundColor,
+                  }}
+                  selectedValue={newCoach}
+                  onValueChange={(itemValue, itemIndex) =>
+                    setNewCoach(itemValue)
+                  }>
+                  {filterResult.map(filtered_index => {
+                    const user = data[filtered_index];
                     return (
-                      <View
-                        key={`key_coac${coach.id}__`}
-                        style={{
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          width: '100%',
-                          borderBottomWidth: 1,
-                          borderTopWidth: 1,
-                          borderColor: 'white',
-                          paddingVertical: 8,
-                          backgroundColor: 'red',
-                        }}>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            width: '100%',
-                          }}>
-                          <View
-                            style={{
-                              flex: 5,
-                              alignItems: 'flex-start',
-                              width: '100%',
-                              paddingLeft: 16,
-                            }}>
-                            <RegularText>{coach.username} asdasd</RegularText>
-                          </View>
-                          <View style={{flex: 1}}>
-                            <IconButton
-                              style={{height: 24}}
-                              icon={
-                                <Icon
-                                  name="remove-circle-sharp"
-                                  color="red"
-                                  style={{fontSize: 24}}
-                                />
-                              }
-                              onPress={() => {
-                                onRemoveCoach(i);
-                              }}
-                            />
-                          </View>
-                        </View>
-                      </View>
+                      <Picker.Item
+                        style={{height: 5}}
+                        key={user.id}
+                        label={user.username}
+                        value={filtered_index}
+                      />
                     );
                   })}
-                </ScrollView>
+                </Picker>
+                <Button
+                  title="Add Coach"
+                  onPress={addNewCoach}
+                  style={{backgroundColor: theme.palette.lightGray}}
+                />
               </View>
             ) : (
               <></>
             )}
+          </View>
+          <View style={{flex: 1, width: '100%'}}>
+            <RegularText textStyles={{alignSelf: 'flex-start'}}>
+              Coaches
+            </RegularText>
+          </View>
 
-            <View style={{flexDirection: 'row', alignItems: 'center', flex: 2}}>
-              <Button
-                onPress={props.onRequestClose}
-                title="Close"
-                style={{backgroundColor: theme.palette.lightGray}}
-              />
+          {!coachesLoading ? (
+            <View style={{flex: 2, minWidth: '100%'}}>
+              <ScrollView
+                style={{width: '100%', flex: 1, minWidth: '100%'}}
+                contentContainerStyle={{justifyContent: 'center'}}>
+                {allCoaches?.map((coach, i) => {
+                  console.log('C :: ', coach);
+                  return (
+                    <View
+                      key={`key_coac${coach.id}__`}
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        borderBottomWidth: 1,
+                        borderTopWidth: 1,
+                        borderColor: 'white',
+                        paddingVertical: 8,
+                      }}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}>
+                        <View
+                          style={{
+                            flex: 5,
+                            alignItems: 'flex-start',
+                            paddingLeft: 16,
+                          }}>
+                          <RegularText>{coach.username} asdasd</RegularText>
+                        </View>
+                        <View style={{flex: 1}}>
+                          <IconButton
+                            style={{height: 24}}
+                            icon={
+                              <Icon
+                                name="remove-circle-sharp"
+                                color="red"
+                                style={{fontSize: 24}}
+                              />
+                            }
+                            onPress={() => {
+                              onRemoveCoach(i);
+                            }}
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  );
+                })}
+              </ScrollView>
             </View>
+          ) : (
+            <></>
+          )}
+
+          <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
+            <Button
+              onPress={props.onRequestClose}
+              title="Close"
+              style={{backgroundColor: theme.palette.lightGray}}
+            />
           </View>
         </View>
       </View>

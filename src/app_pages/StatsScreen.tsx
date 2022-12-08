@@ -6,7 +6,6 @@ import {SmallText} from '../app_components/Text/Text';
 import {
   Container,
   SCREEN_HEIGHT,
-  processMultiWorkoutStats,
   CalcWorkoutStats,
 } from '../app_components/shared';
 import {RootStackParamList} from '../navigators/RootStack';

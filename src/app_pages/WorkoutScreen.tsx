@@ -4,32 +4,17 @@ import {
   COMPLETED_WORKOUT_MEDIA,
   Container,
   MEDIA_CLASSES,
-  SCREEN_HEIGHT,
-  SCREEN_WIDTH,
   WORKOUT_MEDIA,
-  processMultiWorkoutStats,
   CalcWorkoutStats,
 } from '../app_components/shared';
-import {
-  SmallText,
-  RegularText,
-  LargeText,
-  TitleText,
-} from '../app_components/Text/Text';
-// import { withTheme } from 'styled-components'
+import {SmallText, RegularText} from '../app_components/Text/Text';
+
 import {useTheme} from 'styled-components';
-import {
-  WorkoutCardFullList,
-  WorkoutCardList,
-} from '../app_components/Cards/cardList';
+import {WorkoutCardFullList} from '../app_components/Cards/cardList';
 
 import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
-import {
-  WorkoutCardProps,
-  WorkoutGroupCardProps,
-  WorkoutGroupProps,
-} from '../app_components/Cards/types';
+import {WorkoutGroupProps} from '../app_components/Cards/types';
 import {ScrollView} from 'react-native-gesture-handler';
 import {TouchableHighlight, TouchableWithoutFeedback, View} from 'react-native';
 import {
@@ -54,22 +39,6 @@ const Row = styled.View`
   flex-direction: row;
   justify-content: space-between;
 `;
-
-const WorkoutScreenContainer = styled(Container)`
-  background-color: ${props => props.theme.palette.backgroundColor};
-  justify-content: space-between;
-  width: 100%;
-`;
-
-/**
- *  TODO()
- *  - Now we have completed_workout_groups and created_workout_groups (OG)
- *  - We need to ensure that Adding new workouts and deleting workouts
- *          alters the correct Workout and we do not mix up Completed and Created workouts...
- *
- *
- *
- */
 
 const WorkoutScreen: FunctionComponent<Props> = ({
   navigation,
@@ -219,10 +188,9 @@ const WorkoutScreen: FunctionComponent<Props> = ({
     ? workoutGroup.completed_workouts
     : [];
 
-  // Replaced with Memo below
-  // const [tags, names] = processMultiWorkoutStats(workouts);
   const [tags, names] = useMemo(() => {
     const calc = new CalcWorkoutStats();
+    console.log('Muti stats', workouts);
     calc.calcMulti(workouts);
 
     return [calc.tags, calc.names];

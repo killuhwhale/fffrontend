@@ -85,7 +85,7 @@ const WorkoutGroupCard: FunctionComponent<{
     });
   };
 
-  // console.log("WGCard: ", props)
+  console.log('WGCard: ', props);
 
   return (
     <CardBG
@@ -114,18 +114,48 @@ const WorkoutGroupCard: FunctionComponent<{
           <CardRow style={{height: '25%'}}>
             <CardFooterBG source={bluish}>
               <CardRow style={{height: '100%'}}>
-                <RegularText textStyles={{paddingLeft: 16}}>
-                  {props.card.title}{' '}
-                </RegularText>
-                <Icon
-                  name="checkmark-circle-outline"
-                  color={
-                    props.card.completed
-                      ? theme.palette.primary.main
-                      : theme.palette.text
-                  }
-                  style={{fontSize: 32, marginRight: 8}}
-                />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: '100%',
+                    height: '100%',
+                    alignItems: 'center',
+                  }}>
+                  <View style={{flex: 5}}>
+                    <RegularText
+                      textStyles={{textAlign: 'left', marginLeft: 16}}>
+                      {props.card.title} asdasd asds
+                    </RegularText>
+                  </View>
+                  {props.card.owned_by_class === true ? (
+                    <></>
+                  ) : (
+                    <View style={{flex: 2}}>
+                      <SmallText
+                        textStyles={{textAlign: 'right', marginRight: 14}}>
+                        created by:{' '}
+                        {props.card.owned_by_class === false ? 'you' : 'class'}
+                      </SmallText>
+                    </View>
+                  )}
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: 'center',
+                      alignContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Icon
+                      name="checkmark-circle-outline"
+                      color={
+                        props.card.completed
+                          ? theme.palette.primary.main
+                          : theme.palette.text
+                      }
+                      style={{fontSize: 32, marginRight: 8}}
+                    />
+                  </View>
+                </View>
               </CardRow>
             </CardFooterBG>
           </CardRow>

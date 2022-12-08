@@ -33,8 +33,7 @@ cd android/ && ./gradlew clean && cd .. && npx react-native run-android --active
 
 cd android/ && ./gradlew clean && ./gradlew bundleRelease && cd .. && npx react-native run-android --variant=release
 
-import { GymCardProps } from "../app_components/Cards/types"
-import { get, post } from "../utils/fetchAPI"
+git push origin HEAD:staging HEAD
 
 const LIST_GYMS = "http://localhost:8000/gyms/";
 
@@ -45,20 +44,8 @@ User should know when they've created a workout when viewing list of compelted w
 Bugs:
 
     - Horizontal slider,
-    - When the slider has 3 items, and the workouts change, and the new list has 4 or more items,
-    - The user Cant move to last item
-
-
-    - Finish Updating processWorkoutStats & processMultiWorkoutStats  w/ CalcWorkoutStats
-
-    - CoachModal is broken.
-
-    - StatsScreen
-        -  Totals Graph -> TotaltTime needs units
-
-    - CompleteWorkoutScreen
-        - Duration/ Distance units should at least be shown to the user instead of a number
-            - 400 what? Meters Miles ft seconds reps?
+        - When the slider has 3 items, and the workouts change, and the new list has 4 or more items,
+        - The user Cant move to last item
 
 
     Deployment:

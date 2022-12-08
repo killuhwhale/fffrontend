@@ -4,23 +4,16 @@ import {
   CalcWorkoutStats,
   Container,
   displayJList,
-  processWorkoutStats,
-  SCREEN_WIDTH,
   WORKOUT_TYPES,
 } from '../app_components/shared';
 import {SmallText, RegularText, LargeText} from '../app_components/Text/Text';
 import {useTheme} from 'styled-components';
-import {
-  WorkoutItemPreviewHorizontalList,
-  WorkoutStatsByNameHorizontalList,
-  WorkoutStatsByTagHorizontalList,
-} from '../app_components/Cards/cardList';
+import {WorkoutItemPreviewHorizontalList} from '../app_components/Cards/cardList';
 
 import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import {StatsPanel} from '../app_components/Stats/StatsPanel';
-import {stat} from 'react-native-fs';
 
 export type Props = StackScreenProps<RootStackParamList, 'WorkoutDetailScreen'>;
 
@@ -94,8 +87,6 @@ const WorkoutDetailScreen: FunctionComponent<Props> = ({
   stats.calc();
   const tags = stats.tags;
   const names = stats.names;
-
-  // const [tags, names] = processWorkoutStats(scheme_rounds, scheme_type, items);
 
   return (
     <ScreenContainer>

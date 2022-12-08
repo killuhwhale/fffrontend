@@ -112,7 +112,7 @@ const TotalsBarChart: FunctionComponent<{
         />
 
         <HorizontalPicker
-          key="barChartKey"
+          key={`barChartKey_${barDataFilteredDataTypes.length}`}
           data={barDataFilteredDataTypes}
           onChange={setShowBarChartDataType}
         />
