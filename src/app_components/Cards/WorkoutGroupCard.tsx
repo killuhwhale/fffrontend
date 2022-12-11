@@ -124,7 +124,7 @@ const WorkoutGroupCard: FunctionComponent<{
                   <View style={{flex: 5}}>
                     <RegularText
                       textStyles={{textAlign: 'left', marginLeft: 16}}>
-                      {props.card.title} asdasd asds
+                      {props.card.title}
                     </RegularText>
                   </View>
                   {props.card.owned_by_class === true ? (

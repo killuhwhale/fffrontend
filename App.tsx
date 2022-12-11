@@ -21,13 +21,14 @@ import {
 } from 'react-native';
 import {LargeText, RegularText} from './src/app_components/Text/Text';
 import {store} from './src/redux/store';
-import {Provider} from 'react-redux';
+import {Provider, useDispatch} from 'react-redux';
 import {navigationRef} from './src/navigators/RootNavigation';
 import Header from './src/app_components/Header/header';
 import {
   apiSlice,
   getToken,
   useGetUserInfoQuery,
+  useValidateUserTokenQuery,
 } from './src/redux/api/apiSlice';
 import AuthManager from './src/utils/auth';
 import AuthScreen from './src/app_pages/AuthScreen';
@@ -35,6 +36,7 @@ import Uploady from '@rpldy/native-uploady';
 import {BASEURL} from './src/utils/constants';
 import {useAppDispatch} from './src/redux/hooks';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import auth from './src/utils/auth';
 
 const primaryColor = '#007cff';
 const secondaryColor = '#006d77';
@@ -134,11 +136,14 @@ const TOKEN_TYPE_ACCESS = 'access';
 const TOKEN_TYPE_REFRESH = 'refresh';
 
 const Auth: FunctionComponent<{children: Array<ReactNode>}> = props => {
-  const auth = AuthManager;
-
   // This will check if we have a valid token by sending a request to server for user info.
   // This either loads the app or login page.
-  const {data, isLoading, isSuccess, isError, error} = useGetUserInfoQuery('');
+
+  const {data, isLoading, isSuccess, isError, error} =
+    useValidateUserTokenQuery('');
+
+  console.log('Cycle test: ', data, error);
+
   const [loggedIn, setLoggedIn] = useState(false);
 
   if (
@@ -151,8 +156,15 @@ const Auth: FunctionComponent<{children: Array<ReactNode>}> = props => {
     setLoggedIn(true);
   }
 
+  useEffect(() => {
+    if (isError && !loggedIn) {
+      console.log('Auth invalidting tag');
+      store.dispatch(apiSlice.util.invalidateTags(['UserAuth']));
+    }
+  }, [loggedIn]);
+
   auth.listenLogout(() => {
-    console.log('Listened for logout');
+    console.log('Listened for logout, invalidate user info');
 
     setLoggedIn(false);
   });
@@ -176,6 +188,7 @@ const Auth: FunctionComponent<{children: Array<ReactNode>}> = props => {
     isError,
   );
   console.log('Err: ', error);
+
   return (
     <>
       {isLoading ? (

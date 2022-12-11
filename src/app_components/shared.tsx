@@ -135,13 +135,56 @@ export class CalcWorkoutStats {
   schemeType: number;
   items: WorkoutItemProps[];
 
+  isFormatted = false;
+
   tags = {};
   names = {};
+
+  // Formatted values
+  fTags = {};
+  fNames = {};
 
   constructor() {
     this.schemeRounds = '';
     this.schemeType = -1;
     this.items = [];
+  }
+
+  getStats() {
+    if (!this.isFormatted) {
+      console.log('Creating formatted values');
+
+      Object.keys(this.tags).map(key => {
+        if (!this.fTags[key]) {
+          this.fTags[key] = {};
+        }
+
+        Object.keys(this.tags[key]).map(inKey => {
+          if (inKey == 'key') {
+            this.fTags[key][inKey] = this.tags[key][inKey];
+          } else {
+            this.fTags[key][inKey] = parseInt(this.tags[key][inKey]);
+          }
+        });
+      });
+
+      Object.keys(this.names).map(key => {
+        if (!this.fNames[key]) {
+          this.fNames[key] = {};
+        }
+
+        Object.keys(this.names[key]).map(inKey => {
+          if (inKey == 'key') {
+            this.fNames[key][inKey] = this.names[key][inKey];
+          } else {
+            this.fNames[key][inKey] = parseInt(this.names[key][inKey]);
+          }
+        });
+      });
+    }
+
+    this.isFormatted = true;
+    return [this.fTags, this.fNames];
   }
 
   setWorkoutParams(
@@ -479,6 +522,7 @@ export class CalcWorkoutStats {
   }
   //Given a single WorkoutGroup, calc stats
   calc(): boolean {
+    this.isFormatted = false;
     try {
       this.items.forEach(item => {
         // Tags
@@ -502,10 +546,12 @@ export class CalcWorkoutStats {
     } catch (err) {
       console.log('Calc err: ', err);
     }
+
     return false;
   }
 
   calcMulti(data: WorkoutCardProps[]) {
+    this.isFormatted = false;
     data.forEach(workout => {
       const {
         scheme_rounds,
@@ -525,19 +571,6 @@ export class CalcWorkoutStats {
       );
 
       this.calc();
-
-      //   const [tags, names] = processWorkoutStats(
-      //   scheme_rounds,
-      //   scheme_type,
-      //   workout_items
-      //     ? workout_items
-      //     : completed_workout_items
-      //     ? completed_workout_items
-      //     : [],
-      // );
-
-      // sumWorkoutStats(allTags, tags);
-      // sumWorkoutStats(allNames, names);
     });
   }
 

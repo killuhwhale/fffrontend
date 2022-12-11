@@ -70,8 +70,9 @@ const StatsScreen: FunctionComponent<Props> = ({
         allWorkouts.push(...workoutGroup.completed_workouts); // Collect all workouts for bar data
 
         calc.calcMulti(workoutGroup.completed_workouts);
-        workoutTagStats.push({...calc.tags, date: workoutGroup.date});
-        workoutNameStats.push({...calc.names, date: workoutGroup.date});
+        const [tags, names] = calc.getStats();
+        workoutTagStats.push({...tags, date: workoutGroup.date});
+        workoutNameStats.push({...names, date: workoutGroup.date});
         calc.reset();
 
         // const [__tags, __names] = processMultiWorkoutStats(
@@ -95,7 +96,7 @@ const StatsScreen: FunctionComponent<Props> = ({
     // console.log('ALLLLLWORKOUTS', _tags, _names);
     // return [_tags, _names];
 
-    return [calc.tags, calc.names];
+    return calc.getStats();
   }, [allWorkouts, data]);
 
   // !! BELOW CODE IS REPACED BY THE MEMOIZED FUCNTIONS ABOVE !!

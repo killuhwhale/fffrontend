@@ -752,7 +752,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
 
           {dataGymClassFavs?.favorite_gym_classes.length > 0 ? (
             <View style={{flex: 4, width: '100%'}}>
-              <SmallText> Favorite Gym Classess</SmallText>
+              <SmallText> Favorite Gym Classes</SmallText>
               <ScrollView>
                 <FavGymClassesPanel
                   data={dataGymClassFavs?.favorite_gym_classes}

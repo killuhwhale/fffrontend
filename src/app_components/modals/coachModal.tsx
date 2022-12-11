@@ -239,7 +239,7 @@ const ManageCoachesModal: FunctionComponent<{
                             alignItems: 'flex-start',
                             paddingLeft: 16,
                           }}>
-                          <RegularText>{coach.username} asdasd</RegularText>
+                          <RegularText>{coach.username}</RegularText>
                         </View>
                         <View style={{flex: 1}}>
                           <IconButton

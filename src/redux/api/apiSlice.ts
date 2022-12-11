@@ -13,6 +13,7 @@ import {
   authPost,
   refreshAccessToken,
 } from '../../utils/fetchAPI';
+import auth from '../../utils/auth';
 
 const JWT_ACCESS_TOKEN_KEY = '__jwttoken_access';
 const JWT_REFRESH_TOKEN_KEY = '__jwttoken_refresh';
@@ -132,8 +133,8 @@ const asyncBaseQuery =
       console.log('BODY: ', options.body);
       // We make the first auth request using access token
       const result = await fetch(baseUrl + url, options);
-      console.log('BaseQuery fetch response: ', result);
       const jResult = await result.json();
+      console.log('BaseQuery fetch response: ', jResult);
 
       // if token is expired:
       if (result.status === 401 || jResult.code === 'token_not_valid') {
@@ -145,10 +146,8 @@ const asyncBaseQuery =
         const res = await refreshAccessToken(`${BASEURL}token/refresh/`);
         if (res.status === 400) {
           console.log('refreshAccessToken resp BAD!', res);
-          // TODO()
-          // IF Refresh token is expired, deauth.
-          // Return to sign in page.
 
+          auth.logout();
           return {error: {status: 400, data: 'Refresh token is bad'}};
         } else {
           console.log('refreshAccessToken resp good:', res, url, method);
@@ -198,6 +197,7 @@ export const apiSlice = createApi({
     'Gyms',
     'UserGyms',
     'User',
+    'UserAuth',
     'GymClasses',
     'GymClassWorkoutGroups',
     'UserWorkoutGroups',
@@ -224,6 +224,7 @@ export const apiSlice = createApi({
         data,
         params: {contentType: 'multipart/form-data'},
       }),
+      invalidatesTags: ['User'],
     }),
     getUsers: builder.query({
       // The URL for the request is '/fakeApi/posts'
@@ -683,6 +684,13 @@ export const apiSlice = createApi({
       providesTags: ['User'],
     }),
 
+    validateUserToken: builder.query({
+      query: id => {
+        return {url: 'users/user_info/'};
+      },
+      providesTags: ['UserAuth'],
+    }),
+
     // Stats
     getCompletedWorkoutGroupsForUserByDateRange: builder.query({
       query: (data = {}) => {
@@ -713,6 +721,7 @@ export const {
   useGetGymClassDataViewQuery,
 
   useGetUserInfoQuery,
+  useValidateUserTokenQuery,
   useGetUserGymsQuery,
   useGetProfileViewQuery,
   useGetProfileWorkoutGroupsQuery,

@@ -82,7 +82,6 @@ const WorkoutScreen: FunctionComponent<Props> = ({
   let completedError: any = '';
 
   const [finishWorkoutGroup, isLoading] = useFinishWorkoutGroupMutation();
-  // console.log("Workout Screen Params: ", params)
 
   if (owned_by_class == undefined) {
     // WE have a completed workout group
@@ -127,7 +126,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
 
     console.log('Completed data: ', dataCompleted);
 
-    if (dataCompleted && dataCompleted.completed_workouts.length > 0) {
+    if (dataCompleted && dataCompleted.completed_workouts?.length > 0) {
       completedData = dataCompleted;
       completedIsLoading = isLoadingCompleted;
       completedIsSuccess = isSuccessCompleted;
@@ -163,10 +162,9 @@ const WorkoutScreen: FunctionComponent<Props> = ({
       : !showingOGWorkoutGroup && completedData
       ? completedData
       : ({} as WorkoutGroupProps);
+
   // const isOGWorkoutGroup = workoutGroup.workouts ? true : false
   mediaClass = showingOGWorkoutGroup ? WORKOUT_MEDIA : COMPLETED_WORKOUT_MEDIA;
-
-  // console.log("Workout Screen data: ", `showOG? ${showingOGWorkoutGroup}`, oGData, completedData, Object.keys(completedData))
 
   const [editable, setEditable] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
@@ -193,11 +191,24 @@ const WorkoutScreen: FunctionComponent<Props> = ({
     console.log('Muti stats', workouts);
     calc.calcMulti(workouts);
 
-    return [calc.tags, calc.names];
+    return calc.getStats();
   }, [workouts]);
 
   // console.log('Stats: ', tags, names);
   // console.log('WorkoutScreen data: ', oGData);
+  // console.log('Workout Screen Params: ', params);
+  // console.log(oGData, completedData);
+  // Show when:
+  //  - OgWorkout is Finished
+  //  - The oGworkout is not personally created by the current user
+  const isFinished = params.data.finished;
+  const personalWorkout =
+    userData?.id == oGData?.owner_id && !oGData?.owned_by_class;
+  console.log(
+    'workout is finished / personalWorkout',
+    isFinished,
+    personalWorkout,
+  );
 
   const openCreateWorkoutScreenForStandard = () => {
     navigation.navigate('CreateWorkoutScreen', {
@@ -338,7 +349,8 @@ const WorkoutScreen: FunctionComponent<Props> = ({
             }}>
             {showingOGWorkoutGroup &&
             !oGIsLoading &&
-            !(userData && userData.id == oGData.owner_id && !owned_by_class) ? (
+            isFinished &&
+            !personalWorkout ? (
               <IconButton
                 style={{height: 24}}
                 icon={
@@ -353,10 +365,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                   />
                 }
                 onPress={
-                  completedIsSuccess ||
-                  (userData &&
-                    userData.id == oGData.owner_id &&
-                    !owned_by_class)
+                  completedIsSuccess || (!isFinished && personalWorkout)
                     ? () => {}
                     : navigateToCompletedWorkoutGroupScreen
                 }

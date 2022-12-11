@@ -31,21 +31,36 @@ npx react-native run-ios --udid CCF49CB5-3952-4D51-8830-27A2BA1FEB1B
 
 cd android/ && ./gradlew clean && cd .. && npx react-native run-android --active-arch-only
 
+// Test Build command
 cd android/ && ./gradlew clean && ./gradlew bundleRelease && cd .. && npx react-native run-android --variant=release
 
 git push origin HEAD:staging HEAD
 
-const LIST_GYMS = "http://localhost:8000/gyms/";
-
-TODOs
-
-User should know when they've created a workout when viewing list of compelted workouts. - It is hard to tell the difference from class workouts vs workouts created by the user - Maybe use different colored backgrounds for the cards - Add something to indicate if they created the workout.
-
 Bugs:
 
-    - Horizontal slider,
-        - When the slider has 3 items, and the workouts change, and the new list has 4 or more items,
-        - The user Cant move to last item
+    Logout hit a bug, getting stuck in loop.....
+
+
+    ~~~~  RETEST RELEASE BUILD   ~~~
+
+    Logout with expired tokens....
+
+    Workoutscreen
+        - Delete Workout Toggle Swtich is showing on completed workout in release build
+            - NR on local build
+
+    Reset Password
+        - Fix account and get it active again
+
+    Login stopped working,
+        - Should persist token and be able to login...
+        - Seems to reset after server restarts
+            - If thats the case, WAI
+
+    ChangePassword Failed
+        - Release build
+
+
 
 
     Deployment:

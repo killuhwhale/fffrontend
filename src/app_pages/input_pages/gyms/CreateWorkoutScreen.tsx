@@ -305,7 +305,7 @@ const ItemPanel: FunctionComponent<{
       style={{
         width: itemWidth,
         minWidth: itemWidth,
-        height: SCREEN_HEIGHT * 0.15,
+        height: SCREEN_HEIGHT * 0.18,
         borderRadius: 8,
         marginVertical: 6,
         padding: 6,
@@ -387,8 +387,9 @@ const ItemPanel: FunctionComponent<{
             : ''}
         </SmallText>
       </View>
-      <View style={{alignItems: 'center', flex: 2, width: '100%'}}>
-        {item.weights.length > 0 ? (
+      <View style={{alignItems: 'center', flex: 5, width: '100%'}}>
+        {JSON.parse(item.weights).length > 0 &&
+        JSON.parse(item.weights)[0] > 0 ? (
           <SmallText>
             {`@ ${displayJList(item.weights)} ${
               item.weight_unit === '%' ? '' : item.weight_unit
@@ -397,9 +398,9 @@ const ItemPanel: FunctionComponent<{
         ) : (
           <></>
         )}
-        {item.weights.length === 0 ? (
-          <></>
-        ) : item.weight_unit === '%' ? (
+        {item.weight_unit === '%' &&
+        JSON.parse(item.weights)[0] > 0 &&
+        JSON.parse(item.weights).legnth > 1 ? (
           <SmallText>{`Percent of ${item.percent_of}`}</SmallText>
         ) : (
           <></>

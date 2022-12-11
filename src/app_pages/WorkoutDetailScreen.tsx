@@ -4,6 +4,7 @@ import {
   CalcWorkoutStats,
   Container,
   displayJList,
+  SCREEN_HEIGHT,
   WORKOUT_TYPES,
 } from '../app_components/shared';
 import {SmallText, RegularText, LargeText} from '../app_components/Text/Text';
@@ -85,8 +86,10 @@ const WorkoutDetailScreen: FunctionComponent<Props> = ({
   const stats = new CalcWorkoutStats();
   stats.setWorkoutParams(scheme_rounds, scheme_type, items);
   stats.calc();
-  const tags = stats.tags;
-  const names = stats.names;
+
+  const [tags, names] = stats.getStats();
+  // const tags = stats.tags;
+  // const names = stats.names;
 
   return (
     <ScreenContainer>
@@ -100,7 +103,7 @@ const WorkoutDetailScreen: FunctionComponent<Props> = ({
             {WORKOUT_TYPES[scheme_type]} {displayJList(scheme_rounds)}
           </RegularText>
         </View>
-        <View style={{height: 150}}>
+        <View style={{height: SCREEN_HEIGHT * 0.25}}>
           <WorkoutItemPreviewHorizontalList
             data={items}
             schemeType={scheme_type}

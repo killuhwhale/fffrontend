@@ -15,8 +15,7 @@ import {
 import GymCard from './GymCard';
 import GymClassCard, {GymClassTextCard} from './GymClassCard';
 import WorkoutCard from './WorkoutCard';
-import WorkoutItemRow from './WorkoutItemRow';
-import WorkoutRow from './WorkoutRow';
+
 import WorkoutGroupCard from './WorkoutGroupCard';
 import {
   ItemPanel,
@@ -198,23 +197,6 @@ const WorkoutCardFullList: FunctionComponent<WorkoutCardListProps> = props => {
   // />
 };
 
-const WorkoutItemCardList: FunctionComponent<WorkoutItemListProps> = props => {
-  const theme = useTheme();
-
-  return (
-    <StyledList
-      data={props.data}
-      horizontal={false}
-      contentContainerStyle={{
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}
-      keyExtractor={({id}: any) => id.toString()}
-      renderItem={({item}: any) => <WorkoutItemRow {...item} />}
-    />
-  );
-};
-
 const WorkoutItemPreviewHorizontalList: FunctionComponent<{
   data: WorkoutItemProps[];
   schemeType: number;
@@ -292,7 +274,6 @@ export {
   GymCardList,
   GymClassCardList,
   WorkoutCardList,
-  WorkoutItemCardList,
   WorkoutGroupCardList,
   WorkoutItemPreviewHorizontalList,
   WorkoutStatsByTagHorizontalList,

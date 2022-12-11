@@ -132,8 +132,8 @@ const HorizontalPicker: FunctionComponent<{
   const uas = useAnimatedStyle(() => {
     return {
       // left: snapToPoints[Math.floor(transX.value / itemWidth)],
-      // transform: [{ translateX: withSpring( transX.value) },],
-      transform: [{translateX: transX.value}],
+      transform: [{translateX: withSpring(transX.value)}],
+      // transform: [{translateX: transX.value}],
     };
   }, [transX.value]);
 
