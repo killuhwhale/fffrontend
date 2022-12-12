@@ -14,6 +14,8 @@ import {
   refreshAccessToken,
 } from '../../utils/fetchAPI';
 import auth from '../../utils/auth';
+import {Member} from '../../app_components/modals/types';
+import {navigate} from '../../navigators/RootNavigation';
 
 const JWT_ACCESS_TOKEN_KEY = '__jwttoken_access';
 const JWT_REFRESH_TOKEN_KEY = '__jwttoken_refresh';
@@ -144,9 +146,11 @@ const asyncBaseQuery =
         console.log('refreshToken: ', refreshToken);
 
         const res = await refreshAccessToken(`${BASEURL}token/refresh/`);
-        if (res.status === 400) {
+        console.log('\n\n refreshAccessToken resp status: ', res.status);
+        if (res.status === 400 || res.status === 401) {
           console.log('refreshAccessToken resp BAD!', res);
 
+          navigate('AuthScreen', {});
           auth.logout();
           return {error: {status: 400, data: 'Refresh token is bad'}};
         } else {
@@ -273,7 +277,7 @@ export const apiSlice = createApi({
         {type: 'Members', id: arg.gym_class},
       ],
     }),
-    getMembersForGymClass: builder.query({
+    getMembersForGymClass: builder.query<Member[], string>({
       // The URL for the request is '/fakeApi/posts'
       query: id => {
         return {url: `classMembers/${id}/members/`};

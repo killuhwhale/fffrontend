@@ -10,31 +10,18 @@ import {NavigationContainer} from '@react-navigation/native';
 import HomePage from './src/app_pages/home';
 import RootStack from './src/navigators/RootStack';
 import {DefaultTheme, ThemeProvider, useTheme} from 'styled-components/native';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-import {LargeText, RegularText} from './src/app_components/Text/Text';
+import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
+import {RegularText} from './src/app_components/Text/Text';
 import {store} from './src/redux/store';
-import {Provider, useDispatch} from 'react-redux';
+import {Provider} from 'react-redux';
 import {navigationRef} from './src/navigators/RootNavigation';
 import Header from './src/app_components/Header/header';
-import {
-  apiSlice,
-  getToken,
-  useGetUserInfoQuery,
-  useValidateUserTokenQuery,
-} from './src/redux/api/apiSlice';
-import AuthManager from './src/utils/auth';
+import {apiSlice, useValidateUserTokenQuery} from './src/redux/api/apiSlice';
+
 import AuthScreen from './src/app_pages/AuthScreen';
 import Uploady from '@rpldy/native-uploady';
 import {BASEURL} from './src/utils/constants';
-import {useAppDispatch} from './src/redux/hooks';
+
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import auth from './src/utils/auth';
 
@@ -169,11 +156,15 @@ const Auth: FunctionComponent<{children: Array<ReactNode>}> = props => {
     setLoggedIn(false);
   });
 
-  auth.listenLogin(() => {
-    console.log('Listne for login');
-    console.log('Should log in');
-    console.log(isError);
-    setLoggedIn(true);
+  auth.listenLogin((loggedIn, msg) => {
+    console.log('App.tsx listenLogin: ', loggedIn, msg);
+    if (loggedIn) {
+      console.log('Listne for login');
+      console.log('Should log in');
+      console.log(isError);
+      setLoggedIn(true);
+    } else {
+    }
   });
 
   console.log(
@@ -186,6 +177,7 @@ const Auth: FunctionComponent<{children: Array<ReactNode>}> = props => {
     data,
     'isError:',
     isError,
+    '\n',
   );
   console.log('Err: ', error);
 

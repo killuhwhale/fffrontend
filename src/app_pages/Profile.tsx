@@ -384,7 +384,7 @@ const WorkoutsPanel: FunctionComponent<WorkoutPanelProps> = props => {
           <View style={{marginLeft: 8}}>
             <RegularText textStyles={{textAlign: 'center'}}>
               {' '}
-              {props.data.length}{' '}
+              {props.data?.length}{' '}
             </RegularText>
             <SmallText> Workouts </SmallText>
           </View>
@@ -470,7 +470,12 @@ const ProfileSettingsModal: FunctionComponent<{
 
   const logout = () => {
     console.log('Loggin out');
-    auth.logout();
+    auth
+      .logout()
+      .then(res => {
+        console.log('ProfileSettings: Logged out');
+      })
+      .catch(err => console.log('ProfileSettings Logout Error', err));
   };
 
   return (
@@ -739,7 +744,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
             </View>
           </View>
 
-          {dataGymFavs?.favorite_gyms.length > 0 ? (
+          {dataGymFavs?.favorite_gyms?.length > 0 ? (
             <View style={{flex: 4, width: '100%'}}>
               <SmallText>Favorite Gyms</SmallText>
               <ScrollView>
@@ -750,7 +755,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
             <></>
           )}
 
-          {dataGymClassFavs?.favorite_gym_classes.length > 0 ? (
+          {dataGymClassFavs?.favorite_gym_classes?.length > 0 ? (
             <View style={{flex: 4, width: '100%'}}>
               <SmallText> Favorite Gym Classes</SmallText>
               <ScrollView>
@@ -763,7 +768,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
             <></>
           )}
 
-          {usersGyms && usersGyms.length ? (
+          {usersGyms?.length ? (
             <View style={{flex: 6, width: '100%'}}>
               <RegularText>My Gyms</RegularText>
               <ScrollView style={{width: '100%'}}>

@@ -38,7 +38,7 @@ const ManageMembersModal: FunctionComponent<{
     isSuccess: membersIsSuccess,
     isError: membersIsError,
     error: membersError,
-  } = useGetMembersForGymClassQuery(props.gymClassID);
+  } = useGetMembersForGymClassQuery(props.gymClassID.toString());
   const [createMemberMutation, {isLoading}] = useCreateMemberMutation();
   const [deleteMemberMutation, {isLoading: deleteMemberIsLoading}] =
     useDeleteMemberMutation();
@@ -76,20 +76,21 @@ const ManageMembersModal: FunctionComponent<{
   };
 
   const currentMemberToDelete =
+    allMembers &&
     memberToRemove > -1 &&
-    allMembers.legngth > 0 &&
+    allMembers.length > 0 &&
     memberToRemove < allMembers.length
       ? allMembers[memberToRemove]?.username
       : {username: ''};
 
   const [stringData, setOgData] = useState<string[]>(
-    data ? data.map(user => user.username) : [],
+    data !== undefined ? data.map(user => user.username) : [],
   );
   const [filterResult, setFilterResult] = useState<number[]>(
     Array.from(Array(stringData.length).keys()).map(idx => idx),
   );
   useEffect(() => {
-    setOgData(data ? data.map(user => user.username) : []);
+    setOgData(data !== undefined ? data.map(user => user.username) : []);
     setFilterResult(
       Array.from(Array(data?.length || 0).keys()).map(idx => idx),
     );
@@ -223,48 +224,50 @@ const ManageMembersModal: FunctionComponent<{
             <ScrollView
               style={{width: '100%', flex: 1}}
               contentContainerStyle={{justifyContent: 'center'}}>
-              {allMembers?.map((member, i) => {
-                console.log('Member :: ', member);
-                return (
-                  <View
-                    key={`key_${i}__`}
-                    style={{
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      width: '100%',
-                      borderBottomWidth: 1,
-                      borderTopWidth: 1,
-                      borderColor: 'white',
-                      paddingVertical: 8,
-                    }}>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              {allMembers !== undefined &&
+                allMembers.map((member, i) => {
+                  console.log('Member :: ', member);
+                  return (
+                    <View
+                      key={`key_${i}__`}
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        borderBottomWidth: 1,
+                        borderTopWidth: 1,
+                        borderColor: 'white',
+                        paddingVertical: 8,
+                      }}>
                       <View
-                        style={{
-                          flex: 5,
-                          alignItems: 'flex-start',
-                          paddingLeft: 16,
-                        }}>
-                        <RegularText>{member.username}</RegularText>
-                      </View>
-                      <View style={{flex: 1}}>
-                        <IconButton
-                          style={{height: 24}}
-                          icon={
-                            <Icon
-                              name="remove-circle-sharp"
-                              color="red"
-                              style={{fontSize: 24}}
-                            />
-                          }
-                          onPress={() => {
-                            onRemoveMember(i);
-                          }}
-                        />
+                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <View
+                          style={{
+                            flex: 5,
+                            alignItems: 'flex-start',
+                            paddingLeft: 16,
+                          }}>
+                          <RegularText>{member.username}</RegularText>
+                        </View>
+                        <View style={{flex: 1}}>
+                          <IconButton
+                            style={{height: 24}}
+                            icon={
+                              <Icon
+                                name="remove-circle-sharp"
+                                color="red"
+                                style={{fontSize: 24}}
+                              />
+                            }
+                            onPress={() => {
+                              onRemoveMember(i);
+                            }}
+                          />
+                        </View>
                       </View>
                     </View>
-                  </View>
-                );
-              })}
+                  );
+                })}
             </ScrollView>
           ) : (
             <></>

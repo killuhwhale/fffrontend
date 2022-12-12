@@ -38,12 +38,7 @@ git push origin HEAD:staging HEAD
 
 Bugs:
 
-    Logout hit a bug, getting stuck in loop.....
-
-
     ~~~~  RETEST RELEASE BUILD   ~~~
-
-    Logout with expired tokens....
 
     Workoutscreen
         - Delete Workout Toggle Swtich is showing on completed workout in release build
@@ -52,16 +47,14 @@ Bugs:
     Reset Password
         - Fix account and get it active again
 
-    Login stopped working,
-        - Should persist token and be able to login...
-        - Seems to reset after server restarts
-            - If thats the case, WAI
+'''
+Welcome to our fitness app! This app is designed to help you track your workouts and reach your fitness goals. With our user-friendly interface, you can easily log your exercises, set goals, and monitor your progress. Our app also offers a variety of helpful features, such as personalized workout plans and the ability to connect with friends for added motivation. Get started on your fitness journey today with our app!
 
-    ChangePassword Failed
-        - Release build
+Welcome to our fitness app! This app is designed to help you track and visualize your workouts to reach your fitness goals. With our app, you can easily log your exercises and view your progress over time. Our user-friendly interface allows you to set goals and track your progress towards achieving them. You can also use our app to create personalized workout plans and connect with friends for added motivation. Get started on your fitness journey today and see the progress you can make with our app!
 
+Welcome to our fitness app! This app is designed to help you track and visualize your workouts to reach your fitness goals. With our app, you can easily log your exercises and view your progress over time. Our user-friendly interface allows you to set goals and track your progress towards achieving them. You can also use our app to find workouts from your friends or your gym, or create personalized workout plans for added variety. Connect with friends for added motivation and support on your fitness journey. Get started today and see the progress you can make with our app!
 
-
+'''
 
     Deployment:
     # https://reactnative.dev/docs/signed-apk-android#adding-signing-config-to-your-apps-gradle-config
