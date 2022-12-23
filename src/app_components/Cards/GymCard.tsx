@@ -74,7 +74,7 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
   const logoURL = withSpaceURL('logo', parseInt(props.id), MEDIA_CLASSES[0]);
   // const [testUrl, setTestUrl] = useState('');
   // const t = 'https://fitform.sfo3.digitaloceanspaces.com/fitform/gyms/1/main';
-  // console.log('Gym card img urls ', props, mainURL, logoURL);
+  // console.error('Gym card img urls ', props, mainURL, logoURL);
 
   return (
     <GymCardBG

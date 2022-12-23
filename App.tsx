@@ -129,7 +129,7 @@ const Auth: FunctionComponent<{children: Array<ReactNode>}> = props => {
   const {data, isLoading, isSuccess, isError, error} =
     useValidateUserTokenQuery('');
 
-  console.log('Cycle test: ', data, error);
+  console.error('Cycle test: ', data, error);
 
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -145,29 +145,29 @@ const Auth: FunctionComponent<{children: Array<ReactNode>}> = props => {
 
   useEffect(() => {
     if (isError && !loggedIn) {
-      console.log('Auth invalidting tag');
+      console.error('Auth invalidting tag');
       store.dispatch(apiSlice.util.invalidateTags(['UserAuth']));
     }
   }, [loggedIn]);
 
   auth.listenLogout(() => {
-    console.log('Listened for logout, invalidate user info');
+    console.error('Listened for logout, invalidate user info');
 
     setLoggedIn(false);
   });
 
   auth.listenLogin((loggedIn, msg) => {
-    console.log('App.tsx listenLogin: ', loggedIn, msg);
+    console.error('App.tsx listenLogin: ', loggedIn, msg);
     if (loggedIn) {
-      console.log('Listne for login');
-      console.log('Should log in');
-      console.log(isError);
+      console.error('Listne for login');
+      console.error('Should log in');
+      console.error(isError);
       setLoggedIn(true);
     } else {
     }
   });
 
-  console.log(
+  console.error(
     'Auth: ',
     'logged iN:',
     loggedIn,
@@ -179,7 +179,7 @@ const Auth: FunctionComponent<{children: Array<ReactNode>}> = props => {
     isError,
     '\n',
   );
-  console.log('Err: ', error);
+  console.error('Err: ', error);
 
   return (
     <>
@@ -198,7 +198,7 @@ const Auth: FunctionComponent<{children: Array<ReactNode>}> = props => {
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
-  console.log("User's preffered color scheme", useColorScheme(), isDarkMode);
+  console.error("User's preffered color scheme", useColorScheme(), isDarkMode);
   const theme = useTheme();
   return (
     <Provider store={store}>

@@ -41,16 +41,16 @@ const MediaPicker: FunctionComponent<{
         mediaType: 'any',
       });
 
-      console.log('DocuPicker res ', files);
+      console.error('DocuPicker res ', files);
 
       props.setState(files);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
-        console.log(
+        console.error(
           'User cancelled the picker, exit any dialogs or menus and move on',
         );
       } else {
-        console.log('err picker', err);
+        console.error('err picker', err);
         throw err;
       }
     }
@@ -74,7 +74,7 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
   },
 }) => {
   const theme = useTheme();
-  console.log('WGroup params: ', ownedByClass, ownerID);
+  console.error('WGroup params: ', ownedByClass, ownerID);
 
   // Access/ send actions
   const dispatch = useAppDispatch();
@@ -98,7 +98,7 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
   // useGet... workoutNames
 
   const _createWorkout = async () => {
-    console.log('Creatting workout: ');
+    console.error('Creatting workout: ');
 
     // Need to get file from the URI
     const data = new FormData();
@@ -119,19 +119,19 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
       );
     }
 
-    console.log('FOrmdata');
-    console.log('FOrmdata');
-    console.log('FOrmdata');
-    console.log('FOrmdata', data);
+    console.error('FOrmdata');
+    console.error('FOrmdata');
+    console.error('FOrmdata');
+    console.error('FOrmdata', data);
 
     try {
       const workoutGroup = await createWorkoutGroup(data).unwrap();
-      console.log('Gym class res', workoutGroup);
+      console.error('Gym class res', workoutGroup);
       if (workoutGroup.id) {
         navigation.goBack();
       }
     } catch (err) {
-      console.log('Error creating gym', err);
+      console.error('Error creating gym', err);
     }
     // TODO possibly dispatch to refresh data
   };

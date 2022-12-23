@@ -32,7 +32,7 @@ const ManageCoachesModal: FunctionComponent<{
     isError,
     error,
   } = useGetUsersQuery('');
-  console.log('coach modal users: ', data);
+  console.error('coach modal users: ', data);
   const [newCoach, setNewCoach] = useState(0); // if we have users, init to 0, the first user, else we do not have any coaches to add
   const {
     data: allCoaches,
@@ -47,12 +47,12 @@ const ManageCoachesModal: FunctionComponent<{
   const [showRemoveCoach, setShowRemoveCoach] = useState(false);
   const [coachToRemove, setCoachToRemove] = useState(-1);
 
-  console.log('Coaches user data:  ', allCoaches);
+  console.error('Coaches user data:  ', allCoaches);
 
   const addNewCoach = () => {
-    console.log('Adding ', newCoach, data[newCoach]);
+    console.error('Adding ', newCoach, data[newCoach]);
     if (newCoach >= data?.length || data[newCoach] == undefined) {
-      console.log('Invalid member');
+      console.error('Invalid member');
       return;
     }
     const user = data[newCoach];
@@ -69,12 +69,12 @@ const ManageCoachesModal: FunctionComponent<{
 
   const removeCoach = async () => {
     const coach = allCoaches[coachToRemove];
-    console.log('Reoving coach: ', coach, coachToRemove, allCoaches);
+    console.error('Reoving coach: ', coach, coachToRemove, allCoaches);
     const removeCoachData = new FormData();
     removeCoachData.append('user_id', coach?.id);
     removeCoachData.append('gym_class', props.gymClassID);
     const res = await deleteCoachMutation(removeCoachData).unwrap();
-    console.log('del res', res);
+    console.error('del res', res);
     setCoachToRemove(-1);
     setShowRemoveCoach(false);
     if (res.data) {
@@ -215,7 +215,7 @@ const ManageCoachesModal: FunctionComponent<{
                 style={{width: '100%', flex: 1, minWidth: '100%'}}
                 contentContainerStyle={{justifyContent: 'center'}}>
                 {allCoaches?.map((coach, i) => {
-                  console.log('C :: ', coach);
+                  console.error('C :: ', coach);
                   return (
                     <View
                       key={`key_coac${coach.id}__`}

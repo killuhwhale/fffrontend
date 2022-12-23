@@ -84,7 +84,7 @@ const AuthScreen: FunctionComponent = () => {
   const [hideResetPassword, setHideResetPassword] = useState(true);
 
   const login = async () => {
-    console.log('Send login: ', email, password);
+    console.error('Send login: ', email, password);
     if (emailHelperText.length > 0) {
       setEmailHelperText('');
     }
@@ -92,7 +92,7 @@ const AuthScreen: FunctionComponent = () => {
   };
 
   auth.listenLogin((loggedIn, msg) => {
-    console.log('AuthScreen.tsx listenLogin: ', loggedIn, msg);
+    console.error('AuthScreen.tsx listenLogin: ', loggedIn, msg);
     if (!loggedIn) {
       setEmailHelperText(msg);
     }
@@ -135,7 +135,7 @@ const AuthScreen: FunctionComponent = () => {
 
   const onNewPasswordConfirmChange = (text: string) => {
     if (text.length >= newPassword.length && newPassword !== text) {
-      console.log('Show error on helper text with Password confirm');
+      console.error('Show error on helper text with Password confirm');
       setMismatchPasswordText('Passwords do not match');
     } else {
       setMismatchPasswordText('');
@@ -149,38 +149,38 @@ const AuthScreen: FunctionComponent = () => {
     }
 
     if (newEmail.length <= 0 || newPassword !== newPasswordConfirm) {
-      console.log('Unable to register user');
+      console.error('Unable to register user');
       return;
     }
 
     if (!registerUserLoading) {
       if (!reg.test(newEmail)) {
-        console.log('Invalid email');
+        console.error('Invalid email');
         setNewEmailHelperText('Invalid Email');
         return;
       }
-      console.log('Registering: ', newEmail, newPassword, newPasswordConfirm);
+      console.error('Registering: ', newEmail, newPassword, newPasswordConfirm);
       const data = new FormData();
       data.append('email', newEmail);
       data.append('password', newPassword);
       data.append('username', newEmail);
       const res = await registerUser(data).unwrap();
-      console.log('Sign up res: ', res, res.email[0]);
+      console.error('Sign up res: ', res, res.email[0]);
       if (res?.id) {
-        console.log('Created user, refresh auth.', res);
+        console.error('Created user, refresh auth.', res);
         setAuthMode(0);
       } else if (
         res.email !== undefined &&
         res.email[0] == 'user with this email address already exists.'
       ) {
-        console.log('EMAIL TAKENENENENEN');
+        console.error('EMAIL TAKENENENENEN');
         setNewEmailHelperText('Email taken');
       }
     }
   };
 
   const changePassword = async () => {
-    console.log('Changing password: ', resetEmail, resetCode, resetPassword);
+    console.error('Changing password: ', resetEmail, resetCode, resetPassword);
     if (resetPasswordError.length > 0) {
       setResetPasswordError('');
     }
@@ -190,7 +190,7 @@ const AuthScreen: FunctionComponent = () => {
       reset_code: resetCode,
       new_password: resetPassword,
     }).then(res => res.json());
-    console.log('res', res);
+    console.error('res', res);
     if (res.data) {
       setAuthMode(0);
       setResetCode('');

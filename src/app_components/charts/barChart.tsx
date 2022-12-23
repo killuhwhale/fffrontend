@@ -22,7 +22,7 @@ const barData = (tags, metric) => {
   const labels: string[] = [];
   Object.keys(tags).forEach(key => {
     const val = parseInt(tags[key][metric]);
-    console.log('Val: ', key, metric, val);
+    console.error('Val: ', key, metric, val);
     data.push(val);
     labels.push(key);
   });

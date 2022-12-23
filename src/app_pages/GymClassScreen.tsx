@@ -146,8 +146,8 @@ const GymClassScreen: FunctionComponent<Props> = ({
   };
   const favObj = new FormData();
   favObj.append('gym_class', id);
-  console.log('GClass params: ', params);
-  console.log('GClass data: ', data);
+  console.error('GClass params: ', params);
+  console.error('GClass data: ', data);
 
   const onConfirmDelete = () => {
     setDeleteGymClassModalVisibleVisible(true);
@@ -155,7 +155,7 @@ const GymClassScreen: FunctionComponent<Props> = ({
   const onDelete = async () => {
     // Pass data to invalidate tags in order to refresh class list
     if (!gym || !id) {
-      console.log('Error deleting GymClass');
+      console.error('Error deleting GymClass');
       return;
     }
 
@@ -163,9 +163,9 @@ const GymClassScreen: FunctionComponent<Props> = ({
       gymID: gym,
       gymClassID: id,
     };
-    console.log('Deleting gymClass', data);
+    console.error('Deleting gymClass', data);
     const deletedGym = await deleteGymClassMutation(data).unwrap();
-    console.log('Deleted Gym: ', deletedGym);
+    console.error('Deleted Gym: ', deletedGym);
     setDeleteGymClassModalVisibleVisible(false);
     if (deletedGym.id) {
       navigation.goBack();

@@ -25,7 +25,7 @@ AsyncStorage.getAllKeys((err, keys) => {
   if (keys) {
     AsyncStorage.multiGet(keys, (error, stores) => {
       stores?.map((result, i, store) => {
-        console.log('AsyncStorage: ', {[store[i][0]]: store[i][1]});
+        console.error('AsyncStorage: ', {[store[i][0]]: store[i][1]});
         return true;
       });
     });
@@ -39,7 +39,7 @@ export const clearToken = async () => {
     return true;
   } catch (e) {
     // saving error
-    console.log('Error clearing from storage: ', e);
+    console.error('Error clearing from storage: ', e);
     return false;
   }
 };
@@ -53,7 +53,7 @@ export const storeToken = async (value, access = true) => {
     return true;
   } catch (e) {
     // saving error
-    console.log('Errorsaving to storage: ', e);
+    console.error('Errorsaving to storage: ', e);
     return false;
   }
 };
@@ -67,7 +67,7 @@ export const getToken = async (access = true) => {
     }
   } catch (e) {
     // error reading value
-    console.log('Error getting from storage: ', e);
+    console.error('Error getting from storage: ', e);
     return '';
   }
 };
@@ -109,10 +109,10 @@ const asyncBaseQuery =
         },
         body: '',
       };
-      console.log('ApiSlice');
-      console.log('ApiSlice');
-      console.log('Data: ', data);
-      console.log('url/ method: ', baseUrl, url, method);
+      console.error('ApiSlice');
+      console.error('ApiSlice');
+      console.error('Data: ', data);
+      console.error('url/ method: ', baseUrl, url, method);
 
       /**
        *  Problem is that APISlice will trigger 5 actions on a page load.
@@ -127,34 +127,34 @@ const asyncBaseQuery =
       }
 
       if (data && params?.contentType !== 'multipart/form-data') {
-        console.log('Stringifying body for JSON data');
+        console.error('Stringifying body for JSON data');
         options.body = JSON.stringify(data);
       } else {
         options.body = data;
       }
-      console.log('BODY: ', options.body);
+      console.error('BODY: ', options.body);
       // We make the first auth request using access token
       const result = await fetch(baseUrl + url, options);
       const jResult = await result.json();
-      console.log('BaseQuery fetch response: ', jResult);
+      console.error('BaseQuery fetch response: ', jResult);
 
       // if token is expired:
       if (result.status === 401 || jResult.code === 'token_not_valid') {
         // Hit API w/ Refresh Token and update token.
         const refreshToken = await getToken(false);
 
-        console.log('refreshToken: ', refreshToken);
+        console.error('refreshToken: ', refreshToken);
 
         const res = await refreshAccessToken(`${BASEURL}token/refresh/`);
-        console.log('\n\n refreshAccessToken resp status: ', res.status);
+        console.error('\n\n refreshAccessToken resp status: ', res.status);
         if (res.status === 400 || res.status === 401) {
-          console.log('refreshAccessToken resp BAD!', res);
+          console.error('refreshAccessToken resp BAD!', res);
 
           navigate('AuthScreen', {});
           auth.logout();
           return {error: {status: 400, data: 'Refresh token is bad'}};
         } else {
-          console.log('refreshAccessToken resp good:', res, url, method);
+          console.error('refreshAccessToken resp good:', res, url, method);
           const accessTokenResult = await res.json();
           await storeToken(accessTokenResult.access);
 
@@ -180,7 +180,7 @@ const asyncBaseQuery =
       }
       return {error: {status: 404, data: 'Errorneous behavior!'}};
     } catch (err: any) {
-      console.log('APISlice returning error!', err);
+      console.error('APISlice returning error!', err);
       return {
         error: {
           status: 0,
@@ -354,7 +354,7 @@ export const apiSlice = createApi({
       },
       //
       providesTags: (result, error, arg) => {
-        console.log('P0vide gym view: GymClasses', result);
+        console.error('P0vide gym view: GymClasses', result);
         return [{type: 'GymClasses', id: result?.id}];
       },
     }),
@@ -368,7 +368,7 @@ export const apiSlice = createApi({
         params: {contentType: 'multipart/form-data'},
       }),
       invalidatesTags: (result, error, arg) => {
-        console.log('Create class invalidate: ', arg, result);
+        console.error('Create class invalidate: ', arg, result);
         return [{type: 'GymClasses', id: arg.gym}];
       },
     }),
@@ -427,7 +427,7 @@ export const apiSlice = createApi({
         return {url: `workoutGroups/${id}/class_workouts/`};
       },
       providesTags: (result, error, arg) => {
-        console.log('Providing tags', result, {
+        console.error('Providing tags', result, {
           type: 'WorkoutGroupWorkouts',
           id: arg,
         });
@@ -441,7 +441,7 @@ export const apiSlice = createApi({
         return {url: `workoutGroups/${id}/user_workouts/`};
       },
       providesTags: (result, error, arg) => {
-        console.log('Providing tags to users own workout group', arg);
+        console.error('Providing tags to users own workout group', arg);
         return [{type: 'WorkoutGroupWorkouts', id: arg}];
       },
     }),
@@ -455,7 +455,7 @@ export const apiSlice = createApi({
       invalidatesTags: (result, err, arg) => {
         const data = new Map<string, string>(arg._parts);
 
-        console.log('Invaldtes Tag: ', data);
+        console.error('Invaldtes Tag: ', data);
         return data.get('owned_by_class')
           ? [{type: 'GymClassWorkoutGroups', id: data.get('owner_id')}]
           : ['UserWorkoutGroups'];
@@ -471,7 +471,7 @@ export const apiSlice = createApi({
       invalidatesTags: (result, error, arg) => {
         // inavlidates query for useGetWorkoutsForGymClassWorkoutGroupQuery
         const data = new Map<string, string>(arg._parts);
-        console.log('Invalidating WorkoutGroupWorkouts', {
+        console.error('Invalidating WorkoutGroupWorkouts', {
           type: 'WorkoutGroupWorkouts',
           id: data.get('group'),
         });
@@ -481,7 +481,7 @@ export const apiSlice = createApi({
     deleteWorkoutGroup: builder.mutation({
       query: data => {
         const mapData = new Map<string, string>(data._parts);
-        console.log(
+        console.error(
           'Delete workoutGroup mutation! URL: ',
           `workoutGroups/${mapData.get('id')}/`,
         );
@@ -494,7 +494,7 @@ export const apiSlice = createApi({
       },
       invalidatesTags: (result, err, arg) => {
         const data = new Map<string, string>(arg._parts);
-        console.log('Invaldtes Tag deleteWorkoutGroup: ', data);
+        console.error('Invaldtes Tag deleteWorkoutGroup: ', data);
         return data.get('owned_by_class')
           ? [{type: 'GymClassWorkoutGroups', id: data.get('owner_id')}]
           : ['UserWorkoutGroups'];
@@ -521,7 +521,7 @@ export const apiSlice = createApi({
     deleteWorkout: builder.mutation({
       query: arg => {
         const data = new Map<string, string>(arg._parts);
-        console.log('Deleting workout query dsa', data);
+        console.error('Deleting workout query dsa', data);
         return {
           url: `workouts/${data.get('id')}/`,
           method: 'DELETE',
@@ -534,7 +534,7 @@ export const apiSlice = createApi({
           return [];
         }
         const data = new Map<string, string>(arg._parts);
-        console.log('Invalidating workouts...,', data);
+        console.error('Invalidating workouts...,', data);
         return [{type: 'WorkoutGroupWorkouts', id: data.get('group')}];
       },
     }),
@@ -548,7 +548,7 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: (resut, error, arg) => {
         const data = new Map<string, string>(arg._parts);
-        console.log('APISLICECreate invaldiate workoutGroup : ', data);
+        console.error('APISLICECreate invaldiate workoutGroup : ', data);
         return [{type: 'WorkoutGroupWorkouts', id: data.get('workout_group')}];
       },
     }),
@@ -580,7 +580,7 @@ export const apiSlice = createApi({
         }
 
         const data = new Map<string, string>(arg._parts);
-        console.log('Invalidating compelted: ', data, {
+        console.error('Invalidating compelted: ', data, {
           type: 'WorkoutGroupWorkouts',
           id: data.get('workout_group'),
         });
@@ -606,7 +606,7 @@ export const apiSlice = createApi({
         url: `completedWorkoutGroups/${id}/completed_workout_group_by_og_workout_group/`,
       }),
       providesTags: (result, error, arg) => {
-        console.log('Providing tagzz', result, {
+        console.error('Providing tagzz', result, {
           type: 'WorkoutGroupWorkouts',
           id: arg,
         });
@@ -629,7 +629,7 @@ export const apiSlice = createApi({
         }
 
         const data = new Map<string, string>(arg._parts);
-        console.log('Invalidating compelted: ', data, {
+        console.error('Invalidating compelted: ', data, {
           type: 'WorkoutGroupWorkouts',
           id: data.get('workout_group'),
         });

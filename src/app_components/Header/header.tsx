@@ -11,7 +11,7 @@ import * as RootNavigation from '../../navigators/RootNavigation';
 const Header: FunctionComponent = () => {
   const theme = useTheme();
   const nav = React.useContext(NavigationContext);
-  console.log('Nav: ', nav);
+  console.error('Nav: ', nav);
   // Access value
 
   return (

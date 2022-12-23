@@ -93,7 +93,7 @@ const StatsScreen: FunctionComponent<Props> = ({
     calc.calcMulti(allWorkouts);
 
     // const [_tags, _names] = processMultiWorkoutStats(allWorkouts);
-    // console.log('ALLLLLWORKOUTS', _tags, _names);
+    // console.error('ALLLLLWORKOUTS', _tags, _names);
     // return [_tags, _names];
 
     return calc.getStats();

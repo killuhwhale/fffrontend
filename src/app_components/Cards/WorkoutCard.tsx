@@ -36,7 +36,7 @@ const WorkoutCard: FunctionComponent<WorkoutCardProps> = props => {
   const [deleteWorkout, {isLoading}] = useDeleteWorkoutMutation();
   const [deleteCompletedWorkout, {isLoading: deleteCompletedWorkoutIsLoading}] =
     useDeleteCompletedWorkoutMutation();
-  // console.log("Workout card props: ", props)
+  // console.error("Workout card props: ", props)
   const isOGWorkout = props.workout_items ? true : false;
   const items = props.workout_items
     ? props.workout_items

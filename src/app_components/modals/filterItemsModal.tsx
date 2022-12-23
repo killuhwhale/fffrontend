@@ -48,7 +48,7 @@ const FilterItemsModal: FunctionComponent<{
   };
 
   useEffect(() => {
-    console.log('Running init filter effect');
+    console.error('Running init filter effect');
     setOgData(props.items ? props.items.map(gymClass => gymClass.title) : []);
     setFilterResult(
       Array.from(Array(props.items?.length || 0).keys()).map(idx => idx),

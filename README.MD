@@ -38,6 +38,18 @@ git push origin HEAD:staging HEAD
 
 Bugs:
 
+    Create account, needs to show some kind of response in UI
+    Create Completed Workout, image is not showing...
+    User is able to attempt to delete WorkoutGruop that isnt theirs.
+        - Buttons shouldnt show....
+        - (API doesnt allow)
+
+
+    Test some scenarios with multiple users
+        - ensure users cannot delete workouts that they shouldnt be able to
+        - Ensure theyFixed login, cant create workouts for classes they are not an owner of
+        -
+
     ~~~~  RETEST RELEASE BUILD   ~~~
 
     Workoutscreen

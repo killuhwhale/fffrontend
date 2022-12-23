@@ -35,7 +35,7 @@ const HomePage: FunctionComponent<Props> = ({navigation}) => {
   const dispatch = useAppDispatch();
 
   const {data, isLoading, isSuccess, isError, error} = useGetGymsQuery('');
-  console.log('Gym data:', data);
+  console.error('Gym data:', data);
   const [stringData, setOgData] = useState<string[]>(
     data ? data.map(gym => gym.title) : [],
   );

@@ -1,79 +1,76 @@
 function filter(query, items, options) {
+  // option producer
+  function option(name, value) {
+    options = options || {};
+    return typeof options[name] !== 'undefined' ? options[name] : value;
+  }
 
-    // option producer
-    function option(name, value) {
-        options = options || {};
-        return typeof (options[name]) !== 'undefined' ? options[name] : value;
-    }
+  // prepare options
+  var o_case = option('case', false);
+  var o_mark = option('mark', true);
+  var o_prefix = option('prefix', '<strong>');
+  var o_suffix = option('suffix', '</strong>');
+  var o_word = option('word', true);
+  var o_limit = option('limit', 0);
 
-    // prepare options
-    var o_case = option("case", false);
-    var o_mark = option("mark", true);
-    var o_prefix = option("prefix", "<strong>");
-    var o_suffix = option("suffix", "</strong>");
-    var o_word = option("word", true);
-    var o_limit = option("limit", 0);
+  // prepare query
+  query = o_case ? query : query.toLowerCase();
+  query = query.replace(/\s+/g, o_word ? ' ' : '');
+  query = query.replace(/(^\s+|\s+$)/g, '');
+  query = query.split(o_word ? ' ' : '');
+  var ql = query.length;
 
-    // prepare query
-    query = o_case ? query : query.toLowerCase();
-    query = query.replace(/\s+/g, o_word ? ' ' : '');
-    query = query.replace(/(^\s+|\s+$)/g, '');
-    query = query.split(o_word ? ' ' : '');
-    var ql = query.length;
+  // prepare items
+  if (typeof items === 'string') {
+    items = items.split('\n');
+  }
 
-    // prepare items
-    if (typeof (items) === "string") {
-        items = items.split('\n');
-    }
+  // prepare results
+  var matches = {
+    items: [],
+    marks: [],
+  };
 
-    // prepare results
-    var matches = {
-        items: [],
-        marks: []
-    };
+  // search
+  for (var ii = 0, il = items.length; ii < il; ii++) {
+    // prepare text
+    var text = o_case ? items[ii] : items[ii].toLowerCase();
+    var mark = '';
 
-    // search
-    for (var ii = 0, il = items.length; ii < il; ii++) {
-
-        // prepare text
-        var text = o_case ? items[ii] : items[ii].toLowerCase();
-        var mark = "";
-
-        // traverse
-        var ti = 0;
-        var wi = 0;
-        var wl = 0;
-        for (var qi = 0; qi < ql; qi++) {
-            wl = query[qi].length;
-            wi = text.indexOf(query[qi], ti);
-            if (wi === -1) {
-                break;
-            }
-            if (o_mark) {
-                if (wi > 0) {
-                    mark += items[ii].slice(ti, wi);
-                }
-                mark += o_prefix + items[ii].slice(wi, wi + wl) + o_suffix;
-            }
-            ti = wi + wl;
+    // traverse
+    var ti = 0;
+    var wi = 0;
+    var wl = 0;
+    for (var qi = 0; qi < ql; qi++) {
+      wl = query[qi].length;
+      wi = text.indexOf(query[qi], ti);
+      if (wi === -1) {
+        break;
+      }
+      if (o_mark) {
+        if (wi > 0) {
+          mark += items[ii].slice(ti, wi);
         }
-
-        // capture
-        if (qi == ql) {
-            if (o_mark) {
-                mark += items[ii].slice(ti);
-                matches.marks.push(mark);
-            }
-            if (matches.items.push(ii) === o_limit && o_limit) {
-                break;
-            }
-        }
+        mark += o_prefix + items[ii].slice(wi, wi + wl) + o_suffix;
+      }
+      ti = wi + wl;
     }
 
-    // ready
-    return matches;
+    // capture
+    if (qi == ql) {
+      if (o_mark) {
+        mark += items[ii].slice(ti);
+        matches.marks.push(mark);
+      }
+      if (matches.items.push(ii) === o_limit && o_limit) {
+        break;
+      }
+    }
+  }
+
+  // ready
+  return matches;
 }
-
 
 const _items = `a
 AAA
@@ -25561,12 +25558,11 @@ z's
 zucchini
 Zulu
 Zurich
-zygote`
+zygote`;
 
-const items = _items.split("\n")
+const items = _items.split('\n');
 
-const term = "apel"
+const term = 'apel';
 
-
-console.log(filter(term, items, { "word": false }))
-// console.log(items[1147])
+console.error(filter(term, items, {word: false}));
+// console.error(items[1147])

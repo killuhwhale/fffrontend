@@ -35,7 +35,7 @@ const bLineData = (workouts, tagName, metric) => {
       data.push(0);
     }
   });
-  // console.log('Line data: ', data)
+  // console.error('Line data: ', data)
   return {
     labels,
     datasets: [
@@ -95,7 +95,7 @@ const TotalsLineChart: FunctionComponent<{
   const [__filteredDataTypes, __filteredDataTypesAbbrev] =
     filterLineDataTypes();
 
-  console.log(
+  console.error(
     'Filtered data types line:',
     __filteredDataTypes,
     __filteredDataTypesAbbrev,
@@ -154,7 +154,7 @@ const TotalsLineChart: FunctionComponent<{
               : !showTags && props.nameLabels.length > 0
               ? setShowLineChartNameType
               : val => {
-                  console.log('Empty onChange called!!', val);
+                  console.error('Empty onChange called!!', val);
                 }
           }
         />

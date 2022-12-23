@@ -40,19 +40,19 @@ const ImagePicker: FunctionComponent<{
   const pickFile = useCallback(async () => {
     try {
       const res = await launchImageLibrary({mediaType: 'mixed'});
-      console.log('DocuPicker res ', res);
+      console.error('DocuPicker res ', res);
       if (res.errorCode) {
-        console.log('Pick file error', res.errorMessage);
+        console.error('Pick file error', res.errorMessage);
       } else if (res.assets) {
         props.setState(res.assets[0]);
       }
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
-        console.log(
+        console.error(
           'User cancelled the picker, exit any dialogs or menus and move on',
         );
       } else {
-        console.log('err picker', err);
+        console.error('err picker', err);
         throw err;
       }
     }
@@ -81,7 +81,7 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
   // Create gym class mutation
 
   const _createGym = async () => {
-    console.log('Creatting gym: ', mainFile, logoFile, title, desc);
+    console.error('Creatting gym: ', mainFile, logoFile, title, desc);
 
     // Need to get file from the URI
     const data = new FormData();
@@ -98,10 +98,10 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
       name: logoFile.fileName,
       type: logoFile.type,
     });
-    console.log('FOrmdata');
-    console.log('FOrmdata');
-    console.log('FOrmdata');
-    console.log('FOrmdata', mainFile.fileName, mainFile.type);
+    console.error('FOrmdata');
+    console.error('FOrmdata');
+    console.error('FOrmdata');
+    console.error('FOrmdata', mainFile.fileName, mainFile.type);
 
     // headers: {
     //     'Content-Type': 'multipart/form-data; ',
@@ -109,12 +109,12 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
 
     try {
       const gym = await createGym(data).unwrap();
-      console.log(gym);
+      console.error(gym);
       if (gym.id) {
         navigation.navigate('HomePageTabs', {screen: 'Profile'});
       }
     } catch (err) {
-      console.log('Error creating gym', err);
+      console.error('Error creating gym', err);
     }
     // TODO possibly dispatch to refresh data
   };

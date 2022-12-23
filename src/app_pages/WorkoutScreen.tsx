@@ -108,7 +108,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
     // we have OG workout owneed by class
     const {data, isLoading, isSuccess, isError, error} =
       useGetWorkoutsForGymClassWorkoutGroupQuery(id);
-    console.log('Owned by class, data: ', data);
+    console.error('Owned by class, data: ', data);
     oGData = data;
     oGIsLoading = isLoading;
     oGIsSuccess = isSuccess;
@@ -124,7 +124,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
       error: errorCompleted,
     } = useGetCompletedWorkoutByWorkoutIDQuery(id);
 
-    console.log('Completed data: ', dataCompleted);
+    console.error('Completed data: ', dataCompleted);
 
     if (dataCompleted && dataCompleted.completed_workouts?.length > 0) {
       completedData = dataCompleted;
@@ -188,23 +188,23 @@ const WorkoutScreen: FunctionComponent<Props> = ({
 
   const [tags, names] = useMemo(() => {
     const calc = new CalcWorkoutStats();
-    console.log('Muti stats', workouts);
+    console.error('Muti stats', workouts);
     calc.calcMulti(workouts);
 
     return calc.getStats();
   }, [workouts]);
 
-  // console.log('Stats: ', tags, names);
-  // console.log('WorkoutScreen data: ', oGData);
-  // console.log('Workout Screen Params: ', params);
-  // console.log(oGData, completedData);
+  // console.error('Stats: ', tags, names);
+  // console.error('WorkoutScreen data: ', oGData);
+  // console.error('Workout Screen Params: ', params);
+  // console.error(oGData, completedData);
   // Show when:
   //  - OgWorkout is Finished
   //  - The oGworkout is not personally created by the current user
   const isFinished = params.data.finished;
   const personalWorkout =
     userData?.id == oGData?.owner_id && !oGData?.owned_by_class;
-  console.log(
+  console.error(
     'workout is finished / personalWorkout',
     isFinished,
     personalWorkout,
@@ -248,21 +248,21 @@ const WorkoutScreen: FunctionComponent<Props> = ({
       delData.append('owner_id', oGData.owner_id);
       delData.append('owned_by_class', oGData.owned_by_class);
       delData.append('id', oGData.id);
-      console.log('Deleteing workout GORUP', delData);
+      console.error('Deleteing workout GORUP', delData);
       const deletedWorkoutGroup = await deleteWorkoutGroupMutation(
         delData,
       ).unwrap();
-      console.log('Deleting result: ', deletedWorkoutGroup);
+      console.error('Deleting result: ', deletedWorkoutGroup);
     } else {
       const delData = new FormData();
       delData.append('owner_id', completedData.owner_id);
       delData.append('owned_by_class', completedData.owned_by_class);
       delData.append('id', completedData.id);
-      console.log('Deleteing completed workout GORUP', delData);
+      console.error('Deleteing completed workout GORUP', delData);
       const deletedWorkoutGroup = await deleteCompletedWorkoutGroup(
         delData,
       ).unwrap();
-      console.log('Del WG res: ', deletedWorkoutGroup);
+      console.error('Del WG res: ', deletedWorkoutGroup);
     }
     setDeleteWorkoutGroupModalVisible(false);
     navigation.goBack();
@@ -273,21 +273,21 @@ const WorkoutScreen: FunctionComponent<Props> = ({
     data.append('group', oGData.id);
     try {
       const res = await finishWorkoutGroup(data).unwrap();
-      console.log('res finsih', res);
+      console.error('res finsih', res);
       setFinishWorkoutGroupModalVisible(false);
     } catch (err) {
-      console.log('Error finishing workout', err);
+      console.error('Error finishing workout', err);
     }
   };
 
   const navigateToCompletedWorkoutGroupScreen = () => {
-    console.log('Sending data to screen: ', oGData);
+    console.error('Sending data to screen: ', oGData);
     if (oGData && Object.keys(oGData).length > 0) {
       navigation.navigate('CreateCompletedWorkoutScreen', oGData);
     }
   };
 
-  // console.log("Current workout Group:", workoutGroup, oGData, completedData, isShowingOGWorkoutGroup, showingOGWorkoutGroup)
+  // console.error("Current workout Group:", workoutGroup, oGData, completedData, isShowingOGWorkoutGroup, showingOGWorkoutGroup)
   return (
     <ScrollView
       style={{backgroundColor: theme.palette.backgroundColor}}

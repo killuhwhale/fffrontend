@@ -1,4 +1,5 @@
 android/.gradle/
+android/gradle.properties
 android/app/build/
 android/app/src/main/assets/
 android/app/src/main/res/xml/

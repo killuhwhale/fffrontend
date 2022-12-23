@@ -50,22 +50,22 @@ const ImagePicker: FunctionComponent<{
     try {
       const res = await launchImageLibrary({mediaType: 'mixed'});
 
-      console.log('DocuPicker res ', res);
+      console.error('DocuPicker res ', res);
       // uploadyContext.upload(res);
       if (res.errorCode) {
-        console.log('Pick file error', res.errorMessage);
+        console.error('Pick file error', res.errorMessage);
       } else if (res.assets) {
-        console.log('Calling setState as child', res);
-        console.log();
+        console.error('Calling setState as child', res);
+        console.error();
         props.setState(res.assets[0]);
       }
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
-        console.log(
+        console.error(
           'User cancelled the picker, exit any dialogs or menus and move on',
         );
       } else {
-        console.log('err picker', err);
+        console.error('err picker', err);
         throw err;
       }
     }
@@ -103,9 +103,16 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
   const [gym, setGym] = useState(data && data.length > 0 ? data[0].id : 0);
   const pickerRef = useRef<any>();
 
-  console.log("User's gym data: ", gym);
+  console.error("User's gym data: ", gym);
   const _createGymClass = async () => {
-    console.log('Creatting gym class: ', mainFile, logoFile, title, desc, gym);
+    console.error(
+      'Creatting gym class: ',
+      mainFile,
+      logoFile,
+      title,
+      desc,
+      gym,
+    );
 
     // Need to get file from the URI
     const data = new FormData();
@@ -123,19 +130,19 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
       name: logoFile.fileName,
       type: logoFile.type,
     });
-    console.log('FOrmdata');
-    console.log('FOrmdata');
-    console.log('FOrmdata');
-    console.log('FOrmdata', data);
+    console.error('FOrmdata');
+    console.error('FOrmdata');
+    console.error('FOrmdata');
+    console.error('FOrmdata', data);
 
     try {
       const gymClass = await createGymClass(data).unwrap();
-      console.log('Gym class res', gymClass);
+      console.error('Gym class res', gymClass);
       if (gymClass.id) {
         navigation.navigate('HomePageTabs', {screen: 'Profile'});
       }
     } catch (err) {
-      console.log('Error creating gym', err);
+      console.error('Error creating gym', err);
     }
     // TODO possibly dispatch to refresh data
   };

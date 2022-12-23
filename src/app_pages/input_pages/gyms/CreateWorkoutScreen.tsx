@@ -244,7 +244,7 @@ const ItemString: FunctionComponent<{
   schemeType: number;
 }> = ({item, schemeType}) => {
   const theme = useTheme();
-  // console.log('Item str: ', item, item.reps == '[0]')
+  // console.error('Item str: ', item, item.reps == '[0]')
 
   return (
     <View
@@ -292,7 +292,7 @@ const ItemPanel: FunctionComponent<{
   const theme = useTheme();
 
   const navToWorkoutNameDetail = () => {
-    console.log('Navigating with props:', item);
+    console.error('Navigating with props:', item);
     RootNavigation.navigate('WorkoutNameDetailScreen', item.name);
   };
   const itemReps = item.reps == '' || item.reps == '0' ? '0' : item.reps;
@@ -428,10 +428,15 @@ const verifyWorkoutItem = (
     // check weights match sets 0 || 1 -> 1 or ==
     const itemSets = _item.sets;
     const weightList = parseNumList(_item.weights);
-    console.log('Verifyin Standard_w', weightList, itemSets, weightList.length);
+    console.error(
+      'Verifyin Standard_w',
+      weightList,
+      itemSets,
+      weightList.length,
+    );
 
     if (itemSets != weightList.length && weightList.length != 1) {
-      console.log('Not VALID!');
+      console.error('Not VALID!');
       return {
         success: false,
         errorType: 3,
@@ -444,7 +449,7 @@ const verifyWorkoutItem = (
   // Reps are single and weights are multiple
   else if (WORKOUT_TYPES[schemeType] == REPS_W) {
     const weightList = parseNumList(_item.weights);
-    console.log('Edit item verify: ', weightList);
+    console.error('Edit item verify: ', weightList);
     if (parseNumList(schemeRounds).length < 1) {
       return {
         success: false,
@@ -469,7 +474,7 @@ const verifyWorkoutItem = (
   // Reps and weights are multiple nums
   else if (WORKOUT_TYPES[schemeType] == ROUNDS_W) {
     // If scheme rounds have not been entered....
-    console.log('Current shcemeRounds ', schemeRounds);
+    console.error('Current shcemeRounds ', schemeRounds);
     if (schemeRounds.length == 0) {
       return {
         success: false,
@@ -482,7 +487,7 @@ const verifyWorkoutItem = (
     // Ensure reps is 1 number of matches the number of roungs
     // Eg 5 Rounds => Reps [1] or [5,5,3,3,1] (different sets for each round)
 
-    console.log('Bad item reps? ', _item.reps);
+    console.error('Bad item reps? ', _item.reps);
     const itemRepsList = parseNumList(_item.reps);
     const itemWeightsList = parseNumList(_item.weights);
 
@@ -490,14 +495,14 @@ const verifyWorkoutItem = (
       itemRepsList.length > 1 &&
       itemRepsList.length !== parseInt(schemeRounds)
     ) {
-      console.log('Dont add item!', itemRepsList, schemeRounds);
+      console.error('Dont add item!', itemRepsList, schemeRounds);
       return {success: false, errorType: 1, errorMsg: 'Match rounds'};
     }
     if (
       itemWeightsList.length > 1 &&
       itemWeightsList.length !== parseInt(schemeRounds)
     ) {
-      console.log('Dont add item!', itemWeightsList, schemeRounds);
+      console.error('Dont add item!', itemWeightsList, schemeRounds);
       return {success: false, errorType: 1, errorMsg: 'Match rounds'};
     }
   }
@@ -539,7 +544,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
     workoutData.append('scheme_type', schemeType);
     workoutData.append('scheme_rounds', schemeRounds);
 
-    console.log(
+    console.error(
       'Creatting workout with Group ID and Data: ',
       workoutGroupID,
       workoutData,
@@ -547,10 +552,10 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
 
     try {
       const createdWorkout = await createWorkout(workoutData).unwrap();
-      console.log('Workout res', createdWorkout);
+      console.error('Workout res', createdWorkout);
 
       items.forEach((item, idx) => {
-        console.log('Creating item: ', item);
+        console.error('Creating item: ', item);
         item.order = idx;
         item.workout = createdWorkout.id;
       });
@@ -558,14 +563,14 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
       data.append('workout', createdWorkout.id);
       data.append('workout_group', workoutGroupID);
       const createdItems = await createWorkoutItem(data).unwrap();
-      console.log('Workout item res', createdItems);
+      console.error('Workout item res', createdItems);
 
       // TODO handle errors
       if (createdItems) {
         navigation.goBack();
       }
     } catch (err) {
-      console.log('Error creating gym', err);
+      console.error('Error creating gym', err);
     }
     // TODO possibly dispatch to refresh data
   };
@@ -600,13 +605,13 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
     _item.duration = jList(_item.duration);
     _item.distance = jList(_item.distance);
 
-    console.log('~~~~Adding item: ', _item);
+    console.error('~~~~Adding item: ', _item);
     setItems([...items, _item]);
     return {success: true, errorType: -1, errorMsg: ''};
   };
 
   const removeItemSSID = idx => {
-    console.log('Removing idx: ', idx);
+    console.error('Removing idx: ', idx);
     const newItems = [...items];
     const newItem = newItems[idx];
     newItem.ssid = -1;
@@ -620,7 +625,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
     const newItem = newItems[idx];
     if (newItem.ssid == -1) {
       newItem.ssid = curColor;
-      console.log(newItem.ssid);
+      console.error(newItem.ssid);
       newItems[idx] = newItem;
       setItems(newItems);
     }
@@ -638,7 +643,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
     const newItems = [...items];
     newItems[idx] = item;
     setItems(newItems);
-    console.log('Toggled item as constant', item);
+    console.error('Toggled item as constant', item);
   };
 
   return (
@@ -781,7 +786,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
               <Switch
                 value={allowMarkConstant}
                 onValueChange={v => {
-                  console.log('Allow mark constant', v);
+                  console.error('Allow mark constant', v);
                   setAllowMarkConstant(v);
                 }}
                 trackColor={{
@@ -822,7 +827,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
                               ? removeItemSSID(idx)
                               : curColor > -1
                               ? addItemToSSID(idx)
-                              : console.log('Select a color first!');
+                              : console.error('Select a color first!');
                           }}>
                           <Icon
                             name="person"

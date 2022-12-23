@@ -94,7 +94,7 @@ const DeleteActionCancelModal: FunctionComponent<{
             />
             <Button
               onPress={() =>
-                isValid() ? props.onAction() : console.log('Invalid name')
+                isValid() ? props.onAction() : console.error('Invalid name')
               }
               title={props.actionText}
               style={{
