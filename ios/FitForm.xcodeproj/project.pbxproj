@@ -12,13 +12,13 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		249558ABB70A47AEA165BB06 /* Baloo2-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 425A560D991840D5BAF387CE /* Baloo2-ExtraBold.ttf */; };
+		4B07835A58B34F21B733AC78 /* Baloo2-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59F93076508B4B80A3D9961E /* Baloo2-Regular.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-FitForm-FitFormTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-FitForm-FitFormTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		B80727984E664029BF98224B /* Baloo2-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 94B810D7073F40579D791DD0 /* Baloo2-Bold.ttf */; };
-		249558ABB70A47AEA165BB06 /* Baloo2-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 425A560D991840D5BAF387CE /* Baloo2-ExtraBold.ttf */; };
-		CF953AB594B2407780BB3710 /* Baloo2-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7D8A0F763E66462BAC513BB1 /* Baloo2-Medium.ttf */; };
-		4B07835A58B34F21B733AC78 /* Baloo2-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59F93076508B4B80A3D9961E /* Baloo2-Regular.ttf */; };
 		C6BF4174273F42D5A8653769 /* Baloo2-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3AF2026588242D2ACF9BA30 /* Baloo2-SemiBold.ttf */; };
+		CF953AB594B2407780BB3710 /* Baloo2-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7D8A0F763E66462BAC513BB1 /* Baloo2-Medium.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,17 +43,17 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = FitForm/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-FitForm-FitFormTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FitForm-FitFormTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-FitForm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FitForm.debug.xcconfig"; path = "Target Support Files/Pods-FitForm/Pods-FitForm.debug.xcconfig"; sourceTree = "<group>"; };
+		425A560D991840D5BAF387CE /* Baloo2-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Baloo2-ExtraBold.ttf"; path = "../assets/fonts/Baloo2-ExtraBold.ttf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-FitForm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FitForm.release.xcconfig"; path = "Target Support Files/Pods-FitForm/Pods-FitForm.release.xcconfig"; sourceTree = "<group>"; };
+		59F93076508B4B80A3D9961E /* Baloo2-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Baloo2-Regular.ttf"; path = "../assets/fonts/Baloo2-Regular.ttf"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-FitForm-FitFormTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FitForm-FitFormTests.debug.xcconfig"; path = "Target Support Files/Pods-FitForm-FitFormTests/Pods-FitForm-FitFormTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-FitForm.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FitForm.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D8A0F763E66462BAC513BB1 /* Baloo2-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Baloo2-Medium.ttf"; path = "../assets/fonts/Baloo2-Medium.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = FitForm/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-FitForm-FitFormTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FitForm-FitFormTests.release.xcconfig"; path = "Target Support Files/Pods-FitForm-FitFormTests/Pods-FitForm-FitFormTests.release.xcconfig"; sourceTree = "<group>"; };
+		94B810D7073F40579D791DD0 /* Baloo2-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Baloo2-Bold.ttf"; path = "../assets/fonts/Baloo2-Bold.ttf"; sourceTree = "<group>"; };
+		B3AF2026588242D2ACF9BA30 /* Baloo2-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Baloo2-SemiBold.ttf"; path = "../assets/fonts/Baloo2-SemiBold.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		94B810D7073F40579D791DD0 /* Baloo2-Bold.ttf */ = {isa = PBXFileReference; name = "Baloo2-Bold.ttf"; path = "../assets/fonts/Baloo2-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		425A560D991840D5BAF387CE /* Baloo2-ExtraBold.ttf */ = {isa = PBXFileReference; name = "Baloo2-ExtraBold.ttf"; path = "../assets/fonts/Baloo2-ExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		7D8A0F763E66462BAC513BB1 /* Baloo2-Medium.ttf */ = {isa = PBXFileReference; name = "Baloo2-Medium.ttf"; path = "../assets/fonts/Baloo2-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		59F93076508B4B80A3D9961E /* Baloo2-Regular.ttf */ = {isa = PBXFileReference; name = "Baloo2-Regular.ttf"; path = "../assets/fonts/Baloo2-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		B3AF2026588242D2ACF9BA30 /* Baloo2-SemiBold.ttf */ = {isa = PBXFileReference; name = "Baloo2-SemiBold.ttf"; path = "../assets/fonts/Baloo2-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +149,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		852015D422434EB5BC72E911 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				94B810D7073F40579D791DD0 /* Baloo2-Bold.ttf */,
+				425A560D991840D5BAF387CE /* Baloo2-ExtraBold.ttf */,
+				7D8A0F763E66462BAC513BB1 /* Baloo2-Medium.ttf */,
+				59F93076508B4B80A3D9961E /* Baloo2-Regular.ttf */,
+				B3AF2026588242D2ACF9BA30 /* Baloo2-SemiBold.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -166,19 +178,6 @@
 			);
 			path = Fonts;
 			sourceTree = "<group>";
-		};
-		852015D422434EB5BC72E911 /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				94B810D7073F40579D791DD0 /* Baloo2-Bold.ttf */,
-				425A560D991840D5BAF387CE /* Baloo2-ExtraBold.ttf */,
-				7D8A0F763E66462BAC513BB1 /* Baloo2-Medium.ttf */,
-				59F93076508B4B80A3D9961E /* Baloo2-Regular.ttf */,
-				B3AF2026588242D2ACF9BA30 /* Baloo2-SemiBold.ttf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 

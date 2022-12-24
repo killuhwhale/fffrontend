@@ -18,6 +18,9 @@ cd android/ && ./gradlew clean && cd .. && npx react-native run-android --active
 env /usr/bin/arch -arm64 /bin/bash --login
 
 npx react-native run-ios
+npx react-native run-ios --configuration Release
+
+
 
 npx react-native start  
 adb -s 710KPMZ0409387 reverse tcp:8081 tcp:8081
@@ -26,7 +29,7 @@ npx react-native run-android --active-arch-only
 
 // When building your android app locally, by default you build all the 4 Application
 // Binary Interfaces (ABIs) : armeabi-v7a, arm64-v8a, x86 & x86_64.
-
+s
 npx react-native run-ios --udid CCF49CB5-3952-4D51-8830-27A2BA1FEB1B
 
 cd android/ && ./gradlew clean && cd .. && npx react-native run-android --active-arch-only
