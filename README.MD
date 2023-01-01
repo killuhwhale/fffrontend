@@ -20,8 +20,6 @@ env /usr/bin/arch -arm64 /bin/bash --login
 npx react-native run-ios
 npx react-native run-ios --configuration Release
 
-
-
 npx react-native start  
 adb -s 710KPMZ0409387 reverse tcp:8081 tcp:8081
 adb -s 710KPMZ0409387 reverse tcp:8000 tcp:8000
@@ -40,6 +38,45 @@ cd android/ && ./gradlew clean && ./gradlew bundleRelease && cd .. && npx react-
 git push origin HEAD:staging HEAD
 
 Bugs:
+
+    Add Loading Spiiners to On Create:
+        - Gym, Class, Workout, CompleteWorkout
+        - Takes a while and app should indicate to user while its waiting....
+
+    Logout
+        - Still getting trapped in cycle.....
+
+    (Only noticed this on iOS Release)
+    Workoutscreen
+        - Add workoiut/ 'X' buttons change state and lfash images
+            - Images shouldnt flash on state change.
+
+    Media Slider:
+    - Video audio plays when not in focus.
+        - Should not play unless in focus.
+
+    iOS:
+        Create Gym Class Screen
+            - Switch and label are not aligned
+        Add workout Item
+            - Weight_unit is not centered, looks bad.
+            - SS, when colors arent showing, icons are no longer coloed
+                - They should remain colored.
+
+        Complete Workout
+            - Squished views:
+                - Weight_unit
+
+        Virtual Keyboard
+            - Does not push up view, cannot see
+                - Find out how to set this in some settings...
+
+    Add date to workoutScreen
+
+    iPhone 10:
+        - Bottom Nav Bar too small
+            - I think its based on screen height... need to do better
+
 
     Create account, needs to show some kind of response in UI
     Create Completed Workout, image is not showing...

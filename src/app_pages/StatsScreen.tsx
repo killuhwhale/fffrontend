@@ -205,6 +205,9 @@ const StatsScreen: FunctionComponent<Props> = ({
         </View>
       </View>
       <View style={{flex: 8}}>
+        <SmallText>
+          Found {data.length} {data.length > 0 ? 'workouts' : 'workout'}
+        </SmallText>
         <ScrollView>
           {dataReady ? (
             <>
