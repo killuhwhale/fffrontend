@@ -58,6 +58,9 @@ const StatsScreen: FunctionComponent<Props> = ({
       startDate: dateFormat(startDate),
       endDate: dateFormat(endDate),
     });
+  // const data = JSON.parse(_data?_data:'[]') as []
+  
+    console.log("\n\n Stats wod query: ", typeof(data), data?.length, data, "\n\n")
 
   const [allWorkouts, workoutTagStats, workoutNameStats] = useMemo(() => {
     if (data && data.length > 0) {
@@ -67,9 +70,15 @@ const StatsScreen: FunctionComponent<Props> = ({
       const calc = new CalcWorkoutStats();
 
       data.forEach(workoutGroup => {
-        allWorkouts.push(...workoutGroup.completed_workouts); // Collect all workouts for bar data
+        console.log("\n .Workout Group ", workoutGroup, "\n")
+        const workouts = workoutGroup.completed_workouts?
+          workoutGroup.completed_workouts:
+          workoutGroup.workouts
 
-        calc.calcMulti(workoutGroup.completed_workouts);
+        console.log("Workout groups workouts: ", workouts)
+        allWorkouts.push(...workouts); // Collect all workouts for bar data
+
+        calc.calcMulti(workouts);
         const [tags, names] = calc.getStats();
         workoutTagStats.push({...tags, date: workoutGroup.date});
         workoutNameStats.push({...names, date: workoutGroup.date});
@@ -206,7 +215,7 @@ const StatsScreen: FunctionComponent<Props> = ({
       </View>
       <View style={{flex: 8}}>
         <SmallText>
-          Found {data.length} {data.length > 0 ? 'workouts' : 'workout'}
+          Found {dataReady? data?.length: 0} { dataReady && data?.length == 1 ? 'workout' : 'workouts'}
         </SmallText>
         <ScrollView>
           {dataReady ? (

@@ -1,6 +1,6 @@
 import {Dimensions, Platform} from 'react-native';
 import styled from 'styled-components/native';
-import {WorkoutStats} from '../app_pages/WorkoutDetailScreen';
+import {WorkoutStats} from '../app_components/Stats/StatsPanel';
 import {SPACES_URL} from '../utils/constants';
 import {WorkoutCardProps, WorkoutItemProps} from './Cards/types';
 export const Container = styled.View`
@@ -552,6 +552,7 @@ export class CalcWorkoutStats {
 
   calcMulti(data: WorkoutCardProps[]) {
     this.isFormatted = false;
+    console.log("CalcMulti Data: ", data)
     data.forEach(workout => {
       const {
         scheme_rounds,
@@ -559,7 +560,8 @@ export class CalcWorkoutStats {
         workout_items,
         completed_workout_items,
       } = workout as WorkoutCardProps;
-
+      console.log("\n\n Calc Multiz: ", workout_items, completed_workout_items, "\n\n")
+      
       this.setWorkoutParams(
         scheme_rounds,
         scheme_type,

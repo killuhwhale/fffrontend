@@ -209,7 +209,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
           </View>
         </View>
         <View style={{flex: 1, justifyContent: 'flex-end', width: '100%'}}>
-          <View>
+          <View style={{width: '100%', alignItems: 'flex-end'}}>
             <Switch
               trackColor={{false: '#767577', true: '#81b0ff'}}
               thumbColor={isPrivate ? '#f5dd4b' : '#f4f3f4'}
@@ -218,7 +218,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
               value={isPrivate}
             />
           </View>
-          <View>
+          <View style={{width: '100%'}}>
             <SmallText textStyles={{textAlign: 'right'}}>
               Private class
             </SmallText>
@@ -226,7 +226,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
         </View>
         <View style={{flex: 2}}>
           {!userGymsLoading ? (
-            <View style={{justifyContent: 'flex-start'}}>
+            <View style={{justifyContent: 'flex-start', borderColor: 'white', borderWidth: 1, margin: 6, padding: 6}}>
               <SmallText>Gym</SmallText>
               <Picker
                 ref={pickerRef}

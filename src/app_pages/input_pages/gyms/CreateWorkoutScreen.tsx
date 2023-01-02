@@ -802,9 +802,13 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
             <></>
           )}
 
-          {showAddSSID ? (
+          {showAddSSID || allowMarkConstant ? (
             <View>
-              <ColorPalette onSelect={setCurColor} selectedIdx={curColor} />
+              {
+                showAddSSID? 
+                <ColorPalette onSelect={setCurColor} selectedIdx={curColor} />
+                : <></>
+              }
               <ScrollView>
                 {items.map((item, idx) => {
                   return (
@@ -822,21 +826,46 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
                       </View>
                       <View style={{flex: 1}}>
                         <TouchableWithoutFeedback
+                          
+                          
                           onPress={() => {
-                            item.ssid >= 0
-                              ? removeItemSSID(idx)
-                              : curColor > -1
-                              ? addItemToSSID(idx)
-                              : console.error('Select a color first!');
-                          }}>
-                          <Icon
-                            name="person"
-                            color={
+
+
+                            if(WORKOUT_TYPES[schemeType] == STANDARD_W){
                               item.ssid >= 0
-                                ? COLORSPALETTE[item.ssid]
-                                : theme.palette.text
+                                ? removeItemSSID(idx)
+                                : curColor > -1
+                                ? addItemToSSID(idx)
+                                : console.error('Select a color first!');
+                            }else if(WORKOUT_TYPES[schemeType] == REPS_W){
+                              updateItemConstant(idx)
                             }
-                          />
+                          }}>
+
+
+
+                          
+                          {
+                            WORKOUT_TYPES[schemeType] == STANDARD_W?
+                              <Icon
+                                name="person"
+                                color={
+                                  item.ssid >= 0
+                                    ? COLORSPALETTE[item.ssid]
+                                    : theme.palette.text
+                                }
+                              />
+                              :
+                              <Icon
+                                name="person"
+                                color={
+                                  item.constant
+                                    ? COLORSPALETTE[0]
+                                    : theme.palette.text
+                                }
+                              />
+                          }
+
                         </TouchableWithoutFeedback>
                       </View>
                     </View>
@@ -852,9 +881,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
                     title={item.name.name}
                     style={{width: '100%'}}
                     onFinish={() =>
-                      allowMarkConstant
-                        ? updateItemConstant(idx)
-                        : removeItem(idx)
+                      removeItem(idx)
                     }
                     key={`itemz_${idx}_${Math.random()}`}>
                     <View
@@ -870,9 +897,12 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
                       <View style={{flex: 1}}>
                         <Icon
                           name="person"
-                          color={
-                            item.constant
-                              ? COLORSPALETTE[0]
+                          color=
+                          {
+                            WORKOUT_TYPES[schemeType] == REPS_W && item.constant?
+                              COLORSPALETTE[0]
+                            : WORKOUT_TYPES[schemeType] == STANDARD_W && item.ssid >= 0 ? 
+                              COLORSPALETTE[item.ssid]
                               : theme.palette.text
                           }
                         />
