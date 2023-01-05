@@ -70,7 +70,7 @@ export const TagPanelItem: FunctionComponent<{tag: WorkoutStats}> = ({tag}) => {
 export const NamePanelItem: FunctionComponent<{name: WorkoutStats}> = ({
   name,
 }) => {
-  // console.error("Name props", name)
+  // console.log("Name props", name)
   return (
     <View style={PanelStyle.container}>
       <RegularText>{name.key}</RegularText>

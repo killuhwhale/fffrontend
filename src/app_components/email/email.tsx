@@ -28,7 +28,7 @@ export const ResetPassword: FunctionComponent = () => {
 
     const url = `${BASEURL}user/send_reset_code/`;
     const result = await post(url, emailData);
-    console.error('Send email res:', result, await result.formData());
+    console.log('Send email res:', result, await result.formData());
     setShowHint(true);
   };
 

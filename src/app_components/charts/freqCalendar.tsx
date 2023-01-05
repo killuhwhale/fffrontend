@@ -20,12 +20,24 @@ export const dateFormat = (d: Date) => {
   return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
 };
 
+function remap_shade(value) {
+  const oldBase = 0.2;
+  const newBase = 0.55;
+  const endRange = 1;
+  return (
+    newBase + ((value - oldBase) * (endRange - newBase)) / (endRange - oldBase)
+  );
+}
+
 export const chartConfig = {
   backgroundGradientFrom: '#1E2923',
   backgroundGradientFromOpacity: 0,
   backgroundGradientTo: '#08130D',
   backgroundGradientToOpacity: 0.5,
-  color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+  color: (opacity = 1) =>
+    opacity >= 0.2
+      ? `rgba(26, 255, 146, ${remap_shade(opacity)})`
+      : `rgba(26, 255, 146, ${opacity})`,
   strokeWidth: 2, // optional, default 3
   barPercentage: 0.5,
   useShadowColorFromDataset: false, // optional
@@ -117,7 +129,7 @@ const FreqCalendar: FunctionComponent<{
                 if (val.count && val.date) {
                   setCalendarText(
                     `${val.date?.toString()}: ${val.count ?? 0} workout${
-                      val.count ?? 0 > 1 ? 's' : ''
+                      val.count > 1 ? 's' : ''
                     }`,
                   );
                 } else {

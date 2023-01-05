@@ -25564,5 +25564,5 @@ const items = _items.split('\n');
 
 const term = 'apel';
 
-console.error(filter(term, items, {word: false}));
-// console.error(items[1147])
+console.log(filter(term, items, {word: false}));
+// console.log(items[1147])

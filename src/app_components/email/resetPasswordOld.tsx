@@ -26,7 +26,7 @@ export const ResetPasswordOld: FunctionComponent = () => {
   const [disabledUpdateBtn, setDisabledUpdateBtn] = useState(false);
 
   const updatePassword = async () => {
-    console.error(
+    console.log(
       'Updating passowrd',
       password &&
         newPassword &&
@@ -43,7 +43,7 @@ export const ResetPasswordOld: FunctionComponent = () => {
       passwordConfirm &&
       newPassword === passwordConfirm
     ) {
-      console.error('Updating password', password);
+      console.log('Updating password', password);
       const data = new FormData();
       data.append('password', password);
       data.append('new_password', newPassword);
@@ -54,7 +54,7 @@ export const ResetPasswordOld: FunctionComponent = () => {
         new_password: newPassword,
         password_confirm: passwordConfirm,
       }).then(res => res.json());
-      console.error('Update', res);
+      console.log('Update', res);
       if (res.data) {
         setDisabledUpdateBtn(true);
       } else if (res.error) {

@@ -23,7 +23,7 @@ const HorizontalPicker: FunctionComponent<{
   const {data} = props;
   const _data = data?.length == 1 ? ['', data[0], ''] : data;
   if (data?.length == 1) {
-    console.error('Padded array, ', _data);
+    // console.log('Padded array, ', _data);
   }
 
   const [xState, setXState] = useState(0);
@@ -54,20 +54,20 @@ const HorizontalPicker: FunctionComponent<{
   const eventHandler = useAnimatedGestureHandler(
     {
       onStart: (event, ctx) => {
-        // console.error("On start event: ", event.x, event.y)
+        // console.log("On start event: ", event.x, event.y)
       },
       onActive(event, context) {
         try {
-          // console.error(`Moving from ${transX.value} to ${event.translationX + sharedStartPos.value} by ${event.translationX}`, event)
+          // console.log(`Moving from ${transX.value} to ${event.translationX + sharedStartPos.value} by ${event.translationX}`, event)
           transX.value = event.translationX + sharedStartPos.value;
           sharedWordSkew.value = event.translationX + sharedStartPos.value * 4;
           // setXState(transX.value)
         } catch (err) {
-          console.error('onActive Error: ', err);
+          console.log('onActive Error: ', err);
         }
       },
       onEnd: (event, ctx) => {
-        // console.error("OnEnd animation...")
+        // console.log("OnEnd animation...")
         try {
           const totalDistMoved = event.translationX;
           const rawVal =
@@ -112,17 +112,17 @@ const HorizontalPicker: FunctionComponent<{
 
           // Send new selected item
           if (sharedPrevIdx.value != sharedCurIdx.value) {
-            // console.error('onchange inside: ', newIdx);
+            // console.log('onchange inside: ', newIdx);
             runOnJS(safeCallOnChange)(newIdx);
           } else {
-            console.error(
+            console.log(
               'Value not changed!!!',
               sharedPrevIdx.value,
               sharedCurIdx.value,
             );
           }
         } catch (err) {
-          console.error('onActive Error: ', err);
+          console.log('onActive Error: ', err);
         }
       },
     },

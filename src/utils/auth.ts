@@ -38,7 +38,7 @@ class AuthManager {
     // Perform login, update tokens access and fresh tokens
     const res = await post(`${BASEURL}token/`, {email: email, password});
     const result = await res.json();
-    console.error('Login res: ', result);
+    console.log('Login res: ', result);
     let loggedIn = false;
     let msg = '';
     if (result.refresh && result.access) {
@@ -58,7 +58,7 @@ class AuthManager {
   }
 
   async logout() {
-    console.error('Loggin out');
+    console.log('Loggin out');
     if (await clearToken()) {
       this.onLogout.forEach(fn => fn());
     }
@@ -67,7 +67,7 @@ class AuthManager {
   async refreshToken(): Promise<boolean> {
     // Get refresh token and refresh the access token
     const res = await fetch(`${BASEURL}token/refresh/`);
-    console.error('Refresh res', res);
+    console.log('Refresh res', res);
     return true;
   }
 }

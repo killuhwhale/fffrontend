@@ -42,7 +42,7 @@ const Input: FunctionComponent<InputProps> = props => {
   const inpRef = useRef<TTextInput>(null);
 
   const focus = () => {
-    console.error('Focus!');
+    console.log('Focus!');
     if (inpRef.current) {
       inpRef.current.focus();
     }

@@ -45,12 +45,12 @@ const ManageMembersModal: FunctionComponent<{
   const [showRemoveMember, setShowRemoveMember] = useState(false);
   const [memberToRemove, setMemberToRemove] = useState(-1);
 
-  console.error('Members user data:  ', allMembers);
+  console.log('Members user data:  ', allMembers);
 
   const addNewMember = () => {
-    console.error('Adding ', data[newMember]);
+    console.log('Adding ', data[newMember]);
     if (data[newMember] == undefined) {
-      console.error('Invalid member');
+      console.log('Invalid member');
       return;
     }
     const user = data[newMember];
@@ -226,7 +226,7 @@ const ManageMembersModal: FunctionComponent<{
               contentContainerStyle={{justifyContent: 'center'}}>
               {allMembers !== undefined &&
                 allMembers.map((member, i) => {
-                  console.error('Member :: ', member);
+                  console.log('Member :: ', member);
                   return (
                     <View
                       key={`key_${i}__`}

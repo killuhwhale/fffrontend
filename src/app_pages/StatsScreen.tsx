@@ -39,6 +39,17 @@ export const chartConfig = {
   useShadowColorFromDataset: false, // optional
 };
 
+// Convert,String date (res from db) as UTC to local time as String
+export const _date = (
+  dateString: string,
+  tz: string = 'America/Los_Angeles',
+) => {
+  let d = new Date(dateFormat(new Date(dateString)));
+  return new Intl.DateTimeFormat('en-US', {
+    timeZone: tz,
+  }).format(d);
+};
+
 const StatsScreen: FunctionComponent<Props> = ({
   navigation,
   route: {params},
@@ -58,76 +69,51 @@ const StatsScreen: FunctionComponent<Props> = ({
       startDate: dateFormat(startDate),
       endDate: dateFormat(endDate),
     });
-  // const data = JSON.parse(_data?_data:'[]') as []
-  
-    console.log("\n\n Stats wod query: ", typeof(data), data?.length, data, "\n\n")
+
+  if (data && !isLoading) {
+    console.log(
+      '\n\n Stats wod queryz: ',
+      data?.length,
+
+      // data,
+      '\n\n',
+    );
+  }
 
   const [allWorkouts, workoutTagStats, workoutNameStats] = useMemo(() => {
     if (data && data.length > 0) {
-      let allWorkouts: WorkoutCardProps[] = [];
-      let workoutTagStats: {}[] = [];
-      let workoutNameStats: {}[] = [];
+      let _allWorkouts: WorkoutCardProps[] = [];
+      let _workoutTagStats: {}[] = [];
+      let _workoutNameStats: {}[] = [];
       const calc = new CalcWorkoutStats();
 
       data.forEach(workoutGroup => {
-        console.log("\n .Workout Group ", workoutGroup, "\n")
-        const workouts = workoutGroup.completed_workouts?
-          workoutGroup.completed_workouts:
-          workoutGroup.workouts
+        console.log('\n .Workout Group ', workoutGroup, '\n');
+        const workouts = workoutGroup.completed_workouts
+          ? workoutGroup.completed_workouts
+          : workoutGroup.workouts;
 
-        console.log("Workout groups workouts: ", workouts)
-        allWorkouts.push(...workouts); // Collect all workouts for bar data
+        console.log('Workout groups workouts: ', workouts);
+        _allWorkouts.push(...workouts); // Collect all workouts for bar data
 
         calc.calcMulti(workouts);
         const [tags, names] = calc.getStats();
-        workoutTagStats.push({...tags, date: workoutGroup.date});
-        workoutNameStats.push({...names, date: workoutGroup.date});
+        _workoutTagStats.push({...tags, date: workoutGroup.for_date});
+        _workoutNameStats.push({...names, date: workoutGroup.for_date});
         calc.reset();
-
-        // const [__tags, __names] = processMultiWorkoutStats(
-        //   workoutGroup.completed_workouts,
-        // );
-
-        // For bar Line data, series data.
-        // workoutTagStats.push({...__tags, date: workoutGroup.date});
-        // workoutNameStats.push({...__names, date: workoutGroup.date});
       });
-      return [allWorkouts, workoutTagStats, workoutNameStats];
+      return [_allWorkouts, _workoutTagStats, _workoutNameStats];
     }
     return [[], [], []];
   }, [data]);
 
+  console.log('\n\n', 'WorkotuTag Stats: ', workoutTagStats, '\n\n');
+
   const [tags, names] = useMemo(() => {
     const calc = new CalcWorkoutStats();
     calc.calcMulti(allWorkouts);
-
-    // const [_tags, _names] = processMultiWorkoutStats(allWorkouts);
-    // console.error('ALLLLLWORKOUTS', _tags, _names);
-    // return [_tags, _names];
-
     return calc.getStats();
   }, [allWorkouts, data]);
-
-  // !! BELOW CODE IS REPACED BY THE MEMOIZED FUCNTIONS ABOVE !!
-
-  // // process selected workouts, tally up by name and tag(category)
-  // if (data && data.length > 0) {
-  //   data.forEach(workoutGroup => {
-  //     allWorkouts.push(...workoutGroup.completed_workouts); // Collect all workouts for bar data
-  //     const [__tags, __names] = processMultiWorkoutStats(
-  //       workoutGroup.completed_workouts,
-  //     );
-
-  //     // For bar Line data, series data.
-  //     workoutTagStats.push({...__tags, date: workoutGroup.date});
-  //     workoutNameStats.push({...__names, date: workoutGroup.date});
-  //   });
-
-  //   const [_tags, _names] = processMultiWorkoutStats(allWorkouts);
-
-  //   tags = _tags;
-  //   names = _names;
-  // }
 
   const tagLabels: string[] = Array.from(new Set(Object.keys(tags)));
   const nameLabels: string[] = Array.from(new Set(Object.keys(names)));
@@ -215,7 +201,8 @@ const StatsScreen: FunctionComponent<Props> = ({
       </View>
       <View style={{flex: 8}}>
         <SmallText>
-          Found {dataReady? data?.length: 0} { dataReady && data?.length == 1 ? 'workout' : 'workouts'}
+          Found {dataReady ? data?.length : 0}{' '}
+          {dataReady && data?.length == 1 ? 'workout' : 'workouts'}
         </SmallText>
         <ScrollView>
           {dataReady ? (

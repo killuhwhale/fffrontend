@@ -227,7 +227,7 @@ const GymsPanel: FunctionComponent<GymsPanelProps> = ({data, onDelete}) => {
   const theme = useTheme();
 
   const goToGym = (gym: GymCardProps) => {
-    console.error('Navigate user to GymClasView with ID: ', gym);
+    console.log('Navigate user to GymClasView with ID: ', gym);
     RootNavigation.navigate('GymScreen', gym);
   };
 
@@ -317,7 +317,7 @@ const FavGymClassesPanel: FunctionComponent<
 > = props => {
   const theme = useTheme();
   const goToGymClass = (gymClass: GymClassCardProps) => {
-    console.error('Going to class w/ ', gymClass);
+    console.log('Going to class w/ ', gymClass);
     RootNavigation.navigate('GymClassScreen', gymClass);
   };
 
@@ -357,7 +357,7 @@ const FavGymClassesPanel: FunctionComponent<
 const WorkoutsPanel: FunctionComponent<WorkoutPanelProps> = props => {
   const theme = useTheme();
   const [showSearchWorkouts, setShowSearchWorkouts] = useState(false);
-  // console.error('Workout Panel: ', props.data);
+  // console.log('Workout Panel: ', props.data);
   return (
     <View
       style={{
@@ -469,13 +469,13 @@ const ProfileSettingsModal: FunctionComponent<{
   const [showConfirmLogout, setShowConfirmLogout] = useState(false);
 
   const logout = () => {
-    console.error('Loggin out');
+    console.log('Loggin out');
     auth
       .logout()
       .then(res => {
-        console.error('ProfileSettings: Logged out');
+        console.log('ProfileSettings: Logged out');
       })
-      .catch(err => console.error('ProfileSettings Logout Error', err));
+      .catch(err => console.log('ProfileSettings Logout Error', err));
   };
 
   return (
@@ -700,7 +700,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
 
   const onDelete = async () => {
     const deletedGym = await deleteGymMutation(curDelGym.id).unwrap();
-    console.error('Deleted Gym: ', deletedGym);
+    console.log('Deleted Gym: ', deletedGym);
     setDeleteGymModalVisibleVisible(false);
   };
 

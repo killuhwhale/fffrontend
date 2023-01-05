@@ -77,7 +77,7 @@ const GymClassTextCardList: FunctionComponent<{
   data: GymClassCardListProps;
 }> = props => {
   const theme = useTheme();
-  console.error('Listsss', props);
+  console.log('Listsss', props);
   return (
     <StyledList
       data={props.data}
@@ -90,7 +90,7 @@ const GymClassTextCardList: FunctionComponent<{
       ItemSeparatorComponent={() => <View style={{height: 20}} />}
       keyExtractor={({id}: any) => id.toString()}
       renderItem={(innerprops: any) => {
-        console.error('List item_______', props);
+        console.log('List item_______', props);
 
         return (
           <GymClassTextCard

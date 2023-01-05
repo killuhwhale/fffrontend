@@ -50,22 +50,22 @@ const ImagePicker: FunctionComponent<{
     try {
       const res = await launchImageLibrary({mediaType: 'mixed'});
 
-      console.error('DocuPicker res ', res);
+      console.log('DocuPicker res ', res);
       // uploadyContext.upload(res);
       if (res.errorCode) {
-        console.error('Pick file error', res.errorMessage);
+        console.log('Pick file error', res.errorMessage);
       } else if (res.assets) {
-        console.error('Calling setState as child', res);
-        console.error();
+        console.log('Calling setState as child', res);
+        console.log();
         props.setState(res.assets[0]);
       }
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
-        console.error(
+        console.log(
           'User cancelled the picker, exit any dialogs or menus and move on',
         );
       } else {
-        console.error('err picker', err);
+        console.log('err picker', err);
         throw err;
       }
     }
@@ -103,16 +103,9 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
   const [gym, setGym] = useState(data && data.length > 0 ? data[0].id : 0);
   const pickerRef = useRef<any>();
 
-  console.error("User's gym data: ", gym);
+  console.log("User's gym data: ", gym);
   const _createGymClass = async () => {
-    console.error(
-      'Creatting gym class: ',
-      mainFile,
-      logoFile,
-      title,
-      desc,
-      gym,
-    );
+    console.log('Creatting gym class: ', mainFile, logoFile, title, desc, gym);
 
     // Need to get file from the URI
     const data = new FormData();
@@ -130,19 +123,19 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
       name: logoFile.fileName,
       type: logoFile.type,
     });
-    console.error('FOrmdata');
-    console.error('FOrmdata');
-    console.error('FOrmdata');
-    console.error('FOrmdata', data);
+    console.log('FOrmdata');
+    console.log('FOrmdata');
+    console.log('FOrmdata');
+    console.log('FOrmdata', data);
 
     try {
       const gymClass = await createGymClass(data).unwrap();
-      console.error('Gym class res', gymClass);
+      console.log('Gym class res', gymClass);
       if (gymClass.id) {
         navigation.navigate('HomePageTabs', {screen: 'Profile'});
       }
     } catch (err) {
-      console.error('Error creating gym', err);
+      console.log('Error creating gym', err);
     }
     // TODO possibly dispatch to refresh data
   };
@@ -226,7 +219,14 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
         </View>
         <View style={{flex: 2}}>
           {!userGymsLoading ? (
-            <View style={{justifyContent: 'flex-start', borderColor: 'white', borderWidth: 1, margin: 6, padding: 6}}>
+            <View
+              style={{
+                justifyContent: 'flex-start',
+                borderColor: 'white',
+                borderWidth: 1,
+                margin: 6,
+                padding: 6,
+              }}>
               <SmallText>Gym</SmallText>
               <Picker
                 ref={pickerRef}

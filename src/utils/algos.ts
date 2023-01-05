@@ -81,7 +81,7 @@ export const debounce = (func, timeout = 300) => {
   return (...args) => {
     clearTimeout(timer);
     timer = setTimeout(() => {
-      console.error('Settimeout apply funcz');
+      console.log('Settimeout apply funcz');
       func.apply(this, args);
     }, timeout);
   };

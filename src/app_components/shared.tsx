@@ -152,8 +152,6 @@ export class CalcWorkoutStats {
 
   getStats() {
     if (!this.isFormatted) {
-      console.error('Creating formatted values');
-
       Object.keys(this.tags).map(key => {
         if (!this.fTags[key]) {
           this.fTags[key] = {};
@@ -310,7 +308,7 @@ export class CalcWorkoutStats {
     const totalVol =
       quantity *
       (weights.length == 0 ? 0 : itemWeights.reduce((p, c) => p + c, 0));
-
+    console.log('CALC Standard Scheme:: ', quantity, weights, itemWeights);
     if (itemReps[0]) {
       //Reps
       this.calcItemReps(item, pCat, workoutName, quantity, totalVol, item.sets);
@@ -374,7 +372,7 @@ export class CalcWorkoutStats {
       const totalVol =
         (item.constant ? 1 : roundReps) * quantity * itemWeights[idx];
 
-      // console.error(
+      // console.log(
       //   'Total vol: ',
       //   quantity,
       //   itemDuration,
@@ -436,7 +434,7 @@ export class CalcWorkoutStats {
       //Reps
       // If the
       const totalVol = dotProd(itemReps, weights);
-      // console.error("Dot Product: ", quantity, weights, totalVol)
+      // console.log("Dot Product: ", quantity, weights, totalVol)
       this.tags[pCat].totalReps += itemReps.reduce((p, c) => p + c, 0);
       this.names[workoutName].totalReps += itemReps.reduce((p, c) => p + c, 0);
       this.calcItemReps(item, pCat, workoutName, null, totalVol, null);
@@ -485,7 +483,7 @@ export class CalcWorkoutStats {
       //Reps
       const totalVol = dotProd(itemReps, weights);
       this.calcItemReps(item, pCat, workoutName, itemReps[0], totalVol, 1);
-      // console.error("Dot Product: ", quantity, weights, totalVol)
+      // console.log("Dot Product: ", quantity, weights, totalVol)
     } else if (itemDuration[0]) {
       const totalVol = dotProd(itemDuration, weights);
       this.calcItemDuration(
@@ -533,6 +531,7 @@ export class CalcWorkoutStats {
         this.checkInItemTagAndName(pCat, workoutName);
 
         if (WORKOUT_TYPES[this.schemeType] == STANDARD_W) {
+          // console.log('calculating Standarad!!!!!!!!!!111');
           this.calcStandardScheme(item, pCat, workoutName);
         } else if (WORKOUT_TYPES[this.schemeType] == REPS_W) {
           this.calcRepsScheme(item, pCat, workoutName);
@@ -542,9 +541,10 @@ export class CalcWorkoutStats {
           this.calcDurationScheme(item, pCat, workoutName);
         }
       });
+      // console.log('Calc res ', this.getStats());
       return true;
     } catch (err) {
-      console.error('Calc err: ', err);
+      console.log('Calc err: ', err);
     }
 
     return false;
@@ -552,7 +552,7 @@ export class CalcWorkoutStats {
 
   calcMulti(data: WorkoutCardProps[]) {
     this.isFormatted = false;
-    console.log("CalcMulti Data: ", data)
+    console.log('CalcMulti Data: ', data);
     data.forEach(workout => {
       const {
         scheme_rounds,
@@ -560,8 +560,13 @@ export class CalcWorkoutStats {
         workout_items,
         completed_workout_items,
       } = workout as WorkoutCardProps;
-      console.log("\n\n Calc Multiz: ", workout_items, completed_workout_items, "\n\n")
-      
+      // console.log(
+      //   '\n\n Calc Multiz: ',
+      //   workout_items,
+      //   completed_workout_items,
+      //   '\n\n',
+      // );
+
       this.setWorkoutParams(
         scheme_rounds,
         scheme_type,
@@ -583,6 +588,8 @@ export class CalcWorkoutStats {
 
     this.tags = {};
     this.names = {};
+    this.fTags = {};
+    this.fNames = {};
   }
 }
 
@@ -627,7 +634,7 @@ export const parseNumList = (reps): number[] => {
 //   // We will calculate it differently to account for the reps or rounds.
 
 //   items.forEach(item => {
-//     // console.error("Process: ", item)
+//     // console.log("Process: ", item)
 //     // Tags
 //     const pCat = item.name.primary?.title;
 //     const sCat = item.name.secondary?.title;
@@ -683,7 +690,7 @@ export const parseNumList = (reps): number[] => {
 //           names[workoutName].totalKgs += totalVol * LB2KG;
 //         }
 //       } else if (itemDuration[0]) {
-//         console.error('Item dur: ', item);
+//         console.log('Item dur: ', item);
 //         // Duration
 //         // If unit is in seconds, our value is already in seconds, else it is in mins, multiple to convert to seconds.
 
@@ -815,7 +822,7 @@ export const parseNumList = (reps): number[] => {
 //       if (itemReps[0]) {
 //         //Reps
 //         const totalVol = dotProd(itemReps, weights);
-//         // console.error("Dot Product: ", quantity, weights, totalVol)
+//         // console.log("Dot Product: ", quantity, weights, totalVol)
 
 //         tags[pCat].totalReps += itemReps.reduce((p, c) => p + c, 0);
 //         names[workoutName].totalReps += itemReps.reduce((p, c) => p + c, 0);
@@ -896,7 +903,7 @@ export const parseNumList = (reps): number[] => {
 //       if (itemReps[0]) {
 //         //Reps
 //         const totalVol = dotProd(itemReps, weights);
-//         // console.error("Dot Product: ", quantity, weights, totalVol)
+//         // console.log("Dot Product: ", quantity, weights, totalVol)
 
 //         tags[pCat].totalReps += itemReps.reduce((p, c) => p + c, 0);
 //         names[workoutName].totalReps += itemReps.reduce((p, c) => p + c, 0);
@@ -957,7 +964,7 @@ export const parseNumList = (reps): number[] => {
 //       }
 //     }
 //   });
-//   // console.error('Done processing: ', tags, names)
+//   // console.log('Done processing: ', tags, names)
 //   return [tags, names];
 // };
 

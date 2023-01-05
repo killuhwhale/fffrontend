@@ -134,7 +134,7 @@ const AddItem: FunctionComponent<{
   const [item, setItem] = useState(defaultItem);
 
   const resetDefaultItem = () => {
-    console.error('Resetting item');
+    console.log('Resetting item');
 
     resetItem();
     setWeight(initWeight);
@@ -194,7 +194,7 @@ const AddItem: FunctionComponent<{
       item.distance = '1';
     }
 
-    console.error('_Adding item: ', item);
+    console.log('_Adding item: ', item);
 
     // // Checks if reps and weights match the repScheme
     const {success, errorType, errorMsg} = props.onAddItem(item);
@@ -203,10 +203,10 @@ const AddItem: FunctionComponent<{
       resetDefaultItem();
     } else if (errorType == 0) {
       // Missing Reps in Scheme, parent should highlight SchemeRounds Input
-      console.error('Add item error: ', errorMsg);
+      console.log('Add item error: ', errorMsg);
     } else if (errorType == 1) {
       // Item reps do not match Reps in Scheme
-      console.error('Add item error: ', errorMsg);
+      console.log('Add item error: ', errorMsg);
       setRepsSchemeRoundsError(true);
       setRepsSchemeRoundsErrorText(errorMsg);
     } else if (errorType == 3) {

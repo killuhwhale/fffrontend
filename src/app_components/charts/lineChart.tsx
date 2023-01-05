@@ -35,7 +35,7 @@ const bLineData = (workouts, tagName, metric) => {
       data.push(0);
     }
   });
-  // console.error('Line data: ', data)
+  // console.log('Line data: ', data)
   return {
     labels,
     datasets: [
@@ -95,11 +95,11 @@ const TotalsLineChart: FunctionComponent<{
   const [__filteredDataTypes, __filteredDataTypesAbbrev] =
     filterLineDataTypes();
 
-  console.error(
-    'Filtered data types line:',
-    __filteredDataTypes,
-    __filteredDataTypesAbbrev,
-  );
+  // console.log(
+  //   'Filtered data types line:',
+  //   __filteredDataTypes,
+  //   __filteredDataTypesAbbrev,
+  // );
 
   const [showTags, setShowTags] = useState(true); // Toggles between names and tags on the Bar Chart graph
   const [showLineChartDataType, setShowLineChartDataType] = useState(1); // Which data to show in the LineChart [totalReps etc...]
@@ -154,7 +154,7 @@ const TotalsLineChart: FunctionComponent<{
               : !showTags && props.nameLabels.length > 0
               ? setShowLineChartNameType
               : val => {
-                  console.error('Empty onChange called!!', val);
+                  console.log('Empty onChange called!!', val);
                 }
           }
         />

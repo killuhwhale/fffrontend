@@ -73,7 +73,7 @@ const jListToNumStr = jsonListStr => {
     const list = JSON.parse(jsonListStr);
     return list.toString().replaceAll(',', ' ');
   } catch (err) {
-    console.error('Err jListToNumStr ', err);
+    console.log('Err jListToNumStr ', err);
   }
 };
 
@@ -133,7 +133,7 @@ const EditWorkoutItem: FunctionComponent<{
   const [hasDistance, _hasDistance] = useState(JSON.parse(distance)[0] != 0);
   const [hasSets, _hasSets] = useState(sets != 0);
 
-  console.error(
+  console.log(
     'Dur unit:',
     hasDuration,
     duration_unit,
@@ -628,7 +628,7 @@ const EditWorkout: FunctionComponent<{
   workoutIdx: number;
 }> = props => {
   const {workout} = props;
-  console.error('Workout infoooo ', workout.title, '\n');
+  console.log('Workout infoooo ', workout.title, '\n');
   return (
     <View style={{width: '100%', marginVertical: 12}}>
       <View
@@ -687,7 +687,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
     key,
     value,
   ): {success: boolean; errorType: number; errorMsg: string} => {
-    // console.error("Editing item: ", newWorkoutGroup.workouts[workoutIdx].workout_items[itemIdx], value)
+    // console.log("Editing item: ", newWorkoutGroup.workouts[workoutIdx].workout_items[itemIdx], value)
     // Before updating the item we need to verify it....
     // Here we just have
     const newWorkoutGroup = {...editedWorkoutGroup} as WorkoutGroupProps;
@@ -708,7 +708,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
     }
 
     const item = workout.workout_items[itemIdx];
-    console.error('Settings key', key, value, item);
+    console.log('Settings key', key, value, item);
     if (
       [
         'sets',
@@ -730,10 +730,10 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
     );
 
     if (success) {
-      console.error('New workout group', newWorkoutGroup);
+      console.log('New workout group', newWorkoutGroup);
       setEditedWorkoutGroup({...newWorkoutGroup});
     } else {
-      console.error('Error editing item for Complete Workout Item', item);
+      console.log('Error editing item for Complete Workout Item', item);
     }
 
     return {success, errorType, errorMsg};
@@ -741,7 +741,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
 
   const completeWorkout = async () => {
     setShowCompleteWorkout(false);
-    console.error(
+    console.log(
       'Creating completed workout group!',
       editedWorkoutGroup.workouts ? editedWorkoutGroup.workouts[0] : '',
     );
@@ -749,7 +749,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
       !editedWorkoutGroup.workouts ||
       editedWorkoutGroup.workouts?.length == 0
     ) {
-      console.error('NO workouts, cannot complete.');
+      console.log('NO workouts, cannot complete.');
       return;
     }
 
@@ -762,7 +762,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
     data.append('workout_group', editedWorkoutGroup.id);
     if (files) {
       files.forEach(file => {
-        console.error('Uploading files ', file.path);
+        console.log('Uploading files ', file.path);
         // Path Android:  file:///data/user/0/com.fitform/cache/react-native-image-crop-picker/Screenshot_20221118-114259.png
         data.append('files', {
           uri: file.path,
@@ -773,8 +773,8 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
     }
 
     const res = await createCompletedWorkout(data).unwrap();
-    console.error('CompltedWG formdata: ', data);
-    console.error('CompltedWG res: ', res);
+    console.log('CompltedWG formdata: ', data);
+    console.log('CompltedWG res: ', res);
     if (res.id) {
       navigation.goBack();
     }

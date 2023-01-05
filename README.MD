@@ -6,7 +6,7 @@
 
 Git
 Update staging from main
-*main
+\*main
 git merge origin/staging
 git branch -M staging
 git push origin HEAD
@@ -19,7 +19,7 @@ sudo arch -x86_64 gem install ffi
 arch -x86_64 pod install
 
 When deleteing build folder or using new simulator, needed to remove DervivedData
-rm -r /Users/chrisandaya/Library/Developer/Xcode/DerivedData  
+rm -r /Users/chrisandaya/Library/Developer/Xcode/DerivedData
 cd android/ && ./gradlew clean && cd .. && npx react-native run-android --active-arch-only
 
 env /usr/bin/arch -arm64 /bin/bash --login
@@ -27,9 +27,13 @@ env /usr/bin/arch -arm64 /bin/bash --login
 npx react-native run-ios
 npx react-native run-ios --configuration Release
 
-npx react-native start  
+adb -s emulator-5554 reverse tcp:8081 tcp:8081
+adb -s emulator-5554 reverse tcp:8000 tcp:8000
+
 adb -s 710KPMZ0409387 reverse tcp:8081 tcp:8081
 adb -s 710KPMZ0409387 reverse tcp:8000 tcp:8000
+npx react-native start
+
 npx react-native run-android --active-arch-only
 
 // When building your android app locally, by default you build all the 4 Application

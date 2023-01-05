@@ -85,7 +85,7 @@ const WorkoutGroupCard: FunctionComponent<{
     });
   };
 
-  console.error('WGCard: ', props);
+  console.log('WGCard: ', props);
 
   return (
     <CardBG

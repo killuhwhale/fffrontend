@@ -80,7 +80,7 @@ const AnimatedButton: FunctionComponent<{
   }, [willMountDep]);
 
   const handlePressIn = () => {
-    // console.error("Pressed in ", props.title, pressAction, proValue)
+    // console.log("Pressed in ", props.title, pressAction, proValue)
 
     Animated.timing(pressAction, {
       duration: ACTION_TIMER,
@@ -102,7 +102,7 @@ const AnimatedButton: FunctionComponent<{
       pressAction.stopAnimation();
       props.onFinish();
     }
-    // console.error("cur val: ", proValue, e, props.title)
+    // console.log("cur val: ", proValue, e, props.title)
   };
   const getButtonWidthLayout = e => {
     setButtonWidth(e.nativeEvent.layout.width - 6);
@@ -130,7 +130,7 @@ const AnimatedButton: FunctionComponent<{
       <TouchableWithoutFeedback
         onPressIn={isActive ? handlePressIn : () => props.onFinish()}
         onPressOut={
-          isActive ? handlePressOut : () => console.error('Btn inactive!')
+          isActive ? handlePressOut : () => console.log('Btn inactive!')
         }>
         <View style={styles.button} onLayout={getButtonWidthLayout}>
           <Animated.View style={[styles.bgFill, getProgressStyles()]} />

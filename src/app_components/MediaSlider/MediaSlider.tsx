@@ -19,10 +19,10 @@ const StyledList = styled.FlatList`
 `;
 
 const onBuffer = () => {
-  console.error('On Buffer');
+  console.log('On Buffer');
 };
 const onError = () => {
-  console.error('On Error');
+  console.log('On Error');
 };
 
 interface MediaSliderProps {
@@ -43,9 +43,9 @@ const MediaURLItem: FunctionComponent<{
   mediaClass: string;
 }> = props => {
   const fileRefs = useRef<any>([]);
-  // console.error("Item props", withSpaceURL(props.url, props.mediaClassID, props.mediaClass))
+  // console.log("Item props", withSpaceURL(props.url, props.mediaClassID, props.mediaClass))
   const mimeType = props.url.split('.').slice(-1)[0].toLowerCase();
-  // console.error("Mimtype: ", mimeType, MIME_VIDEO.has(mimeType))
+  // console.log("Mimtype: ", mimeType, MIME_VIDEO.has(mimeType))
   return (
     <View style={{paddingRight: 20}}>
       {MIME_VIDEO.has(mimeType) ? (
@@ -80,7 +80,7 @@ const MediaURLItem: FunctionComponent<{
 };
 const MediaItem: FunctionComponent<ImageOrVideo> = props => {
   const fileRefs = useRef<any>([]);
-  console.error('Item props', props);
+  console.log('Item props', props);
   return (
     <View style={{paddingRight: 20}}>
       {props.mime.split('/')[0] == 'video' ? (
@@ -136,7 +136,7 @@ const MediaURLSlider: FunctionComponent<MediaSliderURLProps> = props => {
   );
 };
 const MediaSlider: FunctionComponent<MediaSliderProps> = props => {
-  // console.error("Screen Width: ", SCREEN_WIDTH)
+  // console.log("Screen Width: ", SCREEN_WIDTH)
 
   // Android props
   // LocalIdentidier is undefined on Android
@@ -153,7 +153,7 @@ const MediaSlider: FunctionComponent<MediaSliderProps> = props => {
       snapToAlignment="center"
       snapToInterval={SCREEN_WIDTH + 2 * screen_margin}
       keyExtractor={({path, ...rest}: any) => {
-        // console.error('Rest of deets: ', rest);
+        // console.log('Rest of deets: ', rest);
         return path;
       }}
       renderItem={({item}: any) => <MediaItem {...item} />}
