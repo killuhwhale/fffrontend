@@ -24,6 +24,18 @@ cd android/ && ./gradlew clean && cd .. && npx react-native run-android --active
 
 env /usr/bin/arch -arm64 /bin/bash --login
 
+# Build Android
+
+cd android
+./gradlew bundleRelease
+
+Double click on YOUR_APP_NAME.xcworkspace
+Product → Build
+Product → Archive
+
+- Make sure to set the device to "Any iOS Device (arm64)".
+  After the archive is completed, in the archive window, click on Distribute App.
+
 npx react-native run-ios
 npx react-native run-ios --configuration Release
 
