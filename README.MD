@@ -26,8 +26,14 @@ env /usr/bin/arch -arm64 /bin/bash --login
 
 # Build Android
 
+Change versions in android/app/build.gradle
 cd android
 ./gradlew bundleRelease
+
+# Build iOS
+
+Versions:
+To change the version of your iOS app, you will need to modify the CFBundleShortVersionString and CFBundleVersion keys in your app's Info.plist file.
 
 Double click on YOUR_APP_NAME.xcworkspace
 Product → Build

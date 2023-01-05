@@ -139,8 +139,8 @@ android {
         applicationId "com.fitform"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
         if (isNewArchitectureEnabled()) {
@@ -274,7 +274,7 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
-    
+
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'
@@ -335,7 +335,7 @@ def isNewArchitectureEnabled() {
 
 
 project.ext.vectoricons = [
-    iconFontNames: [ 
+    iconFontNames: [
         'Ionicons.ttf'
     ] // Name of the font files you want to copy
 ]
