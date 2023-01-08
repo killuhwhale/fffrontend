@@ -67,13 +67,7 @@ cd android/ && ./gradlew clean && ./gradlew bundleRelease && cd .. && npx react-
 git push origin HEAD:staging HEAD
 
 Bugs:
-
-    Add Loading Spiiners to On Create:
-        - Gym, Class, Workout, CompleteWorkout
-        - Takes a while and app should indicate to user while its waiting....
-
-    Logout
-        - Still getting trapped in cycle.....
+Logout - Still getting trapped in cycle.....
 
     (Only noticed this on iOS Release)
     Workoutscreen
@@ -83,6 +77,15 @@ Bugs:
     Media Slider:
     - Video audio plays when not in focus.
         - Should not play unless in focus.
+
+    Create Gym Class Screen
+    - Slect Gym
+        - Doesnt show text on Adnroid at least
+
+    Add Loading Spiiners to On Create:
+        - Gym, Class, Workout, CompleteWorkout
+        - Takes a while and app should indicate to user while its waiting....
+
 
     iOS:
         Create Gym Class Screen

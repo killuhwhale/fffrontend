@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from 'react';
 import styled from 'styled-components/native';
-import {Container, SCREEN_HEIGHT} from '../shared';
+import {Container, SCREEN_HEIGHT, SCREEN_WIDTH} from '../shared';
 import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
 import {useTheme} from 'styled-components';
 import {
@@ -45,9 +45,7 @@ const GymCardList: FunctionComponent<GymCardListProps> = props => {
     <StyledList
       data={props.data}
       horizontal={false}
-      contentContainerStyle={{
-        alignItems: 'center',
-      }}
+      contentContainerStyle={{flexGrow: 1}}
       ItemSeparatorComponent={() => <View style={{height: 20}} />}
       keyExtractor={({id}: any) => id.toString()}
       renderItem={({item}: any) => <GymCard {...item} />}

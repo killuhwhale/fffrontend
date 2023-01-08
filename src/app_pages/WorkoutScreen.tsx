@@ -133,7 +133,6 @@ const WorkoutScreen: FunctionComponent<Props> = ({
       completedIsError = isErrorCompleted;
       completedError = errorCompleted;
     }
-
   } else {
     // we have OG workout owneed by user
     // THis is wrong. This get all users workouts
@@ -152,8 +151,6 @@ const WorkoutScreen: FunctionComponent<Props> = ({
     oGIsError = isError;
     oGError = error;
   }
-
-
 
   const [showingOGWorkoutGroup, setShowingOGWorkoutGroup] = useState(
     isShowingOGWorkoutGroup,
@@ -291,6 +288,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
   };
 
   // console.log("Current workout Group:", workoutGroup, oGData, completedData, isShowingOGWorkoutGroup, showingOGWorkoutGroup)
+
   return (
     <ScrollView
       style={{backgroundColor: theme.palette.backgroundColor}}
@@ -305,11 +303,11 @@ const WorkoutScreen: FunctionComponent<Props> = ({
             flexDirection: 'row',
             width: '100%',
             justifyContent: 'center',
+            marginTop: 16,
           }}>
           <View style={{flex: 1, justifyContent: 'center', width: '100%'}}>
             {oGIsSuccess && completedIsSuccess ? (
               <TouchableHighlight
-                style={{borderWidth: 1, borderColor: 'white'}}
                 onPress={() =>
                   setShowingOGWorkoutGroup(!showingOGWorkoutGroup)
                 }>
@@ -323,7 +321,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                     }
                     style={{fontSize: 24}}
                   />
-                  
+
                   <SmallText textStyles={{textAlign: 'center'}}>
                     {showingOGWorkoutGroup && !oGIsLoading ? 'og' : 'completed'}
                   </SmallText>
@@ -334,9 +332,9 @@ const WorkoutScreen: FunctionComponent<Props> = ({
             )}
           </View>
           <View style={{flex: 3}}>
-            <ScrollView horizontal>
-              <RegularText>{workoutGroup.title}</RegularText>
-            </ScrollView>
+            <RegularText textStyles={{textAlign: 'center'}}>
+              {workoutGroup.title}
+            </RegularText>
           </View>
 
           <View
@@ -388,17 +386,20 @@ const WorkoutScreen: FunctionComponent<Props> = ({
           </View>
         </View>
       </Row>
-      <Row style={{height: 400}}>
-        {workoutGroup.media_ids ? (
+      {workoutGroup.media_ids &&
+      JSON.parse(workoutGroup.media_ids).length > 0 ? (
+        <Row style={{height: 400}}>
           <MediaURLSlider
             data={JSON.parse(workoutGroup.media_ids)}
             mediaClassID={workoutGroup.id}
             mediaClass={MEDIA_CLASSES[mediaClass]}
           />
-        ) : (
-          <></>
-        )}
-      </Row>
+        </Row>
+      ) : (
+        <View style={{margin: 69}}>
+          <SmallText>Add some pictures next time!</SmallText>
+        </View>
+      )}
       <Row style={{}}>
         <SmallText>{workoutGroup.caption}</SmallText>
       </Row>

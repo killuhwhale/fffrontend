@@ -33,6 +33,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {SmallText} from '../app_components/Text/Text';
 import ResetPasswordScreen from '../app_pages/input_pages/users/ResetPassword';
 import {SCREEN_HEIGHT} from '../app_components/shared';
+import UserWorkoutsScreen from '../app_pages/UserWorkoutsScreen';
 // Screens and props each screen expects...
 export type RootStackParamList = {
   HomePage: undefined;
@@ -45,6 +46,7 @@ export type RootStackParamList = {
   CreateCompletedWorkoutScreen: WorkoutGroupProps;
   WorkoutDetailScreen: WorkoutCardProps;
   WorkoutNameDetailScreen: WorkoutNameProps;
+  UserWorkoutsScreen: undefined;
   Profile: undefined;
   AuthScreen: undefined;
   Header: undefined;
@@ -162,67 +164,72 @@ const RootStack: FunctionComponent<RootstackProps> = props => {
         <Stack.Screen
           name="GymScreen"
           component={GymScreen}
-          options={{headerTitle: ''}}
+          options={{headerTitle: '', headerShown: false}}
         />
         <Stack.Screen
           name="GymClassScreen"
           component={GymClassScreen}
-          options={{headerTitle: ''}}
+          options={{headerTitle: '', headerShown: false}}
         />
         <Stack.Screen
           name="WorkoutScreen"
           component={WorkoutScreen}
-          options={{headerTitle: ''}}
+          options={{headerTitle: '', headerShown: false}}
+        />
+        <Stack.Screen
+          name="UserWorkoutsScreen"
+          component={UserWorkoutsScreen}
+          options={{headerTitle: '', headerShown: false}}
         />
         <Stack.Screen
           name="AuthScreen"
           component={AuthScreen}
-          options={{headerTitle: ''}}
+          options={{headerTitle: '', headerShown: false}}
         />
         <Stack.Screen
           name="CreateGymScreen"
           component={CreateGymScreen}
-          options={{headerTitle: ''}}
+          options={{headerTitle: '', headerShown: false}}
         />
         <Stack.Screen
           name="CreateGymClassScreen"
           component={CreateGymClassScreen}
-          options={{headerTitle: ''}}
+          options={{headerTitle: '', headerShown: false}}
         />
         <Stack.Screen
           name="CreateWorkoutGroupScreen"
           component={CreateWorkoutGroupScreen}
-          options={{headerTitle: ''}}
+          options={{headerTitle: '', headerShown: false}}
         />
         <Stack.Screen
           name="CreateWorkoutScreen"
           component={CreateWorkoutScreen}
-          options={{headerTitle: ''}}
+          options={{headerTitle: '', headerShown: false}}
         />
         <Stack.Screen
           name="WorkoutDetailScreen"
           component={WorkoutDetailScreen}
-          options={{headerTitle: ''}}
+          options={{headerTitle: '', headerShown: false}}
         />
         <Stack.Screen
           name="WorkoutNameDetailScreen"
           component={WorkoutNameDetailScreen}
-          options={{headerTitle: ''}}
+          options={{headerTitle: '', headerShown: false}}
         />
         <Stack.Screen
           name="CreateCompletedWorkoutScreen"
           component={CreateCompletedWorkoutScreen}
-          options={{headerTitle: ''}}
+          options={{headerTitle: '', headerShown: false}}
         />
         <Stack.Screen
           name="StatsScreen"
           component={StatsScreen}
-          options={{headerTitle: ''}}
+          options={{headerTitle: '', headerShown: false}}
         />
         <Stack.Screen
           name="ResetPasswordScreen"
           component={ResetPasswordScreen}
-          options={{headerTitle: ''}}
+          options={{headerTitle: '', headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>

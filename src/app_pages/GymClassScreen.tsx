@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
 import {
+  Image,
   ImageBackground,
   Keyboard,
   Pressable,
@@ -45,6 +46,8 @@ import Input from '../app_components/Input/input';
 import DeleteActionCancelModal from '../app_components/modals/deleteByNameModal';
 import FilterItemsModal from '../app_components/modals/filterItemsModal';
 import {TouchableHighlight} from 'react-native-gesture-handler';
+import FilterGrid from '../app_components/Grids/FilterGrid';
+import {WorkoutGroupSquares} from '../app_components/Grids/GymClasses/WorkoutGroupSquares';
 export type Props = StackScreenProps<RootStackParamList, 'GymClassScreen'>;
 
 const GymClassScreenContainer = styled(Container)`
@@ -71,6 +74,72 @@ const Row = styled.View`
   flex-direction: row;
   justify-content: space-between;
 `;
+
+const FavoriteGymClass: FunctionComponent<{
+  id: string;
+}> = props => {
+  const {id} = props;
+
+  const {
+    data: dataGymClassFavs,
+    isLoading: isLoadingGymClassFavs,
+    isSuccess: isSuccessGymClassFavs,
+    isError: isErrorGymClassFavs,
+    error: errorGymClassFavs,
+  } = useGetProfileGymClassFavsQuery('');
+
+  const [favoriteGymClassMutation, {isLoading: favGymLoading}] =
+    useFavoriteGymClassMutation();
+  const [unfavoriteGymClassMutation, {isLoading: unfavGymLoading}] =
+    useUnfavoriteGymClassMutation();
+  const isFavorited = (
+    classes: {
+      id: number;
+      user_id: string;
+      date: string;
+      gym_class: GymClassCardProps;
+    }[],
+  ) => {
+    let faved = false;
+    classes.forEach(favClass => {
+      if (favClass.gym_class.id == id) {
+        faved = true;
+      }
+    });
+    return faved;
+  };
+
+  const favObj = new FormData();
+  favObj.append('gym_class', id);
+
+  return (
+    <View>
+      {dataGymClassFavs &&
+      !isLoadingGymClassFavs &&
+      isFavorited(dataGymClassFavs?.favorite_gym_classes) ? (
+        <TouchableHighlight onPress={() => unfavoriteGymClassMutation(favObj)}>
+          <View style={{alignItems: 'center'}}>
+            <IconButton
+              style={{height: 24}}
+              icon={<Icon name="star" color="red" style={{fontSize: 24}} />}
+            />
+            <SmallText>Unfavorite</SmallText>
+          </View>
+        </TouchableHighlight>
+      ) : (
+        <TouchableHighlight onPress={() => favoriteGymClassMutation(favObj)}>
+          <View style={{alignItems: 'center'}}>
+            <IconButton
+              style={{height: 24}}
+              icon={<Icon name="star" color="white" style={{fontSize: 24}} />}
+            />
+            <SmallText>Favorite</SmallText>
+          </View>
+        </TouchableHighlight>
+      )}
+    </View>
+  );
+};
 
 const GymClassScreen: FunctionComponent<Props> = ({
   navigation,
@@ -116,36 +185,6 @@ const GymClassScreen: FunctionComponent<Props> = ({
 
   // Separate workout groups into separate query for better caching.
 
-  const {
-    data: dataGymClassFavs,
-    isLoading: isLoadingGymClassFavs,
-    isSuccess: isSuccessGymClassFavs,
-    isError: isErrorGymClassFavs,
-    error: errorGymClassFavs,
-  } = useGetProfileGymClassFavsQuery('');
-
-  const [favoriteGymClassMutation, {isLoading: favGymLoading}] =
-    useFavoriteGymClassMutation();
-  const [unfavoriteGymClassMutation, {isLoading: unfavGymLoading}] =
-    useUnfavoriteGymClassMutation();
-  const isFavorited = (
-    classes: {
-      id: number;
-      user_id: string;
-      date: string;
-      gym_class: GymClassCardProps;
-    }[],
-  ) => {
-    let faved = false;
-    classes.forEach(favClass => {
-      if (favClass.gym_class.id == id) {
-        faved = true;
-      }
-    });
-    return faved;
-  };
-  const favObj = new FormData();
-  favObj.append('gym_class', id);
   console.log('GClass params: ', params);
   console.log('GClass data: ', data);
 
@@ -204,96 +243,46 @@ const GymClassScreen: FunctionComponent<Props> = ({
 
   return (
     <GymClassScreenContainer>
-      <ImageBackground
-        source={greenGrad}
+      <View
         style={{
-          position: 'absolute',
-          right: 0,
-          top: 0,
-          width: SCREEN_WIDTH * 0.0314,
-          height: SCREEN_HEIGHT * 0.0662607,
-        }}
-      />
-      <ImageBackground
-        source={greenGrad}
-        style={{
-          position: 'absolute',
-          left: 0,
-          top: 0,
-          width: SCREEN_WIDTH * 0.0314,
-          height: SCREEN_HEIGHT * 0.0662607,
-        }}
-      />
+          flexDirection: 'row',
+          paddingLeft: 32,
+          width: '100%',
+          flex: 1,
+          alignItems: 'center',
+        }}>
+        <Image
+          style={{
+            height: 92,
+            width: 92,
+          }}
+          source={{uri: mainURL}}
+        />
+        <View style={{flex: 1, marginLeft: 16, alignItems: 'center'}}>
+          <RegularText textStyles={{textAlign: 'center'}}>
+            {title}{' '}
+            {data?.user_is_owner
+              ? '(Owner)'
+              : data?.user_is_coach
+              ? '(Coach)'
+              : ''}
+          </RegularText>
+        </View>
+
+        <View style={{flex: 1, alignItems: 'center'}}>
+          <FavoriteGymClass id={id} />
+        </View>
+      </View>
 
       <View
         style={{
           flexDirection: 'row',
-          alignItems: 'center',
-          alignContent: 'center',
-          justifyContent: 'center',
+          paddingLeft: 32,
           width: '100%',
-          height: SCREEN_HEIGHT * 0.0662607,
+          flex: 0.25,
+          alignItems: 'center',
         }}>
-        <View
-          style={{
-            position: 'absolute',
-            width: '90%',
-            alignItems: 'center',
-            height: '100%',
-          }}>
-          <ScrollView horizontal style={{marginRight: SCREEN_WIDTH * 0.0914}}>
-            <View
-              style={{
-                alignContent: 'center',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '100%',
-              }}>
-              <RegularText textStyles={{textAlign: 'center'}}>
-                {title}{' '}
-                {data?.user_is_owner
-                  ? '(Owner)'
-                  : data?.user_is_coach
-                  ? '(Coach)'
-                  : ''}
-              </RegularText>
-            </View>
-          </ScrollView>
-        </View>
-        <View
-          style={{
-            position: 'absolute',
-            right: SCREEN_WIDTH * 0.0314 + 8,
-            marginLeft: 8,
-          }}>
-          {dataGymClassFavs &&
-          !isLoadingGymClassFavs &&
-          isFavorited(dataGymClassFavs?.favorite_gym_classes) ? (
-            <TouchableHighlight
-              onPress={() => unfavoriteGymClassMutation(favObj)}>
-              <View style={{alignItems: 'center'}}>
-                <IconButton
-                  style={{height: 24}}
-                  icon={<Icon name="star" color="red" style={{fontSize: 24}} />}
-                />
-                <SmallText>Unfavorite</SmallText>
-              </View>
-            </TouchableHighlight>
-          ) : (
-            <TouchableHighlight
-              onPress={() => favoriteGymClassMutation(favObj)}>
-              <View style={{alignItems: 'center'}}>
-                <IconButton
-                  style={{height: 24}}
-                  icon={
-                    <Icon name="star" color="white" style={{fontSize: 24}} />
-                  }
-                />
-                <SmallText>Favorite</SmallText>
-              </View>
-            </TouchableHighlight>
-          )}
-        </View>
+        <SmallText>{desc}</SmallText>
       </View>
 
       {data?.user_is_owner || data?.user_is_coach ? (
@@ -307,7 +296,7 @@ const GymClassScreen: FunctionComponent<Props> = ({
           }}>
           {data?.user_is_owner ? (
             <TouchableHighlight onPress={() => setShowCoachModal(true)}>
-              <View style={{paddingHorizontal: 8}}>
+              <View style={{paddingHorizontal: 8, alignItems: 'center'}}>
                 <IconButton
                   style={{height: 24}}
                   icon={
@@ -328,7 +317,7 @@ const GymClassScreen: FunctionComponent<Props> = ({
           )}
           {data?.user_is_owner || data?.user_is_coach ? (
             <TouchableHighlight onPress={() => setShowMembersModal(true)}>
-              <View style={{paddingHorizontal: 8}}>
+              <View style={{paddingHorizontal: 8, alignItems: 'center'}}>
                 <IconButton
                   style={{height: 24}}
                   icon={
@@ -352,40 +341,6 @@ const GymClassScreen: FunctionComponent<Props> = ({
         <></>
       )}
 
-      <View style={{flex: 2}}>
-        <InfoBG source={{uri: mainURL}}>
-          <View
-            style={{
-              width: '100%',
-              height: '25%',
-              position: 'absolute',
-              bottom: 0,
-              backgroundColor: theme.palette.transparent,
-            }}
-          />
-          <Row
-            style={{
-              flex: 1,
-              justifyContent: 'flex-end',
-              alignItems: 'flex-end',
-            }}>
-            <ScrollView
-              style={{maxHeight: '50%', width: '55%', marginBottom: 8}}>
-              <RegularText textStyles={{flex: 2, paddingLeft: 16}}>
-                {desc}
-              </RegularText>
-            </ScrollView>
-            <LogoImage
-              source={{uri: logoURL}}
-              style={{
-                marginRight: 12,
-                height: SCREEN_HEIGHT * 0.05,
-                marginBottom: 8,
-              }}
-            />
-          </Row>
-        </InfoBG>
-      </View>
       {!isLoading && data && data.user_can_edit ? (
         <View style={{flex: 1}}>
           <View
@@ -396,9 +351,15 @@ const GymClassScreen: FunctionComponent<Props> = ({
               justifyContent: 'flex-end',
               width: '100%',
             }}>
-            <Button
-              title="Create workout group"
-              style={{backgroundColor: theme.palette.lightGray}}
+            <IconButton
+              style={{height: 24}}
+              icon={
+                <Icon
+                  name="add-outline"
+                  color={theme.palette.primary.main}
+                  style={{fontSize: 24}}
+                />
+              }
               onPress={() => {
                 navigation.navigate('CreateWorkoutGroupScreen', {
                   ownedByClass: true,
@@ -407,6 +368,7 @@ const GymClassScreen: FunctionComponent<Props> = ({
                 });
               }}
             />
+
             {data?.user_is_owner ? (
               <IconButton
                 style={{height: 24}}
@@ -428,91 +390,24 @@ const GymClassScreen: FunctionComponent<Props> = ({
         <></>
       )}
 
-      <View style={{flex: 4, width: '100%'}}>
-        <View
-          style={{
-            width: '100%',
-            height: SCREEN_HEIGHT * 0.08,
-            justifyContent: 'center',
-          }}>
-          <Pressable
-            onPress={() => setShowSearchWorkouts(!showSearchWorkouts)}
-            style={{
-              borderRadius: 24,
-              backgroundColor: theme.palette.primary.main,
-              width: '100%',
-              height: '100%',
-
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              <Icon name="apps-outline" color="white" style={{fontSize: 24}} />
-
-              <View style={{marginLeft: 8}}>
-                <RegularText textStyles={{textAlign: 'center'}}>
-                  {' '}
-                  {workoutGroups.length}{' '}
-                </RegularText>
-                <SmallText> Workouts </SmallText>
-              </View>
-            </View>
-          </Pressable>
-
-          {/* </TouchableWithoutFeedbackComponent> */}
-        </View>
-
-        {/* <Row style={{color: 'black'}}>
-          <View style={{height: 40, marginTop: 16}}>
-            <Input
-              onChangeText={filterText}
-              value={term}
-              containerStyle={{
-                width: '100%',
-                backgroundColor: theme.palette.lightGray,
-                borderRadius: 8,
-                paddingHorizontal: 8,
-              }}
-              fontSize={16}
-              leading={
-                <Icon
-                  name="search"
-                  style={{fontSize: 16}}
-                  color={theme.palette.text}
-                />
-              }
-              label=""
-              placeholder="Search workouts"
-            />
-          </View>
-        </Row> */}
-        {isLoading ? (
-          <SmallText>Loading....</SmallText>
-        ) : isSuccess ? (
-          <FilterItemsModal
-            onRequestClose={() => setShowSearchWorkouts(false)}
-            modalVisible={showSearchWorkouts}
-            searchTextPlaceHolder="Search Workouts"
-            uiView={WorkoutGroupCardList}
-            items={workoutGroups}
-            extraProps={{
-              editable: data.user_can_edit,
-              closeModalOnNav: () => setShowSearchWorkouts(false),
-            }}
-          />
-        ) : // <WorkoutGroupCardList
-        //   data={workoutGroups.filter((_, i) => filterResult.indexOf(i) >= 0)}
-        //   editable={data.user_can_edit}
-        // />
-        isError ? (
-          <SmallText>Error.... {error.toString()}</SmallText>
-        ) : (
-          <SmallText>No Data</SmallText>
-        )}
+      <View style={{flex: 8, width: '100%'}}>
+        <FilterGrid
+          searchTextPlaceHolder="Search Workouts"
+          uiView={WorkoutGroupSquares}
+          items={[
+            ...workoutGroups,
+            ...workoutGroups,
+            ...workoutGroups,
+            ...workoutGroups,
+            ...workoutGroups,
+            ...workoutGroups,
+            ...workoutGroups,
+            ...workoutGroups,
+          ]}
+          extraProps={{
+            editable: data ? data.user_can_edit : false,
+          }}
+        />
       </View>
       <ManageMembersModal
         modalVisible={showMembersModal}

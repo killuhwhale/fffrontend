@@ -14,17 +14,11 @@ import {Picker} from '@react-native-picker/picker';
 import {filter} from '../../utils/algos';
 
 import {ActionCancelModal} from '../../app_pages/Profile';
-import {
-  centeredViewStyle,
-  filterInputModalViewStyle,
-  settingsModalViewStyle,
-} from './modalStyles';
+
 import {mdFontSize, smFontSize} from '../shared';
 import Input from '../Input/input';
 
-const FilterItemsModal: FunctionComponent<{
-  modalVisible: boolean;
-  onRequestClose(): void;
+const FilterGrid: FunctionComponent<{
   items: any[];
   uiView: any;
   extraProps?: any;
@@ -33,7 +27,7 @@ const FilterItemsModal: FunctionComponent<{
   const theme = useTheme();
 
   const [stringData, setOgData] = useState<string[]>(
-    props.items ? props.items.map(gymClass => gymClass.title) : [],
+    props.items ? props.items.map(item => item.title) : [],
   );
   const [filterResult, setFilterResult] = useState<number[]>(
     Array.from(Array(stringData.length).keys()).map(idx => idx),
@@ -49,14 +43,14 @@ const FilterItemsModal: FunctionComponent<{
 
   useEffect(() => {
     console.log('Running init filter effect');
-    setOgData(props.items ? props.items.map(gymClass => gymClass.title) : []);
+    setOgData(props.items ? props.items.map(item => item.title) : []);
     setFilterResult(
       Array.from(Array(props.items?.length || 0).keys()).map(idx => idx),
     );
   }, [props.items]);
 
   return (
-    <View style={{backgroundColor: theme.palette.backgroundColor, flex: 1}}>
+    <View style={{flex: 1, backgroundColor: theme.palette.backgroundColor}}>
       <View
         style={{
           flexDirection: 'row',
@@ -91,16 +85,6 @@ const FilterItemsModal: FunctionComponent<{
           />
         </View>
       </View>
-
-      {/*
-
-          TODO()
-            1. Move this file outside of Modals Folder
-            2. Change WorkoutCard UI to a Small Row style.
-              - Make in a new file, separate from Profile view maybe?
-            3. Change backgriound color
-
-          */}
       <View style={{flex: 1}}>
         <props.uiView
           extraProps={props.extraProps}
@@ -111,4 +95,4 @@ const FilterItemsModal: FunctionComponent<{
   );
 };
 
-export default FilterItemsModal;
+export default FilterGrid;

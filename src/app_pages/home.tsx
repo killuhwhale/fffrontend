@@ -24,8 +24,7 @@ export type Props = StackScreenProps<RootStackParamList, 'HomePage'>;
 const HomePageContainer = styled(Container)`
   background-color: ${props => props.theme.palette.backgroundColor};
   justify-content: space-between;
-
-  width: 100%;
+  flex: 1;
 `;
 
 const HomePage: FunctionComponent<Props> = ({navigation}) => {

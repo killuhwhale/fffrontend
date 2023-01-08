@@ -34,21 +34,10 @@ import {RootStackParamList} from '../navigators/RootStack';
 
 import * as RootNavigation from '../navigators/RootNavigation';
 import {StackScreenProps} from '@react-navigation/stack';
-import {
-  Modal,
-  Pressable,
-  StyleSheet,
-  TouchableHighlight,
-  View,
-} from 'react-native';
+import {Modal, TouchableHighlight, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import AuthManager from '../utils/auth';
-import {
-  GymCardProps,
-  GymClassCardProps,
-  WorkoutCardProps,
-  WorkoutGroupCardProps,
-} from '../app_components/Cards/types';
+import {GymCardProps, GymClassCardProps} from '../app_components/Cards/types';
 import Input from '../app_components/Input/input';
 import {debounce} from '../utils/algos';
 import {
@@ -57,7 +46,6 @@ import {
   settingsModalViewStyle,
 } from '../app_components/modals/modalStyles';
 import DeleteActionCancelModal from '../app_components/modals/deleteByNameModal';
-import FilterItemsModal from '../app_components/modals/filterItemsModal';
 
 export type Props = StackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -83,7 +71,6 @@ interface GymsPanelProps {
   data: GymCardProps[];
   onDelete(gym: GymCardProps);
 }
-
 interface FavGymCardProps {
   id?: string | number;
   user_id: string;
@@ -93,7 +80,6 @@ interface FavGymCardProps {
 interface FavGymsPanelProps {
   data: FavGymCardProps[];
 }
-
 interface FavGymClassCardProps {
   id?: string | number;
   user_id: string;
@@ -103,57 +89,6 @@ interface FavGymClassCardProps {
 interface FavGymClassesPanelProps {
   data: FavGymClassCardProps[];
 }
-
-interface WorkoutPanelProps {
-  data: WorkoutGroupCardProps[];
-}
-// interface WorkoutPanelProps {
-//     data: {
-//         title: string;
-//         caption: string;
-//         date: string;
-//         id: number;
-//         media_ids: string;
-//         owner_id: string;
-//         owned_by_class: boolean;
-//         workouts: {
-//             title: string;
-//             desc: string;
-//             date: string;
-//             id: number;
-//             scheme_type: number;
-//             scheme_rounds: string;
-//             workout_items: {
-//                 date: string;
-//                 duration: number;
-//                 duration_unit: number;
-//                 id: number;
-//                 intensity: number;
-//                 name: {
-//                     name: string;
-//                     date: string;
-//                     desc: string;
-//                     id: number;
-//                     media_ids: string;
-
-//                 };
-//                 percent_of: string;
-//                 reps: number;
-//                 rest_duration: number;
-//                 rest_unit: number;
-//                 rounds: number;
-//                 sets: number;
-//                 weight_unit: string;
-//                 weights: string;
-//                 workout: number;
-//             }[];
-
-//         }[]
-//     }[]
-// }
-
-// Alllow user to change username here.
-// Long press into a textField with a save and cacel button.
 
 const UserInfoPanel: FunctionComponent<UserInfoPanelProps> = props => {
   const theme = useTheme();
@@ -223,6 +158,7 @@ const UserInfoPanel: FunctionComponent<UserInfoPanelProps> = props => {
     </View>
   );
 };
+
 const GymsPanel: FunctionComponent<GymsPanelProps> = ({data, onDelete}) => {
   const theme = useTheme();
 
@@ -274,6 +210,7 @@ const GymsPanel: FunctionComponent<GymsPanelProps> = ({data, onDelete}) => {
     </View>
   );
 };
+
 const FavGymsPanel: FunctionComponent<FavGymsPanelProps> = props => {
   const theme = useTheme();
 
@@ -312,6 +249,7 @@ const FavGymsPanel: FunctionComponent<FavGymsPanelProps> = props => {
     </View>
   );
 };
+
 const FavGymClassesPanel: FunctionComponent<
   FavGymClassesPanelProps
 > = props => {
@@ -351,65 +289,6 @@ const FavGymClassesPanel: FunctionComponent<
         );
       })}
     </View>
-  );
-};
-
-const WorkoutsPanel: FunctionComponent<WorkoutPanelProps> = props => {
-  const theme = useTheme();
-  const [showSearchWorkouts, setShowSearchWorkouts] = useState(false);
-  // console.log('Workout Panel: ', props.data);
-  return (
-    <View
-      style={{
-        width: '100%',
-        height: '100%',
-      }}>
-      <Pressable
-        onPress={() => setShowSearchWorkouts(!showSearchWorkouts)}
-        style={{
-          borderRadius: 24,
-          backgroundColor: theme.palette.primary.main,
-          width: '100%',
-          height: '100%',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
-          <Icon name="apps-outline" color="white" style={{fontSize: 24}} />
-
-          <View style={{marginLeft: 8}}>
-            <RegularText textStyles={{textAlign: 'center'}}>
-              {' '}
-              {props.data?.length}{' '}
-            </RegularText>
-            <SmallText> Workouts </SmallText>
-          </View>
-        </View>
-      </Pressable>
-
-      <FilterItemsModal
-        searchTextPlaceHolder="Search Workouts"
-        onRequestClose={() => setShowSearchWorkouts(false)}
-        modalVisible={showSearchWorkouts}
-        uiView={WorkoutGroupCardList}
-        // Sort, showing latest at top of list
-        items={props.data.sort((a, b) =>
-          new Date(a.for_date).getTime() < new Date(b.for_date).getTime()
-            ? 1
-            : -1,
-        )}
-        extraProps={{
-          editable: true,
-          closeModalOnNav: () => setShowSearchWorkouts(false),
-        }}
-      />
-    </View>
-
-    // <WorkoutGroupCardList data={props.data} extraProps={{editable: true}} />
   );
 };
 
@@ -641,20 +520,9 @@ const ProfileSettingsModal: FunctionComponent<{
 const Profile: FunctionComponent<Props> = ({navigation, route}) => {
   const theme = useTheme();
 
-  // Access value
-  const count = useAppSelector(state => state.counter.value);
-  // Split this query up,  use separate query for Favorites so we can use it in other places
-  // We want to query all favorites so we can check on GymScreen if we have favorited it, this query will be cached...
   const {data, isLoading, isSuccess, isError, error} =
     useGetProfileViewQuery('');
 
-  const {
-    data: dataWG,
-    isLoading: isLoadingWG,
-    isSuccess: isSuccessWG,
-    isError: isErrorWG,
-    error: errorWG,
-  } = useGetProfileWorkoutGroupsQuery('');
   const {
     data: dataGymFavs,
     isLoading: isLoadingGymFavs,
@@ -662,6 +530,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
     isError: isErrorGymFavs,
     error: errorGymFavs,
   } = useGetProfileGymFavsQuery('');
+
   const {
     data: dataGymClassFavs,
     isLoading: isLoadingGymClassFavs,
@@ -677,21 +546,16 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
     isError: gymIsError,
     error: gymError,
   } = useGetUserGymsQuery('');
-  // const { data: workoutGroups, isLoading: workoutGroupsLoading,
-  //     isSuccess: workoutGroupSuccess, isError: workoutGroupErr,
-  //     error: workoutGroupError } = useGetUsersWorkoutGroupsQuery("");
 
-  // Access/ send actions
-  const dispatch = useAppDispatch();
   const [modalVisible, setModalVisible] = useState(false);
+
   const [deleteGymModalVisible, setDeleteGymModalVisibleVisible] =
     useState(false);
+
   const [curDelGym, setCurDelGym] = useState({} as GymCardProps);
 
   const [deleteGymMutation, {isLoading: deleteGymLoading}] =
     useDeleteGymMutation();
-  const [updateUsernameMutation, {isLoading: updateUsernameLoading}] =
-    useUpdateUsernameMutation();
 
   const onConfirmDelete = (gym: GymCardProps) => {
     setCurDelGym(gym);
@@ -737,9 +601,9 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
             </View>
             <View style={{width: '50%'}}>
               <Button
+                color={theme.palette.secondary.main}
                 title="Stats"
                 onPress={() => navigation.navigate('StatsScreen')}
-                style={{backgroundColor: theme.palette.lightGray}}
               />
             </View>
           </View>
@@ -778,34 +642,18 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
           ) : (
             <></>
           )}
-
-          <View style={{flex: 2, width: '100%', marginBottom: 12}}>
-            {/* <RegularText>My Workouts</RegularText> */}
-            {!isLoadingWG && dataWG ? (
-              <WorkoutsPanel
-                data={[
-                  ...dataWG.workout_groups?.created_workout_groups,
-                  ...dataWG.workout_groups?.completed_workout_groups,
-                ]}
-              />
-            ) : (
-              <></>
-            )}
+          <View style={{flex: 1, margin: 16}}>
+            <Button
+              color={theme.palette.primary.main}
+              title="Workouts"
+              onPress={() => navigation.navigate('UserWorkoutsScreen')}
+            />
           </View>
 
           <ProfileSettingsModal
             modalVisible={modalVisible}
             onRequestClose={() => setModalVisible(false)}
           />
-
-          {/* <ActionCancelModal
-            actionText="Delete gym"
-            closeText="Close"
-            modalText={`Delete ${curDelGym.title}?`}
-            onAction={onDelete}
-            modalVisible={deleteGymModalVisible}
-            onRequestClose={() => setDeleteGymModalVisibleVisible(false)}
-          /> */}
 
           <DeleteActionCancelModal
             confirmName={curDelGym.title}

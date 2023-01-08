@@ -15,51 +15,8 @@ import {Image, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Props as HomeScreenProps} from '../../app_pages/home';
 import {Button} from '@react-native-material/core';
-
-const GymCardBG = styled.ImageBackground`
-  height: ${SCREEN_HEIGHT * 0.25}px;
-  width: ${SCREEN_WIDTH * 0.92}px;
-  resize-mode: cover;
-  border-radius: 25px;
-  overflow: hidden;
-`;
-
-const GymCardFooterBG = styled.ImageBackground`
-  resize-mode: cover;
-  border-radius: 25px;
-  background-color: ${props => props.theme.palette.transparent};
-  flex: 1;
-  overflow: hidden;
-`;
-
-const CardTouchable = styled.TouchableHighlight`
-  height: 100%;
-  border-radius: 25px;
-`;
-
-const TouchableView = styled.View`
-  justify-content: space-between;
-  align-items: center;
-  flex: 1;
-`;
-
-const CardRow = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-const MainImage = styled.Image`
-  width: 100%;
-  height: 80%;
-  resize-mode: contain;
-`;
-
-const LogoImage = styled.Image`
-  width: 100%;
-  height: 100%;
-  border-radius: 25px;
-  flex: 1;
-`;
+import {TouchableHighlight} from 'react-native-gesture-handler';
+import LinearGradient from 'react-native-linear-gradient';
 
 const GymCard: FunctionComponent<GymCardProps> = props => {
   const theme = useTheme();
@@ -72,41 +29,44 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
   };
   const mainURL = withSpaceURL('main', parseInt(props.id), MEDIA_CLASSES[0]);
   const logoURL = withSpaceURL('logo', parseInt(props.id), MEDIA_CLASSES[0]);
-  // const [testUrl, setTestUrl] = useState('');
-  // const t = 'https://fitform.sfo3.digitaloceanspaces.com/fitform/gyms/1/main';
-  // console.log('Gym card img urls ', props, mainURL, logoURL);
 
   return (
-    <GymCardBG
-      source={{
-        uri: mainURL,
-      }}>
-      <CardTouchable
-        underlayColor={theme.palette.transparent}
-        activeOpacity={0.9}
-        onPress={handlePress}>
-        <TouchableView>
-          <CardRow />
-          {/* <Button
-            title="toggle"
-            onPress={() => setTestUrl(testUrl === '' ? t : '')}
-          /> */}
-          <CardRow style={{height: '25%'}}>
-            <GymCardFooterBG>
-              <CardRow style={{height: '100%'}}>
-                <View style={{flex: 3}}>
-                  <RegularText textStyles={{paddingLeft: 16, paddingTop: 8}}>
-                    {props.title}{' '}
-                  </RegularText>
-                </View>
-                {/* <LogoImage source={{uri: logoURL}} /> */}
-                <Image source={{uri: logoURL}} />
-              </CardRow>
-            </GymCardFooterBG>
-          </CardRow>
-        </TouchableView>
-      </CardTouchable>
-    </GymCardBG>
+    <LinearGradient
+      colors={['#00000000', '#7DF9FFAA']}
+      start={{x: 0, y: 0}}
+      end={{x: 0.42, y: 1}}
+      style={{flex: 1, borderRadius: 16}}>
+      <View
+        style={{
+          borderWidth: 1,
+          borderRadius: 16,
+        }}>
+        <TouchableHighlight
+          underlayColor={theme.palette.transparent}
+          activeOpacity={0.9}
+          onPress={handlePress}
+          style={{flex: 1, borderRadius: 16}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              flex: 1,
+            }}>
+            <Image
+              style={{
+                borderRadius: 16,
+                width: 75,
+                height: 75,
+              }}
+              source={{uri: logoURL}}
+            />
+            <View style={{marginLeft: 10, justifyContent: 'space-around'}}>
+              <RegularText>{props.title}</RegularText>
+              <SmallText>{props.desc}</SmallText>
+            </View>
+          </View>
+        </TouchableHighlight>
+      </View>
+    </LinearGradient>
   );
 };
 

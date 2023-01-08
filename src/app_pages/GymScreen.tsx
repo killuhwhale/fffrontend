@@ -20,6 +20,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
 import {
+  Image,
   ImageBackground,
   Keyboard,
   Pressable,
@@ -37,44 +38,31 @@ import {IconButton} from '@react-native-material/core';
 import {GymCardProps} from '../app_components/Cards/types';
 export type Props = StackScreenProps<RootStackParamList, 'GymScreen'>;
 
-import bluish from './../../assets/bgs/bluish.png';
 import FilterItemsModal from '../app_components/modals/filterItemsModal';
+import FilterGrid from '../app_components/Grids/FilterGrid';
+import {GymClassSquares} from '../app_components/Grids/Gyms/GymClassSquares';
 
 const GymScreenContainer = styled(Container)`
   background-color: ${props => props.theme.palette.backgroundColor};
-  justify-content: space-between;
-
-  width: 100%;
+  padding-top: 32px;
 `;
 
-const GymInfoBG = styled.ImageBackground`
-  height: ${SCREEN_HEIGHT * 0.45}px;
-  width: ${SCREEN_WIDTH * 0.92}px;
-  resize-mode: cover;
-  border-radius: 25px;
-  overflow: hidden;
-  marginbottom: 12px;
-`;
-const LogoImage = styled.Image`
-  width: 100%;
-  height: 100%;
-  border-radius: 25px;
-  flex: 1;
-`;
-const Row = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-`;
+const FavoriteGym: FunctionComponent<{
+  id: string;
+}> = props => {
+  const {id} = props;
 
-const GymScreen: FunctionComponent<Props> = ({navigation, route: {params}}) => {
-  const theme = useTheme();
-  const {id, title, desc, logoImage, mainImage} = params || {};
-  const mainURL = withSpaceURL('main', parseInt(id), MEDIA_CLASSES[0]);
-  const logoURL = withSpaceURL('logo', parseInt(id), MEDIA_CLASSES[0]);
-  // Fetch GymClasses without workouts to Display here.... by gym ID: id.
-  const {data, isLoading, isSuccess, isError, error} =
-    useGetGymDataViewQuery(id);
-  console.log('GymData view:', data);
+  const isFavorited = (
+    gyms: {id: number; user_id: string; date: string; gym: GymCardProps}[],
+  ) => {
+    let faved = false;
+    gyms?.forEach(favgym => {
+      if (favgym.gym.id == id) {
+        faved = true;
+      }
+    });
+    return faved;
+  };
 
   const {
     data: dataGymFavs,
@@ -88,19 +76,50 @@ const GymScreen: FunctionComponent<Props> = ({navigation, route: {params}}) => {
     useFavoriteGymMutation();
   const [unfavoriteGymMutation, {isLoading: unfavGymLoading}] =
     useUnfavoriteGymMutation();
-  const isFavorited = (
-    gyms: {id: number; user_id: string; date: string; gym: GymCardProps}[],
-  ) => {
-    let faved = false;
-    gyms?.forEach(favgym => {
-      if (favgym.gym.id == id) {
-        faved = true;
-      }
-    });
-    return faved;
-  };
+
   const favObj = new FormData();
   favObj.append('gym', id);
+
+  return (
+    <View>
+      {dataGymFavs &&
+      !isLoadingGymFavs &&
+      isFavorited(dataGymFavs.favorite_gyms) ? (
+        <TouchableHighlight onPress={() => unfavoriteGymMutation(favObj)}>
+          <View style={{alignItems: 'center'}}>
+            <IconButton
+              style={{height: 24}}
+              onPress={() => unfavoriteGymMutation(favObj)}
+              icon={<Icon name="star" color="red" style={{fontSize: 24}} />}
+            />
+            <SmallText>Unfavorite</SmallText>
+          </View>
+        </TouchableHighlight>
+      ) : (
+        <TouchableHighlight onPress={() => favoriteGymMutation(favObj)}>
+          <View style={{alignItems: 'center'}}>
+            <IconButton
+              style={{height: 24}}
+              onPress={() => favoriteGymMutation(favObj)}
+              icon={<Icon name="star" color="white" style={{fontSize: 24}} />}
+            />
+            <SmallText>Favorite</SmallText>
+          </View>
+        </TouchableHighlight>
+      )}
+    </View>
+  );
+};
+
+const GymScreen: FunctionComponent<Props> = ({navigation, route: {params}}) => {
+  const theme = useTheme();
+  const {id, title, desc, logoImage, mainImage} = params || {};
+  const mainURL = withSpaceURL('main', parseInt(id), MEDIA_CLASSES[0]);
+  const logoURL = withSpaceURL('logo', parseInt(id), MEDIA_CLASSES[0]);
+  // Fetch GymClasses without workouts to Display here.... by gym ID: id.
+  const {data, isLoading, isSuccess, isError, error} =
+    useGetGymDataViewQuery(id);
+  console.log('GymData view:', data);
 
   const gymClasses = data?.gym_classes ? data?.gym_classes : [];
 
@@ -108,172 +127,69 @@ const GymScreen: FunctionComponent<Props> = ({navigation, route: {params}}) => {
 
   return (
     <GymScreenContainer>
-      <ImageBackground
-        source={bluish}
+      <View
         style={{
-          position: 'absolute',
-          right: 0,
-          top: 0,
-          width: SCREEN_WIDTH * 0.0314,
-          height: SCREEN_HEIGHT * 0.0662607,
-        }}
-      />
-      <ImageBackground
-        source={bluish}
-        style={{
-          position: 'absolute',
-          right: 0,
-          left: 0,
-          width: SCREEN_WIDTH * 0.0314,
-          height: SCREEN_HEIGHT * 0.0662607,
-        }}
-      />
+          flexDirection: 'row',
+          paddingLeft: 32,
+          width: '100%',
+          flex: 1,
+          alignItems: 'center',
+        }}>
+        <Image
+          style={{
+            height: 92,
+            width: 92,
+          }}
+          source={{uri: mainURL}}
+        />
+        <View style={{flex: 1, marginLeft: 16, alignItems: 'center'}}>
+          <RegularText>{title}</RegularText>
+        </View>
+
+        <View style={{flex: 1, alignItems: 'center'}}>
+          <FavoriteGym id={id} />
+        </View>
+      </View>
 
       <View
         style={{
           flexDirection: 'row',
+          paddingLeft: 32,
+          width: '100%',
+          flex: 0.5,
           alignItems: 'center',
-          alignContent: 'center',
-          justifyContent: 'center',
-          width: '100%',
-          height: SCREEN_HEIGHT * 0.0662607,
+          marginVertical: 16,
         }}>
-        <View
-          style={{
-            position: 'absolute',
-            width: '90%',
-            alignItems: 'center',
-            height: '100%',
-          }}>
-          <ScrollView horizontal style={{marginRight: SCREEN_WIDTH * 0.0914}}>
-            <View
-              style={{
-                alignContent: 'center',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <RegularText textStyles={{textAlign: 'center'}}>
-                {title}{' '}
-              </RegularText>
-            </View>
-          </ScrollView>
-        </View>
-
-        <View style={{position: 'absolute', right: SCREEN_WIDTH * 0.0314 + 8}}>
-          {dataGymFavs &&
-          !isLoadingGymFavs &&
-          isFavorited(dataGymFavs.favorite_gyms) ? (
-            <TouchableHighlight onPress={() => unfavoriteGymMutation(favObj)}>
-              <View style={{alignItems: 'center'}}>
-                <IconButton
-                  style={{height: 24}}
-                  icon={<Icon name="star" color="red" style={{fontSize: 24}} />}
-                />
-                <SmallText>Unfavorite</SmallText>
-              </View>
-            </TouchableHighlight>
-          ) : (
-            <TouchableHighlight onPress={() => favoriteGymMutation(favObj)}>
-              <View style={{alignItems: 'center'}}>
-                <IconButton
-                  style={{height: 24}}
-                  icon={
-                    <Icon name="star" color="white" style={{fontSize: 24}} />
-                  }
-                />
-                <SmallText>Favorite</SmallText>
-              </View>
-            </TouchableHighlight>
-          )}
-        </View>
+        <SmallText>{desc}</SmallText>
       </View>
-
-      <View
-        style={{
-          flex: 6,
-          marginTop: 16,
-          marginBottom: 8,
-          justifyContent: 'center',
-        }}>
-        <GymInfoBG source={{uri: mainURL}}>
-          <Row
-            style={{
-              flex: 1,
-              alignItems: 'flex-end',
-            }}>
-            <View
-              style={{
-                width: '100%',
-                height: '25%',
-                position: 'absolute',
-                bottom: 0,
-                backgroundColor: theme.palette.transparent,
-              }}
-            />
-            <ScrollView
-              style={{maxHeight: '50%', width: '55%', marginBottom: 8}}>
-              <RegularText textStyles={{flex: 2, paddingLeft: 16}}>
-                {desc}
-              </RegularText>
-            </ScrollView>
-            <LogoImage
-              source={{uri: logoURL}}
-              style={{
-                marginRight: 12,
-                height: SCREEN_HEIGHT * 0.05,
-                marginBottom: 8,
-              }}
-            />
-          </Row>
-        </GymInfoBG>
-      </View>
-
-      <View
-        style={{
-          flex: 1,
-          width: '100%',
-          height: '100%',
-          justifyContent: 'center',
-          marginBottom: 12,
-        }}>
-        <Pressable
-          onPress={() => setShowSearchClasses(!showSearchClasses)}
-          style={{
-            borderRadius: 24,
-            backgroundColor: theme.palette.primary.main,
-            width: '100%',
-            height: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <Icon name="apps-outline" color="white" style={{fontSize: 24}} />
-
-            <View style={{marginLeft: 8}}>
-              <RegularText textStyles={{textAlign: 'center'}}>
-                {' '}
-                {gymClasses.length}{' '}
-              </RegularText>
-              <SmallText> Classes </SmallText>
-            </View>
-          </View>
-        </Pressable>
-
-        {/* </TouchableWithoutFeedbackComponent> */}
-
-        <FilterItemsModal
-          onRequestClose={() => setShowSearchClasses(false)}
-          modalVisible={showSearchClasses}
+      <View style={{flex: 8}}>
+        <FilterGrid
           searchTextPlaceHolder="Search classes"
-          uiView={GymClassTextCardList}
-          items={gymClasses}
-          extraProps={{
-            closeModalOnNav: () => setShowSearchClasses(false),
-          }}
+          uiView={GymClassSquares}
+          items={[
+            ...gymClasses,
+            ...gymClasses,
+
+            ...gymClasses,
+            ...gymClasses,
+
+            ...gymClasses,
+            ...gymClasses,
+
+            ...gymClasses,
+            ...gymClasses,
+
+            ...gymClasses,
+            ...gymClasses,
+
+            ...gymClasses,
+            ...gymClasses,
+            ...gymClasses,
+            ...gymClasses,
+            ...gymClasses,
+            ...gymClasses,
+          ]}
+          extraProps={{}}
         />
       </View>
     </GymScreenContainer>
