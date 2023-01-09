@@ -71,6 +71,8 @@ const Tab = createBottomTabNavigator();
 
 const Stack = createNativeStackNavigator();
 
+const headerHeight = Math.max(SCREEN_HEIGHT * 0.08, 40);
+console.log(`\n\n\n\n\n  Header hheight: ${headerHeight}  \n\n\n\n\n\n`);
 function HomePageTabs() {
   const theme = useTheme();
   return (
@@ -82,13 +84,13 @@ function HomePageTabs() {
           headerShown: false,
           tabBarStyle: {
             backgroundColor: theme.palette.gray,
-            height: SCREEN_HEIGHT * 0.08,
+            flex: 0.09,
+            paddingBottom: 4,
           },
           tabBarLabel: ({color, focused, position}) => (
             <SmallText
               textStyles={{
                 color: focused ? theme.palette.accent : theme.palette.text,
-                paddingBottom: 8,
               }}>
               Home
             </SmallText>
@@ -110,13 +112,13 @@ function HomePageTabs() {
           headerShown: false,
           tabBarStyle: {
             backgroundColor: theme.palette.gray,
-            height: SCREEN_HEIGHT * 0.08,
+            flex: 0.09,
+            paddingBottom: 4,
           },
           tabBarLabel: ({color, focused, position}) => (
             <SmallText
               textStyles={{
                 color: focused ? theme.palette.accent : theme.palette.text,
-                paddingBottom: 8,
               }}>
               Profile
             </SmallText>

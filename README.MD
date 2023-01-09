@@ -30,20 +30,7 @@ Change versions in android/app/build.gradle
 cd android
 ./gradlew bundleRelease
 
-# Build iOS
 
-Versions:
-To change the version of your iOS app, you will need to modify the CFBundleShortVersionString and CFBundleVersion keys in your app's Info.plist file.
-
-Double click on YOUR_APP_NAME.xcworkspace
-Product → Build
-Product → Archive
-
-- Make sure to set the device to "Any iOS Device (arm64)".
-  After the archive is completed, in the archive window, click on Distribute App.
-
-npx react-native run-ios
-npx react-native run-ios --configuration Release
 
 adb -s emulator-5554 reverse tcp:8081 tcp:8081
 adb -s emulator-5554 reverse tcp:8000 tcp:8000
@@ -63,6 +50,30 @@ cd android/ && ./gradlew clean && cd .. && npx react-native run-android --active
 
 // Test Build command
 cd android/ && ./gradlew clean && ./gradlew bundleRelease && cd .. && npx react-native run-android --variant=release
+
+
+
+
+# Build iOS
+
+Versions:
+To change the version of your iOS app, you will need to modify the CFBundleShortVersionString and CFBundleVersion keys in your app's Info.plist file.
+
+Double click on YOUR_APP_NAME.xcworkspace
+Product → Build
+Product → Archive
+
+- Make sure to set the device to "Any iOS Device (arm64)".
+  After the archive is completed, in the archive window, click on Distribute App.
+
+npx react-native run-ios
+npx react-native run-ios --configuration Release
+
+
+
+
+
+
 
 git push origin HEAD:staging HEAD
 
