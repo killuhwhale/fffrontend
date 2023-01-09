@@ -17,7 +17,7 @@ const UserWorkoutsScreen: FunctionComponent = props => {
     error: errorWG,
   } = useGetProfileWorkoutGroupsQuery('');
 
-  const userWorkouts =
+  const _userWorkouts =
     !isLoadingWG && isSuccessWG
       ? ([
           ...dataWG.workout_groups?.created_workout_groups,
@@ -25,6 +25,9 @@ const UserWorkoutsScreen: FunctionComponent = props => {
         ] as WorkoutGroupCardProps[])
       : [];
 
+  const userWorkouts = _userWorkouts.sort((a, b) =>
+    a.for_date > b.for_date ? -1 : 1,
+  );
   return (
     <View
       style={{

@@ -18,6 +18,7 @@ import {Button, TextInput} from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {launchImageLibrary, Asset} from 'react-native-image-picker';
 import {Picker} from '@react-native-picker/picker';
+
 import DocumentPicker from 'react-native-document-picker';
 
 import {useTheme} from 'styled-components';
@@ -92,6 +93,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);
+  const [blkText, setBlkText] = useState(false);
   const [createGymClass, {isLoading}] = useCreateGymClassMutation();
   const {
     data,
@@ -222,8 +224,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
             <View
               style={{
                 justifyContent: 'flex-start',
-                borderColor: 'white',
-                borderWidth: 1,
+
                 margin: 6,
                 padding: 6,
               }}>
@@ -231,11 +232,12 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
               <Picker
                 ref={pickerRef}
                 style={{height: 100}}
+                mode="dialog"
                 itemStyle={{
                   height: 100,
-                  color: theme.palette.text,
-                  backgroundColor: theme.palette.backgroundColor,
                 }}
+                onFocus={() => setBlkText(true)}
+                onBlur={() => setBlkText(false)}
                 selectedValue={gym}
                 onValueChange={(itemValue, itemIndex) => setGym(itemValue)}>
                 {data.map(gym => {
@@ -244,6 +246,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
                       key={gym.id}
                       label={gym.title}
                       value={gym.id}
+                      color={blkText ? 'black' : theme.palette.text}
                     />
                   );
                 })}

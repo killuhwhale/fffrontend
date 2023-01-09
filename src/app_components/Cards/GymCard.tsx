@@ -35,17 +35,32 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
       colors={['#00000000', '#7DF9FFAA']}
       start={{x: 0, y: 0}}
       end={{x: 0.42, y: 1}}
-      style={{flex: 1, borderRadius: 16}}>
+      style={{
+        flex: 1,
+        borderTopLeftRadius: 16,
+        borderBottomLeftRadius: 16,
+        borderTopRightRadius: 8,
+        borderBottomRightRadius: 8,
+      }}>
       <View
         style={{
           borderWidth: 1,
-          borderRadius: 16,
+          borderTopLeftRadius: 16,
+          borderBottomLeftRadius: 16,
+          borderTopRightRadius: 8,
+          borderBottomRightRadius: 8,
         }}>
         <TouchableHighlight
           underlayColor={theme.palette.transparent}
           activeOpacity={0.9}
           onPress={handlePress}
-          style={{flex: 1, borderRadius: 16}}>
+          style={{
+            flex: 1,
+            borderTopLeftRadius: 16,
+            borderBottomLeftRadius: 16,
+            borderTopRightRadius: 0,
+            borderBottomRightRadius: 0,
+          }}>
           <View
             style={{
               flexDirection: 'row',
@@ -53,9 +68,12 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
             }}>
             <Image
               style={{
-                borderRadius: 16,
-                width: 75,
-                height: 75,
+                borderTopLeftRadius: 16,
+                borderBottomLeftRadius: 16,
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
+                width: 50,
+                height: 50,
               }}
               source={{uri: logoURL}}
             />

@@ -4,6 +4,7 @@ import {
   CalcWorkoutStats,
   Container,
   displayJList,
+  formatLongDate,
   SCREEN_HEIGHT,
   WORKOUT_TYPES,
 } from '../app_components/shared';
@@ -97,7 +98,7 @@ const WorkoutDetailScreen: FunctionComponent<Props> = ({
         <View style={{width: '100%', alignItems: 'flex-end'}} />
         <LargeText>{title}</LargeText>
         <RegularText>{desc}</RegularText>
-        <SmallText>{date}</SmallText>
+        <SmallText>{formatLongDate(new Date(date))}</SmallText>
         <View style={{marginTop: 8}}>
           <RegularText>
             {WORKOUT_TYPES[scheme_type]} {displayJList(scheme_rounds)}

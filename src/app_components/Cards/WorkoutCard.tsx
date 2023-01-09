@@ -9,6 +9,7 @@ import {ItemString} from '../../app_pages/input_pages/gyms/CreateWorkoutScreen';
 import {View} from 'react-native';
 import {Props as GymClassScreenProps} from '../../app_pages/GymClassScreen';
 import {AnimatedButton} from '../Buttons/buttons';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {
   useDeleteCompletedWorkoutMutation,
   useDeleteWorkoutMutation,
@@ -94,16 +95,22 @@ const WorkoutCard: FunctionComponent<WorkoutCardProps> = props => {
           <CardRow style={{height: '100%'}}>
             <View
               style={{
-                height: 40,
                 flexDirection: 'row',
                 paddingLeft: 16,
-                alignContent: 'center',
-                alignItems: 'center',
                 justifyContent: 'space-between',
-                paddingRight: 16,
+                alignContent: 'space-between',
+                flex: 1,
+                paddingVertical: 8,
+                paddingHorizontal: 8,
               }}>
               <RegularText>{props.title} </RegularText>
               <RegularText>{displayJList(props.scheme_rounds)}</RegularText>
+
+              <Icon
+                name="chevron-forward-outline"
+                color={theme.palette.text}
+                style={{fontSize: 24}}
+              />
             </View>
           </CardRow>
         </AnimatedButton>

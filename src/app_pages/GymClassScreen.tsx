@@ -394,16 +394,7 @@ const GymClassScreen: FunctionComponent<Props> = ({
         <FilterGrid
           searchTextPlaceHolder="Search Workouts"
           uiView={WorkoutGroupSquares}
-          items={[
-            ...workoutGroups,
-            ...workoutGroups,
-            ...workoutGroups,
-            ...workoutGroups,
-            ...workoutGroups,
-            ...workoutGroups,
-            ...workoutGroups,
-            ...workoutGroups,
-          ]}
+          items={workoutGroups}
           extraProps={{
             editable: data ? data.user_can_edit : false,
           }}

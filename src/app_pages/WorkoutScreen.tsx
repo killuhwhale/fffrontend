@@ -30,7 +30,10 @@ import {
 import {Button, IconButton, Switch} from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {MediaURLSlider} from '../app_components/MediaSlider/MediaSlider';
+import {
+  MediaURLSlider,
+  MediaURLSliderClass,
+} from '../app_components/MediaSlider/MediaSlider';
 import {ActionCancelModal} from './Profile';
 import {StatsPanel} from '../app_components/Stats/StatsPanel';
 export type Props = StackScreenProps<RootStackParamList, 'WorkoutScreen'>;
@@ -389,7 +392,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
       {workoutGroup.media_ids &&
       JSON.parse(workoutGroup.media_ids).length > 0 ? (
         <Row style={{height: 400}}>
-          <MediaURLSlider
+          <MediaURLSliderClass
             data={JSON.parse(workoutGroup.media_ids)}
             mediaClassID={workoutGroup.id}
             mediaClass={MEDIA_CLASSES[mediaClass]}

@@ -74,15 +74,7 @@ Logout - Still getting trapped in cycle.....
         - Add workoiut/ 'X' buttons change state and lfash images
             - Images shouldnt flash on state change.
 
-    Media Slider:
-    - Video audio plays when not in focus.
-        - Should not play unless in focus.
-
-    Create Gym Class Screen
-    - Slect Gym
-        - Doesnt show text on Adnroid at least
-
-    Add Loading Spiiners to On Create:
+       Add Loading Spiiners to On Create:
         - Gym, Class, Workout, CompleteWorkout
         - Takes a while and app should indicate to user while its waiting....
 

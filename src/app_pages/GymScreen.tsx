@@ -166,29 +166,7 @@ const GymScreen: FunctionComponent<Props> = ({navigation, route: {params}}) => {
         <FilterGrid
           searchTextPlaceHolder="Search classes"
           uiView={GymClassSquares}
-          items={[
-            ...gymClasses,
-            ...gymClasses,
-
-            ...gymClasses,
-            ...gymClasses,
-
-            ...gymClasses,
-            ...gymClasses,
-
-            ...gymClasses,
-            ...gymClasses,
-
-            ...gymClasses,
-            ...gymClasses,
-
-            ...gymClasses,
-            ...gymClasses,
-            ...gymClasses,
-            ...gymClasses,
-            ...gymClasses,
-            ...gymClasses,
-          ]}
+          items={gymClasses}
           extraProps={{}}
         />
       </View>
