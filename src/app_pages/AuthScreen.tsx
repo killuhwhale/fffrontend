@@ -166,7 +166,7 @@ const AuthScreen: FunctionComponent = () => {
       data.append('username', newEmail);
       const res = await registerUser(data).unwrap();
       console.log('Sign up res: ', res, res.email[0]);
-      if (res?.id) {
+      if (res?.username) {
         console.log('Created user, refresh auth.', res);
         setAuthMode(0);
       } else if (

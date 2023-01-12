@@ -18,10 +18,6 @@ sudo gem install cocoapods
 sudo arch -x86_64 gem install ffi
 arch -x86_64 pod install
 
-When deleteing build folder or using new simulator, needed to remove DervivedData
-rm -r /Users/chrisandaya/Library/Developer/Xcode/DerivedData
-cd android/ && ./gradlew clean && cd .. && npx react-native run-android --active-arch-only
-
 env /usr/bin/arch -arm64 /bin/bash --login
 
 # Build Android
@@ -29,8 +25,6 @@ env /usr/bin/arch -arm64 /bin/bash --login
 Change versions in android/app/build.gradle
 cd android
 ./gradlew bundleRelease
-
-
 
 adb -s emulator-5554 reverse tcp:8081 tcp:8081
 adb -s emulator-5554 reverse tcp:8000 tcp:8000
@@ -43,16 +37,10 @@ npx react-native run-android --active-arch-only
 
 // When building your android app locally, by default you build all the 4 Application
 // Binary Interfaces (ABIs) : armeabi-v7a, arm64-v8a, x86 & x86_64.
-s
-npx react-native run-ios --udid CCF49CB5-3952-4D51-8830-27A2BA1FEB1B
-
 cd android/ && ./gradlew clean && cd .. && npx react-native run-android --active-arch-only
 
 // Test Build command
 cd android/ && ./gradlew clean && ./gradlew bundleRelease && cd .. && npx react-native run-android --variant=release
-
-
-
 
 # Build iOS
 
@@ -69,30 +57,25 @@ Product → Archive
 npx react-native run-ios
 npx react-native run-ios --configuration Release
 
+When deleteing build folder or using new simulator, needed to remove DervivedData
+rm -r /Users/chrisandaya/Library/Developer/Xcode/DerivedData
 
-
-
-
-
+npx react-native run-ios --udid CCF49CB5-3952-4D51-8830-27A2BA1FEB1B
+iphone x simulator
+npx react-native run-ios --udid 237DB837-16ED-4279-889A-9D2E5EB393E6
 
 git push origin HEAD:staging HEAD
 
-Bugs:
-Logout - Still getting trapped in cycle.....
+# Bugs:
 
-    (Only noticed this on iOS Release)
-    Workoutscreen
-        - Add workoiut/ 'X' buttons change state and lfash images
-            - Images shouldnt flash on state change.
+    Add Loading Spiiners to On Create:
+    - Gym, Class, Workout, CompleteWorkout
+    - Takes a while and app should indicate to user while its waiting....
 
-       Add Loading Spiiners to On Create:
-        - Gym, Class, Workout, CompleteWorkout
-        - Takes a while and app should indicate to user while its waiting....
-
+    Delete Button Showing on WorkoutScreen
+        - Normal user can see the Delete Button
 
     iOS:
-        Create Gym Class Screen
-            - Switch and label are not aligned
         Add workout Item
             - Weight_unit is not centered, looks bad.
             - SS, when colors arent showing, icons are no longer coloed
@@ -105,12 +88,6 @@ Logout - Still getting trapped in cycle.....
         Virtual Keyboard
             - Does not push up view, cannot see
                 - Find out how to set this in some settings...
-
-    Add date to workoutScreen
-
-    iPhone 10:
-        - Bottom Nav Bar too small
-            - I think its based on screen height... need to do better
 
 
     Create account, needs to show some kind of response in UI

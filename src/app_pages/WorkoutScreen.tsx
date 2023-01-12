@@ -6,6 +6,7 @@ import {
   MEDIA_CLASSES,
   WORKOUT_MEDIA,
   CalcWorkoutStats,
+  formatLongDate,
 } from '../app_components/shared';
 import {SmallText, RegularText} from '../app_components/Text/Text';
 
@@ -205,13 +206,17 @@ const WorkoutScreen: FunctionComponent<Props> = ({
   //  - OgWorkout is Finished
   //  - The oGworkout is not personally created by the current user
   const isFinished = workoutGroup.finished;
+
+  // Used to determine if user is viewing their own workout.
   const personalWorkout =
     userData?.id == oGData?.owner_id && !oGData?.owned_by_class;
-  console.log(
-    'workout is finished / personalWorkout',
-    isFinished,
-    personalWorkout,
-  );
+
+  // When a user is viewing a classWorkout and they are owner.
+  const WGOwner =
+    workoutGroup.owner_id == userData?.id ||
+    Object.keys(workoutGroup).indexOf('completed_workouts') >= 0;
+
+  console.log('workout is WGOwner', WGOwner, workoutGroup);
 
   const openCreateWorkoutScreenForStandard = () => {
     navigation.navigate('CreateWorkoutScreen', {
@@ -375,23 +380,27 @@ const WorkoutScreen: FunctionComponent<Props> = ({
               <></>
             )}
 
-            <IconButton
-              style={{height: 24}}
-              icon={
-                <Icon
-                  style={{fontSize: 24}}
-                  name="remove-circle-sharp"
-                  color="red"
-                />
-              }
-              onPress={onConfirmDelete}
-            />
+            {WGOwner ? (
+              <IconButton
+                style={{height: 24}}
+                icon={
+                  <Icon
+                    style={{fontSize: 24}}
+                    name="remove-circle-sharp"
+                    color="red"
+                  />
+                }
+                onPress={onConfirmDelete}
+              />
+            ) : (
+              <></>
+            )}
           </View>
         </View>
       </Row>
       {workoutGroup.media_ids &&
       JSON.parse(workoutGroup.media_ids).length > 0 ? (
-        <Row style={{height: 400}}>
+        <Row style={{height: 300}}>
           <MediaURLSliderClass
             data={JSON.parse(workoutGroup.media_ids)}
             mediaClassID={workoutGroup.id}
@@ -403,9 +412,20 @@ const WorkoutScreen: FunctionComponent<Props> = ({
           <SmallText>Add some pictures next time!</SmallText>
         </View>
       )}
-      <Row style={{}}>
+      <View
+        style={{
+          width: '100%',
+          alignItems: 'flex-end',
+        }}>
+        <SmallText>{formatLongDate(new Date(workoutGroup.for_date))}</SmallText>
+      </View>
+      <View
+        style={{
+          width: '100%',
+          alignItems: 'flex-start',
+        }}>
         <SmallText>{workoutGroup.caption}</SmallText>
-      </Row>
+      </View>
 
       {params.editable ? (
         <>

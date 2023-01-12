@@ -230,7 +230,7 @@ const AddItem: FunctionComponent<{
             <View style={{flex: 1, width: '100%'}}>
               <Picker
                 ref={pickerRef}
-                style={{flex: 1}}
+                style={[pickerStyle.containerStyle, {flex: 1}]}
                 itemStyle={{
                   height: '100%',
                   color: theme.palette.text,
@@ -514,7 +514,13 @@ const AddItem: FunctionComponent<{
           )}
         </View>
 
-        <View style={{flex: 3}}>
+        <View
+          style={{
+            flex: 3,
+            backgroundColor: theme.palette.primary.main,
+            borderWidth: 1,
+            borderColor: 'red',
+          }}>
           <SmallText
             textStyles={{
               textAlign: 'center',
@@ -522,72 +528,79 @@ const AddItem: FunctionComponent<{
             }}>
             Weights {weightUnit}
           </SmallText>
-          <View style={{flexDirection: 'row', flex: 1}}>
-            <View style={{flex: 2}}>
-              <Input
-                containerStyle={[
-                  numberInputStyle.containerStyle,
-                  {
-                    backgroundColor: theme.palette.primary.main,
-                  },
-                ]}
-                label=""
-                placeholder="Weight(s)"
-                centerInput={true}
-                fontSize={inputFontSize}
-                value={weight}
-                isError={weightError.length > 0}
-                helperText={weightError}
-                inputStyles={{textAlign: 'center'}}
-                onChangeText={t => {
-                  if (
-                    WORKOUT_TYPES[props.schemeType] == STANDARD_W ||
-                    WORKOUT_TYPES[props.schemeType] == REPS_W ||
-                    WORKOUT_TYPES[props.schemeType] == ROUNDS_W
-                  ) {
-                    if (weightError.length > 0) {
-                      setWeightError('');
+          <View
+            style={{
+              flexDirection: 'row',
+              flex: 1,
+            }}>
+            <View style={{flex: 3}}>
+              <View style={{height: 55}}>
+                <Input
+                  containerStyle={[
+                    numberInputStyle.containerStyle,
+                    {
+                      backgroundColor: theme.palette.primary.main,
+                    },
+                  ]}
+                  label=""
+                  placeholder="Weight(s)"
+                  centerInput={true}
+                  fontSize={inputFontSize}
+                  value={weight}
+                  isError={weightError.length > 0}
+                  helperText={weightError}
+                  inputStyles={{textAlign: 'center'}}
+                  onChangeText={t => {
+                    if (
+                      WORKOUT_TYPES[props.schemeType] == STANDARD_W ||
+                      WORKOUT_TYPES[props.schemeType] == REPS_W ||
+                      WORKOUT_TYPES[props.schemeType] == ROUNDS_W
+                    ) {
+                      if (weightError.length > 0) {
+                        setWeightError('');
+                      }
+                      updateItem('weights', numFilterWithSpaces(t));
+                      setWeight(numFilterWithSpaces(t));
+                    } else {
+                      updateItem('weights', numFilter(t));
+                      setWeight(numFilter(t));
                     }
-                    updateItem('weights', numFilterWithSpaces(t));
-                    setWeight(numFilterWithSpaces(t));
-                  } else {
-                    updateItem('weights', numFilter(t));
-                    setWeight(numFilter(t));
-                  }
-                }}
-              />
+                  }}
+                />
+              </View>
             </View>
 
             <View style={{flex: 1}}>
-              <View style={{flex: 1, width: '100%'}}>
-                <Picker
-                  ref={weightUnitPickRef}
-                  style={pickerStyle.containerStyle}
-                  itemStyle={[
-                    pickerStyle.itemStyle,
-                    {
-                      height: '100%',
-                      color: theme.palette.text,
-                      backgroundColor: theme.palette.gray,
-                    },
-                  ]}
-                  selectedValue={weightUnit}
-                  onValueChange={(itemValue, itemIndex) => {
-                    setPercentOfWeightUnit(initPercentOfWeightUnit);
-                    setWeightUnit(itemValue);
-                    updateItem('weight_unit', itemValue);
-                  }}>
-                  {WEIGHT_UNITS.map((unit, i) => {
-                    return (
-                      <Picker.Item
-                        key={`rest_${unit}`}
-                        label={unit}
-                        value={unit}
-                      />
-                    );
-                  })}
-                </Picker>
-              </View>
+              <Picker
+                ref={weightUnitPickRef}
+                style={[
+                  {
+                    backgroundColor: theme.palette.gray,
+                    height: 50,
+                  },
+                ]}
+                itemStyle={[
+                  {
+                    color: theme.palette.text,
+                    height: 20,
+                  },
+                ]}
+                selectedValue={weightUnit}
+                onValueChange={(itemValue, itemIndex) => {
+                  setPercentOfWeightUnit(initPercentOfWeightUnit);
+                  setWeightUnit(itemValue);
+                  updateItem('weight_unit', itemValue);
+                }}>
+                {WEIGHT_UNITS.map((unit, i) => {
+                  return (
+                    <Picker.Item
+                      key={`rest_${unit}`}
+                      label={unit}
+                      value={unit}
+                    />
+                  );
+                })}
+              </Picker>
             </View>
           </View>
         </View>

@@ -308,7 +308,7 @@ export class CalcWorkoutStats {
     const totalVol =
       quantity *
       (weights.length == 0 ? 0 : itemWeights.reduce((p, c) => p + c, 0));
-    console.log('CALC Standard Scheme:: ', quantity, weights, itemWeights);
+    // console.log('CALC Standard Scheme:: ', quantity, weights, itemWeights);
     if (itemReps[0]) {
       //Reps
       this.calcItemReps(item, pCat, workoutName, quantity, totalVol, item.sets);
@@ -620,6 +620,6 @@ export const formatLongDate = date => {
   const day = date.getDate();
   const monthIndex = date.getMonth();
   const year = date.getFullYear();
-  console.log('Long date: ', monthNames[monthIndex] + ' ' + day + ', ' + year);
+  // console.log('Long date: ', monthNames[monthIndex] + ' ' + day + ', ' + year);
   return monthNames[monthIndex] + ' ' + day + ', ' + year;
 };

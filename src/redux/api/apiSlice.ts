@@ -660,6 +660,7 @@ export const apiSlice = createApi({
       query: () => {
         return {url: 'profile/profile/'};
       },
+      providesTags: ['User'],
     }),
     // Expanded Profile data view
     getProfileWorkoutGroups: builder.query({

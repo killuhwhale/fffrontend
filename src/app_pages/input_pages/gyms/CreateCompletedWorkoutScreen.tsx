@@ -327,7 +327,6 @@ const EditWorkoutItem: FunctionComponent<{
                 itemStyle={[
                   pickerStyle.itemStyle,
                   {
-                    height: '100%',
                     color: theme.palette.text,
                     backgroundColor: theme.palette.gray,
                   },
@@ -428,7 +427,6 @@ const EditWorkoutItem: FunctionComponent<{
                 itemStyle={[
                   pickerStyle.itemStyle,
                   {
-                    height: '100%',
                     color: theme.palette.text,
                     backgroundColor: theme.palette.gray,
                   },
@@ -583,7 +581,6 @@ const EditWorkoutItem: FunctionComponent<{
                   itemStyle={[
                     pickerStyle.itemStyle,
                     {
-                      height: '100%',
                       color: theme.palette.text,
                       backgroundColor: theme.palette.gray,
                     },

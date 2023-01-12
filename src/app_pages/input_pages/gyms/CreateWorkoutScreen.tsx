@@ -73,7 +73,7 @@ const numberInputStyle = StyleSheet.create({
   },
 });
 export const pickerStyle = StyleSheet.create({
-  containerStyle: {},
+  containerStyle: {color: 'white'},
   itemStyle: {
     height: SCREEN_HEIGHT * 0.05,
     textAlign: 'center',

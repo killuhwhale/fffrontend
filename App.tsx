@@ -4,19 +4,23 @@ import React, {
   ReactNode,
   useEffect,
   useState,
-  type PropsWithChildren,
+  PropsWithChildren,
 } from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import HomePage from './src/app_pages/home';
 import RootStack from './src/navigators/RootStack';
 import {DefaultTheme, ThemeProvider, useTheme} from 'styled-components/native';
 import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
-import {RegularText} from './src/app_components/Text/Text';
+import {RegularText, SmallText} from './src/app_components/Text/Text';
 import {store} from './src/redux/store';
 import {Provider} from 'react-redux';
 import {navigationRef} from './src/navigators/RootNavigation';
 import Header from './src/app_components/Header/header';
-import {apiSlice, useValidateUserTokenQuery} from './src/redux/api/apiSlice';
+import {
+  apiSlice,
+  getToken,
+  useValidateUserTokenQuery,
+} from './src/redux/api/apiSlice';
 
 import AuthScreen from './src/app_pages/AuthScreen';
 import Uploady from '@rpldy/native-uploady';
@@ -141,17 +145,18 @@ const Auth: FunctionComponent<{children: Array<ReactNode>}> = props => {
     isSuccess
   ) {
     setLoggedIn(true);
+  } else {
   }
 
   useEffect(() => {
     if (isError && !loggedIn) {
-      console.log('Auth invalidting tag');
+      console.log('Dispatching Auth invalidting tag');
       store.dispatch(apiSlice.util.invalidateTags(['UserAuth']));
     }
   }, [loggedIn]);
 
   auth.listenLogout(() => {
-    console.log('Listened for logout, invalidate user info');
+    console.log('Listened for logout, setLoggedIn');
 
     setLoggedIn(false);
   });
@@ -195,6 +200,63 @@ const Auth: FunctionComponent<{children: Array<ReactNode>}> = props => {
     </>
   );
 };
+const AuthNew: FunctionComponent<PropsWithChildren> = props => {
+  // This will check if we have a valid token by sending a request to server for user info.
+  // This either loads the app or login page.
+
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const a = async () => {
+      const token = await getToken();
+      if (token && token.length > 0) {
+        setLoggedIn(true);
+      }
+    };
+    a();
+  }, []);
+
+  auth.listenLogout(() => {
+    console.log('Listened for logout, setLoggedIn');
+    store.dispatch(apiSlice.util.invalidateTags(['User']));
+    setLoggedIn(false);
+  });
+
+  auth.listenLogin((loggedIn, msg) => {
+    console.log('App.tsx listenLogin: ', loggedIn, msg);
+    if (loggedIn) {
+      console.log('Listne for login');
+      console.log('Should log in');
+      setLoggedIn(true);
+    } else {
+    }
+  });
+
+  return (
+    <>
+      {props && props.children ? (
+        <>{loggedIn ? <>{props.children[0]}</> : <>{props.children[1]}</>}</>
+      ) : (
+        <></>
+      )}
+    </>
+    // <>{props.children[1]}</>
+  );
+};
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -211,10 +273,12 @@ const App = () => {
                 <StatusBar barStyle={'dark-content'} />
                 <Header />
               </SafeAreaView>
-              <Auth>
+              <AuthNew>
                 <RootStack navref={navigationRef} />
                 <AuthScreen />
-              </Auth>
+                {/* <SmallText>Test</SmallText>
+                <SmallText>Test</SmallText> */}
+              </AuthNew>
             </GestureHandlerRootView>
           </React.StrictMode>
         </Uploady>

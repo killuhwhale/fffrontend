@@ -119,7 +119,7 @@ const GymScreen: FunctionComponent<Props> = ({navigation, route: {params}}) => {
   // Fetch GymClasses without workouts to Display here.... by gym ID: id.
   const {data, isLoading, isSuccess, isError, error} =
     useGetGymDataViewQuery(id);
-  console.log('GymData view:', data);
+  // console.log('GymData view:', data);
 
   const gymClasses = data?.gym_classes ? data?.gym_classes : [];
 

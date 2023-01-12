@@ -32,7 +32,7 @@ const ManageCoachesModal: FunctionComponent<{
     isError,
     error,
   } = useGetUsersQuery('');
-  console.log('coach modal users: ', data);
+  // console.log('coach modal users: ', data);
   const [newCoach, setNewCoach] = useState(0); // if we have users, init to 0, the first user, else we do not have any coaches to add
   const {
     data: allCoaches,
@@ -47,7 +47,7 @@ const ManageCoachesModal: FunctionComponent<{
   const [showRemoveCoach, setShowRemoveCoach] = useState(false);
   const [coachToRemove, setCoachToRemove] = useState(-1);
 
-  console.log('Coaches user data:  ', allCoaches);
+  // console.log('Coaches user data:  ', allCoaches);
 
   const addNewCoach = () => {
     console.log('Adding ', newCoach, data[newCoach]);
