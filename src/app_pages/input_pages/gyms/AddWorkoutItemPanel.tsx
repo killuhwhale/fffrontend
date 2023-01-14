@@ -5,6 +5,7 @@ import styled from 'styled-components/native';
 import {Button} from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Picker} from '@react-native-picker/picker';
+import RNPickerSelect from 'react-native-picker-select';
 
 import {
   SmallText,
@@ -518,8 +519,6 @@ const AddItem: FunctionComponent<{
           style={{
             flex: 3,
             backgroundColor: theme.palette.primary.main,
-            borderWidth: 1,
-            borderColor: 'red',
           }}>
           <SmallText
             textStyles={{
@@ -534,55 +533,85 @@ const AddItem: FunctionComponent<{
               flex: 1,
             }}>
             <View style={{flex: 3}}>
-              <View style={{height: 55}}>
-                <Input
-                  containerStyle={[
-                    numberInputStyle.containerStyle,
-                    {
-                      backgroundColor: theme.palette.primary.main,
-                    },
-                  ]}
-                  label=""
-                  placeholder="Weight(s)"
-                  centerInput={true}
-                  fontSize={inputFontSize}
-                  value={weight}
-                  isError={weightError.length > 0}
-                  helperText={weightError}
-                  inputStyles={{textAlign: 'center'}}
-                  onChangeText={t => {
-                    if (
-                      WORKOUT_TYPES[props.schemeType] == STANDARD_W ||
-                      WORKOUT_TYPES[props.schemeType] == REPS_W ||
-                      WORKOUT_TYPES[props.schemeType] == ROUNDS_W
-                    ) {
-                      if (weightError.length > 0) {
-                        setWeightError('');
-                      }
-                      updateItem('weights', numFilterWithSpaces(t));
-                      setWeight(numFilterWithSpaces(t));
-                    } else {
-                      updateItem('weights', numFilter(t));
-                      setWeight(numFilter(t));
+              <Input
+                containerStyle={[
+                  numberInputStyle.containerStyle,
+                  {
+                    backgroundColor: theme.palette.primary.main,
+                  },
+                ]}
+                label=""
+                placeholder="Weight(s)"
+                centerInput={true}
+                fontSize={inputFontSize}
+                value={weight}
+                isError={weightError.length > 0}
+                helperText={weightError}
+                inputStyles={{textAlign: 'center'}}
+                onChangeText={t => {
+                  if (
+                    WORKOUT_TYPES[props.schemeType] == STANDARD_W ||
+                    WORKOUT_TYPES[props.schemeType] == REPS_W ||
+                    WORKOUT_TYPES[props.schemeType] == ROUNDS_W
+                  ) {
+                    if (weightError.length > 0) {
+                      setWeightError('');
                     }
-                  }}
-                />
-              </View>
+                    updateItem('weights', numFilterWithSpaces(t));
+                    setWeight(numFilterWithSpaces(t));
+                  } else {
+                    updateItem('weights', numFilter(t));
+                    setWeight(numFilter(t));
+                  }
+                }}
+              />
             </View>
 
             <View style={{flex: 1}}>
-              <Picker
+              <RNPickerSelect
+                ref={weightUnitPickRef}
+                onValueChange={(itemValue, itemIndex) => {
+                  setPercentOfWeightUnit(initPercentOfWeightUnit);
+                  setWeightUnit(itemValue);
+                  updateItem('weight_unit', itemValue);
+                }}
+                useNativeAndroidPickerStyle={false}
+                value={weightUnit}
+                style={{
+                  viewContainer: {},
+                  inputAndroidContainer: {
+                    alignItems: 'center',
+                  },
+                  inputIOSContainer: {
+                    alignItems: 'center',
+                  },
+                  inputAndroid: {
+                    color: theme.palette.text,
+                  },
+                  inputIOS: {
+                    color: theme.palette.text,
+                  },
+                }}
+                items={WEIGHT_UNITS.map(unit => {
+                  return {
+                    label: unit,
+                    value: unit,
+                  };
+                })}
+              />
+
+              {/* <Picker
                 ref={weightUnitPickRef}
                 style={[
                   {
                     backgroundColor: theme.palette.gray,
-                    height: 50,
+                    color: theme.palette.text,
+                    // height: 50,
                   },
                 ]}
                 itemStyle={[
                   {
-                    color: theme.palette.text,
-                    height: 20,
+                    height: '100%',
                   },
                 ]}
                 selectedValue={weightUnit}
@@ -600,7 +629,7 @@ const AddItem: FunctionComponent<{
                     />
                   );
                 })}
-              </Picker>
+              </Picker> */}
             </View>
           </View>
         </View>

@@ -72,29 +72,16 @@ git push origin HEAD:staging HEAD
     - Gym, Class, Workout, CompleteWorkout
     - Takes a while and app should indicate to user while its waiting....
 
-    Delete Button Showing on WorkoutScreen
-        - Normal user can see the Delete Button
-
     iOS:
         Add workout Item
             - Weight_unit is not centered, looks bad.
             - SS, when colors arent showing, icons are no longer coloed
                 - They should remain colored.
 
-        Complete Workout
-            - Squished views:
-                - Weight_unit
 
         Virtual Keyboard
             - Does not push up view, cannot see
                 - Find out how to set this in some settings...
-
-
-    Create account, needs to show some kind of response in UI
-    Create Completed Workout, image is not showing...
-    User is able to attempt to delete WorkoutGruop that isnt theirs.
-        - Buttons shouldnt show....
-        - (API doesnt allow)
 
 
     Test some scenarios with multiple users
