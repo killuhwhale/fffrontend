@@ -864,7 +864,16 @@ const AddItem: FunctionComponent<{
               />
             </View>
             <View style={{flex: weightUnit === '%' ? 2 : 1}}>
-              <RNPickerSelect
+              <VerticalPicker
+                key={'rest'}
+                data={DURATION_UNITS}
+                onChange={itemIndex => {
+                  const itemValue = DURATION_UNITS[itemIndex];
+                  setRestDurationUnit(itemIndex);
+                  updateItem('rest_duration_unit', itemIndex);
+                }}
+              />
+              {/* <RNPickerSelect
                 ref={restDurationUnitPickRef}
                 placeholder={{}}
                 onValueChange={(itemValue, itemIndex) => {
@@ -894,7 +903,7 @@ const AddItem: FunctionComponent<{
                     value: unit,
                   };
                 })}
-              />
+              /> */}
               {/* <Picker
                 ref={restDurationUnitPickRef}
                 style={[pickerStyle.containerStyle]}

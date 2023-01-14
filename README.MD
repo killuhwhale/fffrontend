@@ -72,18 +72,6 @@ git push origin HEAD:staging HEAD
     - Gym, Class, Workout, CompleteWorkout
     - Takes a while and app should indicate to user while its waiting....
 
-    iOS:
-        Add workout Item
-            - Weight_unit is not centered, looks bad.
-            - SS, when colors arent showing, icons are no longer coloed
-                - They should remain colored.
-
-
-        Virtual Keyboard
-            - Does not push up view, cannot see
-                - Find out how to set this in some settings...
-
-
     Test some scenarios with multiple users
         - ensure users cannot delete workouts that they shouldnt be able to
         - Ensure theyFixed login, cant create workouts for classes they are not an owner of

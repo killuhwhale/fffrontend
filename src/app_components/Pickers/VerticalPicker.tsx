@@ -141,6 +141,9 @@ const VerticalPicker: FunctionComponent<{
   const getWidthLayout = e => {
     sharedItemWidth.value = e.nativeEvent.layout.width;
     setItemWidth(e.nativeEvent.layout.width);
+    setXState(0);
+    props.onChange(0);
+    transX.value = 0;
   };
 
   const mapData = () => {
@@ -178,9 +181,9 @@ const VerticalPicker: FunctionComponent<{
             {mapData()}
           </Animated.View>
         }>
-        {/* <View style={{width: '33%', backgroundColor: 'grey'}} /> */}
-        <View style={{width: '100%', backgroundColor: 'white'}} />
-        {/* <View style={{width: '33%', backgroundColor: 'grey'}} /> */}
+        <View style={{width: '15%', backgroundColor: 'grey'}} />
+        <View style={{width: '70%', backgroundColor: 'white'}} />
+        <View style={{width: '15%', backgroundColor: 'grey'}} />
       </MaskedView>
       <PanGestureHandler onGestureEvent={eventHandler}>
         {/* <PanGestureHandler > */}
