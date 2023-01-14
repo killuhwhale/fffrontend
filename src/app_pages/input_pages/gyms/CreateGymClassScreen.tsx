@@ -17,7 +17,7 @@ import {
 import {Button, TextInput} from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {launchImageLibrary, Asset} from 'react-native-image-picker';
-import {Picker} from '@react-native-picker/picker';
+import RNPickerSelect from 'react-native-picker-select';
 
 import DocumentPicker from 'react-native-document-picker';
 
@@ -229,6 +229,36 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
                 padding: 6,
               }}>
               <SmallText>Gym</SmallText>
+              <RNPickerSelect
+                ref={pickerRef}
+                onValueChange={(itemValue, itemIndex) => setGym(itemValue)}
+                useNativeAndroidPickerStyle={false}
+                value={gym}
+                placeholder={{}}
+                style={{
+                  inputAndroidContainer: {
+                    alignItems: 'center',
+                  },
+                  inputAndroid: {
+                    color: theme.palette.text,
+                  },
+                  inputIOSContainer: {
+                    alignItems: 'center',
+                  },
+                  inputIOS: {
+                    color: theme.palette.text,
+                    height: '100%',
+                  },
+                }}
+                items={data.map((gym, i) => {
+                  return {
+                    label: gym.title,
+                    value: gym.id,
+                  };
+                })}
+              />
+
+              {/*
               <Picker
                 ref={pickerRef}
                 style={{height: 100}}
@@ -250,7 +280,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
                     />
                   );
                 })}
-              </Picker>
+              </Picker> */}
             </View>
           ) : (
             <></>

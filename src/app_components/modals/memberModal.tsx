@@ -10,7 +10,7 @@ import {
   useGetUsersQuery,
 } from '../../redux/api/apiSlice';
 import {Button, IconButton} from '@react-native-material/core';
-import {Picker} from '@react-native-picker/picker';
+import RNPickerSelect from 'react-native-picker-select';
 import {filter} from '../../utils/algos';
 
 import {ActionCancelModal} from '../../app_pages/Profile';
@@ -176,7 +176,39 @@ const ManageMembersModal: FunctionComponent<{
                     placeholder="Search users"
                   />
                 </View>
-                <Picker
+                <RNPickerSelect
+                  ref={pickerRef}
+                  onValueChange={(itemValue, itemIndex) =>
+                    setNewMember(itemValue)
+                  }
+                  useNativeAndroidPickerStyle={false}
+                  value={newMember}
+                  style={{
+                    inputAndroidContainer: {
+                      alignItems: 'center',
+                    },
+                    inputAndroid: {
+                      color: theme.palette.text,
+                    },
+                    inputIOSContainer: {
+                      alignItems: 'center',
+                    },
+                    inputIOS: {
+                      color: theme.palette.text,
+                      height: '100%',
+                    },
+                  }}
+                  placeholder={{}}
+                  items={filterResult.map((filtered_index, i) => {
+                    const user = data[filtered_index];
+                    return {
+                      label: user.username,
+                      value: filtered_index,
+                    };
+                  })}
+                />
+
+                {/* <Picker
                   ref={pickerRef}
                   style={{
                     height: 180,
@@ -202,7 +234,7 @@ const ManageMembersModal: FunctionComponent<{
                       />
                     );
                   })}
-                </Picker>
+                </Picker> */}
                 <Button
                   title="Add Member"
                   onPress={addNewMember}

@@ -23,7 +23,7 @@ import {
 } from '../../../app_components/shared';
 import {Button} from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Picker} from '@react-native-picker/picker';
+import RNPickerSelect from 'react-native-picker-select';
 
 import {StackScreenProps} from '@react-navigation/stack';
 import DatePicker from 'react-native-date-picker';
@@ -320,7 +320,45 @@ const EditWorkoutItem: FunctionComponent<{
               />
             </View>
             <View style={{flex: 3}}>
-              <Picker
+              <RNPickerSelect
+                ref={durationUnitPickRef}
+                onValueChange={(itemValue, itemIndex) => {
+                  setNewDurationUnit(itemValue);
+
+                  props.editItem(
+                    props.workoutIdx,
+                    props.itemIdx,
+                    'duration_unit',
+                    itemIndex,
+                  );
+                }}
+                useNativeAndroidPickerStyle={false}
+                placeholder={{}}
+                value={newDurationUnit}
+                style={{
+                  inputAndroidContainer: {
+                    alignItems: 'center',
+                  },
+                  inputAndroid: {
+                    color: theme.palette.text,
+                  },
+                  inputIOSContainer: {
+                    alignItems: 'center',
+                  },
+                  inputIOS: {
+                    color: theme.palette.text,
+                    height: '100%',
+                  },
+                }}
+                items={DURATION_UNITS.map((unit, i) => {
+                  return {
+                    label: unit,
+                    value: i,
+                  };
+                })}
+              />
+
+              {/* <Picker
                 ref={durationUnitPickRef}
                 selectedValue={newDurationUnit}
                 style={pickerStyle.containerStyle}
@@ -350,7 +388,7 @@ const EditWorkoutItem: FunctionComponent<{
                     />
                   );
                 })}
-              </Picker>
+              </Picker> */}
             </View>
           </View>
         </View>
@@ -420,7 +458,45 @@ const EditWorkoutItem: FunctionComponent<{
               />
             </View>
             <View style={{flex: 3}}>
-              <Picker
+              <RNPickerSelect
+                ref={distanceUnitPickRef}
+                onValueChange={(itemValue, itemIndex) => {
+                  setNewDistanceUnit(itemValue);
+
+                  props.editItem(
+                    props.workoutIdx,
+                    props.itemIdx,
+                    'distance_unit',
+                    itemIndex,
+                  );
+                }}
+                useNativeAndroidPickerStyle={false}
+                placeholder={{}}
+                value={newDistanceUnit}
+                style={{
+                  inputAndroidContainer: {
+                    alignItems: 'center',
+                  },
+                  inputAndroid: {
+                    color: theme.palette.text,
+                  },
+                  inputIOSContainer: {
+                    alignItems: 'center',
+                  },
+                  inputIOS: {
+                    color: theme.palette.text,
+                    height: '100%',
+                  },
+                }}
+                items={DISTANCE_UNITS.map((unit, i) => {
+                  return {
+                    label: unit,
+                    value: i,
+                  };
+                })}
+              />
+
+              {/* <Picker
                 ref={distanceUnitPickRef}
                 selectedValue={newDistanceUnit}
                 style={pickerStyle.containerStyle}
@@ -450,7 +526,7 @@ const EditWorkoutItem: FunctionComponent<{
                     />
                   );
                 })}
-              </Picker>
+              </Picker> */}
             </View>
           </View>
         </View>
@@ -575,7 +651,44 @@ const EditWorkoutItem: FunctionComponent<{
                 style={{
                   width: newWeightUnit === WEIGHT_UNITS[2] ? '50%' : '100%',
                 }}>
-                <Picker
+                <RNPickerSelect
+                  ref={weightUnitPickRef}
+                  onValueChange={(itemValue, itemIndex) => {
+                    setNewWeightUnit(itemValue);
+                    props.editItem(
+                      props.workoutIdx,
+                      props.itemIdx,
+                      'weight_unit',
+                      itemValue,
+                    );
+                  }}
+                  useNativeAndroidPickerStyle={false}
+                  value={newWeightUnit}
+                  placeholder={{}}
+                  style={{
+                    inputAndroidContainer: {
+                      alignItems: 'center',
+                    },
+                    inputAndroid: {
+                      color: theme.palette.text,
+                    },
+                    inputIOSContainer: {
+                      alignItems: 'center',
+                    },
+                    inputIOS: {
+                      color: theme.palette.text,
+                      height: '100%',
+                    },
+                  }}
+                  items={WEIGHT_UNITS.map((unit, i) => {
+                    return {
+                      label: unit,
+                      value: unit,
+                    };
+                  })}
+                />
+
+                {/* <Picker
                   ref={weightUnitPickRef}
                   style={pickerStyle.containerStyle}
                   itemStyle={[
@@ -604,7 +717,7 @@ const EditWorkoutItem: FunctionComponent<{
                       />
                     );
                   })}
-                </Picker>
+                </Picker> */}
               </View>
             </View>
           </View>

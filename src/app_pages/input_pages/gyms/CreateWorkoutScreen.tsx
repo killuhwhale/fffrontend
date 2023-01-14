@@ -776,7 +776,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
               }}>
               <SmallText
                 textStyles={{color: theme.palette.text, textAlign: 'left'}}>
-                Mark item as constant
+                Mark item as constant (ignore rep scheme)
               </SmallText>
               <Switch
                 value={allowMarkConstant}

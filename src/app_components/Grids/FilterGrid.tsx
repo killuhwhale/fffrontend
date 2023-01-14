@@ -1,21 +1,9 @@
 import React, {FunctionComponent, useEffect, useRef, useState} from 'react';
-import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
 import {useTheme} from 'styled-components';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Modal, ScrollView, View} from 'react-native';
-import {
-  useCreateCoachMutation,
-  useDeleteCoachMutation,
-  useGetCoachesForGymClassQuery,
-  useGetUsersQuery,
-} from '../../redux/api/apiSlice';
-import {Button, IconButton} from '@react-native-material/core';
-import {Picker} from '@react-native-picker/picker';
+import {View} from 'react-native';
+
 import {filter} from '../../utils/algos';
-
-import {ActionCancelModal} from '../../app_pages/Profile';
-
-import {mdFontSize, smFontSize} from '../shared';
 import Input from '../Input/input';
 
 const FilterGrid: FunctionComponent<{

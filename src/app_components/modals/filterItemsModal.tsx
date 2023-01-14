@@ -9,8 +9,7 @@ import {
   useGetCoachesForGymClassQuery,
   useGetUsersQuery,
 } from '../../redux/api/apiSlice';
-import {Button, IconButton} from '@react-native-material/core';
-import {Picker} from '@react-native-picker/picker';
+
 import {filter} from '../../utils/algos';
 
 import {ActionCancelModal} from '../../app_pages/Profile';

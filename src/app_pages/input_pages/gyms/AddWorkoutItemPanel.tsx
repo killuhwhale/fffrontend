@@ -1,10 +1,10 @@
-import React, {FunctionComponent, useState, useRef} from 'react';
+import React, {FunctionComponent, useState, useRef, useEffect} from 'react';
 import {View} from 'react-native';
 import {createGlobalStyle, useTheme} from 'styled-components';
 import styled from 'styled-components/native';
 import {Button} from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Picker} from '@react-native-picker/picker';
+
 import RNPickerSelect from 'react-native-picker-select';
 
 import {
@@ -216,6 +216,11 @@ const AddItem: FunctionComponent<{
     }
   };
 
+  // const [itemIndexUpdated, setItemIndexUpdated] = useState(false);
+  // useEffect(() => {
+
+  // }, [itemIndexUpdated])
+
   return (
     <View
       style={{
@@ -229,7 +234,41 @@ const AddItem: FunctionComponent<{
           <View style={{justifyContent: 'flex-start', flex: 4, height: '100%'}}>
             <SmallText>Workout Items</SmallText>
             <View style={{flex: 1, width: '100%'}}>
-              <Picker
+              <RNPickerSelect
+                ref={pickerRef}
+                onValueChange={(itemValue, itemIndex) => {
+                  console.log('OnValChangfe', itemValue, itemIndex);
+                  setWorkoutName(itemIndex);
+                  updateItem('name', data[itemIndex]);
+                }}
+                useNativeAndroidPickerStyle={false}
+                placeholder={{}}
+                // value={workoutName}
+                style={{
+                  inputAndroidContainer: {
+                    alignItems: 'center',
+                  },
+                  inputAndroid: {
+                    color: theme.palette.text,
+                  },
+                  inputIOSContainer: {
+                    alignItems: 'center',
+                  },
+                  inputIOS: {
+                    color: theme.palette.text,
+                    height: '100%',
+                  },
+                }}
+                items={data.map((name, i) => {
+                  console.log('Workoutnames index: ', i);
+                  return {
+                    label: name.name,
+                    value: name.name,
+                  };
+                })}
+              />
+
+              {/* <Picker
                 ref={pickerRef}
                 style={[pickerStyle.containerStyle, {flex: 1}]}
                 itemStyle={{
@@ -248,7 +287,7 @@ const AddItem: FunctionComponent<{
                     <Picker.Item key={name.id} label={name.name} value={i} />
                   );
                 })}
-              </Picker>
+              </Picker> */}
             </View>
           </View>
         ) : (
@@ -257,18 +296,8 @@ const AddItem: FunctionComponent<{
         <View style={{flex: 2}}>
           <SmallText>Quantity type</SmallText>
           <View style={{flex: 1, width: '100%'}}>
-            <Picker
+            <RNPickerSelect
               ref={showRepsOrDurationInputRef}
-              style={[pickerStyle.containerStyle, {flex: 1}]}
-              itemStyle={[
-                pickerStyle.itemStyle,
-                {
-                  color: theme.palette.text,
-                  backgroundColor: theme.palette.gray,
-                  height: '100%',
-                },
-              ]}
-              selectedValue={showQuantity}
               onValueChange={(itemValue, itemIndex) => {
                 setDistance(initDistance);
                 setDuration(initDuration);
@@ -277,13 +306,34 @@ const AddItem: FunctionComponent<{
                 // updateItem('duration', nanOrNah(initDuration))
                 // updateItem('reps', nanOrNah(initReps))
                 setShowQuantity(itemIndex);
-              }}>
-              {QuantityLabels.map((label, i) => {
-                return (
-                  <Picker.Item key={`show_${label}`} label={label} value={i} />
-                );
+              }}
+              fixAndroidTouchableBug
+              useNativeAndroidPickerStyle={false}
+              // value={showQuantity}
+              // For Some reason its setting itself.
+              placeholder={{}}
+              style={{
+                inputAndroidContainer: {
+                  alignItems: 'center',
+                },
+                inputAndroid: {
+                  color: theme.palette.text,
+                },
+                inputIOSContainer: {
+                  alignItems: 'center',
+                },
+                inputIOS: {
+                  color: theme.palette.text,
+                  height: '100%',
+                },
+              }}
+              items={QuantityLabels.map((label, i) => {
+                return {
+                  label: label,
+                  value: label,
+                };
               })}
-            </Picker>
+            />
           </View>
         </View>
       </View>
@@ -411,7 +461,38 @@ const AddItem: FunctionComponent<{
                 </View>
                 <View style={{flex: 1}}>
                   <View style={{flex: 1, width: '100%'}}>
-                    <Picker
+                    <RNPickerSelect
+                      ref={durationUnitPickRef}
+                      onValueChange={(itemValue, itemIndex) => {
+                        setDurationUnit(itemIndex);
+                        updateItem('duration_unit', itemIndex);
+                      }}
+                      useNativeAndroidPickerStyle={false}
+                      placeholder={{}}
+                      value={durationUnit}
+                      style={{
+                        inputAndroidContainer: {
+                          alignItems: 'center',
+                        },
+                        inputAndroid: {
+                          color: theme.palette.text,
+                        },
+                        inputIOSContainer: {
+                          alignItems: 'center',
+                        },
+                        inputIOS: {
+                          color: theme.palette.text,
+                          height: '100%',
+                        },
+                      }}
+                      items={DURATION_UNITS.map((unit, i) => {
+                        return {
+                          label: unit,
+                          value: unit,
+                        };
+                      })}
+                    />
+                    {/* <Picker
                       ref={durationUnitPickRef}
                       style={[pickerStyle.containerStyle]}
                       itemStyle={[
@@ -436,7 +517,7 @@ const AddItem: FunctionComponent<{
                           />
                         );
                       })}
-                    </Picker>
+                    </Picker> */}
                   </View>
                 </View>
               </View>
@@ -482,7 +563,38 @@ const AddItem: FunctionComponent<{
                 </View>
                 <View style={{flex: 1}}>
                   <View style={{flex: 1, width: '100%'}}>
-                    <Picker
+                    <RNPickerSelect
+                      ref={distanceUnitPickRef}
+                      onValueChange={(itemValue, itemIndex) => {
+                        setDistanceUnit(itemIndex);
+                        updateItem('distance_unit', itemIndex);
+                      }}
+                      useNativeAndroidPickerStyle={false}
+                      placeholder={{}}
+                      value={distanceUnit}
+                      style={{
+                        inputAndroidContainer: {
+                          alignItems: 'center',
+                        },
+                        inputAndroid: {
+                          color: theme.palette.text,
+                        },
+                        inputIOSContainer: {
+                          alignItems: 'center',
+                        },
+                        inputIOS: {
+                          color: theme.palette.text,
+                          height: '100%',
+                        },
+                      }}
+                      items={DISTANCE_UNITS.map((unit, i) => {
+                        return {
+                          label: unit,
+                          value: unit,
+                        };
+                      })}
+                    />
+                    {/* <Picker
                       ref={distanceUnitPickRef}
                       style={[pickerStyle.containerStyle]}
                       itemStyle={[
@@ -507,7 +619,7 @@ const AddItem: FunctionComponent<{
                           />
                         );
                       })}
-                    </Picker>
+                    </Picker> */}
                   </View>
                 </View>
               </View>
@@ -575,21 +687,22 @@ const AddItem: FunctionComponent<{
                   setWeightUnit(itemValue);
                   updateItem('weight_unit', itemValue);
                 }}
+                placeholder={{}}
                 useNativeAndroidPickerStyle={false}
-                value={weightUnit}
+                // value={weightUnit}
                 style={{
-                  viewContainer: {},
                   inputAndroidContainer: {
-                    alignItems: 'center',
-                  },
-                  inputIOSContainer: {
                     alignItems: 'center',
                   },
                   inputAndroid: {
                     color: theme.palette.text,
                   },
+                  inputIOSContainer: {
+                    alignItems: 'center',
+                  },
                   inputIOS: {
                     color: theme.palette.text,
+                    height: '100%',
                   },
                 }}
                 items={WEIGHT_UNITS.map(unit => {
@@ -705,7 +818,38 @@ const AddItem: FunctionComponent<{
               />
             </View>
             <View style={{flex: weightUnit === '%' ? 2 : 1}}>
-              <Picker
+              <RNPickerSelect
+                ref={restDurationUnitPickRef}
+                placeholder={{}}
+                onValueChange={(itemValue, itemIndex) => {
+                  setRestDurationUnit(itemIndex);
+                  updateItem('rest_duration_unit', itemIndex);
+                }}
+                useNativeAndroidPickerStyle={false}
+                // value={restDurationUnit}
+                style={{
+                  inputAndroidContainer: {
+                    alignItems: 'center',
+                  },
+                  inputAndroid: {
+                    color: theme.palette.text,
+                  },
+                  inputIOSContainer: {
+                    alignItems: 'center',
+                  },
+                  inputIOS: {
+                    color: theme.palette.text,
+                    height: '100%',
+                  },
+                }}
+                items={DURATION_UNITS.map((unit, i) => {
+                  return {
+                    label: unit,
+                    value: unit,
+                  };
+                })}
+              />
+              {/* <Picker
                 ref={restDurationUnitPickRef}
                 style={[pickerStyle.containerStyle]}
                 itemStyle={[
@@ -733,7 +877,7 @@ const AddItem: FunctionComponent<{
                     />
                   );
                 })}
-              </Picker>
+              </Picker> */}
             </View>
           </View>
         </View>
