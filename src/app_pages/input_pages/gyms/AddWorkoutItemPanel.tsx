@@ -37,6 +37,7 @@ import {
 } from '../../../app_components/Cards/types';
 import {numberInputStyle, pickerStyle} from './CreateWorkoutScreen';
 import Input from '../../../app_components/Input/input';
+import VerticalPicker from '../../../app_components/Pickers/VerticalPicker';
 
 interface AddWorkoutItemProps {
   success: boolean;
@@ -296,7 +297,22 @@ const AddItem: FunctionComponent<{
         <View style={{flex: 2}}>
           <SmallText>Quantity type</SmallText>
           <View style={{flex: 1, width: '100%'}}>
-            <RNPickerSelect
+            <VerticalPicker
+              key={'qty'}
+              data={QuantityLabels}
+              onChange={itemIndex => {
+                const itemValue = QuantityLabels[itemIndex];
+                setDistance(initDistance);
+                setDuration(initDuration);
+                setReps(initReps);
+                // updateItem('distance', nanOrNah(initDistance))
+                // updateItem('duration', nanOrNah(initDuration))
+                // updateItem('reps', nanOrNah(initReps))
+                setShowQuantity(itemIndex);
+              }}
+            />
+
+            {/* <RNPickerSelect
               ref={showRepsOrDurationInputRef}
               onValueChange={(itemValue, itemIndex) => {
                 setDistance(initDistance);
@@ -333,7 +349,7 @@ const AddItem: FunctionComponent<{
                   value: label,
                 };
               })}
-            />
+            /> */}
           </View>
         </View>
       </View>
@@ -461,7 +477,16 @@ const AddItem: FunctionComponent<{
                 </View>
                 <View style={{flex: 1}}>
                   <View style={{flex: 1, width: '100%'}}>
-                    <RNPickerSelect
+                    <VerticalPicker
+                      key={'dur'}
+                      data={DURATION_UNITS}
+                      onChange={itemIndex => {
+                        const itemValue = DURATION_UNITS[itemIndex];
+                        setDurationUnit(itemIndex);
+                        updateItem('duration_unit', itemIndex);
+                      }}
+                    />
+                    {/* <RNPickerSelect
                       ref={durationUnitPickRef}
                       onValueChange={(itemValue, itemIndex) => {
                         setDurationUnit(itemIndex);
@@ -491,7 +516,7 @@ const AddItem: FunctionComponent<{
                           value: unit,
                         };
                       })}
-                    />
+                    /> */}
                     {/* <Picker
                       ref={durationUnitPickRef}
                       style={[pickerStyle.containerStyle]}
@@ -563,7 +588,17 @@ const AddItem: FunctionComponent<{
                 </View>
                 <View style={{flex: 1}}>
                   <View style={{flex: 1, width: '100%'}}>
-                    <RNPickerSelect
+                    <VerticalPicker
+                      key={'dist'}
+                      data={DISTANCE_UNITS}
+                      onChange={itemIndex => {
+                        const itemValue = DISTANCE_UNITS[itemIndex];
+                        setPercentOfWeightUnit(initPercentOfWeightUnit);
+                        setDistanceUnit(itemIndex);
+                        updateItem('distance_unit', itemIndex);
+                      }}
+                    />
+                    {/* <RNPickerSelect
                       ref={distanceUnitPickRef}
                       onValueChange={(itemValue, itemIndex) => {
                         setDistanceUnit(itemIndex);
@@ -593,7 +628,7 @@ const AddItem: FunctionComponent<{
                           value: unit,
                         };
                       })}
-                    />
+                    /> */}
                     {/* <Picker
                       ref={distanceUnitPickRef}
                       style={[pickerStyle.containerStyle]}
@@ -680,7 +715,18 @@ const AddItem: FunctionComponent<{
             </View>
 
             <View style={{flex: 1}}>
-              <RNPickerSelect
+              <VerticalPicker
+                key={'wts'}
+                data={WEIGHT_UNITS}
+                onChange={itemIndex => {
+                  const itemValue = WEIGHT_UNITS[itemIndex];
+                  setPercentOfWeightUnit(initPercentOfWeightUnit);
+                  setWeightUnit(itemValue);
+                  updateItem('weight_unit', itemValue);
+                }}
+              />
+
+              {/* <RNPickerSelect
                 ref={weightUnitPickRef}
                 onValueChange={(itemValue, itemIndex) => {
                   setPercentOfWeightUnit(initPercentOfWeightUnit);
@@ -711,7 +757,7 @@ const AddItem: FunctionComponent<{
                     value: unit,
                   };
                 })}
-              />
+              /> */}
 
               {/* <Picker
                 ref={weightUnitPickRef}
