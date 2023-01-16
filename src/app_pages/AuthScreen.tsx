@@ -423,7 +423,7 @@ const AuthScreen: FunctionComponent = () => {
                   onPress={() => {
                     setAuthMode(3);
                   }}
-                  title="Reset"
+                  title="Enter Code"
                   color={theme.palette.primary.main}
                 />
               </View>

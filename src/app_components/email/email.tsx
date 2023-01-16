@@ -15,8 +15,10 @@ export const ResetPassword: FunctionComponent = () => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [showHint, setShowHint] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const sendEmail = async () => {
+    setErrorMsg('');
     if (email.length <= 0) {
       return;
     }
@@ -27,9 +29,14 @@ export const ResetPassword: FunctionComponent = () => {
     };
 
     const url = `${BASEURL}user/send_reset_code/`;
-    const result = await post(url, emailData);
-    console.log('Send email res:', result, await result.formData());
-    setShowHint(true);
+    const result = await (await post(url, emailData)).json();
+    if (result.error) {
+      setErrorMsg(result.error);
+    } else {
+      // console.log('Send email res:', result, await result.formData());
+      console.log('Send email res:', result);
+      setShowHint(true);
+    }
   };
 
   return (
@@ -37,7 +44,11 @@ export const ResetPassword: FunctionComponent = () => {
       <RegularText textStyles={{textAlign: 'center', marginBottom: 16}}>
         Password reset
       </RegularText>
-      {showHint ? (
+      {errorMsg.length > 0 ? (
+        <SmallText textStyles={{textAlign: 'center', marginBottom: 16}}>
+          {errorMsg}
+        </SmallText>
+      ) : showHint ? (
         <SmallText textStyles={{textAlign: 'center', marginBottom: 16}}>
           Only one code will be sent per email every 15mins
         </SmallText>

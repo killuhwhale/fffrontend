@@ -5,7 +5,15 @@ import React, {
   useCallback,
   useRef,
 } from 'react';
-import {Image, Modal, Platform, StyleSheet, View, Switch} from 'react-native';
+import {
+  Image,
+  Modal,
+  Platform,
+  StyleSheet,
+  View,
+  Switch,
+  ActivityIndicator,
+} from 'react-native';
 import styled from 'styled-components/native';
 import {Container, mdFontSize} from '../../../app_components/shared';
 import {
@@ -105,10 +113,12 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
   const [gym, setGym] = useState(data && data.length > 0 ? data[0].id : 0);
   const pickerRef = useRef<any>();
 
-  console.log("User's gym data: ", gym);
+  const [isCreating, setIsCreating] = useState(false);
+
   const _createGymClass = async () => {
     console.log('Creatting gym class: ', mainFile, logoFile, title, desc, gym);
 
+    setIsCreating(true);
     // Need to get file from the URI
     const data = new FormData();
     data.append('title', title);
@@ -139,6 +149,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
     } catch (err) {
       console.log('Error creating gym', err);
     }
+    setIsCreating(false);
     // TODO possibly dispatch to refresh data
   };
 
@@ -302,12 +313,15 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
             source={{uri: logoFile.uri}}
             style={{width: '100%', height: 100, resizeMode: 'contain'}}
           />
-
-          <Button
-            onPress={_createGymClass.bind(this)}
-            title="Create"
-            style={{backgroundColor: theme.palette.lightGray}}
-          />
+          {!isCreating ? (
+            <Button
+              onPress={_createGymClass.bind(this)}
+              title="Create"
+              style={{backgroundColor: theme.palette.lightGray}}
+            />
+          ) : (
+            <ActivityIndicator size="small" color={theme.palette.text} />
+          )}
         </View>
       </View>
     </PageContainer>

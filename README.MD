@@ -68,23 +68,7 @@ git push origin HEAD:staging HEAD
 
 # Bugs:
 
-    Add Loading Spiiners to On Create:
-    - Gym, Class, Workout, CompleteWorkout
-    - Takes a while and app should indicate to user while its waiting....
-
-    Test some scenarios with multiple users
-        - ensure users cannot delete workouts that they shouldnt be able to
-        - Ensure theyFixed login, cant create workouts for classes they are not an owner of
-        -
-
     ~~~~  RETEST RELEASE BUILD   ~~~
-
-    Workoutscreen
-        - Delete Workout Toggle Swtich is showing on completed workout in release build
-            - NR on local build
-
-    Reset Password
-        - Fix account and get it active again
 
 '''
 Welcome to our fitness app! This app is designed to help you track your workouts and reach your fitness goals. With our user-friendly interface, you can easily log your exercises, set goals, and monitor your progress. Our app also offers a variety of helpful features, such as personalized workout plans and the ability to connect with friends for added motivation. Get started on your fitness journey today with our app!

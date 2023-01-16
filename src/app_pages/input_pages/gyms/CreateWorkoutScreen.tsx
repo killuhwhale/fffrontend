@@ -5,6 +5,7 @@ import {
   Switch,
   ScrollView,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from 'react-native';
 import {createGlobalStyle, useTheme} from 'styled-components';
 import styled from 'styled-components/native';
@@ -529,8 +530,11 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
 
   const [schemeRoundsError, setSchemeRoundsError] = useState(false);
 
+  const [isCreating, setIsCreating] = useState(false);
+
   const _createWorkoutWithItems = async () => {
     // Need to get file from the URI
+    setIsCreating(true);
     const workoutData = new FormData();
     const data = new FormData();
     workoutData.append('group', workoutGroupID);
@@ -554,6 +558,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
         item.order = idx;
         item.workout = createdWorkout.id;
       });
+
       data.append('items', JSON.stringify(items));
       data.append('workout', createdWorkout.id);
       data.append('workout_group', workoutGroupID);
@@ -567,6 +572,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
     } catch (err) {
       console.log('Error creating gym', err);
     }
+    setIsCreating(false);
     // TODO possibly dispatch to refresh data
   };
 
@@ -898,11 +904,17 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
           )}
         </View>
         <View style={{flex: 1}}>
-          <Button
-            onPress={_createWorkoutWithItems.bind(this)}
-            title="Create"
-            style={{backgroundColor: theme.palette.lightGray}}
-          />
+          {!isCreating ? (
+            <Button
+              onPress={_createWorkoutWithItems.bind(this)}
+              title="Create"
+              style={{backgroundColor: theme.palette.lightGray}}
+              loadingIndicatorPosition="trailing"
+              loadingIndicator={isCreating}
+            />
+          ) : (
+            <ActivityIndicator size="small" color={theme.palette.text} />
+          )}
         </View>
       </View>
     </PageContainer>

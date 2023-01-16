@@ -2,7 +2,7 @@ import React, {FunctionComponent, useState, useRef} from 'react';
 import {useTheme} from 'styled-components';
 import styled from 'styled-components/native';
 import {ScrollView} from 'react-native-gesture-handler';
-import {TouchableHighlight, View} from 'react-native';
+import {ActivityIndicator, TouchableHighlight, View} from 'react-native';
 import {
   Container,
   displayJList,
@@ -849,8 +849,12 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
     return {success, errorType, errorMsg};
   };
 
+  const [isCreating, setIsCreating] = useState(false);
+
   const completeWorkout = async () => {
     setShowCompleteWorkout(false);
+
+    setIsCreating(true);
     console.log(
       'Creating completed workout group!',
       editedWorkoutGroup.workouts ? editedWorkoutGroup.workouts[0] : '',
@@ -888,6 +892,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
     if (res.id) {
       navigation.goBack();
     }
+    setIsCreating(false);
   };
 
   const selectedIdxIsvalid = () => {
@@ -1023,11 +1028,15 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
           </ScrollView>
         </View>
         <View style={{flex: 1}}>
-          <Button
-            title="Complete!"
-            onPress={() => setShowCompleteWorkout(true)}
-            style={{backgroundColor: theme.palette.lightGray}}
-          />
+          {!isCreating ? (
+            <Button
+              title="Complete!"
+              onPress={() => setShowCompleteWorkout(true)}
+              style={{backgroundColor: theme.palette.lightGray}}
+            />
+          ) : (
+            <ActivityIndicator size="small" color={theme.palette.text} />
+          )}
         </View>
       </View>
       <ActionCancelModal

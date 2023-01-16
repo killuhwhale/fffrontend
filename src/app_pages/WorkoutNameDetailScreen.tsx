@@ -38,7 +38,7 @@ import {
   WorkoutItemListProps,
   WorkoutItemProps,
 } from '../app_components/Cards/types';
-import {MediaURLSlider} from '../app_components/MediaSlider/MediaSlider';
+import {MediaURLSliderClass} from '../app_components/MediaSlider/MediaSlider';
 export type Props = StackScreenProps<
   RootStackParamList,
   'WorkoutNameDetailScreen'
@@ -68,7 +68,7 @@ const WorkoutNameDetailScreen: FunctionComponent<Props> = ({
         <SmallText>{formatLongDate(new Date(date))}</SmallText>
         <SmallText>{media_ids}</SmallText>
 
-        <MediaURLSlider
+        <MediaURLSliderClass
           data={JSON.parse(media_ids)}
           mediaClassID={id}
           mediaClass={MEDIA_CLASSES[3]}

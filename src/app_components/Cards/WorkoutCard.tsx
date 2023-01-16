@@ -3,7 +3,13 @@ import styled from 'styled-components/native';
 import {useTheme} from 'styled-components';
 import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
 import {useNavigation} from '@react-navigation/native';
-import {displayJList, SCREEN_HEIGHT, SCREEN_WIDTH} from '../shared';
+import {
+  displayJList,
+  SCREEN_HEIGHT,
+  SCREEN_WIDTH,
+  WORKOUT_TYPES,
+  WORKOUT_TYPE_LABELS,
+} from '../shared';
 import {GymClassCardProps, WorkoutCardProps} from './types';
 import {ItemString} from '../../app_pages/input_pages/gyms/CreateWorkoutScreen';
 import {View} from 'react-native';
@@ -99,12 +105,16 @@ const WorkoutCard: FunctionComponent<WorkoutCardProps> = props => {
                 paddingLeft: 16,
                 justifyContent: 'space-between',
                 alignContent: 'space-between',
+                alignItems: 'center',
                 flex: 1,
                 paddingVertical: 8,
                 paddingHorizontal: 8,
               }}>
               <RegularText>{props.title} </RegularText>
-              <RegularText>{displayJList(props.scheme_rounds)}</RegularText>
+              <SmallText>
+                {WORKOUT_TYPE_LABELS[props.scheme_type]}{' '}
+                {displayJList(props.scheme_rounds)}
+              </SmallText>
 
               <Icon
                 name="chevron-forward-outline"

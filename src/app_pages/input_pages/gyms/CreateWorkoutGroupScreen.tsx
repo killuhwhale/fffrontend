@@ -1,6 +1,6 @@
 import React, {FunctionComponent, useState, useCallback} from 'react';
 import styled from 'styled-components/native';
-import {View} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 import {Container, SCREEN_HEIGHT} from '../../../app_components/shared';
 import {SmallText, RegularText} from '../../../app_components/Text/Text';
 import {Button, TextInput} from '@react-native-material/core';
@@ -97,9 +97,12 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
   const [createWorkoutGroup, {isLoading}] = useCreateWorkoutGroupMutation();
   // useGet... workoutNames
 
+  const [isCreating, setIsCreating] = useState(false);
+
   const _createWorkout = async () => {
     console.log('Creatting workout: ');
 
+    setIsCreating(true);
     // Need to get file from the URI
     const data = new FormData();
     data.append('owner_id', ownerID);
@@ -133,6 +136,7 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
     } catch (err) {
       console.log('Error creating gym', err);
     }
+    setIsCreating(false);
     // TODO possibly dispatch to refresh data
   };
 
@@ -190,11 +194,15 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
           {files && files.length > 0 ? <MediaSlider data={files} /> : <></>}
         </View>
         <View style={{flex: 2}}>
-          <Button
-            onPress={_createWorkout.bind(this)}
-            title="Create"
-            style={{backgroundColor: theme.palette.lightGray}}
-          />
+          {!isCreating ? (
+            <Button
+              onPress={_createWorkout.bind(this)}
+              title="Create"
+              style={{backgroundColor: theme.palette.lightGray}}
+            />
+          ) : (
+            <ActivityIndicator size="small" color={theme.palette.text} />
+          )}
         </View>
       </View>
     </PageContainer>

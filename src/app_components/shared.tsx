@@ -31,6 +31,12 @@ export const WORKOUT_TYPES: Array<string> = [
   ROUNDS_W,
   DURATION_W,
 ];
+export const WORKOUT_TYPE_LABELS: Array<string> = [
+  '',
+  'Rep scheme',
+  'Rounds',
+  'Time',
+];
 
 export const DURATION_UNITS: Array<string> = ['sec', 'mins'];
 export const WEIGHT_UNITS: Array<string> = ['kg', 'lb', '%'];

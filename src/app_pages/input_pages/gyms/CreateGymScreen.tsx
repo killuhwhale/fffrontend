@@ -5,7 +5,7 @@ import React, {
   useCallback,
 } from 'react';
 import styled from 'styled-components/native';
-import {Image, View} from 'react-native';
+import {ActivityIndicator, Image, View} from 'react-native';
 import {Container} from '../../../app_components/shared';
 import {LargeText} from '../../../app_components/Text/Text';
 import {Button, TextInput} from '@react-native-material/core';
@@ -80,8 +80,11 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
 
   // Create gym class mutation
 
+  const [isCreating, setIsCreating] = useState(false);
+
   const _createGym = async () => {
     console.log('Creatting gym: ', mainFile, logoFile, title, desc);
+    setIsCreating(true);
 
     // Need to get file from the URI
     const data = new FormData();
@@ -116,6 +119,7 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
     } catch (err) {
       console.log('Error creating gym', err);
     }
+    setIsCreating(false);
     // TODO possibly dispatch to refresh data
   };
 
@@ -154,11 +158,15 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
             source={{uri: logoFile.uri}}
             style={{width: '100%', height: 100, resizeMode: 'contain'}}
           />
-          <Button
-            onPress={_createGym.bind(this)}
-            title="Create"
-            style={{backgroundColor: theme.palette.lightGray}}
-          />
+          {!isCreating ? (
+            <Button
+              onPress={_createGym.bind(this)}
+              title="Create"
+              style={{backgroundColor: theme.palette.lightGray}}
+            />
+          ) : (
+            <ActivityIndicator size="small" color={theme.palette.text} />
+          )}
         </View>
       </View>
     </PageContainer>
