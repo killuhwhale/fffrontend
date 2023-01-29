@@ -22,7 +22,6 @@ import {
   LargeText,
   TitleText,
 } from '../../../app_components/Text/Text';
-import {Button, TextInput} from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {launchImageLibrary, Asset} from 'react-native-image-picker';
 import RNPickerSelect from 'react-native-picker-select';
@@ -39,6 +38,7 @@ import {
 import {RootStackParamList} from '../../../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
 import Input from '../../../app_components/Input/input';
+import {RegularButton} from '../../../app_components/Buttons/buttons';
 export type Props = StackScreenProps<
   RootStackParamList,
   'CreateGymClassScreen'
@@ -82,11 +82,13 @@ const ImagePicker: FunctionComponent<{
 
   return (
     <View>
-      <Button
-        title={props.title}
+      <RegularButton
         onPress={pickFile}
-        style={{backgroundColor: theme.palette.lightGray}}
-      />
+        btnStyles={{
+          backgroundColor: theme.palette.lightGray,
+        }}>
+        {props.title}
+      </RegularButton>
     </View>
   );
 };
@@ -314,11 +316,13 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
             style={{width: '100%', height: 100, resizeMode: 'contain'}}
           />
           {!isCreating ? (
-            <Button
+            <RegularButton
               onPress={_createGymClass.bind(this)}
-              title="Create"
-              style={{backgroundColor: theme.palette.lightGray}}
-            />
+              btnStyles={{
+                backgroundColor: theme.palette.lightGray,
+              }}>
+              Create
+            </RegularButton>
           ) : (
             <ActivityIndicator size="small" color={theme.palette.text} />
           )}

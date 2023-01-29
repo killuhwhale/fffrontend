@@ -4,9 +4,10 @@ import {RootStackParamList} from '../../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
 export type Props = StackScreenProps<RootStackParamList, 'Header'>;
 import {NavigationContext} from '@react-navigation/native';
-import {AppBar, IconButton} from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as RootNavigation from '../../navigators/RootNavigation';
+import {View} from 'react-native';
+import {RegularText} from '../Text/Text';
 
 const Header: FunctionComponent = () => {
   const theme = useTheme();
@@ -15,19 +16,22 @@ const Header: FunctionComponent = () => {
   // Access value
 
   return (
-    <AppBar
-      title="FitForm"
-      contentContainerStyle={{backgroundColor: theme.palette.darkGray}}
-      leading={props => (
-        <IconButton
+    <View style={{backgroundColor: theme.palette.darkGray}}>
+      <View style={{flexDirection: 'row', paddingVertical: 8, marginLeft: 16}}>
+        <Icon
+          name="planet-outline"
           onPress={() => {
             RootNavigation.navigate('HomePage', {});
           }}
-          icon={props => <Icon name="planet-outline" {...props} />}
-          {...props}
+          color={theme.palette.text}
+          style={{
+            fontSize: 23,
+            marginRight: 12,
+          }}
         />
-      )}
-    />
+        <RegularText>FitForm</RegularText>
+      </View>
+    </View>
   );
 };
 

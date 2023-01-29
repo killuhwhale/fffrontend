@@ -11,7 +11,6 @@ import {
   WORKOUT_TYPE_LABELS,
 } from '../shared';
 import {GymClassCardProps, WorkoutCardProps} from './types';
-import {ItemString} from '../../app_pages/input_pages/gyms/CreateWorkoutScreen';
 import {View} from 'react-native';
 import {Props as GymClassScreenProps} from '../../app_pages/GymClassScreen';
 import {AnimatedButton} from '../Buttons/buttons';
@@ -71,7 +70,6 @@ const WorkoutCard: FunctionComponent<WorkoutCardProps> = props => {
   return (
     <View
       style={{
-        backgroundColor: theme.palette.gray,
         width: SCREEN_WIDTH * 1.0,
         borderRadius: 25,
         marginBottom: 24,

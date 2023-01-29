@@ -13,7 +13,6 @@ import {
   TitleText,
   MediumText,
 } from '../app_components/Text/Text';
-import {IconButton, Button} from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {useTheme} from 'styled-components';
@@ -46,6 +45,7 @@ import {
   settingsModalViewStyle,
 } from '../app_components/modals/modalStyles';
 import DeleteActionCancelModal from '../app_components/modals/deleteByNameModal';
+import {RegularButton} from '../app_components/Buttons/buttons';
 
 export type Props = StackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -124,12 +124,17 @@ const UserInfoPanel: FunctionComponent<UserInfoPanelProps> = props => {
   return (
     <View style={{width: '100%'}}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <IconButton
+        <Icon
+          name="person"
+          style={{
+            fontSize: 18,
+            marginRight: 8,
+            marginLeft: 8,
+          }}
           onPress={() => {
             setShowEditUsername(!showEditusername);
           }}
           color={theme.palette.text}
-          icon={props => <Icon name="person" {...props} />}
         />
         {showEditusername ? (
           <Input
@@ -193,14 +198,17 @@ const GymsPanel: FunctionComponent<GymsPanelProps> = ({data, onDelete}) => {
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   paddingHorizontal: 16,
+                  alignContent: 'center',
+                  height: '100%',
                 }}>
                 <RegularText>{title}</RegularText>
-                <IconButton
+                <Icon
+                  name="remove-circle-sharp"
+                  color={'red'}
+                  style={{
+                    fontSize: 24,
+                  }}
                   onPress={() => onDelete(gym)}
-                  color={theme.palette.text}
-                  icon={props => (
-                    <Icon name="remove-circle-sharp" {...props} color="red" />
-                  )}
                 />
               </View>
             </Touchable>
@@ -235,10 +243,11 @@ const FavGymsPanel: FunctionComponent<FavGymsPanelProps> = props => {
               activeOpacity={0.9}
               onPress={() => goToGym(favGym.gym)}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <IconButton
+                <Icon
+                  name="star"
                   onPress={() => {}}
                   color={theme.palette.text}
-                  icon={props => <Icon name="star" {...props} />}
+                  style={{fontSize: 24, margin: 12}}
                 />
                 <SmallText>{title}</SmallText>
               </View>
@@ -277,11 +286,13 @@ const FavGymClassesPanel: FunctionComponent<
               activeOpacity={0.9}
               onPress={() => goToGymClass(favGymClass.gym_class)}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <IconButton
+                <Icon
+                  name="star"
                   onPress={() => {}}
                   color={theme.palette.text}
-                  icon={props => <Icon name="star" {...props} />}
+                  style={{fontSize: 24, margin: 12}}
                 />
+
                 <SmallText>{title}</SmallText>
               </View>
             </Touchable>
@@ -322,16 +333,22 @@ export const ActionCancelModal: FunctionComponent<{
             <RegularText>{props.modalText}</RegularText>
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Button
+            <RegularButton
               onPress={props.onRequestClose}
-              title={props.closeText}
-              style={{marginRight: 4, backgroundColor: theme.palette.lightGray}}
-            />
-            <Button
+              btnStyles={{
+                backgroundColor: theme.palette.lightGray,
+                marginRight: 4,
+              }}>
+              {props.closeText}
+            </RegularButton>
+            <RegularButton
               onPress={props.onAction}
-              title={props.actionText}
-              style={{marginLeft: 4, backgroundColor: theme.palette.lightGray}}
-            />
+              btnStyles={{
+                backgroundColor: theme.palette.lightGray,
+                marginLeft: 4,
+              }}>
+              {props.actionText}
+            </RegularButton>
           </View>
         </View>
       </View>
@@ -381,16 +398,24 @@ const ProfileSettingsModal: FunctionComponent<{
             </View>
 
             <View
-              style={{alignItems: 'flex-end', width: '100%', marginBottom: 32}}>
-              <IconButton
+              style={{
+                alignItems: 'flex-end',
+                width: '100%',
+                justifyContent: 'center',
+                marginBottom: 32,
+              }}>
+              <Icon
+                name="log-out"
                 onPress={() => {
                   setShowConfirmLogout(true);
                 }}
                 color="red"
-                icon={props => <Icon name="log-out" {...props} />}
+                style={{fontSize: 24, marginRight: 4}}
               />
               <SmallText>Logout</SmallText>
             </View>
+
+            {/* Row`1 for buttons */}
 
             <View
               style={{
@@ -439,6 +464,7 @@ const ProfileSettingsModal: FunctionComponent<{
                 </View>
               </TouchableHighlight>
             </View>
+            {/* Row`2 for buttons */}
             <View
               style={{
                 alignItems: 'center',
@@ -496,11 +522,13 @@ const ProfileSettingsModal: FunctionComponent<{
                 width: '100%',
                 justifyContent: 'center',
               }}>
-              <Button
+              <RegularButton
                 onPress={props.onRequestClose}
-                title="Close"
-                style={{backgroundColor: theme.palette.lightGray}}
-              />
+                btnStyles={{
+                  backgroundColor: theme.palette.lightGray,
+                }}>
+                Close
+              </RegularButton>
             </View>
           </ScrollView>
           <ActionCancelModal
@@ -578,13 +606,15 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
             style={{
               flex: 1,
               width: '100%',
-              marginBottom: 16,
+              height: '100%',
+              justifyContent: 'center',
               alignItems: 'flex-end',
             }}>
-            <IconButton
+            <Icon
+              name="menu"
               onPress={() => setModalVisible(!modalVisible)}
               color={theme.palette.text}
-              icon={props => <Icon name="menu" {...props} />}
+              style={{fontSize: 32, marginRight: 8, marginTop: 8}}
             />
           </View>
 
@@ -600,11 +630,13 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
               <UserInfoPanel user={data.user} />
             </View>
             <View style={{width: '50%'}}>
-              <Button
-                color={theme.palette.secondary.main}
-                title="Stats"
+              <RegularButton
                 onPress={() => navigation.navigate('StatsScreen')}
-              />
+                btnStyles={{
+                  backgroundColor: theme.palette.secondary.main,
+                }}>
+                Stats
+              </RegularButton>
             </View>
           </View>
 
@@ -642,12 +674,14 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
           ) : (
             <></>
           )}
-          <View style={{flex: 1, margin: 16}}>
-            <Button
-              color={theme.palette.primary.main}
-              title="Workouts"
+          <View style={{flex: 1, marginBottom: 8}}>
+            <RegularButton
               onPress={() => navigation.navigate('UserWorkoutsScreen')}
-            />
+              btnStyles={{
+                backgroundColor: theme.palette.primary.main,
+              }}>
+              Workouts
+            </RegularButton>
           </View>
 
           <ProfileSettingsModal

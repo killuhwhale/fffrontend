@@ -18,14 +18,7 @@ import {WorkoutGroupCardList} from '../app_components/Cards/cardList';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
-import {
-  Image,
-  ImageBackground,
-  Keyboard,
-  Pressable,
-  ScrollView,
-  View,
-} from 'react-native';
+import {Image, View} from 'react-native';
 import {
   useDeleteGymClassMutation,
   useFavoriteGymClassMutation,
@@ -35,16 +28,15 @@ import {
   useGetProfileGymClassFavsQuery,
   useUnfavoriteGymClassMutation,
 } from '../redux/api/apiSlice';
-import {Button, IconButton} from '@react-native-material/core';
+
 import {GymClassCardProps} from '../app_components/Cards/types';
-import {ActionCancelModal} from './Profile';
+
 import {filter} from '../utils/algos';
 import ManageMembersModal from '../app_components/modals/memberModal';
 import ManageCoachesModal from '../app_components/modals/coachModal';
-import greenGrad from './../../assets/bgs/greenGrad.png';
-import Input from '../app_components/Input/input';
+
 import DeleteActionCancelModal from '../app_components/modals/deleteByNameModal';
-import FilterItemsModal from '../app_components/modals/filterItemsModal';
+
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import FilterGrid from '../app_components/Grids/FilterGrid';
 import {WorkoutGroupSquares} from '../app_components/Grids/GymClasses/WorkoutGroupSquares';
@@ -119,20 +111,14 @@ const FavoriteGymClass: FunctionComponent<{
       isFavorited(dataGymClassFavs?.favorite_gym_classes) ? (
         <TouchableHighlight onPress={() => unfavoriteGymClassMutation(favObj)}>
           <View style={{alignItems: 'center'}}>
-            <IconButton
-              style={{height: 24}}
-              icon={<Icon name="star" color="red" style={{fontSize: 24}} />}
-            />
+            <Icon name="star" color="red" style={{fontSize: 24}} />
             <SmallText>Unfavorite</SmallText>
           </View>
         </TouchableHighlight>
       ) : (
         <TouchableHighlight onPress={() => favoriteGymClassMutation(favObj)}>
           <View style={{alignItems: 'center'}}>
-            <IconButton
-              style={{height: 24}}
-              icon={<Icon name="star" color="white" style={{fontSize: 24}} />}
-            />
+            <Icon name="star" color="white" style={{fontSize: 24}} />
             <SmallText>Favorite</SmallText>
           </View>
         </TouchableHighlight>
@@ -297,15 +283,10 @@ const GymClassScreen: FunctionComponent<Props> = ({
           {data?.user_is_owner ? (
             <TouchableHighlight onPress={() => setShowCoachModal(true)}>
               <View style={{paddingHorizontal: 8, alignItems: 'center'}}>
-                <IconButton
-                  style={{height: 24}}
-                  icon={
-                    <Icon
-                      name="ios-stopwatch-outline"
-                      color={theme.palette.primary.main}
-                      style={{fontSize: 24}}
-                    />
-                  }
+                <Icon
+                  name="ios-stopwatch-outline"
+                  color={theme.palette.primary.main}
+                  style={{fontSize: 24}}
                 />
                 <SmallText>
                   Coaches: {allCoaches?.length ? allCoaches.length : 0}
@@ -318,15 +299,10 @@ const GymClassScreen: FunctionComponent<Props> = ({
           {data?.user_is_owner || data?.user_is_coach ? (
             <TouchableHighlight onPress={() => setShowMembersModal(true)}>
               <View style={{paddingHorizontal: 8, alignItems: 'center'}}>
-                <IconButton
-                  style={{height: 24}}
-                  icon={
-                    <Icon
-                      name="ios-people-outline"
-                      color={theme.palette.secondary.main}
-                      style={{fontSize: 24}}
-                    />
-                  }
+                <Icon
+                  name="ios-people-outline"
+                  color={theme.palette.secondary.main}
+                  style={{fontSize: 24}}
                 />
                 <SmallText>
                   Members: {allMembers?.length ? allMembers.length : 0}
@@ -351,15 +327,10 @@ const GymClassScreen: FunctionComponent<Props> = ({
               justifyContent: 'flex-end',
               width: '100%',
             }}>
-            <IconButton
-              style={{height: 24}}
-              icon={
-                <Icon
-                  name="add-outline"
-                  color={theme.palette.primary.main}
-                  style={{fontSize: 24}}
-                />
-              }
+            <Icon
+              name="add-outline"
+              color={theme.palette.primary.main}
+              style={{fontSize: 24, marginHorizontal: 8}}
               onPress={() => {
                 navigation.navigate('CreateWorkoutGroupScreen', {
                   ownedByClass: true,
@@ -370,16 +341,11 @@ const GymClassScreen: FunctionComponent<Props> = ({
             />
 
             {data?.user_is_owner ? (
-              <IconButton
-                style={{height: 24}}
-                icon={
-                  <Icon
-                    name="remove-circle-sharp"
-                    color="red"
-                    style={{fontSize: 24}}
-                  />
-                }
+              <Icon
                 onPress={onConfirmDelete}
+                name="remove-circle-sharp"
+                color="red"
+                style={{fontSize: 24, marginHorizontal: 8}}
               />
             ) : (
               <></>

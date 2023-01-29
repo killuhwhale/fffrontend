@@ -9,7 +9,6 @@ import {
   useGetCoachesForGymClassQuery,
   useGetUsersQuery,
 } from '../../redux/api/apiSlice';
-import {Button, IconButton} from '@react-native-material/core';
 import RNPickerSelect from 'react-native-picker-select';
 import {filter} from '../../utils/algos';
 
@@ -17,6 +16,7 @@ import {ActionCancelModal} from '../../app_pages/Profile';
 import {centeredViewStyle, settingsModalViewStyle} from './modalStyles';
 import {mdFontSize, smFontSize} from '../shared';
 import Input from '../Input/input';
+import {RegularButton} from '../Buttons/buttons';
 
 const ManageCoachesModal: FunctionComponent<{
   modalVisible: boolean;
@@ -225,11 +225,11 @@ const ManageCoachesModal: FunctionComponent<{
                     );
                   })}
                 </Picker> */}
-                <Button
-                  title="Add Coach"
+                <RegularButton
                   onPress={addNewCoach}
-                  style={{backgroundColor: theme.palette.lightGray}}
-                />
+                  btnStyles={{backgroundColor: theme.palette.lightGray}}>
+                  Add Coach
+                </RegularButton>
               </View>
             ) : (
               <></>
@@ -274,15 +274,10 @@ const ManageCoachesModal: FunctionComponent<{
                           <RegularText>{coach.username}</RegularText>
                         </View>
                         <View style={{flex: 1}}>
-                          <IconButton
-                            style={{height: 24}}
-                            icon={
-                              <Icon
-                                name="remove-circle-sharp"
-                                color="red"
-                                style={{fontSize: 24}}
-                              />
-                            }
+                          <Icon
+                            name="remove-circle-sharp"
+                            color="red"
+                            style={{fontSize: 24}}
                             onPress={() => {
                               onRemoveCoach(i);
                             }}
@@ -299,11 +294,11 @@ const ManageCoachesModal: FunctionComponent<{
           )}
 
           <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
-            <Button
+            <RegularButton
               onPress={props.onRequestClose}
-              title="Close"
-              style={{backgroundColor: theme.palette.lightGray}}
-            />
+              btnStyles={{backgroundColor: theme.palette.lightGray}}>
+              Close
+            </RegularButton>
           </View>
         </View>
       </View>

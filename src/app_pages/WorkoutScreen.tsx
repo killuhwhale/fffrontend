@@ -17,7 +17,12 @@ import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
 import {WorkoutGroupProps} from '../app_components/Cards/types';
 import {ScrollView} from 'react-native-gesture-handler';
-import {TouchableHighlight, TouchableWithoutFeedback, View} from 'react-native';
+import {
+  Switch,
+  TouchableHighlight,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {
   useDeleteCompletedWorkoutGroupMutation,
   useDeleteWorkoutGroupMutation,
@@ -28,15 +33,13 @@ import {
   useGetWorkoutsForGymClassWorkoutGroupQuery,
   useGetWorkoutsForUsersWorkoutGroupQuery,
 } from '../redux/api/apiSlice';
-import {Button, IconButton, Switch} from '@react-native-material/core';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {
-  MediaURLSlider,
-  MediaURLSliderClass,
-} from '../app_components/MediaSlider/MediaSlider';
+import {MediaURLSliderClass} from '../app_components/MediaSlider/MediaSlider';
 import {ActionCancelModal} from './Profile';
 import {StatsPanel} from '../app_components/Stats/StatsPanel';
+import {RegularButton} from '../app_components/Buttons/buttons';
 export type Props = StackScreenProps<RootStackParamList, 'WorkoutScreen'>;
 
 const Row = styled.View`
@@ -381,15 +384,10 @@ const WorkoutScreen: FunctionComponent<Props> = ({
             )}
 
             {WGOwner ? (
-              <IconButton
-                style={{height: 24}}
-                icon={
-                  <Icon
-                    style={{fontSize: 24}}
-                    name="remove-circle-sharp"
-                    color="red"
-                  />
-                }
+              <Icon
+                style={{fontSize: 24}}
+                name="remove-circle-sharp"
+                color="red"
                 onPress={onConfirmDelete}
               />
             ) : (
@@ -445,33 +443,51 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                   display: showCreate ? 'flex' : 'none',
                   flexDirection: 'row',
                 }}>
-                <Button
+                <RegularButton
                   onPress={openCreateWorkoutScreenForStandard.bind(this)}
-                  title="Reg"
-                />
-                <Button
+                  btnStyles={{
+                    backgroundColor: theme.palette.lightGray,
+                  }}>
+                  Reg
+                </RegularButton>
+                <RegularButton
                   onPress={openCreateWorkoutScreenForReps.bind(this)}
-                  title="Reps"
-                />
-                <Button
+                  btnStyles={{
+                    backgroundColor: theme.palette.lightGray,
+                  }}>
+                  Reps
+                </RegularButton>
+                <RegularButton
                   onPress={openCreateWorkoutScreenForRounds.bind(this)}
-                  title="Rounds"
-                />
-                <Button
+                  btnStyles={{
+                    backgroundColor: theme.palette.lightGray,
+                  }}>
+                  Rounds
+                </RegularButton>
+                <RegularButton
                   onPress={openCreateWorkoutScreenForTime.bind(this)}
-                  title="Timed"
-                />
+                  btnStyles={{
+                    backgroundColor: theme.palette.lightGray,
+                  }}>
+                  Timed
+                </RegularButton>
               </View>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Button
+                <RegularButton
                   onPress={() => setShowCreate(!showCreate)}
-                  title={showCreate ? 'X' : 'Add workout'}
-                />
-                <Button
+                  btnStyles={{
+                    backgroundColor: theme.palette.lightGray,
+                  }}>
+                  {showCreate ? 'X' : 'Add workout'}
+                </RegularButton>
+                <RegularButton
                   onPress={() => setFinishWorkoutGroupModalVisible(true)}
-                  title={'Finish'}
-                  style={{display: !showCreate ? 'flex' : 'none'}}
-                />
+                  btnStyles={{
+                    backgroundColor: theme.palette.lightGray,
+                    display: !showCreate ? 'flex' : 'none',
+                  }}>
+                  Finish
+                </RegularButton>
               </View>
             </View>
           ) : (
@@ -519,7 +535,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
           flex: 4,
           width: '100%',
           borderRadius: 8,
-          backgroundColor: theme.palette.gray,
+          // backgroundColor: theme.palette.gray,
           paddingVertical: 20,
           paddingLeft: 10,
         }}>

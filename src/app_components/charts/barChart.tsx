@@ -3,7 +3,6 @@ import {View} from 'react-native';
 
 import {useTheme} from 'styled-components';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {IconButton} from '@react-native-material/core';
 import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
 import {SCREEN_WIDTH} from '../shared';
 
@@ -97,15 +96,10 @@ const TotalsBarChart: FunctionComponent<{
         <RegularText>Totals</RegularText>
       </View>
       <View style={{width: '100%', flexDirection: 'row'}}>
-        <IconButton
-          style={{height: 24, marginHorizontal: 8}}
-          icon={
-            <Icon
-              name="repeat"
-              color={theme.palette.text}
-              style={{fontSize: 24}}
-            />
-          }
+        <Icon
+          name="repeat"
+          color={theme.palette.text}
+          style={{fontSize: 24, marginHorizontal: 8}}
           onPress={() => {
             setShowTags(!showTags);
           }}

@@ -14,7 +14,6 @@ import mockLogo from './../../../assets/bgs/mock_logo.png';
 import {Image, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Props as HomeScreenProps} from '../../app_pages/home';
-import {Button} from '@react-native-material/core';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -32,8 +31,11 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
 
   return (
     <LinearGradient
-      colors={['#00000000', '#7DF9FFAA']}
-      start={{x: 0, y: 0}}
+      colors={
+        // ['#00000000', '#7DF9FFAA']
+        ['#00000000', '#40E0D0']
+      }
+      start={{x: 0.15, y: 0}}
       end={{x: 0.42, y: 1}}
       style={{
         flex: 1,

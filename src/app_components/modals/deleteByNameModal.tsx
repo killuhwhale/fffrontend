@@ -6,7 +6,6 @@ import {
   TitleText,
   MediumText,
 } from '../Text/Text';
-import {IconButton, Button} from '@react-native-material/core';
 
 import {useTheme} from 'styled-components';
 import {Modal, View} from 'react-native';
@@ -14,6 +13,7 @@ import {centeredViewStyle, modalViewStyle} from './modalStyles';
 import Input from '../Input/input';
 import {mdFontSize} from '../shared';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {RegularButton} from '../Buttons/buttons';
 const DeleteActionCancelModal: FunctionComponent<{
   modalVisible: boolean;
   onRequestClose(): void;
@@ -87,21 +87,24 @@ const DeleteActionCancelModal: FunctionComponent<{
             </View>
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Button
+            <RegularButton
               onPress={props.onRequestClose}
-              title={props.closeText}
-              style={{marginRight: 4, backgroundColor: theme.palette.lightGray}}
-            />
-            <Button
+              btnStyles={{
+                marginRight: 4,
+                backgroundColor: theme.palette.lightGray,
+              }}>
+              {props.closeText}
+            </RegularButton>
+            <RegularButton
               onPress={() =>
                 isValid() ? props.onAction() : console.log('Invalid name')
               }
-              title={props.actionText}
-              style={{
+              btnStyles={{
                 marginLeft: 4,
                 backgroundColor: isValid() ? 'red' : theme.palette.lightGray,
-              }}
-            />
+              }}>
+              {props.actionText}
+            </RegularButton>
           </View>
         </View>
       </View>

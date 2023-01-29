@@ -9,13 +9,13 @@ import {
   useGetMembersForGymClassQuery,
   useGetUsersQuery,
 } from '../../redux/api/apiSlice';
-import {Button, IconButton} from '@react-native-material/core';
 import RNPickerSelect from 'react-native-picker-select';
 import {filter} from '../../utils/algos';
 
 import {ActionCancelModal} from '../../app_pages/Profile';
 import {mdFontSize} from '../shared';
 import Input from '../Input/input';
+import {RegularButton} from '../Buttons/buttons';
 
 const ManageMembersModal: FunctionComponent<{
   modalVisible: boolean;
@@ -153,7 +153,7 @@ const ManageMembersModal: FunctionComponent<{
 
           <View style={{flex: 6, width: '100%'}}>
             {!usersLoading ? (
-              <View style={{justifyContent: 'flex-start'}}>
+              <View style={{}}>
                 <View style={{height: 40, marginTop: 16}}>
                   <Input
                     onChangeText={filterText}
@@ -176,37 +176,45 @@ const ManageMembersModal: FunctionComponent<{
                     placeholder="Search users"
                   />
                 </View>
-                <RNPickerSelect
-                  ref={pickerRef}
-                  onValueChange={(itemValue, itemIndex) =>
-                    setNewMember(itemValue)
-                  }
-                  useNativeAndroidPickerStyle={false}
-                  value={newMember}
-                  style={{
-                    inputAndroidContainer: {
-                      alignItems: 'center',
-                    },
-                    inputAndroid: {
-                      color: theme.palette.text,
-                    },
-                    inputIOSContainer: {
-                      alignItems: 'center',
-                    },
-                    inputIOS: {
-                      color: theme.palette.text,
-                      height: '100%',
-                    },
-                  }}
-                  placeholder={{}}
-                  items={filterResult.map((filtered_index, i) => {
-                    const user = data[filtered_index];
-                    return {
-                      label: user.username,
-                      value: filtered_index,
-                    };
-                  })}
-                />
+                {filterResult && filterResult.length > 0 ? (
+                  <RNPickerSelect
+                    ref={pickerRef}
+                    onValueChange={(itemValue, itemIndex) =>
+                      setNewMember(itemValue)
+                    }
+                    useNativeAndroidPickerStyle={false}
+                    value={newMember}
+                    style={{
+                      inputAndroidContainer: {
+                        alignItems: 'center',
+                      },
+                      inputAndroid: {
+                        color: theme.palette.text,
+                      },
+                      inputIOSContainer: {
+                        alignItems: 'center',
+                      },
+                      inputIOS: {
+                        color: theme.palette.text,
+                        height: '100%',
+                      },
+                    }}
+                    placeholder={{}}
+                    items={
+                      filterResult && filterResult.length > 0
+                        ? filterResult.map((filtered_index, i) => {
+                            const user = data[filtered_index];
+                            return {
+                              label: user.username,
+                              value: filtered_index,
+                            };
+                          })
+                        : []
+                    }
+                  />
+                ) : (
+                  <View style={{height: 35}} />
+                )}
 
                 {/* <Picker
                   ref={pickerRef}
@@ -235,11 +243,14 @@ const ManageMembersModal: FunctionComponent<{
                     );
                   })}
                 </Picker> */}
-                <Button
-                  title="Add Member"
+
+                <RegularButton
                   onPress={addNewMember}
-                  style={{backgroundColor: theme.palette.lightGray}}
-                />
+                  btnStyles={{
+                    backgroundColor: theme.palette.lightGray,
+                  }}>
+                  Add Member
+                </RegularButton>
               </View>
             ) : (
               <></>
@@ -282,15 +293,10 @@ const ManageMembersModal: FunctionComponent<{
                           <RegularText>{member.username}</RegularText>
                         </View>
                         <View style={{flex: 1}}>
-                          <IconButton
-                            style={{height: 24}}
-                            icon={
-                              <Icon
-                                name="remove-circle-sharp"
-                                color="red"
-                                style={{fontSize: 24}}
-                              />
-                            }
+                          <Icon
+                            name="remove-circle-sharp"
+                            color="red"
+                            style={{fontSize: 24}}
                             onPress={() => {
                               onRemoveMember(i);
                             }}
@@ -306,11 +312,15 @@ const ManageMembersModal: FunctionComponent<{
           )}
 
           <View style={{flexDirection: 'row', alignItems: 'center', flex: 2}}>
-            <Button
+            <RegularButton
               onPress={props.onRequestClose}
-              title="Close"
-              style={{backgroundColor: theme.palette.lightGray}}
-            />
+              btnStyles={{
+                backgroundColor: theme.palette.lightGray,
+                paddingLeft: 16,
+                paddingRight: 16,
+              }}>
+              Close
+            </RegularButton>
           </View>
         </View>
       </View>

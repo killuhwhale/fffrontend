@@ -22,8 +22,11 @@ import {RegularText, SmallText} from '../Text/Text';
 const ButtonView = styled.TouchableOpacity`
   align-items: center;
   background-color: ${props => props.theme.palette.primary.main};
-  width: 100%;
-  border-radius: 20px;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 8px;
 `;
 
 interface ButtonProps {
@@ -36,15 +39,11 @@ interface ButtonProps {
 
 const RegularButton: FunctionComponent<ButtonProps> = props => {
   return (
-    <>
-      <ButtonView
-        onPress={props.disabled ? () => {} : props.onPress}
-        style={props.btnStyles}>
-        <RegularText textStyles={props.textStyles}>
-          {props.children}
-        </RegularText>
-      </ButtonView>
-    </>
+    <ButtonView
+      onPress={props.disabled ? () => {} : props.onPress}
+      style={[{paddingVertical: 4}, props.btnStyles]}>
+      <RegularText textStyles={props.textStyles}>{props.children}</RegularText>
+    </ButtonView>
   );
 };
 

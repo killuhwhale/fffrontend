@@ -1,18 +1,10 @@
 import React, {FunctionComponent, useState, useRef, useEffect} from 'react';
 import {View} from 'react-native';
-import {createGlobalStyle, useTheme} from 'styled-components';
-import styled from 'styled-components/native';
-import {Button} from '@react-native-material/core';
-import Icon from 'react-native-vector-icons/Ionicons';
+import {useTheme} from 'styled-components';
 
 import RNPickerSelect from 'react-native-picker-select';
 
-import {
-  SmallText,
-  RegularText,
-  LargeText,
-  TitleText,
-} from '../../../app_components/Text/Text';
+import {SmallText} from '../../../app_components/Text/Text';
 import {
   Container,
   SCREEN_WIDTH,
@@ -38,6 +30,7 @@ import {
 import {numberInputStyle, pickerStyle} from './CreateWorkoutScreen';
 import Input from '../../../app_components/Input/input';
 import VerticalPicker from '../../../app_components/Pickers/VerticalPicker';
+import {RegularButton} from '../../../app_components/Buttons/buttons';
 
 interface AddWorkoutItemProps {
   success: boolean;
@@ -58,6 +51,7 @@ const AddItem: FunctionComponent<{
   const initPercentOfWeightUnit = '';
   const initSets = '0';
   const initReps = '0';
+  const initPauseDuration = '0';
   const initDistance = '0';
   const initDistanceUnit = 0;
 
@@ -92,6 +86,7 @@ const AddItem: FunctionComponent<{
   // With schemeType Rounds, allow user to enter space delimited list of numbers that must match number of rounds...
   const [reps, setReps] = useState(initReps);
   const [distance, setDistance] = useState(initDistance);
+  const [pauseDuration, setPauseDuration] = useState(initPauseDuration);
   const [distanceUnit, setDistanceUnit] = useState(initDistanceUnit);
 
   const [duration, setDuration] = useState(initDuration);
@@ -120,6 +115,7 @@ const AddItem: FunctionComponent<{
     distance_unit: initDistanceUnit,
     ssid: -1,
     duration: initDuration,
+    pause_duration: nanOrNah(initPauseDuration),
     name: data ? data[initWorkoutName] : ({} as WorkoutNameProps),
     duration_unit: initDurationUnit,
     date: '',
@@ -145,6 +141,7 @@ const AddItem: FunctionComponent<{
     setPercentOfWeightUnit(initPercentOfWeightUnit);
     setSets(initSets);
     setReps(initReps);
+    setPauseDuration(initPauseDuration);
 
     setDuration(initDuration);
 
@@ -217,10 +214,10 @@ const AddItem: FunctionComponent<{
     }
   };
 
-  // const [itemIndexUpdated, setItemIndexUpdated] = useState(false);
-  // useEffect(() => {
-
-  // }, [itemIndexUpdated])
+  const isPausedItem =
+    !isLoading && isSuccess && data && data.length > 0
+      ? data[workoutName].name.match(/pause*/i)
+      : false;
 
   return (
     <View
@@ -233,69 +230,110 @@ const AddItem: FunctionComponent<{
       <View style={{flex: 1, flexDirection: 'row', marginBottom: 4}}>
         {!isLoading && isSuccess && data ? (
           <View style={{justifyContent: 'flex-start', flex: 4, height: '100%'}}>
-            <SmallText>Workout Items</SmallText>
-            <View style={{flex: 1, width: '100%'}}>
-              <RNPickerSelect
-                ref={pickerRef}
-                onValueChange={(itemValue, itemIndex) => {
-                  console.log('OnValChangfe', itemValue, itemIndex);
-                  setWorkoutName(itemIndex);
-                  updateItem('name', data[itemIndex]);
-                }}
-                useNativeAndroidPickerStyle={false}
-                placeholder={{}}
-                // value={workoutName}
-                style={{
-                  inputAndroidContainer: {
-                    alignItems: 'center',
-                  },
-                  inputAndroid: {
-                    color: theme.palette.text,
-                  },
-                  inputIOSContainer: {
-                    alignItems: 'center',
-                  },
-                  inputIOS: {
-                    color: theme.palette.text,
-                    height: '100%',
-                  },
-                }}
-                items={data.map((name, i) => {
-                  console.log('Workoutnames index: ', i);
-                  return {
-                    label: name.name,
-                    value: name.name,
-                  };
-                })}
-              />
+            <View style={{flex: 1, flexDirection: 'row'}}>
+              <View style={{flex: 4}}>
+                <SmallText textStyles={{textAlign: 'center'}}>
+                  Workout Items
+                </SmallText>
+                <View style={{flex: 1, width: '100%'}}>
+                  <RNPickerSelect
+                    ref={pickerRef}
+                    onValueChange={(itemValue, itemIndex) => {
+                      console.log('OnValChangfe', itemValue, itemIndex);
+                      setWorkoutName(itemIndex);
+                      updateItem('name', data[itemIndex]);
+                    }}
+                    useNativeAndroidPickerStyle={false}
+                    placeholder={{}}
+                    // value={workoutName}
+                    style={{
+                      inputAndroidContainer: {
+                        alignItems: 'center',
+                      },
+                      inputAndroid: {
+                        color: theme.palette.text,
+                      },
+                      inputIOSContainer: {
+                        alignItems: 'center',
+                      },
+                      inputIOS: {
+                        color: theme.palette.text,
+                        height: '100%',
+                      },
+                    }}
+                    items={data.map((name, i) => {
+                      return {
+                        label: name.name,
+                        value: name.name,
+                      };
+                    })}
+                  />
 
-              {/* <Picker
-                ref={pickerRef}
-                style={[pickerStyle.containerStyle, {flex: 1}]}
-                itemStyle={{
-                  height: '100%',
-                  color: theme.palette.text,
-                  backgroundColor: theme.palette.gray,
-                  fontSize: 16,
-                }}
-                selectedValue={workoutName}
-                onValueChange={(itemValue, itemIndex) => {
-                  setWorkoutName(itemIndex);
-                  updateItem('name', data[itemIndex]);
-                }}>
-                {data.map((name, i) => {
-                  return (
-                    <Picker.Item key={name.id} label={name.name} value={i} />
-                  );
-                })}
-              </Picker> */}
+                  {/* <Picker
+                  ref={pickerRef}
+                  style={[pickerStyle.containerStyle, {flex: 1}]}
+                  itemStyle={{
+                    height: '100%',
+                    color: theme.palette.text,
+                    backgroundColor: theme.palette.gray,
+                    fontSize: 16,
+                  }}
+                  selectedValue={workoutName}
+                  onValueChange={(itemValue, itemIndex) => {
+                    setWorkoutName(itemIndex);
+                    updateItem('name', data[itemIndex]);
+                  }}>
+                  {data.map((name, i) => {
+                    return (
+                      <Picker.Item key={name.id} label={name.name} value={i} />
+                    );
+                  })}
+                </Picker> */}
+                </View>
+              </View>
+              {isPausedItem ? (
+                <View style={{flex: 1}}>
+                  <SmallText
+                    textStyles={{
+                      textAlign: 'center',
+                    }}>
+                    Paused
+                  </SmallText>
+                  <Input
+                    containerStyle={[
+                      numberInputStyle.containerStyle,
+                      {
+                        alignItems: 'center',
+                        borderRightWidth: 1,
+                        borderColor: theme.palette.text,
+                      },
+                    ]}
+                    label=""
+                    placeholder="time"
+                    centerInput
+                    fontSize={inputFontSize}
+                    value={pauseDuration}
+                    inputStyles={{textAlign: 'center'}}
+                    isError={repsSchemeRoundsError}
+                    helperText={repSchemeRoundsErrorText}
+                    onChangeText={(text: string) => {
+                      updateItem('pause_duration', nanOrNah(numFilter(text)));
+                      setPauseDuration(numFilter(text));
+                    }}
+                  />
+                </View>
+              ) : (
+                <></>
+              )}
             </View>
           </View>
         ) : (
           <></>
         )}
         <View style={{flex: 2}}>
-          <SmallText>Quantity type</SmallText>
+          <SmallText textStyles={{textAlign: 'center'}}>
+            Quantity type
+          </SmallText>
           <View style={{flex: 1, width: '100%'}}>
             <VerticalPicker
               key={'qty'}
@@ -939,11 +977,13 @@ const AddItem: FunctionComponent<{
       </View>
 
       <View style={{}}>
-        <Button
+        <RegularButton
           onPress={_addItem}
-          title="Add Item"
-          style={{backgroundColor: theme.palette.lightGray}}
-        />
+          btnStyles={{
+            backgroundColor: theme.palette.lightGray,
+          }}>
+          Add Item
+        </RegularButton>
       </View>
     </View>
   );

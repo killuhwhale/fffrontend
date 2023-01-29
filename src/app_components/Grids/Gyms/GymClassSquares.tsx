@@ -1,19 +1,8 @@
 import React, {FunctionComponent} from 'react';
 import styled from 'styled-components/native';
-import {Container, SCREEN_HEIGHT, SCREEN_WIDTH} from '../../shared';
-import {SmallText, RegularText, LargeText, TitleText} from '../../Text/Text';
+import {SCREEN_HEIGHT} from '../../shared';
 import {useTheme} from 'styled-components';
-
-import {
-  ItemPanel,
-  ItemString,
-} from '../../../app_pages/input_pages/gyms/CreateWorkoutScreen';
 import {View} from 'react-native';
-import {
-  NamePanelItem,
-  TagPanelItem,
-  WorkoutStats,
-} from '../../Stats/StatsPanel';
 import ClassGridItem from './ClassGridItem';
 import {GymClassCardListProps} from '../../Cards/types';
 

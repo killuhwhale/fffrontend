@@ -7,12 +7,6 @@ import {
   LargeText,
   TitleText,
 } from '../app_components/Text/Text';
-import {
-  Stack,
-  Button,
-  TextInput,
-  IconButton,
-} from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 // import { withTheme } from 'styled-components'
@@ -32,6 +26,7 @@ import {ResetPassword} from '../app_components/email/email';
 import {validEmailRegex} from '../utils/algos';
 import {post} from '../utils/fetchAPI';
 import {BASEURL} from '../utils/constants';
+import {RegularButton} from '../app_components/Buttons/buttons';
 
 // import { RootStackParamList } from "../navigators/RootStack";
 // import { StackScreenProps } from "@react-navigation/stack";
@@ -258,22 +253,22 @@ const AuthScreen: FunctionComponent = () => {
 
             <View style={{flexDirection: 'row'}}>
               <View style={{height: 45, width: '50%', paddingHorizontal: 8}}>
-                <Button
+                <RegularButton
                   onPress={() => {
                     setAuthMode(1);
                   }}
-                  title="Sign Up"
-                  color={theme.palette.secondary.main}
-                />
+                  btnStyles={{backgroundColor: theme.palette.secondary.main}}>
+                  Sign Up
+                </RegularButton>
               </View>
               <View style={{height: 45, width: '50%', paddingHorizontal: 8}}>
-                <Button
+                <RegularButton
                   onPress={() => {
                     login();
                   }}
-                  title="Sign In"
-                  color={theme.palette.primary.main}
-                />
+                  btnStyles={{backgroundColor: theme.palette.primary.main}}>
+                  Sign In
+                </RegularButton>
               </View>
             </View>
             <View
@@ -283,13 +278,13 @@ const AuthScreen: FunctionComponent = () => {
                 marginTop: 64,
               }}>
               <View style={{height: 45, width: '80%', paddingHorizontal: 8}}>
-                <Button
+                <RegularButton
                   onPress={() => {
                     setAuthMode(2);
                   }}
-                  title="Forgot password"
-                  color={theme.palette.lightGray}
-                />
+                  btnStyles={{backgroundColor: theme.palette.lightGray}}>
+                  Forgot Password
+                </RegularButton>
               </View>
             </View>
             <View style={{flex: 1}} />
@@ -378,22 +373,24 @@ const AuthScreen: FunctionComponent = () => {
             </View>
             <View style={{flex: 2, flexDirection: 'row'}}>
               <View style={{width: '50%', height: 45, paddingHorizontal: 8}}>
-                <Button
+                <RegularButton
                   onPress={() => {
                     setAuthMode(0);
                   }}
-                  title="Sign In"
-                  color={theme.palette.secondary.main}
-                />
+                  btnStyles={{backgroundColor: theme.palette.secondary.main}}>
+                  Sign In
+                </RegularButton>
               </View>
               <View style={{width: '50%', height: 45, paddingHorizontal: 8}}>
-                <Button
+                <RegularButton
                   onPress={() => {
                     register();
                   }}
-                  title="Create Account"
-                  color={theme.palette.primary.main}
-                />
+                  btnStyles={{
+                    backgroundColor: theme.palette.primary.main,
+                  }}>
+                  Create
+                </RegularButton>
               </View>
             </View>
             <View style={{flex: 1}} />
@@ -410,22 +407,26 @@ const AuthScreen: FunctionComponent = () => {
 
             <View style={{flexDirection: 'row', marginTop: 64}}>
               <View style={{height: 45, width: '50%', paddingHorizontal: 8}}>
-                <Button
+                <RegularButton
                   onPress={() => {
                     setAuthMode(0);
                   }}
-                  title="Sign in"
-                  color={theme.palette.secondary.main}
-                />
+                  btnStyles={{
+                    backgroundColor: theme.palette.lightGray,
+                  }}>
+                  Sign In
+                </RegularButton>
               </View>
               <View style={{height: 45, width: '50%', paddingHorizontal: 8}}>
-                <Button
+                <RegularButton
                   onPress={() => {
                     setAuthMode(3);
                   }}
-                  title="Enter Code"
-                  color={theme.palette.primary.main}
-                />
+                  btnStyles={{
+                    backgroundColor: theme.palette.primary.main,
+                  }}>
+                  Enter Code
+                </RegularButton>
               </View>
             </View>
           </View>
@@ -509,20 +510,26 @@ const AuthScreen: FunctionComponent = () => {
 
             <View style={{flexDirection: 'row', marginTop: 16}}>
               <View style={{height: 45, width: '50%', paddingHorizontal: 8}}>
-                <Button
+                <RegularButton
                   onPress={() => {
                     setAuthMode(2);
                   }}
-                  title="Back"
-                />
+                  btnStyles={{
+                    backgroundColor: theme.palette.lightGray,
+                  }}>
+                  Back
+                </RegularButton>
               </View>
               <View style={{height: 45, width: '50%', paddingHorizontal: 8}}>
-                <Button
+                <RegularButton
                   onPress={() => {
                     changePassword();
                   }}
-                  title="Submit"
-                />
+                  btnStyles={{
+                    backgroundColor: theme.palette.primary.main,
+                  }}>
+                  Submit
+                </RegularButton>
               </View>
             </View>
           </View>

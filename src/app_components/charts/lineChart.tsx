@@ -3,7 +3,6 @@ import {View} from 'react-native';
 import styled from 'styled-components/native';
 import {useTheme} from 'styled-components';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {IconButton} from '@react-native-material/core';
 import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
 import {Container, SCREEN_WIDTH} from '../shared';
 
@@ -168,15 +167,10 @@ const TotalsLineChart: FunctionComponent<{
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          <IconButton
-            style={{height: 24, marginHorizontal: 8}}
-            icon={
-              <Icon
-                name="repeat"
-                color={theme.palette.text}
-                style={{fontSize: 24}}
-              />
-            }
+          <Icon
+            name="repeat"
+            color={theme.palette.text}
+            style={{fontSize: 24, marginHorizontal: 8}}
             onPress={() => {
               // When the user changes between the 2 sets of data for the bLine Chart,
               // The horizontal picker resets to to 1, so we need to update the data to reflect the change in the child component.
@@ -185,6 +179,7 @@ const TotalsLineChart: FunctionComponent<{
               setShowTags(!showTags);
             }}
           />
+
           <HorizontalPicker
             key={`hpDataTypes_${__filteredDataTypesAbbrev.length}`}
             data={__filteredDataTypesAbbrev}

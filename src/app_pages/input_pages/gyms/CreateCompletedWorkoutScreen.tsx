@@ -21,7 +21,7 @@ import {
   WEIGHT_UNITS,
   WORKOUT_TYPES,
 } from '../../../app_components/shared';
-import {Button} from '@react-native-material/core';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -47,7 +47,6 @@ import {
   WorkoutItemProps,
 } from '../../../app_components/Cards/types';
 import {
-  ItemString,
   numberInputStyle,
   pickerStyle,
   verifyWorkoutItem,
@@ -59,6 +58,8 @@ export type Props = StackScreenProps<
   'CreateCompletedWorkoutScreen'
 >;
 import Input from '../../../app_components/Input/input';
+import ItemString from '../../../app_components/WorkoutItems/ItemString';
+import {RegularButton} from '../../../app_components/Buttons/buttons';
 
 const PageContainer = styled(Container)`
   background-color: ${props => props.theme.palette.backgroundColor};
@@ -1029,11 +1030,13 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
         </View>
         <View style={{flex: 1}}>
           {!isCreating ? (
-            <Button
-              title="Complete!"
+            <RegularButton
               onPress={() => setShowCompleteWorkout(true)}
-              style={{backgroundColor: theme.palette.lightGray}}
-            />
+              btnStyles={{
+                backgroundColor: theme.palette.lightGray,
+              }}>
+              Complete!
+            </RegularButton>
           ) : (
             <ActivityIndicator size="small" color={theme.palette.text} />
           )}

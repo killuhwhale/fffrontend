@@ -7,22 +7,14 @@ import {
   TouchableWithoutFeedback,
   ActivityIndicator,
 } from 'react-native';
-import {createGlobalStyle, useTheme} from 'styled-components';
+import {useTheme} from 'styled-components';
 import styled from 'styled-components/native';
-import {Button} from '@react-native-material/core';
+
 import Icon from 'react-native-vector-icons/Ionicons';
-import {
-  SmallText,
-  RegularText,
-  LargeText,
-  TitleText,
-} from '../../../app_components/Text/Text';
+import {SmallText, RegularText} from '../../../app_components/Text/Text';
 import {
   Container,
-  DURATION_UNITS,
-  DISTANCE_UNITS,
   SCREEN_HEIGHT,
-  WEIGHT_UNITS,
   WORKOUT_TYPES,
   STANDARD_W,
   ROUNDS_W,
@@ -32,10 +24,9 @@ import {
   numFilterWithSpaces,
   parseNumList,
   jList,
-  displayJList,
   mdFontSize,
 } from '../../../app_components/shared';
-import {useAppSelector, useAppDispatch} from '../../../redux/hooks';
+import {useAppDispatch} from '../../../redux/hooks';
 import {
   useCreateWorkoutMutation,
   useCreateWorkoutItemsMutation,
@@ -44,12 +35,14 @@ import {
 import {RootStackParamList} from '../../../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
 import {WorkoutItemProps} from '../../../app_components/Cards/types';
-import {AnimatedButton} from '../../../app_components/Buttons/buttons';
-import {TouchableHighlight} from 'react-native-gesture-handler';
-import * as RootNavigation from '../../../navigators/RootNavigation';
+import {
+  AnimatedButton,
+  RegularButton,
+} from '../../../app_components/Buttons/buttons';
 
 import Input from '../../../app_components/Input/input';
 import AddItem from './AddWorkoutItemPanel';
+import ItemString from '../../../app_components/WorkoutItems/ItemString';
 export type Props = StackScreenProps<RootStackParamList, 'CreateWorkoutScreen'>;
 
 export const COLORSPALETTE = [
@@ -236,184 +229,6 @@ const ColorPalette: FunctionComponent<{
           </View>
         );
       })}
-    </View>
-  );
-};
-
-const ItemString: FunctionComponent<{
-  item: WorkoutItemProps;
-  schemeType: number;
-}> = ({item, schemeType}) => {
-  const theme = useTheme();
-  // console.log('Item str: ', item, item.reps == '[0]')
-
-  return (
-    <View
-      style={{width: '100%', borderRadius: 8, marginVertical: 6, padding: 6}}>
-      <SmallText>
-        {item.sets > 0 && schemeType === 0 ? `${item.sets} x ` : ''}
-
-        {item.reps !== '[0]'
-          ? `${displayJList(item.reps)}  `
-          : item.distance !== '[0]'
-          ? `${displayJList(item.distance)} ${
-              DISTANCE_UNITS[item.distance_unit]
-            } `
-          : item.duration !== '[0]'
-          ? `${displayJList(item.duration)} ${
-              DURATION_UNITS[item.duration_unit]
-            } of `
-          : ''}
-
-        {item.name.name}
-        {JSON.parse(item.weights).length > 0
-          ? ` @ ${displayJList(item.weights)}`
-          : ''}
-        {JSON.parse(item.weights).length === 0
-          ? ''
-          : item.weight_unit === '%'
-          ? ` percent of ${item.percent_of}`
-          : ` ${item.weight_unit}`}
-        {item.rest_duration > 0
-          ? ` Rest: ${item.rest_duration} ${
-              DURATION_UNITS[item.rest_duration_unit]
-            }`
-          : ''}
-      </SmallText>
-    </View>
-  );
-};
-
-const ItemPanel: FunctionComponent<{
-  item: WorkoutItemProps;
-  schemeType: number;
-  itemWidth: number;
-  idx?: number;
-}> = ({item, schemeType, itemWidth, idx}) => {
-  const theme = useTheme();
-
-  const navToWorkoutNameDetail = () => {
-    console.log('Navigating with props:', item);
-    RootNavigation.navigate('WorkoutNameDetailScreen', item.name);
-  };
-  const itemReps = item.reps == '' || item.reps == '0' ? '0' : item.reps;
-  const itemDistance =
-    item.distance == '' || item.distance == '0' ? '0' : item.distance;
-  const itemDuration =
-    item.duration == '' || item.duration == '0' ? '0' : item.duration;
-  return (
-    <View
-      style={{
-        width: itemWidth,
-        minWidth: itemWidth,
-        height: SCREEN_HEIGHT * 0.18,
-        borderRadius: 8,
-        marginVertical: 6,
-        padding: 6,
-        backgroundColor: theme.palette.primary.main,
-        marginHorizontal: 8,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      <View style={{position: 'absolute', top: 6, left: 6, flex: 1}}>
-        <SmallText>{idx}</SmallText>
-      </View>
-      <View style={{flex: 2}}>
-        <SmallText>{item.name.name}</SmallText>
-      </View>
-      <View
-        style={{
-          flex: 5,
-          width: '100%',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <TouchableHighlight
-          onPress={() => navToWorkoutNameDetail()}
-          style={{width: '100%'}}
-          underlayColor={theme.palette.transparent}
-          activeOpacity={0.9}>
-          <View style={{width: '100%'}}>
-            <Icon
-              name="menu"
-              onPress={navToWorkoutNameDetail}
-              color={
-                schemeType == 0 && item.ssid >= 0
-                  ? COLORSPALETTE[item.ssid]
-                  : theme.palette.text
-              }
-              style={{fontSize: 40, marginBottom: 6}}
-            />
-            {schemeType == 0 && item.ssid >= 0 ? (
-              <View
-                style={{
-                  position: 'absolute',
-                  left: 12,
-                  bottom: 0,
-                }}>
-                <SmallText
-                  textStyles={{
-                    color: COLORSPALETTE[item.ssid],
-                    textAlign: 'center',
-                  }}>
-                  SS
-                </SmallText>
-              </View>
-            ) : (
-              <></>
-            )}
-          </View>
-        </TouchableHighlight>
-      </View>
-      <View
-        style={{
-          alignSelf: 'center',
-          flex: 2,
-          width: '100%',
-          justifyContent: 'center',
-        }}>
-        <SmallText textStyles={{textAlign: 'center'}}>
-          {item.sets > 0 && schemeType === 0 ? `${item.sets} x ` : ''}
-
-          {item.reps !== '[0]'
-            ? `${displayJList(item.reps)}  `
-            : item.distance !== '[0]'
-            ? `${displayJList(item.distance)} ${
-                DISTANCE_UNITS[item.distance_unit]
-              } `
-            : item.duration !== '[0]'
-            ? `${displayJList(item.duration)} ${
-                DURATION_UNITS[item.duration_unit]
-              }`
-            : ''}
-        </SmallText>
-      </View>
-      <View style={{alignItems: 'center', flex: 5, width: '100%'}}>
-        {JSON.parse(item.weights).length > 0 &&
-        JSON.parse(item.weights)[0] > 0 ? (
-          <SmallText>
-            {`@ ${displayJList(item.weights)} ${
-              item.weight_unit === '%' ? '' : item.weight_unit
-            }`}
-          </SmallText>
-        ) : (
-          <></>
-        )}
-        {item.weight_unit === '%' &&
-        JSON.parse(item.weights)[0] > 0 &&
-        JSON.parse(item.weights).legnth > 1 ? (
-          <SmallText>{`Percent of ${item.percent_of}`}</SmallText>
-        ) : (
-          <></>
-        )}
-        <SmallText textStyles={{alignSelf: 'center'}}>
-          {item.rest_duration > 0
-            ? `Rest: ${item.rest_duration} ${
-                DURATION_UNITS[item.rest_duration_unit]
-              }`
-            : ''}
-        </SmallText>
-      </View>
     </View>
   );
 };
@@ -905,13 +720,11 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
         </View>
         <View style={{flex: 1}}>
           {!isCreating ? (
-            <Button
+            <RegularButton
               onPress={_createWorkoutWithItems.bind(this)}
-              title="Create"
-              style={{backgroundColor: theme.palette.lightGray}}
-              loadingIndicatorPosition="trailing"
-              loadingIndicator={isCreating}
-            />
+              btnStyles={{backgroundColor: theme.palette.lightGray}}>
+              Create
+            </RegularButton>
           ) : (
             <ActivityIndicator size="small" color={theme.palette.text} />
           )}
@@ -922,4 +735,4 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
 };
 
 export default CreateWorkoutScreen;
-export {ItemString, ItemPanel, numberInputStyle, verifyWorkoutItem};
+export {numberInputStyle, verifyWorkoutItem};

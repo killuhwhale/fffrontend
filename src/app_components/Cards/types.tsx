@@ -51,6 +51,7 @@ export interface WorkoutItemProps {
 
   sets: number;
   reps: string;
+  pause_duration: number;
   duration: string;
   duration_unit: number;
   distance: string;

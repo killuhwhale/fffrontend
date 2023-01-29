@@ -1,9 +1,12 @@
 import React, {FunctionComponent, useState, useCallback} from 'react';
 import styled from 'styled-components/native';
 import {ActivityIndicator, View} from 'react-native';
-import {Container, SCREEN_HEIGHT} from '../../../app_components/shared';
+import {
+  Container,
+  mdFontSize,
+  SCREEN_HEIGHT,
+} from '../../../app_components/shared';
 import {SmallText, RegularText} from '../../../app_components/Text/Text';
-import {Button, TextInput} from '@react-native-material/core';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
 import DocumentPicker from 'react-native-document-picker';
@@ -17,6 +20,8 @@ import {RootStackParamList} from '../../../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
 import DatePicker from 'react-native-date-picker';
 import {dateFormat} from '../../StatsScreen';
+import {RegularButton} from '../../../app_components/Buttons/buttons';
+import Input from '../../../app_components/Input/input';
 export type Props = StackScreenProps<
   RootStackParamList,
   'CreateWorkoutGroupScreen'
@@ -58,11 +63,11 @@ const MediaPicker: FunctionComponent<{
 
   return (
     <View>
-      <Button
-        title={props.title}
+      <RegularButton
         onPress={pickFile}
-        style={{backgroundColor: theme.palette.lightGray}}
-      />
+        btnStyles={{backgroundColor: theme.palette.lightGray}}>
+        {props.title}
+      </RegularButton>
     </View>
   );
 };
@@ -147,23 +152,51 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
       </RegularText>
       <View style={{height: '100%', width: '100%'}}>
         <View style={{flex: 4}}>
-          <TextInput
-            value={title || ''}
-            onChangeText={t => setTitle(t)}
-            label="Title"
-            // helperText={}
-            leading={props => (
-              <Icon name="checkmark-circle-outline" {...props} />
-            )}
-          />
-          <TextInput
-            label="Caption"
-            value={caption || ''}
-            onChangeText={d => setCaption(d)}
-            leading={props => (
-              <Icon name="checkmark-circle-outline" {...props} />
-            )}
-          />
+          <View style={{marginBottom: 15, height: 40}}>
+            <Input
+              placeholder="Title"
+              onChangeText={setTitle}
+              value={title || ''}
+              label="Title"
+              containerStyle={{
+                width: '100%',
+                backgroundColor: theme.palette.lightGray,
+                borderRadius: 8,
+                paddingHorizontal: 8,
+              }}
+              fontSize={mdFontSize}
+              leading={
+                <Icon
+                  name="checkmark-circle-outline"
+                  color={theme.palette.text}
+                  style={{fontSize: mdFontSize}}
+                />
+              }
+            />
+          </View>
+          <View style={{marginBottom: 15, height: 40}}>
+            <Input
+              placeholder="Caption"
+              onChangeText={setCaption}
+              value={caption || ''}
+              label="Caption"
+              containerStyle={{
+                width: '100%',
+                backgroundColor: theme.palette.lightGray,
+                borderRadius: 8,
+                paddingHorizontal: 8,
+              }}
+              fontSize={mdFontSize}
+              leading={
+                <Icon
+                  name="checkmark-circle-outline"
+                  color={theme.palette.text}
+                  style={{fontSize: mdFontSize}}
+                />
+              }
+            />
+          </View>
+
           <View
             style={{
               flexDirection: 'row',
@@ -195,11 +228,13 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
         </View>
         <View style={{flex: 2}}>
           {!isCreating ? (
-            <Button
+            <RegularButton
               onPress={_createWorkout.bind(this)}
-              title="Create"
-              style={{backgroundColor: theme.palette.lightGray}}
-            />
+              btnStyles={{
+                backgroundColor: theme.palette.lightGray,
+              }}>
+              Create
+            </RegularButton>
           ) : (
             <ActivityIndicator size="small" color={theme.palette.text} />
           )}

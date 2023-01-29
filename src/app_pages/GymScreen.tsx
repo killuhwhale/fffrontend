@@ -33,8 +33,7 @@ import {
   useGetProfileGymFavsQuery,
   useUnfavoriteGymMutation,
 } from '../redux/api/apiSlice';
-import {ScrollView} from 'react-native-gesture-handler';
-import {IconButton} from '@react-native-material/core';
+
 import {GymCardProps} from '../app_components/Cards/types';
 export type Props = StackScreenProps<RootStackParamList, 'GymScreen'>;
 
@@ -87,10 +86,11 @@ const FavoriteGym: FunctionComponent<{
       isFavorited(dataGymFavs.favorite_gyms) ? (
         <TouchableHighlight onPress={() => unfavoriteGymMutation(favObj)}>
           <View style={{alignItems: 'center'}}>
-            <IconButton
-              style={{height: 24}}
+            <Icon
+              name="star"
+              color="red"
+              style={{fontSize: 24}}
               onPress={() => unfavoriteGymMutation(favObj)}
-              icon={<Icon name="star" color="red" style={{fontSize: 24}} />}
             />
             <SmallText>Unfavorite</SmallText>
           </View>
@@ -98,10 +98,11 @@ const FavoriteGym: FunctionComponent<{
       ) : (
         <TouchableHighlight onPress={() => favoriteGymMutation(favObj)}>
           <View style={{alignItems: 'center'}}>
-            <IconButton
-              style={{height: 24}}
+            <Icon
+              name="star"
+              color="white"
+              style={{fontSize: 24}}
               onPress={() => favoriteGymMutation(favObj)}
-              icon={<Icon name="star" color="white" style={{fontSize: 24}} />}
             />
             <SmallText>Favorite</SmallText>
           </View>

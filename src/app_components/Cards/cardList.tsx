@@ -17,12 +17,10 @@ import GymClassCard, {GymClassTextCard} from './GymClassCard';
 import WorkoutCard from './WorkoutCard';
 
 import WorkoutGroupCard from './WorkoutGroupCard';
-import {
-  ItemPanel,
-  ItemString,
-} from '../../app_pages/input_pages/gyms/CreateWorkoutScreen';
+
 import {View} from 'react-native';
 import {NamePanelItem, TagPanelItem, WorkoutStats} from '../Stats/StatsPanel';
+import WorkoutItemPanel from '../WorkoutItems/ItemPanel';
 
 export const StyledList = styled.FlatList`
   width: 100%;
@@ -214,7 +212,7 @@ const WorkoutItemPreviewHorizontalList: FunctionComponent<{
       renderItem={renderProps => {
         const index = renderProps.index == undefined ? 0 : renderProps.index;
         return (
-          <ItemPanel
+          <WorkoutItemPanel
             item={renderProps.item}
             schemeType={props.schemeType}
             itemWidth={props.itemWidth}

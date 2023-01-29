@@ -66,9 +66,31 @@ npx react-native run-ios --udid 237DB837-16ED-4279-889A-9D2E5EB393E6
 
 git push origin HEAD:staging HEAD
 
+# TODO
+
+- Write tests
+- Create good sample workout
+  - Good for demos and screenshots
+- Create a Few gyms and populate with workouts daily.
+
+  - Create workout engine.
+
+  # Design a Profile Settings Modal Row item like a modern settings rows with an icon
+
+  - whiole row clickable
+  - Icon and then text
+  - 1 item per row
+  - bottom border
+
 # Bugs:
 
-    ~~~~  RETEST RELEASE BUILD   ~~~
+Member Modal in GymClassScreen
+
+- When searching and empty list of users is reached because none match the query, error is thrown.
+
+  ```RETEST RELEASE BUILD   ~~~
+
+  ```
 
 '''
 Welcome to our fitness app! This app is designed to help you track your workouts and reach your fitness goals. With our user-friendly interface, you can easily log your exercises, set goals, and monitor your progress. Our app also offers a variety of helpful features, such as personalized workout plans and the ability to connect with friends for added motivation. Get started on your fitness journey today with our app!
@@ -79,100 +101,13 @@ Welcome to our fitness app! This app is designed to help you track and visualize
 
 '''
 
-    Deployment:
-    # https://reactnative.dev/docs/signed-apk-android#adding-signing-config-to-your-apps-gradle-config
-
-        ios
-            - Complete workoutu Screen
-                - Picker for weight unit
-
-        Android
-            - Apply for app store
-            - Signing package
-        iOS:
-            - Apply for app store
-
-    Problems:
-        - Images are not showing up
-        - Coaches modal gymClassScreen neeeds to be fixed
-        - Og button on Wrkoutscreen needs larger target area
-        - Need More workout items
-        - Need workout itenm information
-            - Description Images.
-            - Infographs?
-
-
-
-
-    -  Create Script to create WorkoutNames (Started in instaFitAPI)
-        - Python to generate script
-            - can be run against dev environment to hit endpoint which will also upload the media to DO Spaces
-
-
-
-
-
-    The big problem (SOLVED):
-        - WorkoutGroups and CompletedWorkoutGroups are tightly coupled in the DB
-        - So when deleting a WorkoutGroup/ Workout, the Completed Versions are removed too.
-
-    Solution:
-    1. Users cannot finish a WorkoutGroup without Workouts.
-    1. Users cannot edit Workouts after Finishing
-    2. Users cannot complete workouts until they're marked as Finished.
-    3. Users cannot remove workouts once Finished but can Archive them.
-        - Add field to WorkoutGroup: archived: True/ False
-        - This allows them to be hidden from search/ class workoutgroup list.
-
-        DB check:
-            - Creating Completed workout, reject if WorkoutGroup.finished = False
-            - Dont allow Workoutgroup to be Finished if no related Workouts exist
-            - Dont Allow Delete of WorkoutGroup, Workout, WorkoutItems if the WorkoutGroup is not finished
-
-        Adding Field
-         - Add field: archived to WorkoutGroup
-         - Update WorkoutGroupProps
-            - might not need, this is really for the backed so we can filter WorkoutGroups.
-        - Update Queries for WorkoutGroups,
-            - Curently, any backend Views that query GET
-
-                - WorkoutGroups.objects.get -> maybe add archived=False
-                - WorkoutGroups.objects.filter(...., archived=False)
-
-        Frontend: APISlice Change Delete WorkoutGroup to ArchiveWorkoutGroup
-        In the future, we can create views to show Archived workouts?
-        - Or we can treat them as deleted...
-            - The user no longer see them
-            - We still have workout data
-            - Other users still have their Completed Workout
-                - We can always filter out the original workout based on ARchived. If Archived, we can return blank data instead.
-                    - Therefore, the UI logic will behave the same, except all the data will be empty
-                        - Strings => ""
-                        - numbers => 0
-                        - lists => []
-                    - Keep same shape of original data.
-                    - Will need to create a funtion to create a copy of the data and then "clear/reset" the values
-
-
-
-
-
-
-
-
-    Testing
-        gymClass
-         - private
-          - make sure correct users see data
-          - correct users add coaces, members
-
-        api
-            - basics
-            - permissions create, delete, add members/ coches
-        frontend
-
-
-        Creating Workout
-
 V2 Features:
-Auth: - Edit User info - Change pass - Remove account
+Remove account
+
+    This can be a V2, in the event it happens, user can reopen the app.
+    - New login method
+        - When user opens app when server is not running, error getting data.
+            - Data doesnt refetch
+        - user is logged in if keys are present.
+            - Possibly send request?
+            - Seems like we should just focus on retries....

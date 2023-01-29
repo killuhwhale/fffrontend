@@ -36,17 +36,17 @@ const WorkoutGroupGridItem: FunctionComponent<{
       }}>
       <TouchableHighlight onPress={handlePress}>
         <LinearGradient
-          colors={['#000000', '#4682B4']} // Steel BLUE
+          // colors={['#000000', '#4682B4']} // Steel BLUE
           // colors={['#000000', '#87CEEB']} // Sky Blue
           // colors={['#000000', '#87CEFA']} // Baby BLUE
           // colors={['#000000', '#B0E0E6']} // Powder BlLue
           // colors={['#000000', '#7DF9FFAA']} // Electric Blue
-          // colors={['#000000', '#40E0D0']} // Turquoise
+          colors={['#00000000', '#40E0D0']} // Turquoise
           // colors={['#000000', '#F0F8FF']} // Alice BLUE
           // colors={['#000000', '#6495ED']} // Cornflower BLUE
           // colors={['#000000', '#000080']} // navy BLUE
           // colors={['#000000', '#4169E1']} // royal BLUE
-          start={{x: 0, y: 0}}
+          start={{x: 0.2, y: 0}}
           end={{x: 0.42, y: 1}}
           style={{flex: 1, borderRadius: 16}}>
           <View

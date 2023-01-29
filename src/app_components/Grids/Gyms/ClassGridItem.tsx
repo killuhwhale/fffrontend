@@ -43,8 +43,8 @@ const ClassGridItem: FunctionComponent<{
       }}>
       <TouchableHighlight onPress={handlePress}>
         <LinearGradient
-          colors={['#000000', '#7DF9FFAA']}
-          start={{x: 0, y: 0}}
+          colors={['#000000', '#40E0D0']}
+          start={{x: 0.15, y: 0}}
           end={{x: 0.42, y: 1}}
           style={{flex: 1, borderRadius: 16}}>
           <View
