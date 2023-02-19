@@ -6,28 +6,18 @@ import React, {
 } from 'react';
 import styled from 'styled-components/native';
 import {Container} from '../app_components/shared';
-import {
-  SmallText,
-  RegularText,
-  LargeText,
-  TitleText,
-  MediumText,
-} from '../app_components/Text/Text';
+import {SmallText, RegularText} from '../app_components/Text/Text';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {useTheme} from 'styled-components';
-import {useAppSelector, useAppDispatch} from '../redux/hooks';
 import {
   useDeleteGymMutation,
   useGetProfileGymClassFavsQuery,
   useGetProfileGymFavsQuery,
   useGetProfileViewQuery,
-  useGetProfileWorkoutGroupsQuery,
   useGetUserGymsQuery,
   useUpdateUsernameMutation,
 } from '../redux/api/apiSlice';
-
-import {WorkoutGroupCardList} from '../app_components/Cards/cardList';
 
 import {RootStackParamList} from '../navigators/RootStack';
 
@@ -123,7 +113,12 @@ const UserInfoPanel: FunctionComponent<UserInfoPanelProps> = props => {
 
   return (
     <View style={{width: '100%'}}>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
         <Icon
           name="person"
           style={{
@@ -355,6 +350,40 @@ export const ActionCancelModal: FunctionComponent<{
     </Modal>
   );
 };
+
+const ProfileSettingsModalRow: FunctionComponent<{
+  onAction(): void;
+  title: string;
+}> = props => {
+  const theme = useTheme();
+  return (
+    <View
+      style={{
+        width: '100%',
+        height: 45,
+        justifyContent: 'center',
+        marginVertical: 8,
+      }}>
+      <TouchableHighlight
+        style={{
+          width: '100%',
+          height: '100%',
+          justifyContent: 'center',
+          borderRadius: 8,
+          paddingLeft: 8,
+        }}
+        underlayColor={theme.palette.transparent}
+        onPress={() => {
+          props.onAction();
+        }}>
+        <RegularText textStyles={{textAlign: 'left'}}>
+          {props.title}
+        </RegularText>
+      </TouchableHighlight>
+    </View>
+  );
+};
+
 const ProfileSettingsModal: FunctionComponent<{
   modalVisible: boolean;
   onRequestClose(): void;
@@ -386,151 +415,108 @@ const ProfileSettingsModal: FunctionComponent<{
             ...settingsModalViewStyle.settingsModalView,
             backgroundColor: theme.palette.darkGray,
           }}>
-          <ScrollView>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginBottom: 12,
+              flex: 1,
+            }}>
+            <RegularText>Settings</RegularText>
+          </View>
+
+          <View
+            style={{
+              alignItems: 'flex-end',
+              width: '100%',
+              justifyContent: 'center',
+              marginBottom: 32,
+              flex: 1,
+            }}>
+            <Icon
+              name="log-out"
+              onPress={() => {
+                setShowConfirmLogout(true);
+              }}
+              color="red"
+              style={{fontSize: 24, marginRight: 4}}
+            />
+            <SmallText>Logout</SmallText>
+          </View>
+
+          <View style={{flex: 4, width: '100%'}}>
+            <ProfileSettingsModalRow
+              onAction={() => {
+                RootNavigation.navigate('CreateGymScreen', {});
+                props.onRequestClose();
+              }}
+              title="Create Gym"
+            />
             <View
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginBottom: 12,
-                flex: 1,
-              }}>
-              <RegularText>Settings</RegularText>
-            </View>
-
+                borderTopWidth: 1,
+                height: 1,
+                borderColor: theme.palette.text,
+              }}
+            />
+            <ProfileSettingsModalRow
+              onAction={() => {
+                RootNavigation.navigate('CreateGymClassScreen', {});
+                props.onRequestClose();
+              }}
+              title="Create gym class"
+            />
             <View
               style={{
-                alignItems: 'flex-end',
-                width: '100%',
-                justifyContent: 'center',
-                marginBottom: 32,
-              }}>
-              <Icon
-                name="log-out"
-                onPress={() => {
-                  setShowConfirmLogout(true);
-                }}
-                color="red"
-                style={{fontSize: 24, marginRight: 4}}
-              />
-              <SmallText>Logout</SmallText>
-            </View>
-
-            {/* Row`1 for buttons */}
-
+                borderTopWidth: 1,
+                height: 1,
+                borderColor: theme.palette.text,
+              }}
+            />
+            <ProfileSettingsModalRow
+              onAction={() => {
+                RootNavigation.navigate('CreateWorkoutGroupScreen', {
+                  ownedByClass: false,
+                });
+                props.onRequestClose();
+              }}
+              title="Create personal workout group"
+            />
             <View
               style={{
-                width: '100%',
-                flexDirection: 'row',
-                justifyContent: 'space-evenly',
-                marginBottom: 32,
-              }}>
-              <TouchableHighlight
-                onPress={() => {
-                  RootNavigation.navigate('CreateGymScreen', {});
-                  props.onRequestClose();
-                }}>
-                <View
-                  style={{
-                    backgroundColor: theme.palette.primary.main,
-                    borderRadius: 16,
-                    height: 92,
-                    width: 124,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <MediumText textStyles={{textAlign: 'center'}}>
-                    Create gym
-                  </MediumText>
-                </View>
-              </TouchableHighlight>
+                borderTopWidth: 1,
+                height: 1,
+                borderColor: theme.palette.text,
+              }}
+            />
+            <ProfileSettingsModalRow
+              onAction={() => {
+                RootNavigation.navigate('ResetPasswordScreen', {});
+                props.onRequestClose();
+              }}
+              title="ResetPassword"
+            />
+          </View>
 
-              <TouchableHighlight
-                onPress={() => {
-                  RootNavigation.navigate('CreateGymClassScreen', {});
-                  props.onRequestClose();
-                }}>
-                <View
-                  style={{
-                    backgroundColor: theme.palette.primary.main,
-                    borderRadius: 16,
-                    height: 92,
-                    width: 124,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <MediumText textStyles={{textAlign: 'center'}}>
-                    Create gym class
-                  </MediumText>
-                </View>
-              </TouchableHighlight>
-            </View>
-            {/* Row`2 for buttons */}
-            <View
-              style={{
-                alignItems: 'center',
-                flexDirection: 'row',
-                justifyContent: 'space-evenly',
-                marginBottom: 32,
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'flex-end',
+              alignContent: 'flex-end',
+              flex: 2,
+              height: '100%',
+              width: '100%',
+              justifyContent: 'center',
+            }}>
+            <RegularButton
+              onPress={props.onRequestClose}
+              btnStyles={{
+                backgroundColor: theme.palette.lightGray,
               }}>
-              <TouchableHighlight
-                onPress={() => {
-                  RootNavigation.navigate('CreateWorkoutGroupScreen', {
-                    ownedByClass: false,
-                  });
-                  props.onRequestClose();
-                }}>
-                <View
-                  style={{
-                    backgroundColor: theme.palette.primary.main,
-                    borderRadius: 16,
-                    height: 92,
-                    width: 124,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <MediumText textStyles={{textAlign: 'center'}}>
-                    Create personal workout group
-                  </MediumText>
-                </View>
-              </TouchableHighlight>
-              <TouchableHighlight
-                onPress={() => {
-                  RootNavigation.navigate('ResetPasswordScreen', {});
-                  props.onRequestClose();
-                }}>
-                <View
-                  style={{
-                    backgroundColor: theme.palette.primary.main,
-                    borderRadius: 16,
-                    height: 92,
-                    width: 124,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <MediumText textStyles={{textAlign: 'center'}}>
-                    ResetPassword
-                  </MediumText>
-                </View>
-              </TouchableHighlight>
-            </View>
+              Close
+            </RegularButton>
+          </View>
 
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                flex: 2,
-                width: '100%',
-                justifyContent: 'center',
-              }}>
-              <RegularButton
-                onPress={props.onRequestClose}
-                btnStyles={{
-                  backgroundColor: theme.palette.lightGray,
-                }}>
-                Close
-              </RegularButton>
-            </View>
-          </ScrollView>
           <ActionCancelModal
             actionText="Logout"
             closeText="Close"
@@ -620,16 +606,22 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
 
           <View
             style={{
-              flex: 2,
+              flex: 1,
+              width: '100%',
+              marginBottom: 16,
+              flexDirection: 'row',
+            }}>
+            <UserInfoPanel user={data.user} />
+          </View>
+          <View
+            style={{
+              flex: 1,
               width: '100%',
               marginBottom: 16,
               flexDirection: 'row',
               alignItems: 'center',
             }}>
-            <View style={{width: '50%'}}>
-              <UserInfoPanel user={data.user} />
-            </View>
-            <View style={{width: '50%'}}>
+            <View style={{width: '100%'}}>
               <RegularButton
                 onPress={() => navigation.navigate('StatsScreen')}
                 btnStyles={{
@@ -648,7 +640,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
               </ScrollView>
             </View>
           ) : (
-            <></>
+            <View style={{flex: 4}} />
           )}
 
           {dataGymClassFavs?.favorite_gym_classes?.length > 0 ? (
@@ -661,7 +653,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
               </ScrollView>
             </View>
           ) : (
-            <></>
+            <View style={{flex: 4}} />
           )}
 
           {usersGyms?.length ? (
@@ -672,7 +664,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
               </ScrollView>
             </View>
           ) : (
-            <></>
+            <View style={{flex: 6}} />
           )}
           <View style={{flex: 1, marginBottom: 8}}>
             <RegularButton

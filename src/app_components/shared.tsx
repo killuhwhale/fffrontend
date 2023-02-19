@@ -558,7 +558,7 @@ export class CalcWorkoutStats {
 
   calcMulti(data: WorkoutCardProps[]) {
     this.isFormatted = false;
-    console.log('CalcMulti Data: ', data);
+    // console.log('CalcMulti Data: ', data);
     data.forEach(workout => {
       const {
         scheme_rounds,

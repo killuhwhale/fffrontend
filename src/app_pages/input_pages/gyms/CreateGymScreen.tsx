@@ -154,7 +154,7 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
           <View style={{height: 55, marginBottom: 8}}>
             <Input
               onChangeText={t => setDesc(t)}
-              value={title}
+              value={desc}
               containerStyle={{
                 width: '100%',
                 backgroundColor: theme.palette.lightGray,

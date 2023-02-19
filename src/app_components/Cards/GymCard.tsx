@@ -28,29 +28,26 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
   };
   const mainURL = withSpaceURL('main', parseInt(props.id), MEDIA_CLASSES[0]);
   const logoURL = withSpaceURL('logo', parseInt(props.id), MEDIA_CLASSES[0]);
-
+  const bRadiusRight = 24;
   return (
     <LinearGradient
-      colors={
-        // ['#00000000', '#7DF9FFAA']
-        ['#00000000', '#40E0D0']
-      }
-      start={{x: 0.15, y: 0}}
+      colors={['#00000000', '#40E0D0']}
+      start={{x: 0.25, y: 0}}
       end={{x: 0.42, y: 1}}
       style={{
         flex: 1,
         borderTopLeftRadius: 16,
         borderBottomLeftRadius: 16,
-        borderTopRightRadius: 8,
-        borderBottomRightRadius: 8,
+        borderTopRightRadius: bRadiusRight,
+        borderBottomRightRadius: bRadiusRight,
       }}>
       <View
         style={{
           borderWidth: 1,
           borderTopLeftRadius: 16,
           borderBottomLeftRadius: 16,
-          borderTopRightRadius: 8,
-          borderBottomRightRadius: 8,
+          borderTopRightRadius: bRadiusRight,
+          borderBottomRightRadius: bRadiusRight,
         }}>
         <TouchableHighlight
           underlayColor={theme.palette.transparent}
@@ -60,8 +57,8 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
             flex: 1,
             borderTopLeftRadius: 16,
             borderBottomLeftRadius: 16,
-            borderTopRightRadius: 0,
-            borderBottomRightRadius: 0,
+            borderTopRightRadius: bRadiusRight,
+            borderBottomRightRadius: bRadiusRight,
           }}>
           <View
             style={{
@@ -79,9 +76,15 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
               }}
               source={{uri: logoURL}}
             />
-            <View style={{marginLeft: 10, justifyContent: 'space-around'}}>
-              <RegularText>{props.title}</RegularText>
-              <SmallText>{props.desc}</SmallText>
+            <View
+              style={{
+                marginLeft: 24,
+                justifyContent: 'space-around',
+              }}>
+              <RegularText textStyles={{textAlign: 'center'}}>
+                {props.title}
+              </RegularText>
+              <SmallText textStyles={{marginLeft: 12}}>{props.desc}</SmallText>
             </View>
           </View>
         </TouchableHighlight>

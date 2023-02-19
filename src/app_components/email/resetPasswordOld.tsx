@@ -26,13 +26,6 @@ export const ResetPasswordOld: FunctionComponent = () => {
   const [disabledUpdateBtn, setDisabledUpdateBtn] = useState(false);
 
   const updatePassword = async () => {
-    console.log(
-      'Updating passowrd',
-      password &&
-        newPassword &&
-        passwordConfirm &&
-        newPassword === passwordConfirm,
-    );
     if (passwordError.length > 0) {
       setPasswordError('');
     }
@@ -45,9 +38,9 @@ export const ResetPasswordOld: FunctionComponent = () => {
     ) {
       console.log('Updating password', password);
       const data = new FormData();
-      data.append('password', password);
-      data.append('new_password', newPassword);
-      data.append('password_confirm', passwordConfirm);
+      // data.append('password', password);
+      // data.append('new_password', newPassword);
+      // data.append('password_confirm', passwordConfirm);
 
       const res = await authPost(`${BASEURL}user/reset_password_with_old/`, {
         password: password,

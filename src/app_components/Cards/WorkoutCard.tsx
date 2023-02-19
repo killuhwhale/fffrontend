@@ -26,12 +26,6 @@ const CardRow = styled.View`
   justify-content: space-between;
 `;
 
-//Todo
-// Button for WorkoutName info/ media
-// Button to add workout to CompletedWorkouts
-// Possbily this will pre-load a new Component/ Model that way we can alter the numbers we used instead....
-// Caculate load/ volume of workout.
-
 const WorkoutCard: FunctionComponent<WorkoutCardProps> = props => {
   const theme = useTheme();
   const cardWidth = SCREEN_WIDTH * 0.92;

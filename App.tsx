@@ -218,7 +218,22 @@ const AuthNew: FunctionComponent<PropsWithChildren> = props => {
 
   auth.listenLogout(() => {
     console.log('Listened for logout, setLoggedIn');
-    store.dispatch(apiSlice.util.invalidateTags(['User']));
+    store.dispatch(
+      apiSlice.util.invalidateTags([
+        'Gyms',
+        'UserGyms',
+        'User',
+        'UserAuth',
+        'GymClasses',
+        'GymClassWorkoutGroups',
+        'UserWorkoutGroups',
+        'WorkoutGroupWorkouts',
+        'Coaches',
+        'Members',
+        'GymFavs',
+        'GymClassFavs',
+      ]),
+    );
     setLoggedIn(false);
   });
 

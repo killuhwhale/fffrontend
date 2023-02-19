@@ -165,37 +165,45 @@ const ManageCoachesModal: FunctionComponent<{
                   />
                 </View>
 
-                <RNPickerSelect
-                  ref={pickerRef}
-                  onValueChange={(itemValue, itemIndex) =>
-                    setNewCoach(itemValue)
-                  }
-                  useNativeAndroidPickerStyle={false}
-                  value={newCoach}
-                  style={{
-                    inputAndroidContainer: {
-                      alignItems: 'center',
-                    },
-                    inputAndroid: {
-                      color: theme.palette.text,
-                    },
-                    inputIOSContainer: {
-                      alignItems: 'center',
-                    },
-                    inputIOS: {
-                      color: theme.palette.text,
-                      height: '100%',
-                    },
-                  }}
-                  placeholder={{}}
-                  items={filterResult.map((filtered_index, i) => {
-                    const user = data[filtered_index];
-                    return {
-                      label: user.username,
-                      value: filtered_index,
-                    };
-                  })}
-                />
+                {filterResult && filterResult.length > 0 ? (
+                  <RNPickerSelect
+                    ref={pickerRef}
+                    onValueChange={(itemValue, itemIndex) =>
+                      setNewCoach(itemValue)
+                    }
+                    useNativeAndroidPickerStyle={false}
+                    value={newCoach}
+                    style={{
+                      inputAndroidContainer: {
+                        alignItems: 'center',
+                      },
+                      inputAndroid: {
+                        color: theme.palette.text,
+                      },
+                      inputIOSContainer: {
+                        alignItems: 'center',
+                      },
+                      inputIOS: {
+                        color: theme.palette.text,
+                        height: '100%',
+                      },
+                    }}
+                    placeholder={{}}
+                    items={
+                      filterResult && filterResult.length > 0
+                        ? filterResult.map((filtered_index, i) => {
+                            const user = data[filtered_index];
+                            return {
+                              label: user.username,
+                              value: filtered_index,
+                            };
+                          })
+                        : []
+                    }
+                  />
+                ) : (
+                  <View style={{height: 35}} />
+                )}
 
                 {/* <Picker
                   ref={pickerRef}

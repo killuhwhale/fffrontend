@@ -377,8 +377,8 @@ const AuthScreen: FunctionComponent = () => {
                   onPress={() => {
                     setAuthMode(0);
                   }}
-                  btnStyles={{backgroundColor: theme.palette.secondary.main}}>
-                  Sign In
+                  btnStyles={{backgroundColor: theme.palette.lightGray}}>
+                  Back
                 </RegularButton>
               </View>
               <View style={{width: '50%', height: 45, paddingHorizontal: 8}}>
@@ -389,7 +389,7 @@ const AuthScreen: FunctionComponent = () => {
                   btnStyles={{
                     backgroundColor: theme.palette.primary.main,
                   }}>
-                  Create
+                  Register
                 </RegularButton>
               </View>
             </View>
@@ -414,7 +414,7 @@ const AuthScreen: FunctionComponent = () => {
                   btnStyles={{
                     backgroundColor: theme.palette.lightGray,
                   }}>
-                  Sign In
+                  Back
                 </RegularButton>
               </View>
               <View style={{height: 45, width: '50%', paddingHorizontal: 8}}>
@@ -433,7 +433,13 @@ const AuthScreen: FunctionComponent = () => {
         ) : (
           <View>
             <RegularText textStyles={{textAlign: 'center', marginBottom: 16}}>
-              Reset password
+              Enter Code
+            </RegularText>
+            <SmallText textStyles={{textAlign: 'center', marginBottom: 16}}>
+              to
+            </SmallText>
+            <RegularText textStyles={{textAlign: 'center', marginBottom: 16}}>
+              Reset Password
             </RegularText>
             <RegularText textStyles={{textAlign: 'center', marginBottom: 16}}>
               {resetPasswordError}
@@ -477,9 +483,6 @@ const AuthScreen: FunctionComponent = () => {
                 }}
                 fontSize={16}
                 value={resetCode}
-                leading={
-                  <Icon name="person" style={{color: theme.palette.text}} />
-                }
               />
             </View>
 
@@ -487,7 +490,7 @@ const AuthScreen: FunctionComponent = () => {
               <Input
                 containerStyle={{
                   backgroundColor: theme.palette.gray,
-                  paddingLeft: 16,
+
                   borderTopStartRadius: 8,
                   borderTopEndRadius: 8,
                 }}
@@ -528,7 +531,7 @@ const AuthScreen: FunctionComponent = () => {
                   btnStyles={{
                     backgroundColor: theme.palette.primary.main,
                   }}>
-                  Submit
+                  Reset
                 </RegularButton>
               </View>
             </View>

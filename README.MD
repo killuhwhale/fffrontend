@@ -26,11 +26,11 @@ Change versions in android/app/build.gradle
 cd android
 ./gradlew bundleRelease
 
-adb -s emulator-5554 reverse tcp:8081 tcp:8081
-adb -s emulator-5554 reverse tcp:8000 tcp:8000
-
 adb -s 710KPMZ0409387 reverse tcp:8081 tcp:8081
 adb -s 710KPMZ0409387 reverse tcp:8000 tcp:8000
+
+adb -s emulator-5554 reverse tcp:8081 tcp:8081
+adb -s emulator-5554 reverse tcp:8000 tcp:8000
 npx react-native start
 
 npx react-native run-android --active-arch-only
@@ -68,29 +68,32 @@ git push origin HEAD:staging HEAD
 
 # TODO
 
+react-native-encrypted-storage
+
+- Need to build and test (Replaced non secure AsyncStorage)
+
+Implement MutalTLS 1. Create CA - Embed in mobile - Add to server 2. Automate generating Server key/certs 3. Automate generating client key/certs 4. Client side - Add new fetch method to create custom agent - Code in doc
+
+The server could accept a request from a client with the clients deviceID
+The server uses deviceID to generate a client cert and returns the cert to the client for future use.
+
 - Write tests
+
+  - UI should not send the request in following circumstances:
+    - Create WorkoutGroup button doesn't appear in another users Workout Group
+    - Delete buttons do not appear when viewing other user's Gymclass, WorkoutGroup
+
 - Create good sample workout
   - Good for demos and screenshots
 - Create a Few gyms and populate with workouts daily.
 
   - Create workout engine.
 
-  # Design a Profile Settings Modal Row item like a modern settings rows with an icon
-
-  - whiole row clickable
-  - Icon and then text
-  - 1 item per row
-  - bottom border
-
 # Bugs:
 
-Member Modal in GymClassScreen
+```RETEST RELEASE BUILD   ~~~
 
-- When searching and empty list of users is reached because none match the query, error is thrown.
-
-  ```RETEST RELEASE BUILD   ~~~
-
-  ```
+```
 
 '''
 Welcome to our fitness app! This app is designed to help you track your workouts and reach your fitness goals. With our user-friendly interface, you can easily log your exercises, set goals, and monitor your progress. Our app also offers a variety of helpful features, such as personalized workout plans and the ability to connect with friends for added motivation. Get started on your fitness journey today with our app!

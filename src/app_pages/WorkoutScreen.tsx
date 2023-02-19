@@ -360,19 +360,14 @@ const WorkoutScreen: FunctionComponent<Props> = ({
             !oGIsLoading &&
             isFinished &&
             !personalWorkout ? (
-              <IconButton
-                style={{height: 24}}
-                icon={
-                  <Icon
-                    name="rocket"
-                    color={
-                      completedIsSuccess
-                        ? theme.palette.primary.main
-                        : theme.palette.text
-                    }
-                    style={{fontSize: 24}}
-                  />
+              <Icon
+                name="rocket"
+                color={
+                  completedIsSuccess
+                    ? theme.palette.primary.main
+                    : theme.palette.text
                 }
+                style={{fontSize: 24, marginRight: 16}}
                 onPress={
                   completedIsSuccess || (!isFinished && personalWorkout)
                     ? () => {}
@@ -385,7 +380,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
 
             {WGOwner ? (
               <Icon
-                style={{fontSize: 24}}
+                style={{fontSize: 24, marginRight: 12}}
                 name="remove-circle-sharp"
                 color="red"
                 onPress={onConfirmDelete}
@@ -539,6 +534,13 @@ const WorkoutScreen: FunctionComponent<Props> = ({
           paddingVertical: 20,
           paddingLeft: 10,
         }}>
+        <View
+          style={{
+            borderTopWidth: 1,
+            height: 1,
+            borderColor: theme.palette.text,
+          }}
+        />
         <Row>
           <StatsPanel tags={tags} names={names} />
           {/* <ScrollView>
@@ -547,6 +549,13 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                         </View>
                     </ScrollView> */}
         </Row>
+        <View
+          style={{
+            borderTopWidth: 1,
+            height: 1,
+            borderColor: theme.palette.text,
+          }}
+        />
       </View>
       <Row style={{width: '100%', borderRadius: 8}} />
 

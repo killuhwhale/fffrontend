@@ -5,7 +5,9 @@ import {
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react';
 import {WorkoutCardProps} from '../../app_components/Cards/types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import EncryptedStorage from 'react-native-encrypted-storage';
+
 import {BASEURL} from '../../utils/constants';
 import {
   authDelete,
@@ -21,21 +23,21 @@ const JWT_ACCESS_TOKEN_KEY = '__jwttoken_access';
 const JWT_REFRESH_TOKEN_KEY = '__jwttoken_refresh';
 
 // Dump Asyn Storage
-AsyncStorage.getAllKeys((err, keys) => {
-  if (keys) {
-    AsyncStorage.multiGet(keys, (error, stores) => {
-      stores?.map((result, i, store) => {
-        console.log('AsyncStorage: ', {[store[i][0]]: store[i][1]});
-        return true;
-      });
-    });
-  }
-});
+// EncryptedStorage.getAllKeys((err, keys) => {
+//   if (keys) {
+//     EncryptedStorage.multiGet(keys, (error, stores) => {
+//       stores?.map((result, i, store) => {
+//         console.log('EncryptedStorage: ', {[store[i][0]]: store[i][1]});
+//         return true;
+//       });
+//     });
+//   }
+// });
 
 export const clearToken = async () => {
   try {
-    await AsyncStorage.setItem(JWT_ACCESS_TOKEN_KEY, '');
-    await AsyncStorage.setItem(JWT_REFRESH_TOKEN_KEY, '');
+    await EncryptedStorage.removeItem(JWT_ACCESS_TOKEN_KEY);
+    await EncryptedStorage.removeItem(JWT_REFRESH_TOKEN_KEY);
     return true;
   } catch (e) {
     // saving error
@@ -46,9 +48,9 @@ export const clearToken = async () => {
 export const storeToken = async (value, access = true) => {
   try {
     if (access) {
-      await AsyncStorage.setItem(JWT_ACCESS_TOKEN_KEY, value);
+      await EncryptedStorage.setItem(JWT_ACCESS_TOKEN_KEY, value);
     } else {
-      await AsyncStorage.setItem(JWT_REFRESH_TOKEN_KEY, value);
+      await EncryptedStorage.setItem(JWT_REFRESH_TOKEN_KEY, value);
     }
     return true;
   } catch (e) {
@@ -61,9 +63,9 @@ export const storeToken = async (value, access = true) => {
 export const getToken = async (access = true) => {
   try {
     if (access) {
-      return await AsyncStorage.getItem(JWT_ACCESS_TOKEN_KEY);
+      return await EncryptedStorage.getItem(JWT_ACCESS_TOKEN_KEY);
     } else {
-      return await AsyncStorage.getItem(JWT_REFRESH_TOKEN_KEY);
+      return await EncryptedStorage.getItem(JWT_REFRESH_TOKEN_KEY);
     }
   } catch (e) {
     // error reading value
@@ -72,10 +74,14 @@ export const getToken = async (access = true) => {
   }
 };
 
-// Tag types are good for a global coolection of data....
-const cacheTagGym = 'gyms';
-const cacheTagGymClass = 'gymClasses';
-const cacheTagWorkouts = 'workouts';
+async function clearStorage() {
+  try {
+    await EncryptedStorage.clear();
+    // Congrats! You've just cleared the device storage!
+  } catch (error) {
+    // There was an error on the native side
+  }
+}
 
 const asyncBaseQuery =
   (

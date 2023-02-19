@@ -66,6 +66,9 @@ const ManageMembersModal: FunctionComponent<{
   };
 
   const removeMember = () => {
+    if (!allMembers || memberToRemove > allMembers.length) {
+      return;
+    }
     const member = allMembers[memberToRemove];
     const removeMemberData = new FormData();
     removeMemberData.append('user_id', member.id);
