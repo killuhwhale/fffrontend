@@ -25,6 +25,7 @@ env /usr/bin/arch -arm64 /bin/bash --login
 Change versions in android/app/build.gradle
 cd android
 ./gradlew bundleRelease
+android/app/build/outputs/bundle/[app-release.aab]
 
 adb -s 710KPMZ0409387 reverse tcp:8081 tcp:8081
 adb -s 710KPMZ0409387 reverse tcp:8000 tcp:8000
@@ -90,6 +91,10 @@ The server uses deviceID to generate a client cert and returns the cert to the c
   - Create workout engine.
 
 # Bugs:
+
+Create personal workout on Prod is not working...
+
+- doesnt redirect after create....
 
 ```RETEST RELEASE BUILD   ~~~
 

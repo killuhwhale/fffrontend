@@ -385,6 +385,7 @@ const ProfileSettingsModalRow: FunctionComponent<{
 };
 
 const ProfileSettingsModal: FunctionComponent<{
+  user: {email: string; id: string; username: string};
   modalVisible: boolean;
   onRequestClose(): void;
 }> = props => {
@@ -477,6 +478,7 @@ const ProfileSettingsModal: FunctionComponent<{
               onAction={() => {
                 RootNavigation.navigate('CreateWorkoutGroupScreen', {
                   ownedByClass: false,
+                  ownerID: props.user.id,
                 });
                 props.onRequestClose();
               }}
@@ -679,6 +681,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
           <ProfileSettingsModal
             modalVisible={modalVisible}
             onRequestClose={() => setModalVisible(false)}
+            user={data.user}
           />
 
           <DeleteActionCancelModal
