@@ -24,16 +24,17 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
   const navigation = useNavigation<HomeScreenProps['navigation']>();
 
   const handlePress = () => {
+    console.log('Navigating to GymScreen!');
     navigation.navigate('GymScreen', {...props});
   };
   const mainURL = withSpaceURL('main', parseInt(props.id), MEDIA_CLASSES[0]);
   const logoURL = withSpaceURL('logo', parseInt(props.id), MEDIA_CLASSES[0]);
   const bRadiusRight = 24;
   return (
-    <LinearGradient
-      colors={['#00000000', '#40E0D0']}
-      start={{x: 0.25, y: 0}}
-      end={{x: 0.42, y: 1}}
+    <TouchableHighlight
+      underlayColor={theme.palette.transparent}
+      activeOpacity={0.9}
+      onPress={handlePress}
       style={{
         flex: 1,
         borderTopLeftRadius: 16,
@@ -41,20 +42,20 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
         borderTopRightRadius: bRadiusRight,
         borderBottomRightRadius: bRadiusRight,
       }}>
-      <View
+      <LinearGradient
+        colors={['#00000000', '#40E0D0']}
+        start={{x: 0.25, y: 0}}
+        end={{x: 0.42, y: 1}}
         style={{
-          borderWidth: 1,
+          flex: 1,
           borderTopLeftRadius: 16,
           borderBottomLeftRadius: 16,
           borderTopRightRadius: bRadiusRight,
           borderBottomRightRadius: bRadiusRight,
         }}>
-        <TouchableHighlight
-          underlayColor={theme.palette.transparent}
-          activeOpacity={0.9}
-          onPress={handlePress}
+        <View
           style={{
-            flex: 1,
+            borderWidth: 1,
             borderTopLeftRadius: 16,
             borderBottomLeftRadius: 16,
             borderTopRightRadius: bRadiusRight,
@@ -87,9 +88,9 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
               <SmallText textStyles={{marginLeft: 12}}>{props.desc}</SmallText>
             </View>
           </View>
-        </TouchableHighlight>
-      </View>
-    </LinearGradient>
+        </View>
+      </LinearGradient>
+    </TouchableHighlight>
   );
 };
 

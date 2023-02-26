@@ -34,6 +34,7 @@ import {SmallText} from '../app_components/Text/Text';
 import ResetPasswordScreen from '../app_pages/input_pages/users/ResetPassword';
 import {SCREEN_HEIGHT} from '../app_components/shared';
 import UserWorkoutsScreen from '../app_pages/UserWorkoutsScreen';
+import {TestIDs} from '../utils/constants';
 // Screens and props each screen expects...
 export type RootStackParamList = {
   HomePage: undefined;
@@ -82,6 +83,7 @@ function HomePageTabs() {
         component={HomePage}
         options={{
           headerShown: false,
+          tabBarTestID: TestIDs.HomeTab.name(),
           tabBarStyle: {
             backgroundColor: theme.palette.gray,
             flex: 0.09,
@@ -110,6 +112,7 @@ function HomePageTabs() {
         component={Profile}
         options={{
           headerShown: false,
+          tabBarTestID: TestIDs.ProfileTab.name(),
           tabBarStyle: {
             backgroundColor: theme.palette.gray,
             flex: 0.09,

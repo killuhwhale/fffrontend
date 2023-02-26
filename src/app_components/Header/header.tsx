@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import * as RootNavigation from '../../navigators/RootNavigation';
 import {View} from 'react-native';
 import {RegularText} from '../Text/Text';
+import {TestIDs} from '../../utils/constants';
 
 const Header: FunctionComponent = () => {
   const theme = useTheme();
@@ -19,6 +20,7 @@ const Header: FunctionComponent = () => {
     <View style={{backgroundColor: theme.palette.darkGray}}>
       <View style={{flexDirection: 'row', paddingVertical: 8, marginLeft: 16}}>
         <Icon
+          testID={TestIDs.PlanetHome.name()}
           name="planet-outline"
           onPress={() => {
             RootNavigation.navigate('HomePage', {});

@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useState,
   PropsWithChildren,
+  useRef,
 } from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import HomePage from './src/app_pages/home';
@@ -126,85 +127,12 @@ const ERR_MESSAGE_INVALID_EXPIRED = 'Token is invalid or expired';
 const TOKEN_TYPE_ACCESS = 'access';
 const TOKEN_TYPE_REFRESH = 'refresh';
 
-const Auth: FunctionComponent<{children: Array<ReactNode>}> = props => {
-  // This will check if we have a valid token by sending a request to server for user info.
-  // This either loads the app or login page.
-
-  const {data, isLoading, isSuccess, isError, error} =
-    useValidateUserTokenQuery('');
-
-  console.log('Cycle test: ', data, error);
-
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  if (
-    (data?.email?.length > 0 || data?.username?.length > 0) &&
-    !loggedIn &&
-    !isError &&
-    !isLoading &&
-    isSuccess
-  ) {
-    setLoggedIn(true);
-  } else {
-  }
-
-  useEffect(() => {
-    if (isError && !loggedIn) {
-      console.log('Dispatching Auth invalidting tag');
-      store.dispatch(apiSlice.util.invalidateTags(['UserAuth']));
-    }
-  }, [loggedIn]);
-
-  auth.listenLogout(() => {
-    console.log('Listened for logout, setLoggedIn');
-
-    setLoggedIn(false);
-  });
-
-  auth.listenLogin((loggedIn, msg) => {
-    console.log('App.tsx listenLogin: ', loggedIn, msg);
-    if (loggedIn) {
-      console.log('Listne for login');
-      console.log('Should log in');
-      console.log(isError);
-      setLoggedIn(true);
-    } else {
-    }
-  });
-
-  console.log(
-    'Auth: ',
-    'logged iN:',
-    loggedIn,
-    'isLoading:',
-    isLoading,
-    'Data:',
-    data,
-    'isError:',
-    isError,
-    '\n',
-  );
-  console.log('Err: ', error);
-
-  return (
-    <>
-      {isLoading ? (
-        <RegularText>Loading...</RegularText>
-      ) : isSuccess || (loggedIn && isError) ? (
-        <>{loggedIn ? <>{props.children[0]}</> : <>{props.children[1]}</>}</>
-      ) : isError ? (
-        <>{props.children[1]}</>
-      ) : (
-        <></>
-      )}
-    </>
-  );
-};
 const AuthNew: FunctionComponent<PropsWithChildren> = props => {
   // This will check if we have a valid token by sending a request to server for user info.
   // This either loads the app or login page.
 
   const [loggedIn, setLoggedIn] = useState(false);
+  const loggedInRef = useRef(loggedIn);
 
   useEffect(() => {
     const a = async () => {
@@ -213,39 +141,47 @@ const AuthNew: FunctionComponent<PropsWithChildren> = props => {
         setLoggedIn(true);
       }
     };
+
+    auth.listenLogout(() => {
+      console.log('Listened for logout, setLoggedIn');
+      store.dispatch(
+        apiSlice.util.invalidateTags([
+          'Gyms',
+          'UserGyms',
+          'User',
+          'UserAuth',
+          'GymClasses',
+          'GymClassWorkoutGroups',
+          'UserWorkoutGroups',
+          'WorkoutGroupWorkouts',
+          'Coaches',
+          'Members',
+          'GymFavs',
+          'GymClassFavs',
+        ]),
+      );
+      setLoggedIn(false);
+    });
+    console.log('Use effect is being called!!!');
+
+    auth.listenLogin((loggedIn, msg) => {
+      console.log('App.tsx listenLogin: ', loggedIn, msg);
+      if (loggedIn) {
+        console.log('Listne for login');
+        console.log('Should log in');
+
+        setLoggedIn(true);
+        // loggedInRef.current = true;
+      }
+    }, 'logInKey');
+
     a();
   }, []);
 
-  auth.listenLogout(() => {
-    console.log('Listened for logout, setLoggedIn');
-    store.dispatch(
-      apiSlice.util.invalidateTags([
-        'Gyms',
-        'UserGyms',
-        'User',
-        'UserAuth',
-        'GymClasses',
-        'GymClassWorkoutGroups',
-        'UserWorkoutGroups',
-        'WorkoutGroupWorkouts',
-        'Coaches',
-        'Members',
-        'GymFavs',
-        'GymClassFavs',
-      ]),
-    );
-    setLoggedIn(false);
-  });
-
-  auth.listenLogin((loggedIn, msg) => {
-    console.log('App.tsx listenLogin: ', loggedIn, msg);
-    if (loggedIn) {
-      console.log('Listne for login');
-      console.log('Should log in');
-      setLoggedIn(true);
-    } else {
-    }
-  });
+  useEffect(() => {
+    console.log('Login effect!', loggedInRef.current);
+    setLoggedIn(loggedInRef.current);
+  }, [loggedInRef]);
 
   return (
     <>
@@ -255,7 +191,6 @@ const AuthNew: FunctionComponent<PropsWithChildren> = props => {
         <></>
       )}
     </>
-    // <>{props.children[1]}</>
   );
 };
 
@@ -281,21 +216,19 @@ const App = () => {
     <Provider store={store}>
       <ThemeProvider theme={DarkTheme}>
         <Uploady destination={{url: `${BASEURL}`}}>
-          <React.StrictMode>
-            <GestureHandlerRootView style={{flex: 1}}>
-              <SafeAreaView>
-                {/* <StatusBar barStyle={isDarkMode ? 'dark-content' : 'light-content'} /> */}
-                <StatusBar barStyle={'dark-content'} />
-                <Header />
-              </SafeAreaView>
-              <AuthNew>
-                <RootStack navref={navigationRef} />
-                <AuthScreen />
-                {/* <SmallText>Test</SmallText>
-                <SmallText>Test</SmallText> */}
-              </AuthNew>
-            </GestureHandlerRootView>
-          </React.StrictMode>
+          {/* <React.StrictMode> */}
+          <GestureHandlerRootView style={{flex: 1}}>
+            <SafeAreaView>
+              {/* <StatusBar barStyle={isDarkMode ? 'dark-content' : 'light-content'} /> */}
+              <StatusBar barStyle={'dark-content'} />
+              <Header />
+            </SafeAreaView>
+            <AuthNew>
+              <RootStack navref={navigationRef} />
+              <AuthScreen />
+            </AuthNew>
+          </GestureHandlerRootView>
+          {/* </React.StrictMode> */}
         </Uploady>
       </ThemeProvider>
     </Provider>

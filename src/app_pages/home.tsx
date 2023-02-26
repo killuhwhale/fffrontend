@@ -16,7 +16,7 @@ import {useGetGymsQuery} from '../redux/api/apiSlice';
 
 import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
-import {Keyboard, View} from 'react-native';
+import {Keyboard, Text, View} from 'react-native';
 import {filter} from '../utils/algos';
 import Input from '../app_components/Input/input';
 export type Props = StackScreenProps<RootStackParamList, 'HomePage'>;

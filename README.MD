@@ -20,6 +20,19 @@ arch -x86_64 pod install
 
 env /usr/bin/arch -arm64 /bin/bash --login
 
+# Testing setup https://wix.github.io/Detox/docs/introduction/project-setup
+
+- Android build
+  detox build --configuration android.emu.debug
+  detox test --configuration android.emu.debug
+  detox build --configuration android.emu.release
+
+- iOS build
+  detox build --configuration ios.sim.debug
+  detox build --configuration ios.sim.release
+
+  Testings IDS
+
 # Build Android
 
 Change versions in android/app/build.gradle
@@ -69,16 +82,11 @@ git push origin HEAD:staging HEAD
 
 # TODO
 
-react-native-encrypted-storage
+- Write e2e tests
 
-- Need to build and test (Replaced non secure AsyncStorage)
+  - Finish writing some tests.
 
-Implement MutalTLS 1. Create CA - Embed in mobile - Add to server 2. Automate generating Server key/certs 3. Automate generating client key/certs 4. Client side - Add new fetch method to create custom agent - Code in doc
-
-The server could accept a request from a client with the clients deviceID
-The server uses deviceID to generate a client cert and returns the cert to the client for future use.
-
-- Write tests
+    - Need to use testID in many places now..
 
   - UI should not send the request in following circumstances:
     - Create WorkoutGroup button doesn't appear in another users Workout Group
@@ -92,7 +100,12 @@ The server uses deviceID to generate a client cert and returns the cert to the c
 
 # Bugs:
 
-Create personal workout on Prod is not working...
+Push to prod again, but fixes waiting...
+Run End to end tests covering
+
+- Creating Gyms, Classes, WorkoutGroups
+- Complete Workout groups
+- Stats query works
 
 - doesnt redirect after create....
 
@@ -119,3 +132,41 @@ Remove account
         - user is logged in if keys are present.
             - Possibly send request?
             - Seems like we should just focus on retries....
+
+I'm trying to use Detox for e2e tests and have failed to setup Detox with my project.
+I keep getting a build failure regarding react-native-encrypted-storage when running the gradle assembleAndroidTest command.
+
+I execute:
+detox build --configuration android.emu.debug
+which executes:
+./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug
+
+Versions:
+"react-native": "0.69.7",
+"react-native-encrypted-storage": "^4.0.3",
+
+The following command fails:
+./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug
+
+With the following message:
+
+> Task :react-native-encrypted-storage:processDebugAndroidTestManifest FAILED
+> /home/killuh/ws_p38/fitform/FitForm/node_modules/react-native-encrypted-storage/android/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest11953716120453094683.xml:27:9-33:20 Error:
+
+        android:exported needs to be explicitly specified for element <activity#androidx.test.core.app.InstrumentationActivityInvoker$BootstrapActivity>. Apps targeting Android 12 and higher are required to specify an explicit value for `android:exported` when the corresponding component has an intent filter defined. See https://developer.android.com/guide/topics/manifest/activity-element#exported for details.
+
+/home/killuh/ws_p38/fitform/FitForm/node_modules/react-native-encrypted-storage/android/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest11953716120453094683.xml:34:9-40:20 Error:
+android:exported needs to be explicitly specified for element <activity#androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity>. Apps targeting Android 12 and higher are required to specify an explicit value for `android:exported` when the corresponding component has an intent filter defined. See https://developer.android.com/guide/topics/manifest/activity-element#exported for details.
+/home/killuh/ws_p38/fitform/FitForm/node_modules/react-native-encrypted-storage/android/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest11953716120453094683.xml:41:9-47:20 Error:
+        android:exported needs to be explicitly specified for element <activity#androidx.test.core.app.InstrumentationActivityInvoker$EmptyFloatingActivity>. Apps targeting Android 12 and higher are required to specify an explicit value for `android:exported` when the corresponding component has an intent filter defined. See https://developer.android.com/guide/topics/manifest/activity-element#exported for details.
+
+See http://g.co/androidstudio/manifest-merger for more information about the manifest merger.
+
+FAILURE: Build failed with an exception.
+The following commands work to build the app on emulator or physical device:
+npx react-native run-android
+cd android/ && ./gradlew clean && ./gradlew bundleRelease && cd .. && npx react-native run-android --variant=release
+
+However, ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug continues to fail.
+
+Any help would be greatly appreciated, thanks!

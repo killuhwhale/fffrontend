@@ -36,6 +36,7 @@ import {
 } from '../app_components/modals/modalStyles';
 import DeleteActionCancelModal from '../app_components/modals/deleteByNameModal';
 import {RegularButton} from '../app_components/Buttons/buttons';
+import {TestIDs} from '../utils/constants';
 
 export type Props = StackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -186,7 +187,8 @@ const GymsPanel: FunctionComponent<GymsPanelProps> = ({data, onDelete}) => {
               key={id}
               underlayColor={theme.palette.transparent}
               activeOpacity={0.9}
-              onPress={() => goToGym(gym)}>
+              onPress={() => goToGym(gym)}
+              testID={`${TestIDs.GymRowTouchable.name()}_${title}`}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -354,6 +356,7 @@ export const ActionCancelModal: FunctionComponent<{
 const ProfileSettingsModalRow: FunctionComponent<{
   onAction(): void;
   title: string;
+  testID?: string;
 }> = props => {
   const theme = useTheme();
   return (
@@ -372,6 +375,7 @@ const ProfileSettingsModalRow: FunctionComponent<{
           borderRadius: 8,
           paddingLeft: 8,
         }}
+        testID={props.testID}
         underlayColor={theme.palette.transparent}
         onPress={() => {
           props.onAction();
@@ -447,6 +451,7 @@ const ProfileSettingsModal: FunctionComponent<{
 
           <View style={{flex: 4, width: '100%'}}>
             <ProfileSettingsModalRow
+              testID={TestIDs.CreateGymScreenBtn.name()}
               onAction={() => {
                 RootNavigation.navigate('CreateGymScreen', {});
                 props.onRequestClose();
@@ -461,6 +466,7 @@ const ProfileSettingsModal: FunctionComponent<{
               }}
             />
             <ProfileSettingsModalRow
+              testID={TestIDs.CreateGymClassScreenBtn.name()}
               onAction={() => {
                 RootNavigation.navigate('CreateGymClassScreen', {});
                 props.onRequestClose();
@@ -475,6 +481,7 @@ const ProfileSettingsModal: FunctionComponent<{
               }}
             />
             <ProfileSettingsModalRow
+              testID={TestIDs.CreateWorkoutGroupScreenBtn.name()}
               onAction={() => {
                 RootNavigation.navigate('CreateWorkoutGroupScreen', {
                   ownedByClass: false,
@@ -492,6 +499,7 @@ const ProfileSettingsModal: FunctionComponent<{
               }}
             />
             <ProfileSettingsModalRow
+              testID={TestIDs.ResetPasswordScreenBtn.name()}
               onAction={() => {
                 RootNavigation.navigate('ResetPasswordScreen', {});
                 props.onRequestClose();
@@ -511,6 +519,7 @@ const ProfileSettingsModal: FunctionComponent<{
               justifyContent: 'center',
             }}>
             <RegularButton
+              testID={TestIDs.CloseProfileSettingsBtn.name()}
               onPress={props.onRequestClose}
               btnStyles={{
                 backgroundColor: theme.palette.lightGray,
@@ -592,38 +601,44 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
         <View style={{flex: 1, width: '100%'}}>
           <View
             style={{
-              flex: 1,
-              width: '100%',
+              flex: 2,
+              flexDirection: 'row',
               height: '100%',
               justifyContent: 'center',
-              alignItems: 'flex-end',
+              alignItems: 'center',
             }}>
-            <Icon
-              name="menu"
-              onPress={() => setModalVisible(!modalVisible)}
-              color={theme.palette.text}
-              style={{fontSize: 32, marginRight: 8, marginTop: 8}}
-            />
+            <View style={{flex: 5}}>
+              <UserInfoPanel user={data.user} />
+            </View>
+            <View style={{flex: 1}}>
+              <TouchableHighlight
+                onPress={() => setModalVisible(!modalVisible)}
+                testID={TestIDs.OpenSettingsModalBtn.name()}
+                style={{
+                  flex: 1,
+                  height: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'flex-end',
+                }}>
+                <Icon
+                  name="menu"
+                  color={theme.palette.text}
+                  style={{fontSize: 64}}
+                />
+              </TouchableHighlight>
+            </View>
           </View>
 
           <View
             style={{
-              flex: 1,
+              flexDirection: 'row',
+              flex: 2,
               width: '100%',
               marginBottom: 16,
-              flexDirection: 'row',
-            }}>
-            <UserInfoPanel user={data.user} />
-          </View>
-          <View
-            style={{
-              flex: 1,
-              width: '100%',
-              marginBottom: 16,
-              flexDirection: 'row',
               alignItems: 'center',
+              justifyContent: 'center',
             }}>
-            <View style={{width: '100%'}}>
+            <View style={{flex: 5}}>
               <RegularButton
                 onPress={() => navigation.navigate('StatsScreen')}
                 btnStyles={{
@@ -631,6 +646,35 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
                 }}>
                 Stats
               </RegularButton>
+            </View>
+            <View
+              style={{
+                flex: 2,
+                alignContent: 'center',
+                alignItems: 'center',
+              }}>
+              <TouchableHighlight
+                onPress={() => {
+                  RootNavigation.navigate('CreateWorkoutGroupScreen', {
+                    ownedByClass: false,
+                    ownerID: data.user.id,
+                  });
+                }}
+                testID={TestIDs.CreatePersonalWorkoutGroupBtn.name()}
+                style={{
+                  flex: 1,
+                  height: '100%',
+                  justifyContent: 'center',
+                }}>
+                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                  <Icon
+                    name="barbell-outline"
+                    color={theme.palette.text}
+                    style={{fontSize: 32}}
+                  />
+                  <SmallText>New workout</SmallText>
+                </View>
+              </TouchableHighlight>
             </View>
           </View>
 

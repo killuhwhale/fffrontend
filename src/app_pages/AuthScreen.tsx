@@ -25,7 +25,7 @@ import Input, {AutoCaptilizeEnum} from '../app_components/Input/input';
 import {ResetPassword} from '../app_components/email/email';
 import {validEmailRegex} from '../utils/algos';
 import {post} from '../utils/fetchAPI';
-import {BASEURL} from '../utils/constants';
+import {BASEURL, TestIDs} from '../utils/constants';
 import {RegularButton} from '../app_components/Buttons/buttons';
 
 // import { RootStackParamList } from "../navigators/RootStack";
@@ -201,13 +201,14 @@ const AuthScreen: FunctionComponent = () => {
     <PageContainer>
       <AuthContainer>
         {authModes[authMode] == 0 ? (
-          <View style={{height: '100%'}}>
+          <View style={{height: '100%'}} testID="signInScreen">
             <View style={{justifyContent: 'space-evenly', height: '35%'}}>
               <RegularText textStyles={{textAlign: 'center', marginBottom: 16}}>
                 Sign In
               </RegularText>
               <View style={{height: 55, marginBottom: 16}}>
                 <Input
+                  testID={TestIDs.SignInEmailField.name()}
                   onChangeText={onEmailChange.bind(this)}
                   autoCapitalize={AutoCaptilizeEnum.None}
                   label=""
@@ -229,6 +230,7 @@ const AuthScreen: FunctionComponent = () => {
               </View>
               <View style={{height: 55, marginBottom: 16}}>
                 <Input
+                  testID={TestIDs.SignInPasswordField.name()}
                   onChangeText={onPasswordChange.bind(this)}
                   label=""
                   placeholder="Password"
@@ -263,6 +265,7 @@ const AuthScreen: FunctionComponent = () => {
               </View>
               <View style={{height: 45, width: '50%', paddingHorizontal: 8}}>
                 <RegularButton
+                  testID={TestIDs.SignInSubmit.name()}
                   onPress={() => {
                     login();
                   }}

@@ -31,6 +31,7 @@ import {numberInputStyle, pickerStyle} from './CreateWorkoutScreen';
 import Input from '../../../app_components/Input/input';
 import VerticalPicker from '../../../app_components/Pickers/VerticalPicker';
 import {RegularButton} from '../../../app_components/Buttons/buttons';
+import {TestIDs} from '../../../utils/constants';
 
 interface AddWorkoutItemProps {
   success: boolean;
@@ -763,70 +764,6 @@ const AddItem: FunctionComponent<{
                   updateItem('weight_unit', itemValue);
                 }}
               />
-
-              {/* <RNPickerSelect
-                ref={weightUnitPickRef}
-                onValueChange={(itemValue, itemIndex) => {
-                  setPercentOfWeightUnit(initPercentOfWeightUnit);
-                  setWeightUnit(itemValue);
-                  updateItem('weight_unit', itemValue);
-                }}
-                placeholder={{}}
-                useNativeAndroidPickerStyle={false}
-                // value={weightUnit}
-                style={{
-                  inputAndroidContainer: {
-                    alignItems: 'center',
-                  },
-                  inputAndroid: {
-                    color: theme.palette.text,
-                  },
-                  inputIOSContainer: {
-                    alignItems: 'center',
-                  },
-                  inputIOS: {
-                    color: theme.palette.text,
-                    height: '100%',
-                  },
-                }}
-                items={WEIGHT_UNITS.map(unit => {
-                  return {
-                    label: unit,
-                    value: unit,
-                  };
-                })}
-              /> */}
-
-              {/* <Picker
-                ref={weightUnitPickRef}
-                style={[
-                  {
-                    backgroundColor: theme.palette.gray,
-                    color: theme.palette.text,
-                    // height: 50,
-                  },
-                ]}
-                itemStyle={[
-                  {
-                    height: '100%',
-                  },
-                ]}
-                selectedValue={weightUnit}
-                onValueChange={(itemValue, itemIndex) => {
-                  setPercentOfWeightUnit(initPercentOfWeightUnit);
-                  setWeightUnit(itemValue);
-                  updateItem('weight_unit', itemValue);
-                }}>
-                {WEIGHT_UNITS.map((unit, i) => {
-                  return (
-                    <Picker.Item
-                      key={`rest_${unit}`}
-                      label={unit}
-                      value={unit}
-                    />
-                  );
-                })}
-              </Picker> */}
             </View>
           </View>
         </View>
@@ -911,66 +848,6 @@ const AddItem: FunctionComponent<{
                   updateItem('rest_duration_unit', itemIndex);
                 }}
               />
-              {/* <RNPickerSelect
-                ref={restDurationUnitPickRef}
-                placeholder={{}}
-                onValueChange={(itemValue, itemIndex) => {
-                  setRestDurationUnit(itemIndex);
-                  updateItem('rest_duration_unit', itemIndex);
-                }}
-                useNativeAndroidPickerStyle={false}
-                // value={restDurationUnit}
-                style={{
-                  inputAndroidContainer: {
-                    alignItems: 'center',
-                  },
-                  inputAndroid: {
-                    color: theme.palette.text,
-                  },
-                  inputIOSContainer: {
-                    alignItems: 'center',
-                  },
-                  inputIOS: {
-                    color: theme.palette.text,
-                    height: '100%',
-                  },
-                }}
-                items={DURATION_UNITS.map((unit, i) => {
-                  return {
-                    label: unit,
-                    value: unit,
-                  };
-                })}
-              /> */}
-              {/* <Picker
-                ref={restDurationUnitPickRef}
-                style={[pickerStyle.containerStyle]}
-                itemStyle={[
-                  pickerStyle.itemStyle,
-                  {
-                    height: '100%',
-                    color: theme.palette.text,
-                    backgroundColor: theme.palette.gray,
-                    textAlign: 'center',
-                    justifyContent: 'center',
-                  },
-                ]}
-                selectedValue={restDurationUnit}
-                onValueChange={(itemValue, itemIndex) => {
-                  setRestDurationUnit(itemIndex);
-                  updateItem('rest_duration_unit', itemIndex);
-                }}>
-                {DURATION_UNITS.map((unit, i) => {
-                  return (
-                    <Picker.Item
-                      key={`rest_${unit}`}
-                      style={{alignItems: 'center'}}
-                      label={unit}
-                      value={i}
-                    />
-                  );
-                })}
-              </Picker> */}
             </View>
           </View>
         </View>
@@ -979,6 +856,7 @@ const AddItem: FunctionComponent<{
       <View style={{}}>
         <RegularButton
           onPress={_addItem}
+          testID={TestIDs.CreateWorkoutAddItemBtn.name()}
           btnStyles={{
             backgroundColor: theme.palette.lightGray,
           }}>

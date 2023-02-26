@@ -21,6 +21,7 @@ import {RootStackParamList} from '../../../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
 import Input from '../../../app_components/Input/input';
 import {RegularButton} from '../../../app_components/Buttons/buttons';
+import {TestIDs} from '../../../utils/constants';
 export type Props = StackScreenProps<RootStackParamList, 'CreateGymScreen'>;
 
 const PageContainer = styled(Container)`
@@ -92,20 +93,26 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
     data.append('title', title);
     data.append('desc', desc);
 
-    data.append('main', {
-      uri: mainFile.uri,
-      name: mainFile.fileName,
-      type: mainFile.type,
-    });
-    data.append('logo', {
-      uri: logoFile.uri,
-      name: logoFile.fileName,
-      type: logoFile.type,
-    });
+    if (mainFile.uri && mainFile.fileName && mainFile.type) {
+      data.append('main', {
+        uri: mainFile.uri,
+        name: mainFile.fileName,
+        type: mainFile.type,
+      });
+    }
+
+    if (logoFile.uri && logoFile.fileName && logoFile.type) {
+      data.append('logo', {
+        uri: logoFile.uri,
+        name: logoFile.fileName,
+        type: logoFile.type,
+      });
+    }
+
     console.log('FOrmdata');
     console.log('FOrmdata');
     console.log('FOrmdata');
-    console.log('FOrmdata', mainFile.fileName, mainFile.type);
+    console.log('FOrmdata', data.getParts(), mainFile.fileName, mainFile.type);
 
     // headers: {
     //     'Content-Type': 'multipart/form-data; ',
@@ -113,7 +120,7 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
 
     try {
       const gym = await createGym(data).unwrap();
-      console.log(gym);
+      console.log('Newly creaated gym', gym);
       if (gym.id) {
         navigation.navigate('HomePageTabs', {screen: 'Profile'});
       }
@@ -132,6 +139,7 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
           <View style={{height: 55, marginBottom: 8}}>
             <Input
               onChangeText={t => setTitle(t)}
+              testID={TestIDs.GymTitleField.name()}
               value={title}
               containerStyle={{
                 width: '100%',
@@ -155,6 +163,7 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
             <Input
               onChangeText={t => setDesc(t)}
               value={desc}
+              testID={TestIDs.GymDescField.name()}
               containerStyle={{
                 width: '100%',
                 backgroundColor: theme.palette.lightGray,
@@ -189,6 +198,7 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
           />
           {!isCreating ? (
             <RegularButton
+              testID={TestIDs.GymSubmitBtn.name()}
               onPress={_createGym.bind(this)}
               btnStyles={{backgroundColor: theme.palette.lightGray}}>
               Create

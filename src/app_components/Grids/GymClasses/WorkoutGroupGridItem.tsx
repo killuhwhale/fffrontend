@@ -64,7 +64,7 @@ const WorkoutGroupGridItem: FunctionComponent<{
             <View style={{flex: 5}}>
               <View style={{marginVertical: 4}}>
                 <RegularText textStyles={{marginLeft: 16}}>
-                  {props.card.title}{' '}
+                  {props.card.title}
                 </RegularText>
                 <SmallText textStyles={{textAlign: 'left', marginLeft: 16}}>
                   {dateFormat(new Date(props.card.for_date))}

@@ -39,6 +39,7 @@ import {RootStackParamList} from '../../../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
 import Input from '../../../app_components/Input/input';
 import {RegularButton} from '../../../app_components/Buttons/buttons';
+import {TestIDs} from '../../../utils/constants';
 export type Props = StackScreenProps<
   RootStackParamList,
   'CreateGymClassScreen'
@@ -127,16 +128,20 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
     data.append('desc', desc);
     data.append('gym', gym);
     data.append('private', isPrivate);
-    data.append('main', {
-      uri: mainFile.uri,
-      name: mainFile.fileName,
-      type: mainFile.type,
-    });
-    data.append('logo', {
-      uri: logoFile.uri,
-      name: logoFile.fileName,
-      type: logoFile.type,
-    });
+    if (mainFile.uri && mainFile.fileName && mainFile.type) {
+      data.append('main', {
+        uri: mainFile.uri,
+        name: mainFile.fileName,
+        type: mainFile.type,
+      });
+    }
+    if (logoFile.uri && logoFile.fileName && logoFile.type) {
+      data.append('logo', {
+        uri: logoFile.uri,
+        name: logoFile.fileName,
+        type: logoFile.type,
+      });
+    }
     console.log('FOrmdata');
     console.log('FOrmdata');
     console.log('FOrmdata');
@@ -149,21 +154,10 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
         navigation.navigate('HomePageTabs', {screen: 'Profile'});
       }
     } catch (err) {
-      console.log('Error creating gym', err);
+      console.log('Error creating gym class', err);
     }
     setIsCreating(false);
     // TODO possibly dispatch to refresh data
-  };
-
-  const openGymPicker = () => {
-    if (pickerRef.current) {
-      pickerRef.current.focus();
-    }
-  };
-  const closeGymPicker = () => {
-    if (pickerRef.current) {
-      pickerRef.current.blur();
-    }
   };
 
   return (
@@ -174,6 +168,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
           <View style={{height: 55, marginBottom: 8}}>
             <Input
               onChangeText={t => setTitle(t)}
+              testID={TestIDs.GymClassTitleField.name()}
               value={title}
               containerStyle={{
                 width: '100%',
@@ -203,6 +198,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
                 borderRadius: 8,
                 paddingHorizontal: 8,
               }}
+              testID={TestIDs.GymClassDescField.name()}
               fontSize={mdFontSize}
               leading={
                 <Icon
@@ -219,6 +215,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
         <View style={{flex: 1, justifyContent: 'flex-end', width: '100%'}}>
           <View style={{width: '100%', alignItems: 'flex-end'}}>
             <Switch
+              testID={TestIDs.GymClassPrivateSwitch.name()}
               trackColor={{false: '#767577', true: '#81b0ff'}}
               thumbColor={isPrivate ? '#f5dd4b' : '#f4f3f4'}
               ios_backgroundColor="#3e3e3e"
@@ -248,6 +245,12 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
                 useNativeAndroidPickerStyle={false}
                 value={gym}
                 placeholder={{}}
+                key="GymClassKeyz"
+                touchableWrapperProps={{
+                  testID: TestIDs.GymClassRNPickerTouchableGym.name(),
+                }}
+                modalProps={{testID: TestIDs.GymClassRNPickerModalGym.name()}}
+                pickerProps={{testID: TestIDs.GymClassRNPickerGym.name()}}
                 style={{
                   inputAndroidContainer: {
                     alignItems: 'center',
@@ -270,30 +273,6 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
                   };
                 })}
               />
-
-              {/*
-              <Picker
-                ref={pickerRef}
-                style={{height: 100}}
-                mode="dialog"
-                itemStyle={{
-                  height: 100,
-                }}
-                onFocus={() => setBlkText(true)}
-                onBlur={() => setBlkText(false)}
-                selectedValue={gym}
-                onValueChange={(itemValue, itemIndex) => setGym(itemValue)}>
-                {data.map(gym => {
-                  return (
-                    <Picker.Item
-                      key={gym.id}
-                      label={gym.title}
-                      value={gym.id}
-                      color={blkText ? 'black' : theme.palette.text}
-                    />
-                  );
-                })}
-              </Picker> */}
             </View>
           ) : (
             <></>
@@ -317,6 +296,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
           />
           {!isCreating ? (
             <RegularButton
+              testID={TestIDs.GymClassCreateBtn.name()}
               onPress={_createGymClass.bind(this)}
               btnStyles={{
                 backgroundColor: theme.palette.lightGray,

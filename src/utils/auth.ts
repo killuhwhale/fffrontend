@@ -19,19 +19,19 @@ interface OnLoginProps {
 
 class AuthManager {
   onLogout: OnLogoutProps[];
-  onLogin: OnLoginProps[];
+  onLogin: Map<string, OnLoginProps>;
 
   constructor() {
     this.onLogout = [];
-    this.onLogin = [];
+    this.onLogin = new Map(); // Avoids multiple functions from same place.
   }
 
   listenLogout(fn: OnLogoutProps) {
     this.onLogout.push(fn);
   }
 
-  listenLogin(fn: OnLoginProps) {
-    this.onLogin.push(fn);
+  listenLogin(fn: OnLoginProps, key: string) {
+    this.onLogin.set(key, fn);
   }
 
   async login(email, password) {
@@ -53,7 +53,14 @@ class AuthManager {
     } else {
       msg = 'Failed to login';
     }
-    this.onLogin.forEach(fn => fn(loggedIn, msg));
+
+    [...this.onLogin.keys()].forEach(key => {
+      console.log('calling this on login@');
+      const fn = this.onLogin.get(key);
+      if (fn) {
+        fn(loggedIn, msg);
+      }
+    });
     // Only call this on successful login.
   }
 

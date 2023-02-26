@@ -1,13 +1,7 @@
 import React, {FunctionComponent} from 'react';
-import styled from 'styled-components/native';
 import {useTheme} from 'styled-components';
-import {SmallText, RegularText, LargeText, TitleText} from '../../Text/Text';
-import {
-  MEDIA_CLASSES,
-  SCREEN_HEIGHT,
-  SCREEN_WIDTH,
-  withSpaceURL,
-} from '../../shared';
+import {SmallText} from '../../Text/Text';
+import {MEDIA_CLASSES, withSpaceURL} from '../../shared';
 import {GymClassCardProps} from '../../Cards/types';
 
 import {View, Image, Pressable} from 'react-native';
@@ -61,31 +55,13 @@ const ClassGridItem: FunctionComponent<{
             />
             <View style={{flex: 1}}>
               <SmallText textStyles={{textAlign: 'center'}}>
-                {props.card.title}{' '}
+                {props.card.title}
               </SmallText>
             </View>
           </View>
         </LinearGradient>
       </TouchableHighlight>
     </View>
-    // <TextCardBG>
-    //   <CardTouchable
-    //     underlayColor={theme.palette.transparent}
-    //     activeOpacity={0.1}
-    //     onPress={handlePress}>
-    //     <TouchableView>
-    //       <CardRow style={{height: '100%'}}>
-    //         <View style={{flex: 3, height: '100%', justifyContent: 'center'}}>
-    //           <RegularText
-    //             textStyles={{paddingLeft: 16, textAlignVertical: 'center'}}>
-    //             {props.card.title}
-    //           </RegularText>
-    //         </View>
-    //         <LogoImage source={{uri: logoURL}} />
-    //       </CardRow>
-    //     </TouchableView>
-    //   </CardTouchable>
-    // </TextCardBG>
   );
 };
 

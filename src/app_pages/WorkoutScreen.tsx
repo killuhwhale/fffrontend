@@ -40,6 +40,7 @@ import {MediaURLSliderClass} from '../app_components/MediaSlider/MediaSlider';
 import {ActionCancelModal} from './Profile';
 import {StatsPanel} from '../app_components/Stats/StatsPanel';
 import {RegularButton} from '../app_components/Buttons/buttons';
+import {TestIDs} from '../utils/constants';
 export type Props = StackScreenProps<RootStackParamList, 'WorkoutScreen'>;
 
 const Row = styled.View`
@@ -440,6 +441,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                 }}>
                 <RegularButton
                   onPress={openCreateWorkoutScreenForStandard.bind(this)}
+                  testID={TestIDs.CreateRegularWorkoutBtn.name()}
                   btnStyles={{
                     backgroundColor: theme.palette.lightGray,
                   }}>
@@ -470,11 +472,13 @@ const WorkoutScreen: FunctionComponent<Props> = ({
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <RegularButton
                   onPress={() => setShowCreate(!showCreate)}
+                  testID={TestIDs.ToggleShowCreateWorkoutBtns.name()}
                   btnStyles={{
                     backgroundColor: theme.palette.lightGray,
                   }}>
                   {showCreate ? 'X' : 'Add workout'}
                 </RegularButton>
+
                 <RegularButton
                   onPress={() => setFinishWorkoutGroupModalVisible(true)}
                   btnStyles={{

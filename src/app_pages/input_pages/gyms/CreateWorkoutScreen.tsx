@@ -43,6 +43,7 @@ import {
 import Input from '../../../app_components/Input/input';
 import AddItem from './AddWorkoutItemPanel';
 import ItemString from '../../../app_components/WorkoutItems/ItemString';
+import {TestIDs} from '../../../utils/constants';
 export type Props = StackScreenProps<RootStackParamList, 'CreateWorkoutScreen'>;
 
 export const COLORSPALETTE = [
@@ -385,7 +386,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
         navigation.goBack();
       }
     } catch (err) {
-      console.log('Error creating gym', err);
+      console.log('Error creating workout', err);
     }
     setIsCreating(false);
     // TODO possibly dispatch to refresh data
@@ -476,6 +477,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
             onChangeText={t => setTitle(t)}
             value={title}
             label=""
+            testID={TestIDs.CreateWorkoutTitleField.name()}
             placeholder="Title"
             fontSize={mdFontSize}
             containerStyle={{
@@ -498,6 +500,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
           <Input
             label=""
             placeholder="Description"
+            testID={TestIDs.CreateWorkoutDescField.name()}
             value={desc}
             fontSize={mdFontSize}
             onChangeText={d => setDesc(d)}
@@ -557,6 +560,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
             <></>
           )}
         </View>
+
         <AddItem onAddItem={addWorkoutItem} schemeType={schemeType} />
 
         <View style={{flex: 2}}>
@@ -722,6 +726,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
           {!isCreating ? (
             <RegularButton
               onPress={_createWorkoutWithItems.bind(this)}
+              testID={TestIDs.CreateWorkoutAddItemBtn.name()}
               btnStyles={{backgroundColor: theme.palette.lightGray}}>
               Create
             </RegularButton>

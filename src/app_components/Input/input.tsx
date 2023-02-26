@@ -35,6 +35,7 @@ interface InputProps {
   centerInput?: boolean;
   secureTextEntry?: boolean;
   autoCapitalize?: AutoCaptilizeEnum; //'none', 'sentences', 'words', 'characters'
+  testID?: string;
 }
 
 const Input: FunctionComponent<InputProps> = props => {
@@ -70,6 +71,7 @@ const Input: FunctionComponent<InputProps> = props => {
                 alignItems: props.centerInput ? 'center' : 'flex-start',
               }}>
               <NTextInput
+                testID={props.testID}
                 secureTextEntry={
                   props.secureTextEntry == undefined
                     ? false

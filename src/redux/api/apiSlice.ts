@@ -6,7 +6,8 @@ import {
 } from '@reduxjs/toolkit/query/react';
 import {WorkoutCardProps} from '../../app_components/Cards/types';
 
-import EncryptedStorage from 'react-native-encrypted-storage';
+// import EncryptedStorage from 'react-native-encrypted-storage';
+import RNSecureStorage, {ACCESSIBLE} from 'rn-secure-storage';
 
 import {BASEURL} from '../../utils/constants';
 import {
@@ -36,8 +37,8 @@ const JWT_REFRESH_TOKEN_KEY = '__jwttoken_refresh';
 
 export const clearToken = async () => {
   try {
-    await EncryptedStorage.removeItem(JWT_ACCESS_TOKEN_KEY);
-    await EncryptedStorage.removeItem(JWT_REFRESH_TOKEN_KEY);
+    await RNSecureStorage.remove(JWT_ACCESS_TOKEN_KEY);
+    await RNSecureStorage.remove(JWT_REFRESH_TOKEN_KEY);
     return true;
   } catch (e) {
     // saving error
@@ -48,9 +49,13 @@ export const clearToken = async () => {
 export const storeToken = async (value, access = true) => {
   try {
     if (access) {
-      await EncryptedStorage.setItem(JWT_ACCESS_TOKEN_KEY, value);
+      await RNSecureStorage.set(JWT_ACCESS_TOKEN_KEY, value, {
+        accessible: ACCESSIBLE.WHEN_UNLOCKED,
+      });
     } else {
-      await EncryptedStorage.setItem(JWT_REFRESH_TOKEN_KEY, value);
+      await RNSecureStorage.set(JWT_REFRESH_TOKEN_KEY, value, {
+        accessible: ACCESSIBLE.WHEN_UNLOCKED,
+      });
     }
     return true;
   } catch (e) {
@@ -63,9 +68,9 @@ export const storeToken = async (value, access = true) => {
 export const getToken = async (access = true) => {
   try {
     if (access) {
-      return await EncryptedStorage.getItem(JWT_ACCESS_TOKEN_KEY);
+      return await RNSecureStorage.get(JWT_ACCESS_TOKEN_KEY);
     } else {
-      return await EncryptedStorage.getItem(JWT_REFRESH_TOKEN_KEY);
+      return await RNSecureStorage.get(JWT_REFRESH_TOKEN_KEY);
     }
   } catch (e) {
     // error reading value
@@ -73,15 +78,6 @@ export const getToken = async (access = true) => {
     return '';
   }
 };
-
-async function clearStorage() {
-  try {
-    await EncryptedStorage.clear();
-    // Congrats! You've just cleared the device storage!
-  } catch (error) {
-    // There was an error on the native side
-  }
-}
 
 const asyncBaseQuery =
   (
@@ -138,9 +134,11 @@ const asyncBaseQuery =
       } else {
         options.body = data;
       }
-      console.log('BODY: ', options.body);
+      console.log('BODY: ', baseUrl + url, options);
       // We make the first auth request using access token
       const result = await fetch(baseUrl + url, options);
+
+      console.log('BaseQuery fetch response pre-: ', result);
       const jResult = await result.json();
       console.log('BaseQuery fetch response: ', jResult);
 

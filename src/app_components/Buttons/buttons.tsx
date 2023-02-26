@@ -35,11 +35,13 @@ interface ButtonProps {
   textStyles?: StyleProp<TextStyle>;
   children: React.ReactNode;
   disabled?: boolean;
+  testID?: string;
 }
 
 const RegularButton: FunctionComponent<ButtonProps> = props => {
   return (
     <ButtonView
+      testID={props.testID}
       onPress={props.disabled ? () => {} : props.onPress}
       style={[{paddingVertical: 4}, props.btnStyles]}>
       <RegularText textStyles={props.textStyles}>{props.children}</RegularText>

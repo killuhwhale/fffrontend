@@ -22,6 +22,7 @@ import DatePicker from 'react-native-date-picker';
 import {dateFormat} from '../../StatsScreen';
 import {RegularButton} from '../../../app_components/Buttons/buttons';
 import Input from '../../../app_components/Input/input';
+import {TestIDs} from '../../../utils/constants';
 export type Props = StackScreenProps<
   RootStackParamList,
   'CreateWorkoutGroupScreen'
@@ -117,7 +118,7 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
     data.append('caption', caption);
     data.append('for_date', dateFormat(forDate));
     data.append('media_ids', []);
-    if (files) {
+    if (files && files.length) {
       files.forEach(file =>
         data.append('files', {
           uri: file.path,
@@ -139,7 +140,7 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
         navigation.goBack();
       }
     } catch (err) {
-      console.log('Error creating gym', err);
+      console.log('Error creating  WorkoutGroup', err);
     }
     setIsCreating(false);
     // TODO possibly dispatch to refresh data
@@ -155,6 +156,7 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
           <View style={{marginBottom: 15, height: 40}}>
             <Input
               placeholder="Title"
+              testID={TestIDs.WorkoutGroupTitleField.name()}
               onChangeText={setTitle}
               value={title || ''}
               label="Title"
@@ -177,6 +179,7 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
           <View style={{marginBottom: 15, height: 40}}>
             <Input
               placeholder="Caption"
+              testID={TestIDs.WorkoutGroupCaptionField.name()}
               onChangeText={setCaption}
               value={caption || ''}
               label="Caption"
@@ -230,6 +233,7 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
           {!isCreating ? (
             <RegularButton
               onPress={_createWorkout.bind(this)}
+              testID={TestIDs.WorkoutGroupCreateBtn.name()}
               btnStyles={{
                 backgroundColor: theme.palette.lightGray,
               }}>

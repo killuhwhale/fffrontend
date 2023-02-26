@@ -40,6 +40,7 @@ import DeleteActionCancelModal from '../app_components/modals/deleteByNameModal'
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import FilterGrid from '../app_components/Grids/FilterGrid';
 import {WorkoutGroupSquares} from '../app_components/Grids/GymClasses/WorkoutGroupSquares';
+import {TestIDs} from '../utils/constants';
 export type Props = StackScreenProps<RootStackParamList, 'GymClassScreen'>;
 
 const GymClassScreenContainer = styled(Container)`
@@ -327,10 +328,7 @@ const GymClassScreen: FunctionComponent<Props> = ({
               justifyContent: 'flex-end',
               width: '100%',
             }}>
-            <Icon
-              name="add-outline"
-              color={theme.palette.primary.main}
-              style={{fontSize: 24, marginHorizontal: 8}}
+            <TouchableHighlight
               onPress={() => {
                 navigation.navigate('CreateWorkoutGroupScreen', {
                   ownedByClass: true,
@@ -338,7 +336,13 @@ const GymClassScreen: FunctionComponent<Props> = ({
                   gymClassProps: params,
                 });
               }}
-            />
+              testID={TestIDs.CreateWorkoutGroupScreenForClassBtn.name()}>
+              <Icon
+                name="add-outline"
+                color={theme.palette.primary.main}
+                style={{fontSize: 24, marginHorizontal: 8}}
+              />
+            </TouchableHighlight>
 
             {data?.user_is_owner ? (
               <Icon
