@@ -83,7 +83,7 @@ export const numFilterWithSpaces = (str: string): string => {
   return hasSpace ? r.trim() + ' ' : r.trim();
 };
 export const displayJList = (weights: string) => {
-  return weights.toString().replace('[', '').replace(']', '');
+  return weights ? weights.toString().replace('[', '').replace(']', '') : ' ';
 };
 // Converts string of nums to stringified number[]
 export const jList = (str: string): string => {

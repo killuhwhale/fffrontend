@@ -1,4 +1,4 @@
-import React, {FunctionComponent, ReactElement, useRef, useState} from 'react';
+import React, {FunctionComponent, ReactElement, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {PanGestureHandler} from 'react-native-gesture-handler';
 import MaskedView from '@react-native-masked-view/masked-view';
@@ -10,7 +10,6 @@ import Animated, {
   runOnJS,
 } from 'react-native-reanimated';
 
-import {SCREEN_WIDTH} from '../shared';
 import {SmallText} from '../Text/Text';
 
 {
@@ -19,6 +18,7 @@ import {SmallText} from '../Text/Text';
 const VerticalPicker: FunctionComponent<{
   data: string[];
   onChange(idx: number);
+  testID?: string;
 }> = props => {
   const {data} = props;
   const _data = data?.length == 1 ? ['', data[0], ''] : data;
@@ -28,7 +28,7 @@ const VerticalPicker: FunctionComponent<{
 
   const [xState, setXState] = useState(0);
   const [startPos, setStartPos] = useState(0);
-  const [curIdx, setCurIdx] = useState(1);
+  const [curIdx, setCurIdx] = useState(0);
   const [prevIdx, setPrevIdx] = useState(-1);
 
   const transX = useSharedValue(xState);
@@ -58,7 +58,12 @@ const VerticalPicker: FunctionComponent<{
       },
       onActive(event, context) {
         try {
-          // console.log(`Moving from ${transX.value} to ${event.translationX + sharedStartPos.value} by ${event.translationX}`, event)
+          // console.log(
+          //   `Moving from ${transX.value} to ${
+          //     event.translationX + sharedStartPos.value
+          //   } by ${event.translationX}`,
+          //   event,
+          // );
           transX.value = event.translationX + sharedStartPos.value;
           sharedWordSkew.value = event.translationX + sharedStartPos.value * 4;
           // setXState(transX.value)
@@ -67,53 +72,54 @@ const VerticalPicker: FunctionComponent<{
         }
       },
       onEnd: (event, ctx) => {
-        // console.log("OnEnd animation...")
+        // console.log('OnEnd animation...');
+        // console.log('Starting values should match last onActive...');
+        // console.log('transX.value ', transX.value);
         try {
           const totalDistMoved = event.translationX;
           const rawVal =
             totalDistMoved /
             (sharedItemWidth.value == 0 ? 1 : sharedItemWidth.value);
+          // console.log('totalDistMoved ', totalDistMoved);
+          // console.log('rawVal ', rawVal);
           const _numItemsTOMove =
             rawVal > 0
               ? -Math.ceil(Math.abs(rawVal))
               : Math.ceil(Math.abs(rawVal));
 
+          // We have a padded array, do not change index.
           if (data.length != _data.length) {
-            // We have a padded array, do not change index.
             const moveTo = 0;
             transX.value = moveTo;
             runOnJS(safeXUpdate)(moveTo);
             runOnJS(safeCallOnChange)(0);
+            console.log('End moveTo ', moveTo, 'onChange ', 0);
             return;
           }
           const numItemsTOMove = Math.max(
             -data.length - 1,
             Math.min(data.length - 1, _numItemsTOMove),
           );
+          // console.log('numItemsTOMove', numItemsTOMove, sharedCurIdx.value);
           const newIdx = Math.max(
             0,
             Math.min(data.length - 1, numItemsTOMove + sharedCurIdx.value),
           );
-
-          // We need to acutally shift this when index is 0 we need to be positive itemWidth
-          // const moveTo =
-          //   newIdx * -sharedItemWidth.value + sharedItemWidth.value;
+          // console.log('New index', newIdx);
           const moveTo = newIdx * -sharedItemWidth.value;
+          // console.log('-sharedItemWidth.value', -sharedItemWidth.value);
           sharedWordSkew.value = 0;
           transX.value = moveTo;
-          // setXState(moveTo)
+
           runOnJS(safeXUpdate)(moveTo);
           sharedStartPos.value = moveTo;
-          // setStartPos(moveTo)
-
-          // setCurIdx(newIdx)
-          // setPrevIdx(curIdx)
           sharedPrevIdx.value = sharedCurIdx.value;
           sharedCurIdx.value = newIdx;
 
           // Send new selected item
           if (sharedPrevIdx.value != sharedCurIdx.value) {
             // console.log('onchange inside: ', newIdx);
+            // console.log('End moveTo ', moveTo, 'onChange ', newIdx);
             runOnJS(safeCallOnChange)(newIdx);
           } else {
             console.log(
@@ -185,8 +191,7 @@ const VerticalPicker: FunctionComponent<{
         <View style={{width: '70%', backgroundColor: 'white'}} />
         <View style={{width: '15%', backgroundColor: 'grey'}} />
       </MaskedView>
-      <PanGestureHandler onGestureEvent={eventHandler}>
-        {/* <PanGestureHandler > */}
+      <PanGestureHandler onGestureEvent={eventHandler} testID={props.testID}>
         <Animated.View style={[StyleSheet.absoluteFill, {flex: 1}]} />
       </PanGestureHandler>
     </View>

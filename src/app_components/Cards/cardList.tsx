@@ -11,6 +11,8 @@ import {
   WorkoutItemListProps,
   WorkoutItemProps,
   WorkoutGroupCardProps,
+  GymCardProps,
+  GymClassCardProps,
 } from './types';
 import GymCard from './GymCard';
 import GymClassCard, {GymClassTextCard} from './GymClassCard';
@@ -18,9 +20,10 @@ import WorkoutCard from './WorkoutCard';
 
 import WorkoutGroupCard from './WorkoutGroupCard';
 
-import {View} from 'react-native';
+import {FlatList, View} from 'react-native';
 import {NamePanelItem, TagPanelItem, WorkoutStats} from '../Stats/StatsPanel';
 import WorkoutItemPanel from '../WorkoutItems/ItemPanel';
+import {TestIDs} from '../../utils/constants';
 
 export const StyledList = styled.FlatList`
   width: 100%;
@@ -46,7 +49,10 @@ const GymCardList: FunctionComponent<GymCardListProps> = props => {
       contentContainerStyle={{flexGrow: 1}}
       ItemSeparatorComponent={() => <View style={{height: 20}} />}
       keyExtractor={({id}: any) => id.toString()}
-      renderItem={({item}: any) => <GymCard {...item} />}
+      renderItem={({item}: {item: GymCardProps}) => {
+        console.log('Gym card item', item);
+        return <GymCard {...item} />;
+      }}
     />
   );
 };
@@ -64,37 +70,9 @@ const GymClassCardList: FunctionComponent<GymClassCardListProps> = props => {
       }}
       ItemSeparatorComponent={() => <View style={{height: 20}} />}
       keyExtractor={({id}: any) => id.toString()}
-      renderItem={({item}: any) => <GymClassCard {...item} />}
-    />
-  );
-};
-const GymClassTextCardList: FunctionComponent<{
-  extraProps: any;
-  data: GymClassCardListProps;
-}> = props => {
-  const theme = useTheme();
-  console.log('Listsss', props);
-  return (
-    <StyledList
-      data={props.data}
-      extraProps={props.extraProps}
-      horizontal={false}
-      contentContainerStyle={{
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}
-      ItemSeparatorComponent={() => <View style={{height: 20}} />}
-      keyExtractor={({id}: any) => id.toString()}
-      renderItem={(innerprops: any) => {
-        console.log('List item_______', props);
-
-        return (
-          <GymClassTextCard
-            closeParentModal={props.extraProps.closeModalOnNav}
-            card={innerprops.item}
-          />
-        );
-      }}
+      renderItem={({item}: {item: GymClassCardProps}) => (
+        <GymClassCard {...item} />
+      )}
     />
   );
 };
@@ -160,55 +138,61 @@ const WorkoutCardList: FunctionComponent<WorkoutCardListProps> = props => {
 
 const WorkoutCardFullList: FunctionComponent<WorkoutCardListProps> = props => {
   const theme = useTheme();
-
+  // Testing
+  // WorkoutCardList - 1 list of all Workoutsworkout
+  // WorkoutCardItemList - List containing WorkoutItems, count for items per workout
   return (
     <View
+      testID={TestIDs.WorkoutCardList.name()}
       style={{
         alignItems: 'center',
         justifyContent: 'space-between',
       }}>
       {props.data.map(item => {
+        const num_items = item.workout_items?.length || 0;
         return (
           <WorkoutCard
+            testID={`${TestIDs.WorkoutCardItemList}_${item.title}_${num_items}`}
             key={`wcfl__${item.id}`}
             editable={props.editable}
+            // TODO() deepcopy
             {...item}
           />
         );
       })}
     </View>
   );
-
-  // <StyledList
-  //   data={props.data}
-  //   horizontal={false}
-  //   contentContainerStyle={{
-  //     alignItems: 'center',
-  //     justifyContent: 'space-between',
-  //   }}
-  //   keyExtractor={({id}: any) => id.toString()}
-  //   renderItem={({item}: any) => (
-  //     <WorkoutCard editable={props.editable} {...item} />
-  //   )}
-  // />
 };
 
 const WorkoutItemPreviewHorizontalList: FunctionComponent<{
   data: WorkoutItemProps[];
   schemeType: number;
   itemWidth: number;
+  testID?: string;
 }> = props => {
   const theme = useTheme();
-
+  console.log('TestID for Horiz WOrkout Items', props.testID);
+  console.log('Data for Horiz WOrkout Items', props.data);
   return (
-    <StyledList
+    <FlatList
       data={props.data}
       horizontal={true}
       contentContainerStyle={{
         alignItems: 'center',
         justifyContent: 'space-between',
+        width: '100%',
+        paddingLeft: 12,
+        paddingRight: 12,
+        paddingBottom: 15,
+        paddingTop: 15,
       }}
-      keyExtractor={({id}: any) => id.toString()}
+      accessibilityLabel={props.testID}
+      testID={props.testID}
+      keyExtractor={(item: any) => {
+        console.log('Null id item ', item);
+        // id.toString();
+        return ':';
+      }}
       renderItem={renderProps => {
         const index = renderProps.index == undefined ? 0 : renderProps.index;
         return (
@@ -274,6 +258,5 @@ export {
   WorkoutItemPreviewHorizontalList,
   WorkoutStatsByTagHorizontalList,
   WorkoutStatsByNameHorizontalList,
-  GymClassTextCardList,
   WorkoutCardFullList,
 };

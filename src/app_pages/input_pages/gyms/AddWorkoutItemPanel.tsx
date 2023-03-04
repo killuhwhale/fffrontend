@@ -32,6 +32,8 @@ import Input from '../../../app_components/Input/input';
 import VerticalPicker from '../../../app_components/Pickers/VerticalPicker';
 import {RegularButton} from '../../../app_components/Buttons/buttons';
 import {TestIDs} from '../../../utils/constants';
+import HorizontalPicker from '../../../app_components/Pickers/HorizontalPicker';
+import {cloneDeep} from '../../../utils/algos';
 
 interface AddWorkoutItemProps {
   success: boolean;
@@ -44,22 +46,22 @@ const AddItem: FunctionComponent<{
   schemeType: number;
 }> = props => {
   const inputFontSize = 14;
-  // Needs duration and SSID feature.
+  // Need to have blank values, empty strings in the field instead of a default 0
 
-  const initWorkoutName = 0;
-  const initWeight = '0';
+  const initWorkoutName = 0; // index for Workout name from data query
+  const initWeight = '';
   const initWeightUnit = 'kg';
   const initPercentOfWeightUnit = '';
-  const initSets = '0';
-  const initReps = '0';
-  const initPauseDuration = '0';
-  const initDistance = '0';
+  const initSets = '';
+  const initReps = '';
+  const initPauseDuration = '';
+  const initDistance = '';
   const initDistanceUnit = 0;
 
-  const initDuration = '0';
+  const initDuration = '';
   const initDurationUnit = 0;
 
-  const initRestDuration = '0';
+  const initRestDuration = '';
   const initRestDurationUnit = 0;
 
   const theme = useTheme();
@@ -67,11 +69,6 @@ const AddItem: FunctionComponent<{
     useGetWorkoutNamesQuery('');
 
   const pickerRef = useRef<any>();
-  const weightUnitPickRef = useRef<any>();
-  const durationUnitPickRef = useRef<any>();
-  const distanceUnitPickRef = useRef<any>();
-  const restDurationUnitPickRef = useRef<any>();
-  const showRepsOrDurationInputRef = useRef<any>();
 
   const [workoutName, setWorkoutName] = useState(initWorkoutName);
 
@@ -109,93 +106,91 @@ const AddItem: FunctionComponent<{
   // Example SchemeType Reps: 21,15,9
   // item Squat weights 200lbs, 100lbs, 50lbs,  ==> this means we do 200 lbs on the first round, 100 on the seocnd, etc...
 
-  const defaultItem = {
-    sets: nanOrNah(initSets),
-    reps: initReps,
-    distance: initDistance,
-    distance_unit: initDistanceUnit,
-    ssid: -1,
-    duration: initDuration,
-    pause_duration: nanOrNah(initPauseDuration),
-    name: data ? data[initWorkoutName] : ({} as WorkoutNameProps),
-    duration_unit: initDurationUnit,
-    date: '',
-
-    rest_duration: nanOrNah(initRestDuration),
-    rest_duration_unit: initRestDurationUnit,
-    weights: initWeight,
-    weight_unit: initWeightUnit,
-    percent_of: initPercentOfWeightUnit,
-    workout: 0,
-    id: 0,
-  } as WorkoutItemProps;
-
-  const [item, setItem] = useState(defaultItem);
-
   const resetDefaultItem = () => {
     console.log('Resetting item');
-
-    resetItem();
     setWeight(initWeight);
     setDistance(initDistance);
-
     setPercentOfWeightUnit(initPercentOfWeightUnit);
     setSets(initSets);
     setReps(initReps);
     setPauseDuration(initPauseDuration);
-
     setDuration(initDuration);
-
     setRestDuration(initRestDuration);
-    setRestDurationUnit(initRestDurationUnit);
+    // setRestDurationUnit(initRestDurationUnit);
   };
-  const resetItem = () => {
-    // Reset item to default item values when user adds an item except
-    //   we need to preserve the units the user has changed.
-    setItem({
-      ...defaultItem,
-      name: data[workoutName],
-      distance_unit: distanceUnit,
-      duration_unit: durationUnit,
-      rest_duration_unit: restDurationUnit,
-      weight_unit: weightUnit,
-    });
-  };
-  const updateItem = (key, val) => {
-    const newItem = item;
-    newItem[key] = val;
-    setItem(newItem);
-  };
+
   const _addItem = () => {
-    if (!item.name.name) {
-      item.name = data[workoutName];
+    if (!data || data.length <= 0) {
+      console.log('Error, no workout names to add to item.');
+      return;
     }
 
+    let setsItem = nanOrNah(sets);
+    let repsItem = reps;
+    let durationItem = duration;
+    let distanceItem = distance;
+
+    // sets: nanOrNah(sets),
+    // reps: reps.length == 0 ? '0' : reps,
+    // duration: distance.length == 0 ? '0' : distance,
+    // distance: distance.length == 0 ? '0' : distance,
+
+    // Enforce default values per workout type.
     if (WORKOUT_TYPES[props.schemeType] == STANDARD_W) {
-      if (item.sets === 0) {
-        item.sets = 1; // ensure there is at least 1 set.
+      if (setsItem === 0) {
+        setsItem = 1; // ensure there is at least 1 set.
+      }
+      if (repsItem.length === 0) {
+        repsItem = '0';
+      }
+      if (durationItem.length === 0) {
+        durationItem = '0';
+      }
+      if (distanceItem.length === 0) {
+        distanceItem = '0';
       }
     } else if (WORKOUT_TYPES[props.schemeType] == REPS_W) {
     } else if (WORKOUT_TYPES[props.schemeType] == ROUNDS_W) {
     } else if (WORKOUT_TYPES[props.schemeType] == DURATION_W) {
     }
 
-    if (QuantityLabels[showQuantity] == 'Reps' && parseInt(item.reps) === 0) {
-      item.reps = '1';
+    if (QuantityLabels[showQuantity] == 'Reps' && parseInt(repsItem) === 0) {
+      repsItem = '1';
     } else if (
       QuantityLabels[showQuantity] == 'Duration' &&
-      parseInt(item.duration) === 0
+      parseInt(durationItem) === 0
     ) {
-      item.duration = '1';
+      durationItem = '1';
     } else if (
       QuantityLabels[showQuantity] == 'Distance' &&
-      parseInt(item.distance) === 0
+      parseInt(distanceItem) === 0
     ) {
-      item.distance = '1';
+      distanceItem = '1';
     }
 
-    console.log('_Adding item: ', item);
-
+    const item = {
+      workout: 0,
+      name: data[workoutName] as WorkoutNameProps,
+      ssid: -1,
+      constant: false,
+      pause_duration: nanOrNah(pauseDuration),
+      sets: setsItem,
+      reps: repsItem,
+      duration: durationItem,
+      distance: distanceItem,
+      duration_unit: durationUnit,
+      distance_unit: distanceUnit,
+      weights: weight,
+      weight_unit: weightUnit,
+      rest_duration: nanOrNah(restDuration),
+      rest_duration_unit: restDurationUnit,
+      percent_of: percentOfWeightUnit,
+      order: -1,
+      date: '',
+      id: 0,
+    };
+    console.log('Adding item: ', item);
+    77;
     // // Checks if reps and weights match the repScheme
     const {success, errorType, errorMsg} = props.onAddItem(item);
 
@@ -228,6 +223,7 @@ const AddItem: FunctionComponent<{
         borderWidth: 1.5,
         padding: 2,
       }}>
+      {/* Row 1 */}
       <View style={{flex: 1, flexDirection: 'row', marginBottom: 4}}>
         {!isLoading && isSuccess && data ? (
           <View style={{justifyContent: 'flex-start', flex: 4, height: '100%'}}>
@@ -242,8 +238,17 @@ const AddItem: FunctionComponent<{
                     onValueChange={(itemValue, itemIndex) => {
                       console.log('OnValChangfe', itemValue, itemIndex);
                       setWorkoutName(itemIndex);
-                      updateItem('name', data[itemIndex]);
                     }}
+                    touchableWrapperProps={{
+                      testID: TestIDs.AddItemRNPickerTouchableItemPicker.name(),
+                      accessibilityLabel: 'testAccessID2',
+                    }}
+                    modalProps={{
+                      testID: TestIDs.AddItemRNPickerModalItemPicker.name(),
+                      accessibilityLabel: 'testAccessID',
+                    }}
+                    pickerProps={{}}
+                    touchableDoneProps={{}}
                     useNativeAndroidPickerStyle={false}
                     placeholder={{}}
                     // value={workoutName}
@@ -269,27 +274,6 @@ const AddItem: FunctionComponent<{
                       };
                     })}
                   />
-
-                  {/* <Picker
-                  ref={pickerRef}
-                  style={[pickerStyle.containerStyle, {flex: 1}]}
-                  itemStyle={{
-                    height: '100%',
-                    color: theme.palette.text,
-                    backgroundColor: theme.palette.gray,
-                    fontSize: 16,
-                  }}
-                  selectedValue={workoutName}
-                  onValueChange={(itemValue, itemIndex) => {
-                    setWorkoutName(itemIndex);
-                    updateItem('name', data[itemIndex]);
-                  }}>
-                  {data.map((name, i) => {
-                    return (
-                      <Picker.Item key={name.id} label={name.name} value={i} />
-                    );
-                  })}
-                </Picker> */}
                 </View>
               </View>
               {isPausedItem ? (
@@ -309,6 +293,7 @@ const AddItem: FunctionComponent<{
                         borderColor: theme.palette.text,
                       },
                     ]}
+                    testID={TestIDs.AddItemPauseDurField.name()}
                     label=""
                     placeholder="time"
                     centerInput
@@ -318,7 +303,6 @@ const AddItem: FunctionComponent<{
                     isError={repsSchemeRoundsError}
                     helperText={repSchemeRoundsErrorText}
                     onChangeText={(text: string) => {
-                      updateItem('pause_duration', nanOrNah(numFilter(text)));
                       setPauseDuration(numFilter(text));
                     }}
                   />
@@ -339,6 +323,7 @@ const AddItem: FunctionComponent<{
             <VerticalPicker
               key={'qty'}
               data={QuantityLabels}
+              testID={TestIDs.VerticalPickerGestureHandlerQtyType.name()}
               onChange={itemIndex => {
                 const itemValue = QuantityLabels[itemIndex];
                 setDistance(initDistance);
@@ -350,49 +335,10 @@ const AddItem: FunctionComponent<{
                 setShowQuantity(itemIndex);
               }}
             />
-
-            {/* <RNPickerSelect
-              ref={showRepsOrDurationInputRef}
-              onValueChange={(itemValue, itemIndex) => {
-                setDistance(initDistance);
-                setDuration(initDuration);
-                setReps(initReps);
-                // updateItem('distance', nanOrNah(initDistance))
-                // updateItem('duration', nanOrNah(initDuration))
-                // updateItem('reps', nanOrNah(initReps))
-                setShowQuantity(itemIndex);
-              }}
-              fixAndroidTouchableBug
-              useNativeAndroidPickerStyle={false}
-              // value={showQuantity}
-              // For Some reason its setting itself.
-              placeholder={{}}
-              style={{
-                inputAndroidContainer: {
-                  alignItems: 'center',
-                },
-                inputAndroid: {
-                  color: theme.palette.text,
-                },
-                inputIOSContainer: {
-                  alignItems: 'center',
-                },
-                inputIOS: {
-                  color: theme.palette.text,
-                  height: '100%',
-                },
-              }}
-              items={QuantityLabels.map((label, i) => {
-                return {
-                  label: label,
-                  value: label,
-                };
-              })}
-            /> */}
           </View>
         </View>
       </View>
-
+      {/* Row 2 */}
       <View style={{flexDirection: 'row', flex: 1, marginBottom: 4}}>
         {props.schemeType == 0 ? (
           <View style={{flex: 1}}>
@@ -413,13 +359,13 @@ const AddItem: FunctionComponent<{
                 },
               ]}
               label=""
+              testID={TestIDs.AddItemSetsField.name()}
               placeholder="Sets"
               centerInput={true}
               fontSize={inputFontSize}
               value={sets}
               inputStyles={{textAlign: 'center'}}
               onChangeText={(text: string) => {
-                updateItem('sets', nanOrNah(numFilter(text)));
                 setSets(numFilter(text));
               }}
             />
@@ -449,6 +395,7 @@ const AddItem: FunctionComponent<{
                   },
                 ]}
                 label=""
+                testID={TestIDs.AddItemRepsField.name()}
                 placeholder="Reps"
                 centerInput
                 fontSize={inputFontSize}
@@ -466,10 +413,8 @@ const AddItem: FunctionComponent<{
                     WORKOUT_TYPES[props.schemeType] == REPS_W ||
                     WORKOUT_TYPES[props.schemeType] == DURATION_W
                   ) {
-                    updateItem('reps', numFilter(text));
                     setReps(numFilter(text));
                   } else {
-                    updateItem('reps', numFilterWithSpaces(text));
                     setReps(numFilterWithSpaces(text));
                   }
                 }}
@@ -495,6 +440,7 @@ const AddItem: FunctionComponent<{
                     ]}
                     label=""
                     placeholder="Duration"
+                    testID={TestIDs.AddItemDurationField.name()}
                     centerInput={true}
                     fontSize={inputFontSize}
                     value={duration}
@@ -505,10 +451,8 @@ const AddItem: FunctionComponent<{
                         WORKOUT_TYPES[props.schemeType] == REPS_W ||
                         WORKOUT_TYPES[props.schemeType] == DURATION_W
                       ) {
-                        updateItem('duration', numFilter(t));
                         setDuration(numFilter(t));
                       } else {
-                        updateItem('duration', numFilterWithSpaces(t));
                         setDuration(numFilterWithSpaces(t));
                       }
                     }}
@@ -519,69 +463,12 @@ const AddItem: FunctionComponent<{
                     <VerticalPicker
                       key={'dur'}
                       data={DURATION_UNITS}
+                      testID={TestIDs.VerticalPickerGestureHandlerDuration.name()}
                       onChange={itemIndex => {
                         const itemValue = DURATION_UNITS[itemIndex];
                         setDurationUnit(itemIndex);
-                        updateItem('duration_unit', itemIndex);
                       }}
                     />
-                    {/* <RNPickerSelect
-                      ref={durationUnitPickRef}
-                      onValueChange={(itemValue, itemIndex) => {
-                        setDurationUnit(itemIndex);
-                        updateItem('duration_unit', itemIndex);
-                      }}
-                      useNativeAndroidPickerStyle={false}
-                      placeholder={{}}
-                      value={durationUnit}
-                      style={{
-                        inputAndroidContainer: {
-                          alignItems: 'center',
-                        },
-                        inputAndroid: {
-                          color: theme.palette.text,
-                        },
-                        inputIOSContainer: {
-                          alignItems: 'center',
-                        },
-                        inputIOS: {
-                          color: theme.palette.text,
-                          height: '100%',
-                        },
-                      }}
-                      items={DURATION_UNITS.map((unit, i) => {
-                        return {
-                          label: unit,
-                          value: unit,
-                        };
-                      })}
-                    /> */}
-                    {/* <Picker
-                      ref={durationUnitPickRef}
-                      style={[pickerStyle.containerStyle]}
-                      itemStyle={[
-                        pickerStyle.itemStyle,
-                        {
-                          height: '100%',
-                          color: theme.palette.text,
-                          backgroundColor: theme.palette.gray,
-                        },
-                      ]}
-                      selectedValue={durationUnit}
-                      onValueChange={(itemValue, itemIndex) => {
-                        setDurationUnit(itemIndex);
-                        updateItem('duration_unit', itemIndex);
-                      }}>
-                      {DURATION_UNITS.map((unit, i) => {
-                        return (
-                          <Picker.Item
-                            key={`rest_${unit}`}
-                            label={unit}
-                            value={i}
-                          />
-                        );
-                      })}
-                    </Picker> */}
                   </View>
                 </View>
               </View>
@@ -606,6 +493,7 @@ const AddItem: FunctionComponent<{
                     ]}
                     label=""
                     placeholder="Distance"
+                    testID={TestIDs.AddItemDistanceField.name()}
                     centerInput={true}
                     fontSize={inputFontSize}
                     value={distance}
@@ -616,10 +504,8 @@ const AddItem: FunctionComponent<{
                         WORKOUT_TYPES[props.schemeType] == REPS_W ||
                         WORKOUT_TYPES[props.schemeType] == DURATION_W
                       ) {
-                        updateItem('distance', numFilter(t));
                         setDistance(numFilter(t));
                       } else {
-                        updateItem('distance', numFilterWithSpaces(t));
                         setDistance(numFilterWithSpaces(t));
                       }
                     }}
@@ -630,70 +516,13 @@ const AddItem: FunctionComponent<{
                     <VerticalPicker
                       key={'dist'}
                       data={DISTANCE_UNITS}
+                      testID={TestIDs.VerticalPickerGestureHandlerDistance.name()}
                       onChange={itemIndex => {
                         const itemValue = DISTANCE_UNITS[itemIndex];
                         setPercentOfWeightUnit(initPercentOfWeightUnit);
                         setDistanceUnit(itemIndex);
-                        updateItem('distance_unit', itemIndex);
                       }}
                     />
-                    {/* <RNPickerSelect
-                      ref={distanceUnitPickRef}
-                      onValueChange={(itemValue, itemIndex) => {
-                        setDistanceUnit(itemIndex);
-                        updateItem('distance_unit', itemIndex);
-                      }}
-                      useNativeAndroidPickerStyle={false}
-                      placeholder={{}}
-                      value={distanceUnit}
-                      style={{
-                        inputAndroidContainer: {
-                          alignItems: 'center',
-                        },
-                        inputAndroid: {
-                          color: theme.palette.text,
-                        },
-                        inputIOSContainer: {
-                          alignItems: 'center',
-                        },
-                        inputIOS: {
-                          color: theme.palette.text,
-                          height: '100%',
-                        },
-                      }}
-                      items={DISTANCE_UNITS.map((unit, i) => {
-                        return {
-                          label: unit,
-                          value: unit,
-                        };
-                      })}
-                    /> */}
-                    {/* <Picker
-                      ref={distanceUnitPickRef}
-                      style={[pickerStyle.containerStyle]}
-                      itemStyle={[
-                        pickerStyle.itemStyle,
-                        {
-                          height: '100%',
-                          color: theme.palette.text,
-                          backgroundColor: theme.palette.gray,
-                        },
-                      ]}
-                      selectedValue={distanceUnit}
-                      onValueChange={(itemValue, itemIndex) => {
-                        setDistanceUnit(itemIndex);
-                        updateItem('distance_unit', itemIndex);
-                      }}>
-                      {DISTANCE_UNITS.map((unit, i) => {
-                        return (
-                          <Picker.Item
-                            key={`rest_${unit}`}
-                            label={unit}
-                            value={i}
-                          />
-                        );
-                      })}
-                    </Picker> */}
                   </View>
                 </View>
               </View>
@@ -728,6 +557,7 @@ const AddItem: FunctionComponent<{
                 ]}
                 label=""
                 placeholder="Weight(s)"
+                testID={TestIDs.AddItemWeightField.name()}
                 centerInput={true}
                 fontSize={inputFontSize}
                 value={weight}
@@ -743,10 +573,8 @@ const AddItem: FunctionComponent<{
                     if (weightError.length > 0) {
                       setWeightError('');
                     }
-                    updateItem('weights', numFilterWithSpaces(t));
                     setWeight(numFilterWithSpaces(t));
                   } else {
-                    updateItem('weights', numFilter(t));
                     setWeight(numFilter(t));
                   }
                 }}
@@ -757,18 +585,18 @@ const AddItem: FunctionComponent<{
               <VerticalPicker
                 key={'wts'}
                 data={WEIGHT_UNITS}
+                testID={TestIDs.VerticalPickerGestureHandlerWtUnit.name()}
                 onChange={itemIndex => {
                   const itemValue = WEIGHT_UNITS[itemIndex];
                   setPercentOfWeightUnit(initPercentOfWeightUnit);
                   setWeightUnit(itemValue);
-                  updateItem('weight_unit', itemValue);
                 }}
               />
             </View>
           </View>
         </View>
       </View>
-
+      {/* Row 3 */}
       <View
         style={{
           flexDirection: 'row',
@@ -796,12 +624,12 @@ const AddItem: FunctionComponent<{
               ]}
               label=""
               placeholder="% of"
+              testID={TestIDs.AddItemPercentOfField.name()}
               centerInput={true}
               fontSize={inputFontSize}
               value={percentOfWeightUnit}
               inputStyles={{textAlign: 'center'}}
               onChangeText={t => {
-                updateItem('percent_of', t);
                 setPercentOfWeightUnit(t);
               }}
             />
@@ -828,12 +656,12 @@ const AddItem: FunctionComponent<{
                 ]}
                 label=""
                 placeholder="Rest"
+                testID={TestIDs.AddItemRestField.name()}
                 centerInput={true}
                 fontSize={inputFontSize}
                 value={restDuration}
                 inputStyles={{textAlign: 'center'}}
                 onChangeText={t => {
-                  updateItem('rest_duration', nanOrNah(numFilter(t)));
                   setRestDuration(numFilter(t));
                 }}
               />
@@ -842,10 +670,10 @@ const AddItem: FunctionComponent<{
               <VerticalPicker
                 key={'rest'}
                 data={DURATION_UNITS}
+                testID={TestIDs.VerticalPickerGestureHandlerRestUnit.name()}
                 onChange={itemIndex => {
                   const itemValue = DURATION_UNITS[itemIndex];
                   setRestDurationUnit(itemIndex);
-                  updateItem('rest_duration_unit', itemIndex);
                 }}
               />
             </View>

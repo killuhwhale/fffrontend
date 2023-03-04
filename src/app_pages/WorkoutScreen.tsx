@@ -304,6 +304,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
   return (
     <ScrollView
       style={{backgroundColor: theme.palette.backgroundColor}}
+      testID={TestIDs.WorkoutScreenScrollView.name()}
       contentContainerStyle={{
         justifyContent: 'center',
         alignContent: 'center',
@@ -564,7 +565,6 @@ const WorkoutScreen: FunctionComponent<Props> = ({
       <Row style={{width: '100%', borderRadius: 8}} />
 
       <Row style={{width: '100%', marginVertical: 28}}>
-        {/* // TODO()  Make this a Flat list and render each workout item in sequence not in a flast list*/}
         {(showingOGWorkoutGroup && oGIsLoading) ||
         (!showingOGWorkoutGroup && completedIsLoading) ? (
           <SmallText>Loading....</SmallText>

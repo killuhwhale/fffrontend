@@ -72,7 +72,8 @@ const PageContainer = styled(Container)`
 const jListToNumStr = jsonListStr => {
   try {
     const list = JSON.parse(jsonListStr);
-    return list.toString().replaceAll(',', ' ');
+    // return list.toString().replaceAll(',', ' ');
+    return list.toString().replace(/,/g, ' ');
   } catch (err) {
     console.log('Err jListToNumStr ', err);
   }

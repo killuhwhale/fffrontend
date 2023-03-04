@@ -23,7 +23,7 @@ env /usr/bin/arch -arm64 /bin/bash --login
 # Testing setup https://wix.github.io/Detox/docs/introduction/project-setup
 
 - Android build
-  detox build --configuration android.emu.debug
+  cd android/ && ./gradlew clean && cd .. && detox build --configuration android.emu.debug
   detox test --configuration android.emu.debug
   detox build --configuration android.emu.release
 
@@ -82,6 +82,7 @@ git push origin HEAD:staging HEAD
 
 # TODO
 
+- Finish deepCopy implementation.
 - Write e2e tests
 
   - Finish writing some tests.
@@ -99,6 +100,13 @@ git push origin HEAD:staging HEAD
   - Create workout engine.
 
 # Bugs:
+
+(Fixed)
+
+- Sending null files
+  - Request success, backend success, front end response failure...
+- Shallow copies, AddItem would add the same item
+  - weird timing issues?
 
 Push to prod again, but fixes waiting...
 Run End to end tests covering
@@ -170,3 +178,42 @@ cd android/ && ./gradlew clean && ./gradlew bundleRelease && cd .. && npx react-
 However, ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug continues to fail.
 
 Any help would be greatly appreciated, thanks!
+
+Argument of type '{ workout: number; name: WorkoutNameProps; ssid: number; constant: false; sets: number; reps: string; pause_duration: number; duration: string; duration_unit: number; distance: string; ... 7 more ...; date: string; }' is not assignable to parameter of type 'WorkoutItemProps'.
+Property 'id' is missing in type '{ workout: number; name: WorkoutNameProps; ssid: number; constant: false; sets: number; reps: string; pause_duration: number; duration: string; duration_unit: number; distance: string; ... 7 more ...; date: string; }' but required in type 'WorkoutItemProps'.ts(2345)
+types.tsx(47, 3): 'id' is declared here.
+
+workout = models.ForeignKey(Workouts, on_delete=models.CASCADE)
+name = models.ForeignKey(WorkoutNames, on_delete=models.CASCADE) # Squat
+ssid = models.IntegerField(default=-1, blank=True) # superset id, groups items together
+constant = models.BooleanField(default=False, blank=True)
+sets = models.IntegerField(default=0)
+reps = models.CharField(max_length=140, default="[0]")
+pause_duration = models.FloatField(default=0.00)
+duration = models.CharField(max_length=140, default="[0]")
+duration_unit = models.IntegerField(default=0)
+distance = models.CharField(max_length=140, default="[0]")
+distance_unit = models.IntegerField(default=0)
+weights = models.CharField(max_length=400, default="[]")
+weight_unit = models.CharField(max_length=2, default='kg')
+rest_duration = models.FloatField(default=0.0)
+rest_duration_unit = models.IntegerField(default=0)
+percent_of = models.CharField(max_length=20, default='')
+order = models.IntegerField() # order added by user.
+date = models.DateTimeField(auto_now_add=True)
+
+const initWorkoutName = 0;
+const initWeight = '0';
+const initWeightUnit = 'kg';
+const initPercentOfWeightUnit = '';
+const initSets = '0';
+const initReps = '0';
+const initPauseDuration = '0';
+const initDistance = '0';
+const initDistanceUnit = 0;
+
+const initDuration = '0';
+const initDurationUnit = 0;
+
+const initRestDuration = '0';
+const initRestDurationUnit = 0;

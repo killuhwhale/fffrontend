@@ -82,6 +82,7 @@ export interface WorkoutCardProps {
   scheme_rounds: string;
   date: string;
   editable?: boolean;
+  testID?: string;
 }
 export interface WorkoutCardListProps {
   data: Array<WorkoutCardProps>;

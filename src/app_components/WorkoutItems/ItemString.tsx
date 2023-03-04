@@ -1,6 +1,7 @@
 import React, {FunctionComponent} from 'react';
 import {View} from 'react-native';
 import {useTheme} from 'styled-components';
+import {WorkoutItemProps} from '../Cards/types';
 import {displayJList, DISTANCE_UNITS, DURATION_UNITS} from '../shared';
 import {SmallText} from '../Text/Text';
 
@@ -9,7 +10,7 @@ const ItemString: FunctionComponent<{
   schemeType: number;
 }> = ({item, schemeType}) => {
   const theme = useTheme();
-
+  console.log('Diplaying item: ', item);
   return (
     <View
       style={{width: '100%', borderRadius: 8, marginVertical: 6, padding: 6}}>

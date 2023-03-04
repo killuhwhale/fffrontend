@@ -1,3 +1,7 @@
+import typeOf from 'kind-of';
+import clone from 'shallow-clone';
+import {isPlainObject} from 'is-plain-object';
+
 interface Matches {
   items: number[];
   marks: string[];
@@ -90,3 +94,44 @@ export const debounce = (func, timeout = 300) => {
 export const validEmailRegex = new RegExp(
   "([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])",
 );
+
+export function cloneDeep(val, instanceClone = null) {
+  console.log('cloneDeep: ', val);
+  switch (typeOf(val)) {
+    case 'object':
+      return cloneObjectDeep(val, instanceClone);
+    case 'array':
+      return cloneArrayDeep(val, instanceClone);
+    default: {
+      return clone(val);
+    }
+  }
+}
+
+function cloneObjectDeep(val, instanceClone) {
+  if (typeof instanceClone === 'function') {
+    return instanceClone(val);
+  }
+  if (instanceClone || isPlainObject(val)) {
+    const res = new val.constructor();
+    for (let key in val) {
+      console.log('Clone object', key, val[key]);
+      res[key] = cloneDeep(val[key], instanceClone);
+    }
+    return res;
+  }
+  return val;
+}
+
+function cloneArrayDeep(val, instanceClone) {
+  const res = new val.constructor(val.length);
+  for (let i = 0; i < val.length; i++) {
+    console.log('Clone array', val, val[i]);
+    res[i] = cloneDeep(val[i], instanceClone);
+  }
+  return res;
+}
+
+/**
+ * Expose `cloneDeep`
+ */

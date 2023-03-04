@@ -71,6 +71,7 @@ const WorkoutCard: FunctionComponent<WorkoutCardProps> = props => {
       }}>
       <View style={{width: '100%', paddingLeft: 8, paddingTop: 8, flex: 1}}>
         <WorkoutItemPreviewHorizontalList
+          testID={props.testID}
           data={items}
           schemeType={props.scheme_type}
           itemWidth={colWidth}

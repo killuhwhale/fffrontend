@@ -41,9 +41,10 @@ import {
 } from '../../../app_components/Buttons/buttons';
 
 import Input from '../../../app_components/Input/input';
-import AddItem from './AddWorkoutItemPanel';
+
 import ItemString from '../../../app_components/WorkoutItems/ItemString';
 import {TestIDs} from '../../../utils/constants';
+import AddItem from './AddWorkoutItemPanel';
 export type Props = StackScreenProps<RootStackParamList, 'CreateWorkoutScreen'>;
 
 export const COLORSPALETTE = [
@@ -568,29 +569,48 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
             <View
               style={{
                 width: '100%',
+                flexDirection: 'row',
                 justifyContent: 'center',
-                alignItems: 'baseline',
+                alignContent: 'center',
+                alignItems: 'center',
               }}>
-              <SmallText
-                textStyles={{color: theme.palette.text, textAlign: 'left'}}>
-                Add Superset
-              </SmallText>
-              <Switch
-                value={showAddSSID}
-                onValueChange={v => {
-                  setShowAddSSID(v);
-                  if (!v) {
-                    setCurColor(-1);
+              <View
+                style={{
+                  flex: 2,
+                  alignItems: 'flex-start',
+                  alignContent: 'flex-start',
+                  justifyContent: 'flex-start',
+                }}>
+                <SmallText
+                  textStyles={{color: theme.palette.text, textAlign: 'left'}}>
+                  Add Superset
+                </SmallText>
+                <Switch
+                  value={showAddSSID}
+                  onValueChange={v => {
+                    setShowAddSSID(v);
+                    if (!v) {
+                      setCurColor(-1);
+                    }
+                  }}
+                  trackColor={{
+                    true: theme.palette.primary.contrastText,
+                    false: theme.palette.lightGray,
+                  }}
+                  thumbColor={
+                    showAddSSID
+                      ? theme.palette.primary.main
+                      : theme.palette.gray
                   }
-                }}
-                trackColor={{
-                  true: theme.palette.primary.contrastText,
-                  false: theme.palette.lightGray,
-                }}
-                thumbColor={
-                  showAddSSID ? theme.palette.primary.main : theme.palette.gray
-                }
-              />
+                />
+              </View>
+              <View style={{flex: 5}}>
+                {showAddSSID ? (
+                  <ColorPalette onSelect={setCurColor} selectedIdx={curColor} />
+                ) : (
+                  <></>
+                )}
+              </View>
             </View>
           ) : schemeType === 1 ? (
             <View
@@ -624,39 +644,35 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
 
           {showAddSSID || allowMarkConstant ? (
             <View>
-              {showAddSSID ? (
-                <ColorPalette onSelect={setCurColor} selectedIdx={curColor} />
-              ) : (
-                <></>
-              )}
               <ScrollView>
                 {items.map((item, idx) => {
                   return (
-                    <View
+                    <TouchableWithoutFeedback
                       key={`item_test_${Math.random()}`}
-                      style={{
-                        height: SCREEN_HEIGHT * 0.05,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        width: '100%',
+                      style={{}}
+                      onPress={() => {
+                        if (WORKOUT_TYPES[schemeType] == STANDARD_W) {
+                          item.ssid >= 0
+                            ? removeItemSSID(idx)
+                            : curColor > -1
+                            ? addItemToSSID(idx)
+                            : console.log('Select a color first!');
+                        } else if (WORKOUT_TYPES[schemeType] == REPS_W) {
+                          updateItemConstant(idx);
+                        }
                       }}>
-                      <View style={{flex: 10}}>
-                        <ItemString item={item} schemeType={schemeType} />
-                      </View>
-                      <View style={{flex: 1}}>
-                        <TouchableWithoutFeedback
-                          onPress={() => {
-                            if (WORKOUT_TYPES[schemeType] == STANDARD_W) {
-                              item.ssid >= 0
-                                ? removeItemSSID(idx)
-                                : curColor > -1
-                                ? addItemToSSID(idx)
-                                : console.log('Select a color first!');
-                            } else if (WORKOUT_TYPES[schemeType] == REPS_W) {
-                              updateItemConstant(idx);
-                            }
-                          }}>
+                      <View
+                        style={{
+                          height: SCREEN_HEIGHT * 0.05,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          width: '100%',
+                        }}>
+                        <View style={{flex: 10}}>
+                          <ItemString item={item} schemeType={schemeType} />
+                        </View>
+                        <View style={{flex: 1}}>
                           {WORKOUT_TYPES[schemeType] == STANDARD_W ? (
                             <Icon
                               name="person"
@@ -676,9 +692,9 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
                               }
                             />
                           )}
-                        </TouchableWithoutFeedback>
+                        </View>
                       </View>
-                    </View>
+                    </TouchableWithoutFeedback>
                   );
                 })}
               </ScrollView>
@@ -726,7 +742,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
           {!isCreating ? (
             <RegularButton
               onPress={_createWorkoutWithItems.bind(this)}
-              testID={TestIDs.CreateWorkoutAddItemBtn.name()}
+              testID={TestIDs.CreateWorkoutCreateBtn.name()}
               btnStyles={{backgroundColor: theme.palette.lightGray}}>
               Create
             </RegularButton>

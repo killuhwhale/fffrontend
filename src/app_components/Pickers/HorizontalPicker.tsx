@@ -19,6 +19,7 @@ import {SmallText} from '../Text/Text';
 const HorizontalPicker: FunctionComponent<{
   data: string[];
   onChange(idx: number);
+  testID?: string;
 }> = props => {
   const {data} = props;
   const _data = data?.length == 1 ? ['', data[0], ''] : data;
@@ -181,7 +182,7 @@ const HorizontalPicker: FunctionComponent<{
         <View style={{width: '33%', backgroundColor: 'white'}} />
         <View style={{width: '33%', backgroundColor: 'grey'}} />
       </MaskedView>
-      <PanGestureHandler onGestureEvent={eventHandler}>
+      <PanGestureHandler onGestureEvent={eventHandler} testID={props.testID}>
         {/* <PanGestureHandler > */}
         <Animated.View style={[StyleSheet.absoluteFill, {flex: 1}]} />
       </PanGestureHandler>

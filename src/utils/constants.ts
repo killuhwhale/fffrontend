@@ -75,13 +75,46 @@ class TestIDs {
   static ToggleShowCreateWorkoutBtns = new TestIDs(
     'ToggleShowCreateWorkoutBtns',
   );
+  static WorkoutScreenScrollView = new TestIDs('WorkoutScreenScrollView');
+  static WorkoutCardList = new TestIDs('WorkoutCardList'); // Holds list of workouts, count childitem for num of workouts
+  static WorkoutCardItemList = new TestIDs('WorkoutCardItemList'); // Holds list of workout items for a workout, count childitem for num of workout items
 
   // Create Workout Screen
   static CreateWorkoutTitleField = new TestIDs('CreateWorkoutTitleField');
   static CreateWorkoutDescField = new TestIDs('CreateWorkoutDescField');
-
   static CreateWorkoutAddItemBtn = new TestIDs('CreateWorkoutAddItemBtn');
   static CreateWorkoutCreateBtn = new TestIDs('CreateWorkoutCreateBtn');
+
+  // Add Item Panel on Create workoutscreen
+  static AddItemPauseDurField = new TestIDs('AddItemPauseDurField');
+  static AddItemRNPickerTouchableItemPicker = new TestIDs(
+    'AddItemRNPickerTouchableItemPicker',
+  );
+  static AddItemRNPickerModalItemPicker = new TestIDs(
+    'com.fitform:id/select_dialog_listview',
+  );
+  static VerticalPickerGestureHandlerQtyType = new TestIDs(
+    'VerticalPickerGestureHandlerQtyType',
+  );
+  static VerticalPickerGestureHandlerDuration = new TestIDs(
+    'VerticalPickerGestureHandlerDuration',
+  );
+  static VerticalPickerGestureHandlerDistance = new TestIDs(
+    'VerticalPickerGestureHandlerDistance',
+  );
+  static VerticalPickerGestureHandlerWtUnit = new TestIDs(
+    'VerticalPickerGestureHandlerWtUnit',
+  );
+  static VerticalPickerGestureHandlerRestUnit = new TestIDs(
+    'VerticalPickerGestureHandlerRestUnit',
+  );
+  static AddItemSetsField = new TestIDs('AddItemSetsField');
+  static AddItemRepsField = new TestIDs('AddItemRepsField');
+  static AddItemDistanceField = new TestIDs('AddItemDistanceField');
+  static AddItemDurationField = new TestIDs('AddItemDurationField');
+  static AddItemWeightField = new TestIDs('AddItemWeightField');
+  static AddItemRestField = new TestIDs('AddItemRestField');
+  static AddItemPercentOfField = new TestIDs('AddItemPercentOfField');
 
   #name: string;
 
