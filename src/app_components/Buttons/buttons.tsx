@@ -13,12 +13,14 @@ import {
   StyleProp,
   StyleSheet,
   TextStyle,
+  TouchableHighlight,
   TouchableWithoutFeedback,
   View,
   ViewStyle,
 } from 'react-native';
 import {RegularText, SmallText} from '../Text/Text';
 
+import {useTheme} from 'styled-components';
 const ButtonView = styled.TouchableOpacity`
   align-items: center;
   background-color: ${props => props.theme.palette.primary.main};
@@ -39,13 +41,27 @@ interface ButtonProps {
 }
 
 const RegularButton: FunctionComponent<ButtonProps> = props => {
+  const theme = useTheme();
   return (
-    <ButtonView
+    <TouchableHighlight
       testID={props.testID}
       onPress={props.disabled ? () => {} : props.onPress}
-      style={[{paddingVertical: 4}, props.btnStyles]}>
+      underlayColor={theme.palette.secondary.main}
+      style={[
+        {
+          paddingVertical: 4,
+          alignItems: 'center',
+          backgroundColor: theme.palette.darkGray,
+          paddingLeft: 8,
+          paddingRight: 8,
+          marginLeft: 2,
+          marginRight: 2,
+          borderRadius: 8,
+        },
+        props.btnStyles,
+      ]}>
       <RegularText textStyles={props.textStyles}>{props.children}</RegularText>
-    </ButtonView>
+    </TouchableHighlight>
   );
 };
 

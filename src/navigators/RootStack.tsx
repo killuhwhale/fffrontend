@@ -35,6 +35,7 @@ import ResetPasswordScreen from '../app_pages/input_pages/users/ResetPassword';
 import {SCREEN_HEIGHT} from '../app_components/shared';
 import UserWorkoutsScreen from '../app_pages/UserWorkoutsScreen';
 import {TestIDs} from '../utils/constants';
+import GymSearchScreen from '../app_pages/GymSearchScreen';
 // Screens and props each screen expects...
 export type RootStackParamList = {
   HomePage: undefined;
@@ -164,6 +165,11 @@ const RootStack: FunctionComponent<RootstackProps> = props => {
         <Stack.Screen
           name="HomePageTabs"
           component={HomePageTabs}
+          options={{headerTitle: '', headerShown: false}}
+        />
+        <Stack.Screen
+          name="GymSearchScreen"
+          component={GymSearchScreen}
           options={{headerTitle: '', headerShown: false}}
         />
         <Stack.Screen

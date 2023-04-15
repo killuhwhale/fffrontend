@@ -588,9 +588,13 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
   };
 
   const onDelete = async () => {
-    const deletedGym = await deleteGymMutation(curDelGym.id).unwrap();
-    console.log('Deleted Gym: ', deletedGym);
-    setDeleteGymModalVisibleVisible(false);
+    try {
+      const deletedGym = await deleteGymMutation(curDelGym.id).unwrap();
+      console.log('Deleted Gym: ', deletedGym);
+      setDeleteGymModalVisibleVisible(false);
+    } catch (error) {
+      console.log('Error deleting gym: ', error);
+    }
   };
 
   return (
@@ -647,7 +651,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
                 Stats
               </RegularButton>
             </View>
-            <View
+            {/* <View
               style={{
                 flex: 2,
                 alignContent: 'center',
@@ -675,7 +679,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
                   <SmallText>New workout</SmallText>
                 </View>
               </TouchableHighlight>
-            </View>
+            </View> */}
           </View>
 
           {dataGymFavs?.favorite_gyms?.length > 0 ? (
@@ -712,7 +716,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
           ) : (
             <View style={{flex: 6}} />
           )}
-          <View style={{flex: 1, marginBottom: 8}}>
+          {/* <View style={{flex: 1, marginBottom: 8}}>
             <RegularButton
               onPress={() => navigation.navigate('UserWorkoutsScreen')}
               btnStyles={{
@@ -720,7 +724,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
               }}>
               Workouts
             </RegularButton>
-          </View>
+          </View> */}
 
           <ProfileSettingsModal
             modalVisible={modalVisible}

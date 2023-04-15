@@ -37,6 +37,7 @@ export const WORKOUT_TYPE_LABELS: Array<string> = [
   'Rounds',
   'Time',
 ];
+export const AddItemFontsize = 14;
 
 export const DURATION_UNITS: Array<string> = ['sec', 'mins'];
 export const WEIGHT_UNITS: Array<string> = ['kg', 'lb', '%'];

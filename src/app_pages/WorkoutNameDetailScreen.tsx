@@ -22,17 +22,10 @@ import {
 } from '../app_components/Text/Text';
 // import { withTheme } from 'styled-components'
 import {useTheme} from 'styled-components';
-import {
-  WorkoutGroupCardList,
-  WorkoutItemPreviewHorizontalList,
-  WorkoutStatsByNameHorizontalList,
-  WorkoutStatsByTagHorizontalList,
-} from '../app_components/Cards/cardList';
 
 import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
 import {StyleSheet, View} from 'react-native';
-import {useGetGymClassDataViewQuery} from '../redux/api/apiSlice';
 import {
   WorkoutCardProps,
   WorkoutItemListProps,

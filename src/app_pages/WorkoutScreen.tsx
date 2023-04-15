@@ -215,9 +215,12 @@ const WorkoutScreen: FunctionComponent<Props> = ({
   const personalWorkout =
     userData?.id == oGData?.owner_id && !oGData?.owned_by_class;
 
-  // When a user is viewing a classWorkout and they are owner.
+  // When a user is viewing a classWorkout and they are owner. Missing when the owner is viewing a WorkoutGroup that a class owns....
+  // Figure out a better way to tell who is the owner. aybe this should come from the server....
   const WGOwner =
-    workoutGroup.owner_id == userData?.id ||
+    (workoutGroup.owner_id == userData?.id && !workoutGroup.owned_by_class) ||
+    (workoutGroup.user_owner_id == userData?.id &&
+      workoutGroup.owned_by_class) ||
     Object.keys(workoutGroup).indexOf('completed_workouts') >= 0;
 
   console.log('workout is WGOwner', WGOwner, workoutGroup);
@@ -444,28 +447,28 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                   onPress={openCreateWorkoutScreenForStandard.bind(this)}
                   testID={TestIDs.CreateRegularWorkoutBtn.name()}
                   btnStyles={{
-                    backgroundColor: theme.palette.lightGray,
+                    backgroundColor: '#4285F4',
                   }}>
                   Reg
                 </RegularButton>
                 <RegularButton
                   onPress={openCreateWorkoutScreenForReps.bind(this)}
                   btnStyles={{
-                    backgroundColor: theme.palette.lightGray,
+                    backgroundColor: '#DB4437',
                   }}>
                   Reps
                 </RegularButton>
                 <RegularButton
                   onPress={openCreateWorkoutScreenForRounds.bind(this)}
                   btnStyles={{
-                    backgroundColor: theme.palette.lightGray,
+                    backgroundColor: '#F4B400',
                   }}>
                   Rounds
                 </RegularButton>
                 <RegularButton
                   onPress={openCreateWorkoutScreenForTime.bind(this)}
                   btnStyles={{
-                    backgroundColor: theme.palette.lightGray,
+                    backgroundColor: '#0F9D58',
                   }}>
                   Timed
                 </RegularButton>
@@ -475,15 +478,18 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                   onPress={() => setShowCreate(!showCreate)}
                   testID={TestIDs.ToggleShowCreateWorkoutBtns.name()}
                   btnStyles={{
-                    backgroundColor: theme.palette.lightGray,
+                    backgroundColor: showCreate
+                      ? theme.palette.gray
+                      : theme.palette.secondary.main,
                   }}>
-                  {showCreate ? 'X' : 'Add workout'}
+                  {showCreate ? 'X' : 'Add Workout'}
                 </RegularButton>
 
                 <RegularButton
                   onPress={() => setFinishWorkoutGroupModalVisible(true)}
+                  textStyles={{marginHorizontal: 12}}
                   btnStyles={{
-                    backgroundColor: theme.palette.lightGray,
+                    backgroundColor: theme.palette.primary.main,
                     display: !showCreate ? 'flex' : 'none',
                   }}>
                   Finish

@@ -106,6 +106,7 @@ const WorkoutDetailScreen: FunctionComponent<Props> = ({
         </View>
         <View style={{height: SCREEN_HEIGHT * 0.25}}>
           <WorkoutItemPreviewHorizontalList
+            testID={''}
             data={items}
             schemeType={scheme_type}
             itemWidth={200}

@@ -8,17 +8,18 @@ import {
   TitleText,
 } from '../app_components/Text/Text';
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import * as RootNavigation from '../navigators/RootNavigation';
 import {useTheme} from 'styled-components';
 import {GymCardList} from '../app_components/Cards/cardList';
 import {useAppSelector, useAppDispatch} from '../redux/hooks';
-import {useGetGymsQuery} from '../redux/api/apiSlice';
-
+import {useGetGymsQuery, useGetProfileViewQuery} from '../redux/api/apiSlice';
+import AuthManager from '../utils/auth';
 import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
-import {Keyboard, Text, View} from 'react-native';
+import {Keyboard, Text, TouchableHighlight, View} from 'react-native';
 import {filter} from '../utils/algos';
 import Input from '../app_components/Input/input';
+import {RegularButton} from '../app_components/Buttons/buttons';
 export type Props = StackScreenProps<RootStackParamList, 'HomePage'>;
 
 const HomePageContainer = styled(Container)`
@@ -29,68 +30,56 @@ const HomePageContainer = styled(Container)`
 
 const HomePage: FunctionComponent<Props> = ({navigation}) => {
   const theme = useTheme();
-  // Access value
-  const count = useAppSelector(state => state.counter.value);
-  const dispatch = useAppDispatch();
+  const {data, isLoading, isSuccess, isError, error} =
+    useGetProfileViewQuery('');
 
-  const {data, isLoading, isSuccess, isError, error} = useGetGymsQuery('');
-  console.log('Gym data:', data);
-  const [stringData, setOgData] = useState<string[]>(
-    data ? data.map(gym => gym.title) : [],
-  );
-  const [filterResult, setFilterResult] = useState<number[]>(
-    Array.from(Array(stringData.length).keys()).map(idx => idx),
-  );
-  useEffect(() => {
-    setOgData(data ? data.map(gym => gym.title) : []);
-    setFilterResult(
-      Array.from(Array(data?.length || 0).keys()).map(idx => idx),
-    );
-  }, [data]);
-
-  const [term, setTerm] = useState('');
-  const filterText = (term: string) => {
-    // Updates filtered data.
-    const {items, marks} = filter(term, stringData, {word: false});
-    setFilterResult(items);
-    setTerm(term);
+  const navToGymSeach = () => {
+    RootNavigation.navigate('GymSearchScreen', undefined);
   };
 
   return (
     <HomePageContainer>
-      <View style={{height: 40, marginTop: 16}}>
-        <Input
-          onChangeText={filterText}
-          value={term}
-          fontSize={16}
-          containerStyle={{
-            width: '100%',
-            backgroundColor: theme.palette.lightGray,
-            borderRadius: 8,
-            paddingHorizontal: 8,
-          }}
-          leading={
-            <Icon
-              name="search"
-              android="md-add"
-              style={{fontSize: 16}}
-              color={theme.palette.text}
-            />
-          }
-          label=""
-          placeholder="Search gyms"
-        />
-      </View>
+      <RegularButton onPress={navToGymSeach}>Search Gyms</RegularButton>
       {isLoading ? (
-        <SmallText>Loading....</SmallText>
+        <></>
       ) : isSuccess ? (
-        <GymCardList
-          data={data.filter((_, i) => filterResult.indexOf(i) >= 0)}
-        />
+        <View>
+          <TouchableHighlight
+            onPress={() => {
+              RootNavigation.navigate('CreateWorkoutGroupScreen', {
+                ownedByClass: false,
+                ownerID: data.user.id,
+              });
+            }}
+            style={{
+              flex: 1,
+              height: '100%',
+              justifyContent: 'center',
+            }}>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Icon
+                name="barbell-outline"
+                color={theme.palette.text}
+                style={{fontSize: 32}}
+              />
+              <SmallText>New workout</SmallText>
+            </View>
+          </TouchableHighlight>
+
+          <View style={{flex: 1, marginBottom: 8}}>
+            <RegularButton
+              onPress={() => navigation.navigate('UserWorkoutsScreen')}
+              btnStyles={{
+                backgroundColor: theme.palette.primary.main,
+              }}>
+              Workouts
+            </RegularButton>
+          </View>
+        </View>
       ) : isError ? (
-        <SmallText>Error.... {error.toString()}</SmallText>
+        <></>
       ) : (
-        <SmallText>No Data</SmallText>
+        <></>
       )}
     </HomePageContainer>
   );

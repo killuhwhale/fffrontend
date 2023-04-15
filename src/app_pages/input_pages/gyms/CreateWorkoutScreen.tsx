@@ -346,8 +346,9 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
     useCreateWorkoutItemsMutation();
 
   const [schemeRoundsError, setSchemeRoundsError] = useState(false);
-
   const [isCreating, setIsCreating] = useState(false);
+
+  const [createWorkoutError, setCreateWorkoutError] = useState('');
 
   const _createWorkoutWithItems = async () => {
     // Need to get file from the URI
@@ -369,6 +370,13 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
     try {
       const createdWorkout = await createWorkout(workoutData).unwrap();
       console.log('Workout res', createdWorkout);
+
+      // eslint-disable-next-line dot-notation
+      if (createdWorkout['err_type'] >= 0) {
+        console.log('Failed to create workout', createdWorkout.error);
+        setCreateWorkoutError('Workout with this name already exists.');
+        return;
+      }
 
       items.forEach((item, idx) => {
         console.log('Creating item: ', item);
@@ -467,15 +475,25 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
   return (
     <PageContainer>
       <View style={{margin: 5}}>
-        <RegularText>
-          {workoutGroupTitle} ({workoutGroupID})
-        </RegularText>
+        <SmallText>Create Workout</SmallText>
+      </View>
+      <View style={{margin: 5}}>
+        <RegularText>{workoutGroupTitle}</RegularText>
       </View>
 
       <View style={{height: '100%', width: '100%'}}>
+        {createWorkoutError.length ? (
+          <SmallText>{createWorkoutError}</SmallText>
+        ) : (
+          <></>
+        )}
         <View style={{marginBottom: 15, height: 40}}>
           <Input
-            onChangeText={t => setTitle(t)}
+            onChangeText={t => {
+              setTitle(t);
+              setCreateWorkoutError('');
+              setIsCreating(false);
+            }}
             value={title}
             label=""
             testID={TestIDs.CreateWorkoutTitleField.name()}

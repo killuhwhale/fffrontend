@@ -106,7 +106,8 @@ const asyncBaseQuery =
       let options: {method: string; headers: any; body: any} = {
         method: method,
         headers: {
-          contentType: contentType,
+          'Content-Type': contentType, // This has been contentType since I created it and DELETE methods work. All of a sudden it stopped working... until changing it to 'Content-Type'
+          // contentType: contentType, // This has been contentType since I created it and DELETE methods work. All of a sudden it stopped working... until changing it to 'Content-Type'
           Authorization: `Bearer ${authToken}`,
         },
         body: '',
@@ -124,12 +125,12 @@ const asyncBaseQuery =
        *
        */
       // Remove Authorization header when creating a new account
-      if (url === 'users/' && method === 'POST') {
+      if (url === 'users/' && (method === 'POST' || method === 'post')) {
         delete options.headers.Authorization;
       }
 
       if (data && params?.contentType !== 'multipart/form-data') {
-        console.log('Stringifying body for JSON data');
+        console.log('Stringifying body for JSON data: ', baseUrl + url);
         options.body = JSON.stringify(data);
       } else {
         options.body = data;
@@ -220,7 +221,7 @@ export const apiSlice = createApi({
     createUser: builder.mutation({
       query: (data = {}) => ({
         url: 'users/',
-        method: 'POST',
+        method: 'post',
         data,
         params: {contentType: 'multipart/form-data'},
       }),

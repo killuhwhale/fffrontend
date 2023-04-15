@@ -25,7 +25,7 @@ env /usr/bin/arch -arm64 /bin/bash --login
 - Android build
   cd android/ && ./gradlew clean && cd .. && detox build --configuration android.emu.debug
   detox test --configuration android.emu.debug
-  detox build --configuration android.emu.release
+  detox build --configuration android.emu.releasew
 
 - iOS build
   detox build --configuration ios.sim.debug

@@ -11,13 +11,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 // import { withTheme } from 'styled-components'
 import {useTheme} from 'styled-components';
-import {GymCardList} from '../app_components/Cards/cardList';
-import {useAppSelector, useAppDispatch} from '../redux/hooks';
-import {decrement, increment} from '../redux/slicers/slicer';
-import {
-  useCreateUserMutation,
-  useGetProfileViewQuery,
-} from '../redux/api/apiSlice';
+import {useCreateUserMutation} from '../redux/api/apiSlice';
 import AuthManager from '../utils/auth';
 import * as RootNavigation from '../navigators/RootNavigation';
 import {View} from 'react-native';
@@ -88,10 +82,15 @@ const AuthScreen: FunctionComponent = () => {
 
   auth.listenLogin((loggedIn, msg) => {
     console.log('AuthScreen.tsx listenLogin: ', loggedIn, msg);
+
     if (!loggedIn) {
-      setEmailHelperText(msg);
+      if (msg == 'No active account found with the given credentials') {
+        setEmailHelperText('Confirm your email!');
+      } else {
+        setEmailHelperText(msg);
+      }
     }
-  });
+  }, 'authscreen');
 
   const onEmailChange = (text: string) => {
     // Todo add debounce to allow user to enter last few chars and then check...
@@ -160,7 +159,7 @@ const AuthScreen: FunctionComponent = () => {
       data.append('password', newPassword);
       data.append('username', newEmail);
       const res = await registerUser(data).unwrap();
-      console.log('Sign up res: ', res, res.email[0]);
+      console.log('Sign up res: ', res);
       if (res?.username) {
         console.log('Created user, refresh auth.', res);
         setAuthMode(0);
@@ -256,6 +255,7 @@ const AuthScreen: FunctionComponent = () => {
             <View style={{flexDirection: 'row'}}>
               <View style={{height: 45, width: '50%', paddingHorizontal: 8}}>
                 <RegularButton
+                  testID={TestIDs.AuthSignUpBtn.name()}
                   onPress={() => {
                     setAuthMode(1);
                   }}
@@ -290,6 +290,7 @@ const AuthScreen: FunctionComponent = () => {
                 </RegularButton>
               </View>
             </View>
+
             <View style={{flex: 1}} />
           </View>
         ) : authModes[authMode] == 1 ? (
@@ -305,6 +306,7 @@ const AuthScreen: FunctionComponent = () => {
               </RegularText>
               <View style={{height: 45, marginBottom: 16}}>
                 <Input
+                  testID={TestIDs.AuthSignUpEmail.name()}
                   onChangeText={onNewEmailChange.bind(this)}
                   autoCapitalize={AutoCaptilizeEnum.None}
                   label=""
@@ -326,6 +328,7 @@ const AuthScreen: FunctionComponent = () => {
 
               <View style={{height: 45, marginBottom: 16}}>
                 <Input
+                  testID={TestIDs.AuthSignUpPassword.name()}
                   containerStyle={{
                     backgroundColor: theme.palette.gray,
                     paddingLeft: 16,
@@ -350,6 +353,7 @@ const AuthScreen: FunctionComponent = () => {
 
               <View style={{height: 45, marginBottom: 16}}>
                 <Input
+                  testID={TestIDs.AuthSignUpPasswordConfirm.name()}
                   containerStyle={{
                     backgroundColor: theme.palette.gray,
                     paddingLeft: 16,
@@ -386,6 +390,7 @@ const AuthScreen: FunctionComponent = () => {
               </View>
               <View style={{width: '50%', height: 45, paddingHorizontal: 8}}>
                 <RegularButton
+                  testID={TestIDs.AuthSignUpRegisterBtn.name()}
                   onPress={() => {
                     register();
                   }}

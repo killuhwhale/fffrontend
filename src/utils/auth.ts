@@ -39,6 +39,9 @@ class AuthManager {
     const res = await post(`${BASEURL}token/`, {email: email, password});
     const result = await res.json();
     console.log('Login res: ', result);
+    // WHen user is_active=False
+    // {"detail": "No active account found with the given credentials"}
+
     let loggedIn = false;
     let msg = '';
     if (result.refresh && result.access) {
@@ -50,6 +53,10 @@ class AuthManager {
       } else {
         msg = 'Failed to store token.';
       }
+    } else if (
+      result.detail == 'No active account found with the given credentials'
+    ) {
+      msg = 'No active account found with the given credentials';
     } else {
       msg = 'Failed to login';
     }

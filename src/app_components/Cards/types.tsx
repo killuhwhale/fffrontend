@@ -117,6 +117,7 @@ export interface WorkoutGroupProps {
   id: number;
   title: string;
   caption: string;
+  user_owner_id?: string; // When owned_by_class = True, this represents the user ID of the owner of the Gym.
   owner_id: string;
   owned_by_class: boolean;
   media_ids: string;
@@ -125,9 +126,6 @@ export interface WorkoutGroupProps {
   completed_workouts?: Array<WorkoutCardProps>;
   for_date: string;
   finished?: boolean;
-  user_can_edit?: boolean;
-  user_is_owner?: boolean;
-  user_is_coach?: boolean;
   completed?: boolean;
   archived: boolean;
   date_archived: string;

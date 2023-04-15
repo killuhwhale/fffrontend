@@ -14,7 +14,6 @@ import {
   TitleText,
 } from '../app_components/Text/Text';
 import {useTheme} from 'styled-components';
-import {WorkoutGroupCardList} from '../app_components/Cards/cardList';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
@@ -201,33 +200,6 @@ const GymClassScreen: FunctionComponent<Props> = ({
   // TODO replace with separate use...
   const workoutGroups = data?.workout_groups || [];
 
-  // Search feature
-  const [stringData, setOgData] = useState<string[]>(
-    workoutGroups ? workoutGroups.map(group => group.title) : [],
-  );
-  const [filterResult, setFilterResult] = useState<number[]>(
-    Array.from(Array(stringData.length).keys()).map(idx => idx),
-  );
-
-  // Init search with data, update each time we get new data
-  useEffect(() => {
-    setOgData(workoutGroups ? workoutGroups.map(group => group.title) : []);
-    setFilterResult(
-      Array.from(Array(workoutGroups?.length || 0).keys()).map(idx => idx),
-    );
-  }, [data]);
-
-  // Filter current data
-  const [term, setTerm] = useState('');
-  const filterText = (term: string) => {
-    // Updates filtered data.
-    const {items, marks} = filter(term, stringData, {word: false});
-    setFilterResult(items);
-    setTerm(term);
-  };
-
-  const [showSearchWorkouts, setShowSearchWorkouts] = useState(false);
-
   return (
     <GymClassScreenContainer>
       <View
@@ -265,7 +237,6 @@ const GymClassScreen: FunctionComponent<Props> = ({
         style={{
           flexDirection: 'row',
           paddingLeft: 32,
-          width: '100%',
           flex: 0.25,
           alignItems: 'center',
         }}>
@@ -360,7 +331,7 @@ const GymClassScreen: FunctionComponent<Props> = ({
         <></>
       )}
 
-      <View style={{flex: 8, width: '100%'}}>
+      <View style={{flex: 8, width: '100%', paddingHorizontal: 12}}>
         <FilterGrid
           searchTextPlaceHolder="Search Workouts"
           uiView={WorkoutGroupSquares}

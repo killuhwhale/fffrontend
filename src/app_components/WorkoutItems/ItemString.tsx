@@ -10,7 +10,7 @@ const ItemString: FunctionComponent<{
   schemeType: number;
 }> = ({item, schemeType}) => {
   const theme = useTheme();
-  console.log('Diplaying item: ', item);
+  // console.log('Diplaying item: ', item);
   return (
     <View
       style={{width: '100%', borderRadius: 8, marginVertical: 6, padding: 6}}>

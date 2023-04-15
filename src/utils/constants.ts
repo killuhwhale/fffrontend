@@ -115,6 +115,21 @@ class TestIDs {
   static AddItemWeightField = new TestIDs('AddItemWeightField');
   static AddItemRestField = new TestIDs('AddItemRestField');
   static AddItemPercentOfField = new TestIDs('AddItemPercentOfField');
+  // Opens Item Name picker filter listview
+  // Each item in the list has an ID by its WorkoutName
+  static AddItemChooseWorkoutNameField = new TestIDs(
+    'AddItemChooseWorkoutNameField',
+  );
+  // Search input for workout names in filter modal
+  static AddItemFilterModalInputField = new TestIDs(
+    'AddItemFilterModalInputField',
+  );
+
+  static AuthSignUpBtn = new TestIDs('AuthSignUpBtn');
+  static AuthSignUpEmail = new TestIDs('AuthSignUpEmail');
+  static AuthSignUpPassword = new TestIDs('AuthSignUpPassword');
+  static AuthSignUpPasswordConfirm = new TestIDs('AuthSignUpPasswordConfirm');
+  static AuthSignUpRegisterBtn = new TestIDs('AuthSignUpRegisterBtn');
 
   #name: string;
 

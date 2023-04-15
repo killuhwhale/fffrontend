@@ -60,9 +60,10 @@ const WorkoutCard: FunctionComponent<WorkoutCardProps> = props => {
       deleteCompletedWorkout(props.id);
     }
   };
-
+  console.log('Workout card testID', props.testID);
   return (
     <View
+      testID={props.testID}
       style={{
         width: SCREEN_WIDTH * 1.0,
         borderRadius: 25,

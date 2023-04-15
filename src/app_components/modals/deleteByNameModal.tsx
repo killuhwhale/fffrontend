@@ -14,6 +14,8 @@ import Input from '../Input/input';
 import {mdFontSize} from '../shared';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RegularButton} from '../Buttons/buttons';
+
+
 const DeleteActionCancelModal: FunctionComponent<{
   modalVisible: boolean;
   onRequestClose(): void;

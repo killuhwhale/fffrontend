@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useState, useRef, useEffect} from 'react';
-import {View} from 'react-native';
+import {Button, View} from 'react-native';
 import {useTheme} from 'styled-components';
 
 import RNPickerSelect from 'react-native-picker-select';
@@ -20,6 +20,7 @@ import {
   nanOrNah,
   numFilter,
   numFilterWithSpaces,
+  AddItemFontsize,
 } from '../../../app_components/shared';
 import {useGetWorkoutNamesQuery} from '../../../redux/api/apiSlice';
 
@@ -34,6 +35,8 @@ import {RegularButton} from '../../../app_components/Buttons/buttons';
 import {TestIDs} from '../../../utils/constants';
 import HorizontalPicker from '../../../app_components/Pickers/HorizontalPicker';
 import {cloneDeep} from '../../../utils/algos';
+import FilterItemsModal from '../../../app_components/modals/filterItemsModal';
+import PickerFilterListView from '../../../app_components/modals/pickerFilterListView';
 
 interface AddWorkoutItemProps {
   success: boolean;
@@ -45,7 +48,6 @@ const AddItem: FunctionComponent<{
   onAddItem(item: WorkoutItemProps): AddWorkoutItemProps;
   schemeType: number;
 }> = props => {
-  const inputFontSize = 14;
   // Need to have blank values, empty strings in the field instead of a default 0
 
   const initWorkoutName = 0; // index for Workout name from data query
@@ -67,7 +69,10 @@ const AddItem: FunctionComponent<{
   const theme = useTheme();
   const {data, isLoading, isSuccess, isError, error} =
     useGetWorkoutNamesQuery('');
-
+  const workoutNames = data as [WorkoutNameProps];
+  const workoutNamesMap = workoutNames
+    ? new Map(workoutNames.map((workoutName, idx) => [workoutName.name, idx]))
+    : new Map();
   const pickerRef = useRef<any>();
 
   const [workoutName, setWorkoutName] = useState(initWorkoutName);
@@ -100,11 +105,21 @@ const AddItem: FunctionComponent<{
   const [repsSchemeRoundsError, setRepsSchemeRoundsError] = useState(false);
   const [repSchemeRoundsErrorText, setRepsSchemeRoundsErrorText] = useState('');
 
+  const [showWorkoutNamesModal, setShowWorkoutNamesModal] = useState(false);
+
   // This NumberInput should vary depedning on the Scheme Type
   // For standard, this will be a single number,
   // For the other types, it should be a single number or match the length of scheme_rounds list
   // Example SchemeType Reps: 21,15,9
   // item Squat weights 200lbs, 100lbs, 50lbs,  ==> this means we do 200 lbs on the first round, 100 on the seocnd, etc...
+
+  const onNameSelect = (_workoutName: WorkoutNameProps) => {
+    const name = workoutNamesMap.get(_workoutName.name);
+    if (name != undefined) {
+      setWorkoutName(name);
+      setShowWorkoutNamesModal(false);
+    }
+  };
 
   const resetDefaultItem = () => {
     console.log('Resetting item');
@@ -190,7 +205,7 @@ const AddItem: FunctionComponent<{
       id: 0,
     };
     console.log('Adding item: ', item);
-    77;
+
     // // Checks if reps and weights match the repScheme
     const {success, errorType, errorMsg} = props.onAddItem(item);
 
@@ -233,7 +248,29 @@ const AddItem: FunctionComponent<{
                   Workout Items
                 </SmallText>
                 <View style={{flex: 1, width: '100%'}}>
-                  <RNPickerSelect
+                  {!showWorkoutNamesModal ? (
+                    <Button
+                      title={data[workoutName].name}
+                      testID={TestIDs.AddItemChooseWorkoutNameField.name()}
+                      onPress={() => setShowWorkoutNamesModal(true)}
+                    />
+                  ) : (
+                    <FilterItemsModal
+                      key={'FilterWorkoutNames'}
+                      modalVisible={showWorkoutNamesModal}
+                      onRequestClose={() => {
+                        setShowWorkoutNamesModal(!showWorkoutNamesModal);
+                      }}
+                      items={workoutNames}
+                      searchTextPlaceHolder="Search workoutnames"
+                      extraProps={{
+                        onSelect: onNameSelect,
+                      }}
+                      uiView={PickerFilterListView}
+                    />
+                  )}
+
+                  {/* <RNPickerSelect
                     ref={pickerRef}
                     onValueChange={(itemValue, itemIndex) => {
                       console.log('OnValChangfe', itemValue, itemIndex);
@@ -273,7 +310,7 @@ const AddItem: FunctionComponent<{
                         value: name.name,
                       };
                     })}
-                  />
+                  /> */}
                 </View>
               </View>
               {isPausedItem ? (
@@ -297,7 +334,7 @@ const AddItem: FunctionComponent<{
                     label=""
                     placeholder="time"
                     centerInput
-                    fontSize={inputFontSize}
+                    fontSize={AddItemFontsize}
                     value={pauseDuration}
                     inputStyles={{textAlign: 'center'}}
                     isError={repsSchemeRoundsError}
@@ -362,7 +399,7 @@ const AddItem: FunctionComponent<{
               testID={TestIDs.AddItemSetsField.name()}
               placeholder="Sets"
               centerInput={true}
-              fontSize={inputFontSize}
+              fontSize={AddItemFontsize}
               value={sets}
               inputStyles={{textAlign: 'center'}}
               onChangeText={(text: string) => {
@@ -398,7 +435,7 @@ const AddItem: FunctionComponent<{
                 testID={TestIDs.AddItemRepsField.name()}
                 placeholder="Reps"
                 centerInput
-                fontSize={inputFontSize}
+                fontSize={AddItemFontsize}
                 value={reps}
                 inputStyles={{textAlign: 'center'}}
                 isError={repsSchemeRoundsError}
@@ -442,7 +479,7 @@ const AddItem: FunctionComponent<{
                     placeholder="Duration"
                     testID={TestIDs.AddItemDurationField.name()}
                     centerInput={true}
-                    fontSize={inputFontSize}
+                    fontSize={AddItemFontsize}
                     value={duration}
                     inputStyles={{textAlign: 'center'}}
                     onChangeText={t => {
@@ -495,7 +532,7 @@ const AddItem: FunctionComponent<{
                     placeholder="Distance"
                     testID={TestIDs.AddItemDistanceField.name()}
                     centerInput={true}
-                    fontSize={inputFontSize}
+                    fontSize={AddItemFontsize}
                     value={distance}
                     inputStyles={{textAlign: 'center'}}
                     onChangeText={(t: string) => {
@@ -559,7 +596,7 @@ const AddItem: FunctionComponent<{
                 placeholder="Weight(s)"
                 testID={TestIDs.AddItemWeightField.name()}
                 centerInput={true}
-                fontSize={inputFontSize}
+                fontSize={AddItemFontsize}
                 value={weight}
                 isError={weightError.length > 0}
                 helperText={weightError}
@@ -626,7 +663,7 @@ const AddItem: FunctionComponent<{
               placeholder="% of"
               testID={TestIDs.AddItemPercentOfField.name()}
               centerInput={true}
-              fontSize={inputFontSize}
+              fontSize={AddItemFontsize}
               value={percentOfWeightUnit}
               inputStyles={{textAlign: 'center'}}
               onChangeText={t => {
@@ -658,7 +695,7 @@ const AddItem: FunctionComponent<{
                 placeholder="Rest"
                 testID={TestIDs.AddItemRestField.name()}
                 centerInput={true}
-                fontSize={inputFontSize}
+                fontSize={AddItemFontsize}
                 value={restDuration}
                 inputStyles={{textAlign: 'center'}}
                 onChangeText={t => {

@@ -36,7 +36,6 @@ import {
 import {GymCardProps} from '../app_components/Cards/types';
 export type Props = StackScreenProps<RootStackParamList, 'GymScreen'>;
 
-import FilterItemsModal from '../app_components/modals/filterItemsModal';
 import FilterGrid from '../app_components/Grids/FilterGrid';
 import {GymClassSquares} from '../app_components/Grids/Gyms/GymClassSquares';
 
@@ -162,7 +161,7 @@ const GymScreen: FunctionComponent<Props> = ({navigation, route: {params}}) => {
         }}>
         <SmallText>{desc}</SmallText>
       </View>
-      <View style={{flex: 8}}>
+      <View style={{flex: 8, paddingHorizontal: 12}}>
         <FilterGrid
           searchTextPlaceHolder="Search classes"
           uiView={GymClassSquares}
