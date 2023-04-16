@@ -63,9 +63,9 @@ const ImagePicker: FunctionComponent<{
     <View>
       <RegularButton
         onPress={pickFile}
-        btnStyles={{backgroundColor: theme.palette.lightGray}}>
-        {props.title}
-      </RegularButton>
+        btnStyles={{backgroundColor: theme.palette.lightGray}}
+        text={props.title}
+      />
     </View>
   );
 };
@@ -200,9 +200,9 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
             <RegularButton
               testID={TestIDs.GymSubmitBtn.name()}
               onPress={_createGym.bind(this)}
-              btnStyles={{backgroundColor: theme.palette.lightGray}}>
-              Create
-            </RegularButton>
+              btnStyles={{backgroundColor: theme.palette.lightGray}}
+              text="Create"
+            />
           ) : (
             <ActivityIndicator size="small" color={theme.palette.text} />
           )}

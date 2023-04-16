@@ -86,9 +86,9 @@ export const ResetPassword: FunctionComponent = () => {
             btnStyles={{height: 45, justifyContent: 'center'}}
             textStyles={{textAlign: 'center', fontSize: 16}}
             onPress={sendEmail}
-            disabled={showHint}>
-            Send Reset Code
-          </RegularButton>
+            text="Send Reset Code"
+            disabled={showHint}
+          />
         </View>
       </View>
     </View>

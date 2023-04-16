@@ -36,6 +36,8 @@ import {SCREEN_HEIGHT} from '../app_components/shared';
 import UserWorkoutsScreen from '../app_pages/UserWorkoutsScreen';
 import {TestIDs} from '../utils/constants';
 import GymSearchScreen from '../app_pages/GymSearchScreen';
+import {StyleSheet, View} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 // Screens and props each screen expects...
 export type RootStackParamList = {
   HomePage: undefined;
@@ -73,10 +75,24 @@ const Tab = createBottomTabNavigator();
 
 const Stack = createNativeStackNavigator();
 
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'transparent',
+    // Create a gradient background from green to red
+    // Start with green at the top and end with red at the bottom
+    // The array specifies the colors at different points in the gradient
+    // The numbers specify the position of each color stop in the gradient
+    // [0, 1] means the gradient starts at the top (position 0) and ends at the bottom (position 1)
+    // You can adjust the colors and positions to your liking
+    backgroundImage: 'linear-gradient(to bottom, green 0%, red 100%)',
+  },
+});
+
 const headerHeight = Math.max(SCREEN_HEIGHT * 0.08, 40);
 console.log(`\n\n\n\n\n  Header hheight: ${headerHeight}  \n\n\n\n\n\n`);
 function HomePageTabs() {
   const theme = useTheme();
+  const tabBarColor = '';
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -85,8 +101,24 @@ function HomePageTabs() {
         options={{
           headerShown: false,
           tabBarTestID: TestIDs.HomeTab.name(),
+          tabBarBackground() {
+            return (
+              <LinearGradient
+                // colors={[theme.palette.backgroundColor, '#0072FF']}
+                colors={[
+                  theme.palette.backgroundColor,
+                  '#0072FFAA',
+                  '#0072FFFF',
+                ]}
+                start={{x: 0, y: 0.4}}
+                end={{x: 0, y: 1}}
+                style={{flex: 1}}
+              />
+            );
+          },
           tabBarStyle: {
-            backgroundColor: theme.palette.gray,
+            backgroundColor: tabBarColor,
+
             flex: 0.09,
             paddingBottom: 4,
           },
@@ -115,9 +147,24 @@ function HomePageTabs() {
           headerShown: false,
           tabBarTestID: TestIDs.ProfileTab.name(),
           tabBarStyle: {
-            backgroundColor: theme.palette.gray,
+            backgroundColor: tabBarColor,
             flex: 0.09,
             paddingBottom: 4,
+          },
+          tabBarBackground() {
+            return (
+              <LinearGradient
+                // colors={[theme.palette.backgroundColor, '#0072FF']}
+                colors={[
+                  theme.palette.backgroundColor,
+                  '#0072FFAA',
+                  '#0072FFFF',
+                ]}
+                start={{x: 0, y: 0.4}}
+                end={{x: 0, y: 1}}
+                style={{flex: 1}}
+              />
+            );
           },
           tabBarLabel: ({color, focused, position}) => (
             <SmallText

@@ -448,30 +448,30 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                   testID={TestIDs.CreateRegularWorkoutBtn.name()}
                   btnStyles={{
                     backgroundColor: '#4285F4',
-                  }}>
-                  Reg
-                </RegularButton>
+                  }}
+                  text="Reg"
+                />
                 <RegularButton
                   onPress={openCreateWorkoutScreenForReps.bind(this)}
                   btnStyles={{
                     backgroundColor: '#DB4437',
-                  }}>
-                  Reps
-                </RegularButton>
+                  }}
+                  text="Reps"
+                />
                 <RegularButton
                   onPress={openCreateWorkoutScreenForRounds.bind(this)}
                   btnStyles={{
                     backgroundColor: '#F4B400',
-                  }}>
-                  Rounds
-                </RegularButton>
+                  }}
+                  text="Rounds"
+                />
                 <RegularButton
                   onPress={openCreateWorkoutScreenForTime.bind(this)}
                   btnStyles={{
                     backgroundColor: '#0F9D58',
-                  }}>
-                  Timed
-                </RegularButton>
+                  }}
+                  text="Timed"
+                />
               </View>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <RegularButton
@@ -480,10 +480,10 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                   btnStyles={{
                     backgroundColor: showCreate
                       ? theme.palette.gray
-                      : theme.palette.secondary.main,
-                  }}>
-                  {showCreate ? 'X' : 'Add Workout'}
-                </RegularButton>
+                      : '#0F9D58',
+                  }}
+                  text={showCreate ? 'X' : 'Add Workout'}
+                />
 
                 <RegularButton
                   onPress={() => setFinishWorkoutGroupModalVisible(true)}
@@ -491,9 +491,9 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                   btnStyles={{
                     backgroundColor: theme.palette.primary.main,
                     display: !showCreate ? 'flex' : 'none',
-                  }}>
-                  Finish
-                </RegularButton>
+                  }}
+                  text="Finish"
+                />
               </View>
             </View>
           ) : (

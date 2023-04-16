@@ -15,7 +15,6 @@ import {mdFontSize} from '../shared';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RegularButton} from '../Buttons/buttons';
 
-
 const DeleteActionCancelModal: FunctionComponent<{
   modalVisible: boolean;
   onRequestClose(): void;
@@ -94,9 +93,10 @@ const DeleteActionCancelModal: FunctionComponent<{
               btnStyles={{
                 marginRight: 4,
                 backgroundColor: theme.palette.lightGray,
-              }}>
-              {props.closeText}
-            </RegularButton>
+              }}
+              text={props.closeText}
+            />
+
             <RegularButton
               onPress={() =>
                 isValid() ? props.onAction() : console.log('Invalid name')
@@ -104,9 +104,9 @@ const DeleteActionCancelModal: FunctionComponent<{
               btnStyles={{
                 marginLeft: 4,
                 backgroundColor: isValid() ? 'red' : theme.palette.lightGray,
-              }}>
-              {props.actionText}
-            </RegularButton>
+              }}
+              text={props.actionText}
+            />
           </View>
         </View>
       </View>

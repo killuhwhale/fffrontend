@@ -83,7 +83,6 @@ const Input: FunctionComponent<InputProps> = props => {
                     : props.autoCapitalize
                 }
                 style={[
-                  props.inputStyles,
                   {
                     color: theme.palette.text,
                     width: '100%',
@@ -92,6 +91,7 @@ const Input: FunctionComponent<InputProps> = props => {
                     alignItems: 'center',
                     alignContent: 'center',
                   },
+                  props.inputStyles,
                 ]}
                 ref={inpRef}
                 onChangeText={props.onChangeText}

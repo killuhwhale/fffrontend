@@ -724,9 +724,9 @@ const AddItem: FunctionComponent<{
           testID={TestIDs.CreateWorkoutAddItemBtn.name()}
           btnStyles={{
             backgroundColor: theme.palette.lightGray,
-          }}>
-          Add Item
-        </RegularButton>
+          }}
+          text="Add Item"
+        />
       </View>
     </View>
   );

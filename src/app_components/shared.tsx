@@ -18,7 +18,7 @@ export const SCREEN_HEIGHT = Dimensions.get('screen').height;
 export const titleFontSize: number = Platform.OS === 'ios' ? 48 : 44;
 export const lgFontSize: number = Platform.OS === 'ios' ? 36 : 32;
 export const regFontSize: number = Platform.OS === 'ios' ? 24 : 20;
-export const mdFontSize: number = Platform.OS === 'ios' ? 18 : 14;
+export const mdFontSize: number = Platform.OS === 'ios' ? 18 : 18;
 export const smFontSize: number = Platform.OS === 'ios' ? 12 : 12;
 
 export const STANDARD_W = 'STANDARD';

@@ -146,9 +146,9 @@ export const ResetPasswordOld: FunctionComponent = () => {
                 disabled={disabledUpdateBtn}
                 btnStyles={{
                   backgroundColor: theme.palette.secondary.main,
-                }}>
-                <RegularText> Update </RegularText>
-              </RegularButton>
+                }}
+                text="Update"
+              />
             </View>
           </View>
         </>

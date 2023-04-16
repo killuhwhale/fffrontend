@@ -35,9 +35,11 @@ interface ButtonProps {
   btnStyles?: StyleProp<ViewStyle>;
   onPress: ((event: GestureResponderEvent) => void) | undefined;
   textStyles?: StyleProp<TextStyle>;
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  text?: string;
   disabled?: boolean;
   testID?: string;
+  underlayColor?: string;
 }
 
 const RegularButton: FunctionComponent<ButtonProps> = props => {
@@ -46,7 +48,7 @@ const RegularButton: FunctionComponent<ButtonProps> = props => {
     <TouchableHighlight
       testID={props.testID}
       onPress={props.disabled ? () => {} : props.onPress}
-      underlayColor={theme.palette.secondary.main}
+      underlayColor={props.underlayColor || theme.palette.secondary.main}
       style={[
         {
           paddingVertical: 4,
@@ -54,13 +56,15 @@ const RegularButton: FunctionComponent<ButtonProps> = props => {
           backgroundColor: theme.palette.darkGray,
           paddingLeft: 8,
           paddingRight: 8,
-          marginLeft: 2,
-          marginRight: 2,
           borderRadius: 8,
         },
         props.btnStyles,
       ]}>
-      <RegularText textStyles={props.textStyles}>{props.children}</RegularText>
+      {props.text ? (
+        <RegularText textStyles={props.textStyles}>{props.text}</RegularText>
+      ) : (
+        <>{props.children}</>
+      )}
     </TouchableHighlight>
   );
 };

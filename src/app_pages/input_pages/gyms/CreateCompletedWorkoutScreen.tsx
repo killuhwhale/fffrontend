@@ -1035,9 +1035,9 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
               onPress={() => setShowCompleteWorkout(true)}
               btnStyles={{
                 backgroundColor: theme.palette.lightGray,
-              }}>
-              Complete!
-            </RegularButton>
+              }}
+              text="Complete!"
+            />
           ) : (
             <ActivityIndicator size="small" color={theme.palette.text} />
           )}

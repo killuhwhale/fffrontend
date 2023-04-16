@@ -5,7 +5,7 @@ import React, {
   useState,
 } from 'react';
 import styled from 'styled-components/native';
-import {Container} from '../app_components/shared';
+import {Container, mdFontSize, smFontSize} from '../app_components/shared';
 import {SmallText, RegularText} from '../app_components/Text/Text';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -121,9 +121,9 @@ const UserInfoPanel: FunctionComponent<UserInfoPanelProps> = props => {
           justifyContent: 'center',
         }}>
         <Icon
-          name="person"
+          name={showEditusername ? 'close' : 'pencil'}
           style={{
-            fontSize: 18,
+            fontSize: 24,
             marginRight: 8,
             marginLeft: 8,
           }}
@@ -135,12 +135,12 @@ const UserInfoPanel: FunctionComponent<UserInfoPanelProps> = props => {
         {showEditusername ? (
           <Input
             containerStyle={{
-              backgroundColor: theme.palette.lightGray,
+              backgroundColor: theme.palette.transparent,
               height: 45,
               borderRadius: 8,
               marginHorizontal: 4,
             }}
-            inputStyles={{textAlign: 'center'}}
+            inputStyles={{textAlign: 'center', fontSize: mdFontSize}}
             label=""
             onChangeText={(t: string) => {
               setNewUsername(t);
@@ -183,10 +183,9 @@ const GymsPanel: FunctionComponent<GymsPanelProps> = ({data, onDelete}) => {
               marginVertical: 8,
             }}
             key={`gym${id}`}>
-            <Touchable
+            <RegularButton
               key={id}
               underlayColor={theme.palette.transparent}
-              activeOpacity={0.9}
               onPress={() => goToGym(gym)}
               testID={`${TestIDs.GymRowTouchable.name()}_${title}`}>
               <View
@@ -196,6 +195,7 @@ const GymsPanel: FunctionComponent<GymsPanelProps> = ({data, onDelete}) => {
                   justifyContent: 'space-between',
                   paddingHorizontal: 16,
                   alignContent: 'center',
+                  width: '100%',
                   height: '100%',
                 }}>
                 <RegularText>{title}</RegularText>
@@ -208,7 +208,7 @@ const GymsPanel: FunctionComponent<GymsPanelProps> = ({data, onDelete}) => {
                   onPress={() => onDelete(gym)}
                 />
               </View>
-            </Touchable>
+            </RegularButton>
           </View>
         );
       })}
@@ -333,19 +333,20 @@ export const ActionCancelModal: FunctionComponent<{
             <RegularButton
               onPress={props.onRequestClose}
               btnStyles={{
-                backgroundColor: theme.palette.lightGray,
+                backgroundColor: '#DB4437',
                 marginRight: 4,
-              }}>
-              {props.closeText}
-            </RegularButton>
+              }}
+              text={props.closeText}
+            />
+
             <RegularButton
               onPress={props.onAction}
               btnStyles={{
-                backgroundColor: theme.palette.lightGray,
+                backgroundColor: theme.palette.primary.main,
                 marginLeft: 4,
-              }}>
-              {props.actionText}
-            </RegularButton>
+              }}
+              text={props.actionText}
+            />
           </View>
         </View>
       </View>
@@ -523,9 +524,9 @@ const ProfileSettingsModal: FunctionComponent<{
               onPress={props.onRequestClose}
               btnStyles={{
                 backgroundColor: theme.palette.lightGray,
-              }}>
-              Close
-            </RegularButton>
+              }}
+              text="Close"
+            />
           </View>
 
           <ActionCancelModal
@@ -627,7 +628,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
                 <Icon
                   name="menu"
                   color={theme.palette.text}
-                  style={{fontSize: 64}}
+                  style={{fontSize: 48, marginRight: 8}}
                 />
               </TouchableHighlight>
             </View>
@@ -645,11 +646,16 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
             <View style={{flex: 5}}>
               <RegularButton
                 onPress={() => navigation.navigate('StatsScreen')}
+                underlayColor="#000000FF"
                 btnStyles={{
-                  backgroundColor: theme.palette.secondary.main,
-                }}>
-                Stats
-              </RegularButton>
+                  backgroundColor: '#cacaca30',
+                  borderTopColor: '#cacaca92',
+                  borderBottomColor: '#cacaca92',
+                  borderWidth: 2,
+                  width: '100%',
+                }}
+                text="Stats"
+              />
             </View>
             {/* <View
               style={{
@@ -721,9 +727,9 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
               onPress={() => navigation.navigate('UserWorkoutsScreen')}
               btnStyles={{
                 backgroundColor: theme.palette.primary.main,
-              }}>
-              Workouts
-            </RegularButton>
+              }}
+              text='Workouts
+              />
           </View> */}
 
           <ProfileSettingsModal

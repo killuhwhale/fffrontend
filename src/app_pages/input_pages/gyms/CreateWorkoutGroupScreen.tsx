@@ -66,9 +66,9 @@ const MediaPicker: FunctionComponent<{
     <View>
       <RegularButton
         onPress={pickFile}
-        btnStyles={{backgroundColor: theme.palette.lightGray}}>
-        {props.title}
-      </RegularButton>
+        btnStyles={{backgroundColor: theme.palette.lightGray}}
+        text={props.title}
+      />
     </View>
   );
 };
@@ -236,9 +236,9 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
               testID={TestIDs.WorkoutGroupCreateBtn.name()}
               btnStyles={{
                 backgroundColor: theme.palette.lightGray,
-              }}>
-              Create
-            </RegularButton>
+              }}
+              text="Create"
+            />
           ) : (
             <ActivityIndicator size="small" color={theme.palette.text} />
           )}

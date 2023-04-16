@@ -761,9 +761,9 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
             <RegularButton
               onPress={_createWorkoutWithItems.bind(this)}
               testID={TestIDs.CreateWorkoutCreateBtn.name()}
-              btnStyles={{backgroundColor: theme.palette.lightGray}}>
-              Create
-            </RegularButton>
+              btnStyles={{backgroundColor: theme.palette.lightGray}}
+              text="Create"
+            />
           ) : (
             <ActivityIndicator size="small" color={theme.palette.text} />
           )}

@@ -88,14 +88,15 @@ const ManageCoachesModal: FunctionComponent<{
       ? allCoaches[coachToRemove]?.username
       : {username: ''};
 
-  const [stringData, setOgData] = useState<string[]>(
-    data ? data.map(user => user.username) : [],
-  );
+  const validData = data && Object.keys(data).indexOf('error') < 0;
+  const _data = validData ? data?.map(user => user.username) : [];
+  const [stringData, setOgData] = useState<string[]>(_data);
+
   const [filterResult, setFilterResult] = useState<number[]>(
     Array.from(Array(stringData.length).keys()).map(idx => idx),
   );
   useEffect(() => {
-    setOgData(data ? data.map(user => user.username) : []);
+    setOgData(validData ? data.map(user => user.username) : []);
     setFilterResult(
       Array.from(Array(data?.length || 0).keys()).map(idx => idx),
     );
@@ -235,9 +236,9 @@ const ManageCoachesModal: FunctionComponent<{
                 </Picker> */}
                 <RegularButton
                   onPress={addNewCoach}
-                  btnStyles={{backgroundColor: theme.palette.lightGray}}>
-                  Add Coach
-                </RegularButton>
+                  btnStyles={{backgroundColor: theme.palette.lightGray}}
+                  text="Add Coach"
+                />
               </View>
             ) : (
               <></>
@@ -304,9 +305,9 @@ const ManageCoachesModal: FunctionComponent<{
           <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
             <RegularButton
               onPress={props.onRequestClose}
-              btnStyles={{backgroundColor: theme.palette.lightGray}}>
-              Close
-            </RegularButton>
+              btnStyles={{backgroundColor: theme.palette.lightGray}}
+              text="Close"
+            />
           </View>
         </View>
       </View>

@@ -16,14 +16,20 @@ import {useGetGymsQuery, useGetProfileViewQuery} from '../redux/api/apiSlice';
 import AuthManager from '../utils/auth';
 import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
-import {Keyboard, Text, TouchableHighlight, View} from 'react-native';
+import {
+  ImageBackground,
+  Keyboard,
+  Text,
+  TouchableHighlight,
+  View,
+} from 'react-native';
 import {filter} from '../utils/algos';
 import Input from '../app_components/Input/input';
 import {RegularButton} from '../app_components/Buttons/buttons';
 export type Props = StackScreenProps<RootStackParamList, 'HomePage'>;
 
 const HomePageContainer = styled(Container)`
-  background-color: ${props => props.theme.palette.backgroundColor};
+  background-color: #000000aa;
   justify-content: space-between;
   flex: 1;
 `;
@@ -38,50 +44,115 @@ const HomePage: FunctionComponent<Props> = ({navigation}) => {
   };
 
   return (
-    <HomePageContainer>
-      <RegularButton onPress={navToGymSeach}>Search Gyms</RegularButton>
-      {isLoading ? (
-        <></>
-      ) : isSuccess ? (
-        <View>
-          <TouchableHighlight
-            onPress={() => {
-              RootNavigation.navigate('CreateWorkoutGroupScreen', {
-                ownedByClass: false,
-                ownerID: data.user.id,
-              });
+    <ImageBackground
+      source={require('../../assets/bgs/nebula_bg_dark.png')}
+      style={{flex: 1, justifyContent: 'center'}}
+      resizeMode="cover">
+      <HomePageContainer>
+        <View style={{flex: 1, width: '100%'}}>
+          <RegularButton
+            underlayColor="#cacaca30"
+            btnStyles={{
+              marginTop: 12,
+              backgroundColor: '#cacaca00',
+              borderTopColor: '#cacaca92',
+              borderBottomColor: '#cacaca92',
+              borderWidth: 2,
+              width: '100%',
             }}
+            onPress={navToGymSeach}
+            text="Search for Gyms"
+          />
+        </View>
+
+        {isLoading ? (
+          <></>
+        ) : isSuccess ? (
+          <View
             style={{
               flex: 1,
-              height: '100%',
-              justifyContent: 'center',
+              width: '100%',
             }}>
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Icon
-                name="barbell-outline"
-                color={theme.palette.text}
-                style={{fontSize: 32}}
-              />
-              <SmallText>New workout</SmallText>
-            </View>
-          </TouchableHighlight>
-
-          <View style={{flex: 1, marginBottom: 8}}>
             <RegularButton
-              onPress={() => navigation.navigate('UserWorkoutsScreen')}
+              underlayColor="#cacaca30"
               btnStyles={{
-                backgroundColor: theme.palette.primary.main,
+                backgroundColor: '#cacaca00',
+                borderTopColor: '#cacaca92',
+                borderBottomColor: '#cacaca92',
+                borderWidth: 2,
+                width: '100%',
+              }}
+              onPress={() => {
+                RootNavigation.navigate('CreateWorkoutGroupScreen', {
+                  ownedByClass: false,
+                  ownerID: data.user.id,
+                });
               }}>
-              Workouts
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '100%',
+                }}>
+                <Icon
+                  name="barbell-outline"
+                  color={theme.palette.text}
+                  style={{fontSize: 64, marginRight: 16}}
+                />
+                <LargeText>New workout</LargeText>
+              </View>
             </RegularButton>
+            {/* <TouchableHighlight
+              onPress={() => {
+                RootNavigation.navigate('CreateWorkoutGroupScreen', {
+                  ownedByClass: false,
+                  ownerID: data.user.id,
+                });
+              }}
+              style={{
+                justifyContent: 'center',
+                backgroundColor: '#cacaca30',
+                borderTopColor: '#cacaca92',
+                borderBottomColor: '#cacaca92',
+                borderWidth: 2,
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Icon
+                  name="barbell-outline"
+                  color={theme.palette.text}
+                  style={{fontSize: 64, marginRight: 16}}
+                />
+                <LargeText>New workout</LargeText>
+              </View>
+            </TouchableHighlight> */}
           </View>
+        ) : isError ? (
+          <></>
+        ) : (
+          <></>
+        )}
+        <View style={{flex: 1, marginBottom: 8, width: '100%'}}>
+          <RegularButton
+            onPress={() => navigation.navigate('UserWorkoutsScreen')}
+            underlayColor="#cacaca30"
+            btnStyles={{
+              backgroundColor: '#cacaca00',
+              borderTopColor: '#cacaca92',
+              borderBottomColor: '#cacaca92',
+              borderWidth: 2,
+              width: '100%',
+            }}
+            text="My Workouts"
+          />
         </View>
-      ) : isError ? (
-        <></>
-      ) : (
-        <></>
-      )}
-    </HomePageContainer>
+      </HomePageContainer>
+    </ImageBackground>
   );
 };
 

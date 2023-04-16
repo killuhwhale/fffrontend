@@ -259,9 +259,9 @@ const AuthScreen: FunctionComponent = () => {
                   onPress={() => {
                     setAuthMode(1);
                   }}
-                  btnStyles={{backgroundColor: theme.palette.secondary.main}}>
-                  Sign Up
-                </RegularButton>
+                  btnStyles={{backgroundColor: theme.palette.secondary.main}}
+                  text="Sign Up"
+                />
               </View>
               <View style={{height: 45, width: '50%', paddingHorizontal: 8}}>
                 <RegularButton
@@ -269,9 +269,9 @@ const AuthScreen: FunctionComponent = () => {
                   onPress={() => {
                     login();
                   }}
-                  btnStyles={{backgroundColor: theme.palette.primary.main}}>
-                  Sign In
-                </RegularButton>
+                  btnStyles={{backgroundColor: theme.palette.primary.main}}
+                  text="Sign In"
+                />
               </View>
             </View>
             <View
@@ -285,9 +285,9 @@ const AuthScreen: FunctionComponent = () => {
                   onPress={() => {
                     setAuthMode(2);
                   }}
-                  btnStyles={{backgroundColor: theme.palette.lightGray}}>
-                  Forgot Password
-                </RegularButton>
+                  btnStyles={{backgroundColor: theme.palette.lightGray}}
+                  text="Forgot Password"
+                />
               </View>
             </View>
 
@@ -384,9 +384,9 @@ const AuthScreen: FunctionComponent = () => {
                   onPress={() => {
                     setAuthMode(0);
                   }}
-                  btnStyles={{backgroundColor: theme.palette.lightGray}}>
-                  Back
-                </RegularButton>
+                  btnStyles={{backgroundColor: theme.palette.lightGray}}
+                  text="Back"
+                />
               </View>
               <View style={{width: '50%', height: 45, paddingHorizontal: 8}}>
                 <RegularButton
@@ -396,9 +396,9 @@ const AuthScreen: FunctionComponent = () => {
                   }}
                   btnStyles={{
                     backgroundColor: theme.palette.primary.main,
-                  }}>
-                  Register
-                </RegularButton>
+                  }}
+                  text="Register"
+                />
               </View>
             </View>
             <View style={{flex: 1}} />
@@ -421,9 +421,9 @@ const AuthScreen: FunctionComponent = () => {
                   }}
                   btnStyles={{
                     backgroundColor: theme.palette.lightGray,
-                  }}>
-                  Back
-                </RegularButton>
+                  }}
+                  text="Back"
+                />
               </View>
               <View style={{height: 45, width: '50%', paddingHorizontal: 8}}>
                 <RegularButton
@@ -432,9 +432,9 @@ const AuthScreen: FunctionComponent = () => {
                   }}
                   btnStyles={{
                     backgroundColor: theme.palette.primary.main,
-                  }}>
-                  Enter Code
-                </RegularButton>
+                  }}
+                  text="Enter Code"
+                />
               </View>
             </View>
           </View>
@@ -527,9 +527,9 @@ const AuthScreen: FunctionComponent = () => {
                   }}
                   btnStyles={{
                     backgroundColor: theme.palette.lightGray,
-                  }}>
-                  Back
-                </RegularButton>
+                  }}
+                  text="Back"
+                />
               </View>
               <View style={{height: 45, width: '50%', paddingHorizontal: 8}}>
                 <RegularButton
@@ -538,9 +538,9 @@ const AuthScreen: FunctionComponent = () => {
                   }}
                   btnStyles={{
                     backgroundColor: theme.palette.primary.main,
-                  }}>
-                  Reset
-                </RegularButton>
+                  }}
+                  text="Reset"
+                />
               </View>
             </View>
           </View>

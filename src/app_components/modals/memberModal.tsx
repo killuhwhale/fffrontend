@@ -86,14 +86,14 @@ const ManageMembersModal: FunctionComponent<{
       ? allMembers[memberToRemove]?.username
       : {username: ''};
 
-  const [stringData, setOgData] = useState<string[]>(
-    data !== undefined ? data.map(user => user.username) : [],
-  );
+  const validData = data && Object.keys(data).indexOf('error') < 0;
+  const _data = validData ? data?.map(user => user.username) : [];
+  const [stringData, setOgData] = useState<string[]>(_data);
   const [filterResult, setFilterResult] = useState<number[]>(
     Array.from(Array(stringData.length).keys()).map(idx => idx),
   );
   useEffect(() => {
-    setOgData(data !== undefined ? data.map(user => user.username) : []);
+    setOgData(validData ? data.map(user => user.username) : []);
     setFilterResult(
       Array.from(Array(data?.length || 0).keys()).map(idx => idx),
     );
@@ -251,9 +251,9 @@ const ManageMembersModal: FunctionComponent<{
                   onPress={addNewMember}
                   btnStyles={{
                     backgroundColor: theme.palette.lightGray,
-                  }}>
-                  Add Member
-                </RegularButton>
+                  }}
+                  text="Add Member"
+                />
               </View>
             ) : (
               <></>
@@ -321,9 +321,9 @@ const ManageMembersModal: FunctionComponent<{
                 backgroundColor: theme.palette.lightGray,
                 paddingLeft: 16,
                 paddingRight: 16,
-              }}>
-              Close
-            </RegularButton>
+              }}
+              text="Close"
+            />
           </View>
         </View>
       </View>
