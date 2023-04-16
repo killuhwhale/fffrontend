@@ -7,7 +7,7 @@ import {
 import {WorkoutCardProps} from '../../app_components/Cards/types';
 
 // import EncryptedStorage from 'react-native-encrypted-storage';
-import RNSecureStorage, {ACCESSIBLE} from 'rn-secure-storage';
+import RNSecureStorage, {ACCESSIBLE} from 'killuhwhal3-rn-secure-storage';
 
 import {BASEURL} from '../../utils/constants';
 import {

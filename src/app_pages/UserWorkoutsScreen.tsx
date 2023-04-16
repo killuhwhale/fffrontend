@@ -37,10 +37,10 @@ const UserWorkoutsScreen: FunctionComponent = props => {
         width: '100%',
         height: '100%',
         flex: 1,
-        backgroundColor: theme.palette.tertiary.main,
+        backgroundColor: theme.palette.backgroundColor,
       }}>
       {userWorkouts.length ? (
-        <View style={{padding: 12}}>
+        <View style={{padding: 12, height: '100%', width: '100%'}}>
           <FilterGrid
             searchTextPlaceHolder="Search Workouts"
             uiView={WorkoutGroupSquares}

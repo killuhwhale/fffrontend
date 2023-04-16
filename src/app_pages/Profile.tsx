@@ -457,7 +457,7 @@ const ProfileSettingsModal: FunctionComponent<{
                 RootNavigation.navigate('CreateGymScreen', {});
                 props.onRequestClose();
               }}
-              title="Create Gym"
+              title="Create gym"
             />
             <View
               style={{
@@ -505,7 +505,7 @@ const ProfileSettingsModal: FunctionComponent<{
                 RootNavigation.navigate('ResetPasswordScreen', {});
                 props.onRequestClose();
               }}
-              title="ResetPassword"
+              title="Reset password"
             />
           </View>
 
@@ -521,9 +521,11 @@ const ProfileSettingsModal: FunctionComponent<{
             }}>
             <RegularButton
               testID={TestIDs.CloseProfileSettingsBtn.name()}
+              underlayColor="#CACACACA"
               onPress={props.onRequestClose}
               btnStyles={{
                 backgroundColor: theme.palette.lightGray,
+                width: '75%',
               }}
               text="Close"
             />

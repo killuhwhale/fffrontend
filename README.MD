@@ -35,6 +35,27 @@ env /usr/bin/arch -arm64 /bin/bash --login
 
 # Build Android
 
+## Image
+
+. For example, "mipmap-mdpi", "mipmap-hdpi", "mipmap-xhdpi", "mipmap-xxhdpi", and "mipmap-xxxhdpi".
+
+mdpi (Medium density) - 48 x 48 pixels
+hdpi (High density) - 72 x 72 pixels
+xhdpi (Extra-high density) - 96 x 96 pixels
+xxhdpi (Extra-extra-high density) - 144 x 144 pixels
+xxxhdpi (Extra-extra-extra-high density) - 192 x 192 pixels
+Save your app icon image in each of the "mipmap" folders that you just created. The image should be named "ic_launcher.png".
+
+In the "AndroidManifest.xml" file of your project, locate the "application" tag.
+
+Inside the "application" tag, add the following line of code to specify the app icon:
+
+perl
+Copy code
+android:icon="@mipmap/ic_launcher"
+
+## Build android
+
 Change versions in android/app/build.gradle
 cd android
 ./gradlew bundleRelease
@@ -82,22 +103,11 @@ git push origin HEAD:staging HEAD
 
 # TODO
 
-- Finish deepCopy implementation.
-- Write e2e tests
-
-  - Finish writing some tests.
-
-    - Need to use testID in many places now..
-
-  - UI should not send the request in following circumstances:
-    - Create WorkoutGroup button doesn't appear in another users Workout Group
-    - Delete buttons do not appear when viewing other user's Gymclass, WorkoutGroup
-
 - Create good sample workout
   - Good for demos and screenshots
 - Create a Few gyms and populate with workouts daily.
 
-  - Create workout engine.
+- Create workout engine.
 
 # Bugs:
 
@@ -105,21 +115,6 @@ git push origin HEAD:staging HEAD
 
 - Sending null files
   - Request success, backend success, front end response failure...
-- Shallow copies, AddItem would add the same item
-  - weird timing issues?
-
-Push to prod again, but fixes waiting...
-Run End to end tests covering
-
-- Creating Gyms, Classes, WorkoutGroups
-- Complete Workout groups
-- Stats query works
-
-- doesnt redirect after create....
-
-```RETEST RELEASE BUILD   ~~~
-
-```
 
 '''
 Welcome to our fitness app! This app is designed to help you track your workouts and reach your fitness goals. With our user-friendly interface, you can easily log your exercises, set goals, and monitor your progress. Our app also offers a variety of helpful features, such as personalized workout plans and the ability to connect with friends for added motivation. Get started on your fitness journey today with our app!
@@ -140,80 +135,3 @@ Remove account
         - user is logged in if keys are present.
             - Possibly send request?
             - Seems like we should just focus on retries....
-
-I'm trying to use Detox for e2e tests and have failed to setup Detox with my project.
-I keep getting a build failure regarding react-native-encrypted-storage when running the gradle assembleAndroidTest command.
-
-I execute:
-detox build --configuration android.emu.debug
-which executes:
-./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug
-
-Versions:
-"react-native": "0.69.7",
-"react-native-encrypted-storage": "^4.0.3",
-
-The following command fails:
-./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug
-
-With the following message:
-
-> Task :react-native-encrypted-storage:processDebugAndroidTestManifest FAILED
-> /home/killuh/ws_p38/fitform/FitForm/node_modules/react-native-encrypted-storage/android/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest11953716120453094683.xml:27:9-33:20 Error:
-
-        android:exported needs to be explicitly specified for element <activity#androidx.test.core.app.InstrumentationActivityInvoker$BootstrapActivity>. Apps targeting Android 12 and higher are required to specify an explicit value for `android:exported` when the corresponding component has an intent filter defined. See https://developer.android.com/guide/topics/manifest/activity-element#exported for details.
-
-/home/killuh/ws_p38/fitform/FitForm/node_modules/react-native-encrypted-storage/android/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest11953716120453094683.xml:34:9-40:20 Error:
-android:exported needs to be explicitly specified for element <activity#androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity>. Apps targeting Android 12 and higher are required to specify an explicit value for `android:exported` when the corresponding component has an intent filter defined. See https://developer.android.com/guide/topics/manifest/activity-element#exported for details.
-/home/killuh/ws_p38/fitform/FitForm/node_modules/react-native-encrypted-storage/android/build/intermediates/tmp/manifest/androidTest/debug/tempFile1ProcessTestManifest11953716120453094683.xml:41:9-47:20 Error:
-        android:exported needs to be explicitly specified for element <activity#androidx.test.core.app.InstrumentationActivityInvoker$EmptyFloatingActivity>. Apps targeting Android 12 and higher are required to specify an explicit value for `android:exported` when the corresponding component has an intent filter defined. See https://developer.android.com/guide/topics/manifest/activity-element#exported for details.
-
-See http://g.co/androidstudio/manifest-merger for more information about the manifest merger.
-
-FAILURE: Build failed with an exception.
-The following commands work to build the app on emulator or physical device:
-npx react-native run-android
-cd android/ && ./gradlew clean && ./gradlew bundleRelease && cd .. && npx react-native run-android --variant=release
-
-However, ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug continues to fail.
-
-Any help would be greatly appreciated, thanks!
-
-Argument of type '{ workout: number; name: WorkoutNameProps; ssid: number; constant: false; sets: number; reps: string; pause_duration: number; duration: string; duration_unit: number; distance: string; ... 7 more ...; date: string; }' is not assignable to parameter of type 'WorkoutItemProps'.
-Property 'id' is missing in type '{ workout: number; name: WorkoutNameProps; ssid: number; constant: false; sets: number; reps: string; pause_duration: number; duration: string; duration_unit: number; distance: string; ... 7 more ...; date: string; }' but required in type 'WorkoutItemProps'.ts(2345)
-types.tsx(47, 3): 'id' is declared here.
-
-workout = models.ForeignKey(Workouts, on_delete=models.CASCADE)
-name = models.ForeignKey(WorkoutNames, on_delete=models.CASCADE) # Squat
-ssid = models.IntegerField(default=-1, blank=True) # superset id, groups items together
-constant = models.BooleanField(default=False, blank=True)
-sets = models.IntegerField(default=0)
-reps = models.CharField(max_length=140, default="[0]")
-pause_duration = models.FloatField(default=0.00)
-duration = models.CharField(max_length=140, default="[0]")
-duration_unit = models.IntegerField(default=0)
-distance = models.CharField(max_length=140, default="[0]")
-distance_unit = models.IntegerField(default=0)
-weights = models.CharField(max_length=400, default="[]")
-weight_unit = models.CharField(max_length=2, default='kg')
-rest_duration = models.FloatField(default=0.0)
-rest_duration_unit = models.IntegerField(default=0)
-percent_of = models.CharField(max_length=20, default='')
-order = models.IntegerField() # order added by user.
-date = models.DateTimeField(auto_now_add=True)
-
-const initWorkoutName = 0;
-const initWeight = '0';
-const initWeightUnit = 'kg';
-const initPercentOfWeightUnit = '';
-const initSets = '0';
-const initReps = '0';
-const initPauseDuration = '0';
-const initDistance = '0';
-const initDistanceUnit = 0;
-
-const initDuration = '0';
-const initDurationUnit = 0;
-
-const initRestDuration = '0';
-const initRestDurationUnit = 0;
