@@ -140,9 +140,18 @@ const ManageCoachesModal: FunctionComponent<{
             <RegularText>Manage Coaches</RegularText>
           </View>
 
-          <View style={{flex: 6, width: '100%'}}>
+          <View
+            style={{
+              flex: 3,
+              width: '100%',
+            }}>
             {!usersLoading ? (
-              <View style={{justifyContent: 'flex-start'}}>
+              <View
+                style={{
+                  justifyContent: 'space-around',
+                  alignContent: 'space-between',
+                  height: '100%',
+                }}>
                 <View style={{height: 40, marginTop: 16}}>
                   <Input
                     onChangeText={filterText}
@@ -167,41 +176,42 @@ const ManageCoachesModal: FunctionComponent<{
                 </View>
 
                 {filterResult && filterResult.length > 0 ? (
-                  <RNPickerSelect
-                    ref={pickerRef}
-                    onValueChange={(itemValue, itemIndex) =>
-                      setNewCoach(itemValue)
-                    }
-                    useNativeAndroidPickerStyle={false}
-                    value={newCoach}
-                    style={{
-                      inputAndroidContainer: {
-                        alignItems: 'center',
-                      },
-                      inputAndroid: {
-                        color: theme.palette.text,
-                      },
-                      inputIOSContainer: {
-                        alignItems: 'center',
-                      },
-                      inputIOS: {
-                        color: theme.palette.text,
-                        height: '100%',
-                      },
-                    }}
-                    placeholder={{}}
-                    items={
-                      filterResult && filterResult.length > 0
-                        ? filterResult.map((filtered_index, i) => {
-                            const user = data[filtered_index];
-                            return {
-                              label: user.username,
-                              value: filtered_index,
-                            };
-                          })
-                        : []
-                    }
-                  />
+                  <View>
+                    <RNPickerSelect
+                      ref={pickerRef}
+                      onValueChange={(itemValue, itemIndex) =>
+                        setNewCoach(itemValue)
+                      }
+                      useNativeAndroidPickerStyle={false}
+                      value={newCoach}
+                      style={{
+                        inputAndroidContainer: {
+                          alignItems: 'center',
+                        },
+                        inputAndroid: {
+                          color: theme.palette.text,
+                        },
+                        inputIOSContainer: {
+                          alignItems: 'center',
+                        },
+                        inputIOS: {
+                          color: theme.palette.text,
+                        },
+                      }}
+                      placeholder={{}}
+                      items={
+                        filterResult && filterResult.length > 0
+                          ? filterResult.map((filtered_index, i) => {
+                              const user = data[filtered_index];
+                              return {
+                                label: user.username,
+                                value: filtered_index,
+                              };
+                            })
+                          : []
+                      }
+                    />
+                  </View>
                 ) : (
                   <View style={{height: 35}} />
                 )}

@@ -154,9 +154,13 @@ const ManageMembersModal: FunctionComponent<{
             <RegularText>Manage Members</RegularText>
           </View>
 
-          <View style={{flex: 6, width: '100%'}}>
+          <View style={{flex: 3, width: '100%'}}>
             {!usersLoading ? (
-              <View style={{}}>
+              <View
+                style={{
+                  height: '100%',
+                  justifyContent: 'space-around',
+                }}>
                 <View style={{height: 40, marginTop: 16}}>
                   <Input
                     onChangeText={filterText}
@@ -199,7 +203,6 @@ const ManageMembersModal: FunctionComponent<{
                       },
                       inputIOS: {
                         color: theme.palette.text,
-                        height: '100%',
                       },
                     }}
                     placeholder={{}}
