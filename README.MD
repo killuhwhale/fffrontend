@@ -20,6 +20,10 @@ arch -x86_64 pod install
 
 env /usr/bin/arch -arm64 /bin/bash --login
 
+# NPM Package
+
+killuhwhal3-rn-secure-storage@2.0.8
+
 # Testing setup https://wix.github.io/Detox/docs/introduction/project-setup
 
 - Android build
