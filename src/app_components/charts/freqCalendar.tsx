@@ -17,7 +17,9 @@ const ScreenContainer = styled(Container)`
 `;
 
 export const dateFormat = (d: Date) => {
-  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+  const month =
+    d.getMonth() + 1 < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1;
+  return `${d.getFullYear()}-${month}-${d.getDate()}`;
 };
 
 function remap_shade(value) {

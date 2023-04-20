@@ -107,6 +107,18 @@ git push origin HEAD:staging HEAD
 
 # TODO
 
+## Logout - Login Error:
+
+After Logout, the views that are siblings to SignIn view are called for their data and there is no access token, rendering an error
+This error persists after singing back in. If we dont make the request, we wont get an error. Then when we do go to load, we wont have a cached error? It will then make a request and rerender?
+If not, we will still block the request and then invalidate the data on Sign-In
+URLS that are called on logout that shouldnt
+
+    - gyms/user_gyms/ get
+    - profile/profile/ get
+    - profile/gym_favs/ get
+    - profile/gym_class_favs/ get
+
 - Create good sample workout
   - Good for demos and screenshots
 - Create a Few gyms and populate with workouts daily.

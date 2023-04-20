@@ -70,16 +70,6 @@ const StatsScreen: FunctionComponent<Props> = ({
       endDate: dateFormat(endDate),
     });
 
-  if (data && !isLoading) {
-    console.log(
-      '\n\n Stats wod queryz: ',
-      data?.length,
-
-      // data,
-      '\n\n',
-    );
-  }
-
   const [allWorkouts, workoutTagStats, workoutNameStats] = useMemo(() => {
     if (data && data.length > 0) {
       let _allWorkouts: WorkoutCardProps[] = [];
@@ -107,7 +97,7 @@ const StatsScreen: FunctionComponent<Props> = ({
     return [[], [], []];
   }, [data]);
 
-  console.log('\n\n', 'WorkotuTag Stats: ', workoutTagStats, '\n\n');
+  // console.log('\n\n', 'WorkotuTag Stats: ', workoutTagStats, '\n\n');
 
   const [tags, names] = useMemo(() => {
     const calc = new CalcWorkoutStats();

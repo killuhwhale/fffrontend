@@ -19,6 +19,7 @@ import {
   RegularText,
   LargeText,
   TitleText,
+  MediumText,
 } from '../app_components/Text/Text';
 // import { withTheme } from 'styled-components'
 import {useTheme} from 'styled-components';
@@ -55,11 +56,18 @@ const WorkoutNameDetailScreen: FunctionComponent<Props> = ({
   return (
     <ScreenContainer>
       <View style={{width: '100%'}}>
-        <LargeText>{name}</LargeText>
-        <RegularText>{primary?.title ? primary.title : ''}</RegularText>
+        <LargeText
+          textStyles={{
+            color: theme.palette.primary.main,
+            marginBottom: 4,
+          }}>
+          {name}
+        </LargeText>
+        <MediumText
+          textStyles={{marginBottom: 32, color: theme.palette.secondary.main}}>
+          Primary category: {primary?.title ? primary.title : ''}
+        </MediumText>
         <SmallText>{desc}</SmallText>
-        <SmallText>{formatLongDate(new Date(date))}</SmallText>
-        <SmallText>{media_ids}</SmallText>
 
         <MediaURLSliderClass
           data={JSON.parse(media_ids)}

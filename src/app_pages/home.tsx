@@ -70,8 +70,9 @@ const HomePage: FunctionComponent<Props> = ({navigation}) => {
         ) : isSuccess ? (
           <View
             style={{
-              flex: 1,
+              flex: 2,
               width: '100%',
+              justifyContent: 'center',
             }}>
             <RegularButton
               underlayColor="#cacaca30"
@@ -103,41 +104,19 @@ const HomePage: FunctionComponent<Props> = ({navigation}) => {
                 <LargeText>New workout</LargeText>
               </View>
             </RegularButton>
-            {/* <TouchableHighlight
-              onPress={() => {
-                RootNavigation.navigate('CreateWorkoutGroupScreen', {
-                  ownedByClass: false,
-                  ownerID: data.user.id,
-                });
-              }}
-              style={{
-                justifyContent: 'center',
-                backgroundColor: '#cacaca30',
-                borderTopColor: '#cacaca92',
-                borderBottomColor: '#cacaca92',
-                borderWidth: 2,
-              }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Icon
-                  name="barbell-outline"
-                  color={theme.palette.text}
-                  style={{fontSize: 64, marginRight: 16}}
-                />
-                <LargeText>New workout</LargeText>
-              </View>
-            </TouchableHighlight> */}
           </View>
         ) : isError ? (
           <></>
         ) : (
           <></>
         )}
-        <View style={{flex: 1, marginBottom: 8, width: '100%'}}>
+        <View
+          style={{
+            flex: 3,
+            marginBottom: 8,
+            width: '100%',
+            justifyContent: 'center',
+          }}>
           <RegularButton
             onPress={() => navigation.navigate('UserWorkoutsScreen')}
             underlayColor="#cacaca30"
@@ -149,6 +128,20 @@ const HomePage: FunctionComponent<Props> = ({navigation}) => {
               width: '100%',
             }}
             text="My Workouts"
+          />
+        </View>
+        <View style={{flex: 1, width: '100%'}}>
+          <RegularButton
+            onPress={() => navigation.navigate('StatsScreen')}
+            underlayColor="#000000FF"
+            btnStyles={{
+              backgroundColor: '#cacaca30',
+              borderTopColor: '#cacaca92',
+              borderBottomColor: '#cacaca92',
+              borderWidth: 2,
+              width: '100%',
+            }}
+            text="Stats"
           />
         </View>
       </HomePageContainer>

@@ -25,16 +25,17 @@ const bLineData = (workouts, tagName, metric) => {
   let labels: string[] = [];
   let data: number[] = [];
   workouts.forEach(workoutStats => {
+    console.log('bLineData:', workoutStats);
     labels.push(shortDateFormat(new Date(workoutStats.date)));
 
-    if (workoutStats[tagName]) {
+    if (workoutStats[tagName] && workoutStats[tagName][metric]) {
       const stat = workoutStats[tagName][metric];
       data.push(stat);
     } else {
       data.push(0);
     }
   });
-  // console.log('Line data: ', data)
+  console.log('Line data: ', data);
   return {
     labels,
     datasets: [
@@ -44,11 +45,6 @@ const bLineData = (workouts, tagName, metric) => {
     ],
   };
 };
-
-interface ContributionGraphValue {
-  count: number | null;
-  date: string | null;
-}
 
 const TotalsLineChart: FunctionComponent<{
   tagLabels: string[];
@@ -94,16 +90,20 @@ const TotalsLineChart: FunctionComponent<{
   const [__filteredDataTypes, __filteredDataTypesAbbrev] =
     filterLineDataTypes();
 
-  // console.log(
-  //   'Filtered data types line:',
-  //   __filteredDataTypes,
-  //   __filteredDataTypesAbbrev,
-  // );
+  console.log(
+    'Filtered data types line:',
+    __filteredDataTypes,
+    __filteredDataTypesAbbrev,
+  );
 
   const [showTags, setShowTags] = useState(true); // Toggles between names and tags on the Bar Chart graph
-  const [showLineChartDataType, setShowLineChartDataType] = useState(1); // Which data to show in the LineChart [totalReps etc...]
+
+  const [showLineChartDataType, setShowLineChartDataType] = useState(
+    __filteredDataTypes.length > 1 ? 1 : 0,
+  ); // Which data to show in the LineChart [totalReps etc...]
 
   // To stay aligned with horizontal picker, we will start at Idx 1, expcet when we only have 1 item to select from. Then it is set to 0
+
   const [showLineChartTagType, setShowLineChartTagType] = useState(
     props.tagLabels.length == 1 ? 0 : 1,
   ); // Which data to show in the LineChart

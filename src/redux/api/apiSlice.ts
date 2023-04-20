@@ -75,7 +75,7 @@ export const getToken = async (access = true) => {
   } catch (e) {
     // error reading value
     console.log('Error getting from storage: ', e);
-    return '';
+    return null;
   }
 };
 
@@ -102,7 +102,15 @@ const asyncBaseQuery =
       }
       const contentType = params?.contentType || 'application/json';
       const authToken = await getToken();
-
+      if (authToken == null) {
+        return {
+          error: {
+            status: 0,
+            data: 'No auth token stored',
+          },
+        };
+      }
+      console.log('Has init req token: ', authToken);
       let options: {method: string; headers: any; body: any} = {
         method: method,
         headers: {

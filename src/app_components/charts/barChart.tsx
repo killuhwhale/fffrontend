@@ -20,10 +20,14 @@ const barData = (tags, metric) => {
   const data: number[] = [];
   const labels: string[] = [];
   Object.keys(tags).forEach(key => {
-    const val = parseInt(tags[key][metric]);
-    console.log('Val: ', key, metric, val);
-    data.push(val);
     labels.push(key);
+    if (tags[key] && tags[key][metric]) {
+      const val = parseInt(tags[key][metric]);
+      console.log('Val: ', key, metric, val);
+      data.push(val);
+    } else {
+      data.push(0);
+    }
   });
 
   return {

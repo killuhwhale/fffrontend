@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import styled from 'styled-components/native';
 import {Container, mdFontSize, smFontSize} from '../app_components/shared';
-import {SmallText, RegularText} from '../app_components/Text/Text';
+import {SmallText, RegularText, MediumText} from '../app_components/Text/Text';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {useTheme} from 'styled-components';
@@ -381,9 +381,7 @@ const ProfileSettingsModalRow: FunctionComponent<{
         onPress={() => {
           props.onAction();
         }}>
-        <RegularText textStyles={{textAlign: 'left'}}>
-          {props.title}
-        </RegularText>
+        <MediumText textStyles={{textAlign: 'left'}}>{props.title}</MediumText>
       </TouchableHighlight>
     </View>
   );
@@ -437,17 +435,29 @@ const ProfileSettingsModal: FunctionComponent<{
               width: '100%',
               justifyContent: 'center',
               marginBottom: 32,
+
               flex: 1,
             }}>
-            <Icon
-              name="log-out"
+            <TouchableHighlight
+              underlayColor="#00000022"
+              style={{borderRadius: 8}}
               onPress={() => {
                 setShowConfirmLogout(true);
-              }}
-              color="red"
-              style={{fontSize: 24, marginRight: 4}}
-            />
-            <SmallText>Logout</SmallText>
+              }}>
+              <View
+                style={{
+                  alignItems: 'flex-end',
+                  width: '100%',
+                  padding: 12,
+                }}>
+                <Icon
+                  name="log-out"
+                  color="red"
+                  style={{fontSize: 24, marginRight: 4}}
+                />
+                <SmallText>Logout</SmallText>
+              </View>
+            </TouchableHighlight>
           </View>
 
           <View style={{flex: 4, width: '100%'}}>
@@ -645,20 +655,6 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <View style={{flex: 5}}>
-              <RegularButton
-                onPress={() => navigation.navigate('StatsScreen')}
-                underlayColor="#000000FF"
-                btnStyles={{
-                  backgroundColor: '#cacaca30',
-                  borderTopColor: '#cacaca92',
-                  borderBottomColor: '#cacaca92',
-                  borderWidth: 2,
-                  width: '100%',
-                }}
-                text="Stats"
-              />
-            </View>
             {/* <View
               style={{
                 flex: 2,

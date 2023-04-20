@@ -1,27 +1,18 @@
 import 'react-native-gesture-handler';
 import React, {
   FunctionComponent,
-  ReactNode,
   useEffect,
   useState,
   PropsWithChildren,
-  useRef,
 } from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import HomePage from './src/app_pages/home';
 import RootStack from './src/navigators/RootStack';
 import {DefaultTheme, ThemeProvider, useTheme} from 'styled-components/native';
 import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
-import {RegularText, SmallText} from './src/app_components/Text/Text';
 import {store} from './src/redux/store';
 import {Provider} from 'react-redux';
 import {navigationRef} from './src/navigators/RootNavigation';
 import Header from './src/app_components/Header/header';
-import {
-  apiSlice,
-  getToken,
-  useValidateUserTokenQuery,
-} from './src/redux/api/apiSlice';
+import {apiSlice, getToken} from './src/redux/api/apiSlice';
 
 import AuthScreen from './src/app_pages/AuthScreen';
 import Uploady from '@rpldy/native-uploady';
@@ -32,7 +23,6 @@ import auth from './src/utils/auth';
 
 const primaryColor = '#007cff';
 const secondaryColor = '#006d77';
-const red = '#e63946';
 
 const d_text = '#f1faee';
 const d_lightGray = '#474747';
@@ -97,42 +87,11 @@ const LightTheme: DefaultTheme = {
   },
 };
 
-// Todo
-// Create an auth class to manage the current state of auth.
-// Global object, separate file.
-// WHen log in => setUser and callback for auth events, for now at least logout.
-
-// In this component we register a function to the AuthManagement,
-// This fn will change the state of the variable to not show the app anymore.
-// This fn is called by the manager when the user logs out, manager will also clear the data from async storage.
-
-// TODO
-// Figure out auth flow, ex,
-// When a user opens app, we make a reuest.
-
-// we get the user, logged in
-// else we are not logged in
-
-// TODO
-// we get an error for expired access tokem => we get new one w/ refresh token and reattempt request
-// we get an error for expired refresh token => we are not logged in.
-
-// Google auth would be nice here too...
-
-const ERR_CODE_BAD_AUTH_HEADER = 'bad_authorization_header';
-const ERR_CODE_BAD_TOKEN = 'token_not_valid';
-const ERR_CODE_INVALID_TOKEN = 'token_not_valid';
-const ERR_MESSAGE_INVALID_EXPIRED = 'Token is invalid or expired';
-
-const TOKEN_TYPE_ACCESS = 'access';
-const TOKEN_TYPE_REFRESH = 'refresh';
-
 const AuthNew: FunctionComponent<PropsWithChildren> = props => {
   // This will check if we have a valid token by sending a request to server for user info.
   // This either loads the app or login page.
 
   const [loggedIn, setLoggedIn] = useState(false);
-  const loggedInRef = useRef(loggedIn);
 
   useEffect(() => {
     const a = async () => {
@@ -144,22 +103,6 @@ const AuthNew: FunctionComponent<PropsWithChildren> = props => {
 
     auth.listenLogout(() => {
       console.log('Listened for logout, setLoggedIn');
-      store.dispatch(
-        apiSlice.util.invalidateTags([
-          'Gyms',
-          'UserGyms',
-          'User',
-          'UserAuth',
-          'GymClasses',
-          'GymClassWorkoutGroups',
-          'UserWorkoutGroups',
-          'WorkoutGroupWorkouts',
-          'Coaches',
-          'Members',
-          'GymFavs',
-          'GymClassFavs',
-        ]),
-      );
       setLoggedIn(false);
     });
     console.log('Use effect is being called!!!');
@@ -169,19 +112,29 @@ const AuthNew: FunctionComponent<PropsWithChildren> = props => {
       if (loggedIn) {
         console.log('Listne for login');
         console.log('Should log in');
+        store.dispatch(
+          apiSlice.util.invalidateTags([
+            'Gyms',
+            'UserGyms',
+            'User',
+            'UserAuth',
+            'GymClasses',
+            'GymClassWorkoutGroups',
+            'UserWorkoutGroups',
+            'WorkoutGroupWorkouts',
+            'Coaches',
+            'Members',
+            'GymFavs',
+            'GymClassFavs',
+          ]),
+        );
 
         setLoggedIn(true);
-        // loggedInRef.current = true;
       }
     }, 'logInKey');
 
     a();
   }, []);
-
-  useEffect(() => {
-    console.log('Login effect!', loggedInRef.current);
-    setLoggedIn(loggedInRef.current);
-  }, [loggedInRef]);
 
   return (
     <>
@@ -200,14 +153,6 @@ const AuthNew: FunctionComponent<PropsWithChildren> = props => {
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   console.log("User's preffered color scheme", useColorScheme(), isDarkMode);
