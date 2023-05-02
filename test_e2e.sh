@@ -12,7 +12,7 @@ docker compose -f /home/killuh/ws_p38/fitform/instafitAPI/docker-compose.yml exe
 # docker compose -f /home/killuh/ws_p38/fitform/instafitAPI/docker-compose.yml exec instafitapi python3 manage.py makemigrations
 kill $(lsof -t -i  :8081)
 npx react-native start &
+cd android/ && ./gradlew clean && cd .. && detox build --configuration android.emu.debug
 TEST_SCRIPT=1 detox test --configuration android.emu.debug
-
 kill $(lsof -t -i  :8081)
 docker compose -f /home/killuh/ws_p38/fitform/instafitAPI/docker-compose.yml down -v

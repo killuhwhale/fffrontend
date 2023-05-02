@@ -61,8 +61,7 @@ android:icon="@mipmap/ic_launcher"
 ## Build android
 
 Change versions in android/app/build.gradle
-cd android
-./gradlew bundleRelease
+cd android/ && ./gradlew clean && ./gradlew bundleRelease
 android/app/build/outputs/bundle/[app-release.aab]
 
 adb -s 710KPMZ0409387 reverse tcp:8081 tcp:8081
@@ -107,17 +106,19 @@ git push origin HEAD:staging HEAD
 
 # TODO
 
-## Logout - Login Error:
+- Add error notifications when limits are reached and other stuff.
 
-After Logout, the views that are siblings to SignIn view are called for their data and there is no access token, rendering an error
-This error persists after singing back in. If we dont make the request, we wont get an error. Then when we do go to load, we wont have a cached error? It will then make a request and rerender?
-If not, we will still block the request and then invalidate the data on Sign-In
-URLS that are called on logout that shouldnt
+- Lock to portrait only
+- Profile - Fav gym classes - add gym title
 
-    - gyms/user_gyms/ get
-    - profile/profile/ get
-    - profile/gym_favs/ get
-    - profile/gym_class_favs/ get
+- Workout screen - on workout list -> Rounds 5 change to 5 Rounds and same for rep scheme 21 15 9 -> Change to 21 15 9 Rep Scheme. Number first then text.
+  - This is the text on the animated button to see/ delete a workout on a workoutGroup.
+  - Find a better icon than a menu for the workout item card.
+- Date on GymClass WorkoutGroups should dispaly for_date, It hink its currently displaying date created.
+
+- Add Workout Item
+
+  - reps & rounds based scheme, when entering no reps, zero is ented, by defualt 1 should be entered if nothing is entered by the user.
 
 - Create good sample workout
   - Good for demos and screenshots

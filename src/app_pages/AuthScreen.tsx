@@ -11,9 +11,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 // import { withTheme } from 'styled-components'
 import {useTheme} from 'styled-components';
-import {useCreateUserMutation} from '../redux/api/apiSlice';
 import AuthManager from '../utils/auth';
-import * as RootNavigation from '../navigators/RootNavigation';
 import {View} from 'react-native';
 import Input, {AutoCaptilizeEnum} from '../app_components/Input/input';
 import {ResetPassword} from '../app_components/email/email';
@@ -56,14 +54,13 @@ const AuthScreen: FunctionComponent = () => {
   const [emailHelperText, setEmailHelperText] = useState('');
   const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
 
-  const [registerUser, {isLoading: registerUserLoading}] =
-    useCreateUserMutation();
   const [newEmail, setNewEmail] = useState('');
   const [newEmailHelperText, setNewEmailHelperText] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
   const [hideNewPassword, setHideNewPassword] = useState(true);
   const [mismatchPasswordText, setMismatchPasswordText] = useState('');
+  const [registerError, setRegisterError] = useState('');
 
   const [resetEmail, setResetEmail] = useState('');
   const [resetCode, setResetCode] = useState('');
@@ -111,6 +108,10 @@ const AuthScreen: FunctionComponent = () => {
   };
 
   const onNewEmailChange = (text: string) => {
+    if (registerError) {
+      setRegisterError('');
+    }
+
     if (text.indexOf('@') >= 0 && text.indexOf('.') >= 0) {
       if (!reg.test(text)) {
         setNewEmailHelperText('Invalid email');
@@ -141,35 +142,40 @@ const AuthScreen: FunctionComponent = () => {
     if (newEmailHelperText.length > 0) {
       setNewEmailHelperText('');
     }
+    if (registerError.length > 0) {
+      setRegisterError('');
+    }
 
     if (newEmail.length <= 0 || newPassword !== newPasswordConfirm) {
       console.log('Unable to register user');
       return;
     }
 
-    if (!registerUserLoading) {
-      if (!reg.test(newEmail)) {
-        console.log('Invalid email');
-        setNewEmailHelperText('Invalid Email');
-        return;
-      }
-      console.log('Registering: ', newEmail, newPassword, newPasswordConfirm);
-      const data = new FormData();
-      data.append('email', newEmail);
-      data.append('password', newPassword);
-      data.append('username', newEmail);
-      const res = await registerUser(data).unwrap();
+    if (!reg.test(newEmail)) {
+      console.log('Invalid email');
+      setNewEmailHelperText('Invalid Email');
+      return;
+    }
+    console.log('Registering: ', newEmail, newPassword, newPasswordConfirm);
+    const data = new FormData();
+    data.append('email', newEmail);
+    data.append('password', newPassword);
+    data.append('username', newEmail);
+
+    try {
+      const res = await auth.register(data);
       console.log('Sign up res: ', res);
-      if (res?.username) {
-        console.log('Created user, refresh auth.', res);
+
+      if (res.id > 0) {
         setAuthMode(0);
       } else if (
-        res.email !== undefined &&
         res.email[0] == 'user with this email address already exists.'
       ) {
-        console.log('EMAIL TAKENENENENEN');
-        setNewEmailHelperText('Email taken');
+        setRegisterError('Email taken!');
       }
+    } catch (error) {
+      console.log('Error registering:: ', error);
+      setRegisterError('Error registering');
     }
   };
 
@@ -253,17 +259,7 @@ const AuthScreen: FunctionComponent = () => {
             </View>
 
             <View style={{flexDirection: 'row'}}>
-              <View style={{height: 45, width: '50%', paddingHorizontal: 8}}>
-                <RegularButton
-                  testID={TestIDs.AuthSignUpBtn.name()}
-                  onPress={() => {
-                    setAuthMode(1);
-                  }}
-                  btnStyles={{backgroundColor: theme.palette.secondary.main}}
-                  text="Sign Up"
-                />
-              </View>
-              <View style={{height: 45, width: '50%', paddingHorizontal: 8}}>
+              <View style={{height: 45, width: '100%', paddingHorizontal: 8}}>
                 <RegularButton
                   testID={TestIDs.SignInSubmit.name()}
                   onPress={() => {
@@ -280,7 +276,24 @@ const AuthScreen: FunctionComponent = () => {
                 justifyContent: 'center',
                 marginTop: 64,
               }}>
-              <View style={{height: 45, width: '80%', paddingHorizontal: 8}}>
+              <View style={{height: 45, width: '100%', paddingHorizontal: 8}}>
+                <RegularButton
+                  testID={TestIDs.AuthSignUpBtn.name()}
+                  onPress={() => {
+                    setAuthMode(1);
+                  }}
+                  btnStyles={{backgroundColor: theme.palette.secondary.main}}
+                  text="Go to sign up"
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                marginTop: 16,
+              }}>
+              <View style={{height: 45, width: '100%', paddingHorizontal: 8}}>
                 <RegularButton
                   onPress={() => {
                     setAuthMode(2);
@@ -304,6 +317,9 @@ const AuthScreen: FunctionComponent = () => {
               <RegularText textStyles={{textAlign: 'center', marginBottom: 16}}>
                 Sign Up
               </RegularText>
+              <SmallText textStyles={{textAlign: 'center', marginVertical: 8}}>
+                {registerError}
+              </SmallText>
               <View style={{height: 45, marginBottom: 16}}>
                 <Input
                   testID={TestIDs.AuthSignUpEmail.name()}

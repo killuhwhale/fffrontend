@@ -1,18 +1,23 @@
 import {getToken} from '../redux/api/apiSlice';
-import FormData from 'form-data';
 
 const get = (url: string) => {
   return fetch(url).then(res => res.json());
 };
 
-const post = async (url: string, data: {}) => {
+const post = async (
+  url: string,
+  data: any,
+  contentType = 'application/json',
+) => {
+  const _data =
+    contentType === 'application/json' ? JSON.stringify(data) : data;
   return fetch(url, {
     method: 'POST',
     headers: {
       // Accept: 'application/json',
-      'Content-Type': 'application/json',
+      'Content-Type': contentType,
     },
-    body: JSON.stringify(data),
+    body: _data,
   });
 };
 

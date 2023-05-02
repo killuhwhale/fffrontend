@@ -9,6 +9,7 @@ import {
   apiSlice,
 } from '../redux/api/apiSlice';
 import {useAppSelector, useAppDispatch} from '../redux/hooks';
+import {UserProps} from '../app_pages/types';
 // The interface for the functions to be given, take no arguments and returns nothing
 interface OnLogoutProps {
   (): void;
@@ -32,6 +33,19 @@ class AuthManager {
 
   listenLogin(fn: OnLoginProps, key: string) {
     this.onLogin.set(key, fn);
+  }
+
+  async register(data) {
+    // Perform login, update tokens access and fresh tokens
+    try {
+      const res = await post(`${BASEURL}users/`, data, 'multipart/form-data');
+      const result = await res.json();
+      console.log('Register res: ', result);
+      return result as UserProps;
+    } catch (err) {
+      console.log('Register error: ', err);
+      return {email: '', id: -1, username: ''} as UserProps;
+    }
   }
 
   async login(email, password) {

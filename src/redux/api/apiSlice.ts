@@ -102,6 +102,7 @@ const asyncBaseQuery =
       }
       const contentType = params?.contentType || 'application/json';
       const authToken = await getToken();
+
       if (authToken == null) {
         return {
           error: {

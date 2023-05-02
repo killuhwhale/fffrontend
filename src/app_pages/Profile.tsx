@@ -37,6 +37,7 @@ import {
 import DeleteActionCancelModal from '../app_components/modals/deleteByNameModal';
 import {RegularButton} from '../app_components/Buttons/buttons';
 import {TestIDs} from '../utils/constants';
+import {UserProps} from './types';
 
 export type Props = StackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -52,11 +53,7 @@ const Touchable = styled.TouchableHighlight`
 `;
 
 interface UserInfoPanelProps {
-  user: {
-    username: string;
-    email: string;
-    id: number;
-  };
+  user: UserProps;
 }
 interface GymsPanelProps {
   data: GymCardProps[];
