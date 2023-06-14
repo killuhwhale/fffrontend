@@ -1,18 +1,12 @@
-import React, {FunctionComponent, useEffect, useRef, useState} from 'react';
+import React, {FunctionComponent, useState} from 'react';
 import styled from 'styled-components/native';
 import {
   Container,
   MEDIA_CLASSES,
-  SCREEN_HEIGHT,
   SCREEN_WIDTH,
   withSpaceURL,
 } from '../app_components/shared';
-import {
-  SmallText,
-  RegularText,
-  LargeText,
-  TitleText,
-} from '../app_components/Text/Text';
+import {SmallText, RegularText} from '../app_components/Text/Text';
 import {useTheme} from 'styled-components';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RootStackParamList} from '../navigators/RootStack';
@@ -30,7 +24,6 @@ import {
 
 import {GymClassCardProps} from '../app_components/Cards/types';
 
-import {filter} from '../utils/algos';
 import ManageMembersModal from '../app_components/modals/memberModal';
 import ManageCoachesModal from '../app_components/modals/coachModal';
 
@@ -47,24 +40,6 @@ const GymClassScreenContainer = styled(Container)`
   justify-content: space-between;
 
   width: 100%;
-`;
-const InfoBG = styled.ImageBackground`
-  height: 100%;
-  width: ${SCREEN_WIDTH * 0.92}px;
-  resize-mode: cover;
-  border-radius: 25px;
-  overflow: hidden;
-  marginbottom: 12px;
-`;
-const LogoImage = styled.Image`
-  width: 100%;
-  height: 100%;
-  border-radius: 25px;
-  flex: 1;
-`;
-const Row = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
 `;
 
 const FavoriteGymClass: FunctionComponent<{
@@ -142,10 +117,12 @@ const GymClassScreen: FunctionComponent<Props> = ({
     date,
     private: is_private,
   } = params || {};
+
   const [deleteGymClassModalVisible, setDeleteGymClassModalVisibleVisible] =
     useState(false);
   const [showCoachModal, setShowCoachModal] = useState(false);
   const [showMembersModal, setShowMembersModal] = useState(false);
+
   const {
     data: allMembers,
     isLoading: membersLoading,
@@ -153,6 +130,7 @@ const GymClassScreen: FunctionComponent<Props> = ({
     isError: membersIsError,
     error: membersError,
   } = useGetMembersForGymClassQuery(id);
+
   const {
     data: allCoaches,
     isLoading: coachesLoading,
@@ -170,10 +148,6 @@ const GymClassScreen: FunctionComponent<Props> = ({
   const logoURL = withSpaceURL('logo', parseInt(id), MEDIA_CLASSES[1]);
 
   // Separate workout groups into separate query for better caching.
-
-  console.log('GClass params: ', params);
-  console.log('GClass data: ', data);
-
   const onConfirmDelete = () => {
     setDeleteGymClassModalVisibleVisible(true);
   };
@@ -212,8 +186,10 @@ const GymClassScreen: FunctionComponent<Props> = ({
         }}>
         <Image
           style={{
+            marginTop: 42,
             height: 92,
             width: 92,
+            borderRadius: 8,
           }}
           source={{uri: mainURL}}
         />

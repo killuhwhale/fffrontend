@@ -106,8 +106,8 @@ const WorkoutCard: FunctionComponent<WorkoutCardProps> = props => {
               }}>
               <RegularText>{props.title} </RegularText>
               <SmallText>
-                {WORKOUT_TYPE_LABELS[props.scheme_type]}{' '}
-                {displayJList(props.scheme_rounds)}
+                {displayJList(props.scheme_rounds)}{' '}
+                {WORKOUT_TYPE_LABELS[props.scheme_type]}
               </SmallText>
 
               <Icon

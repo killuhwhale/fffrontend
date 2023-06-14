@@ -158,7 +158,7 @@ const ManageCoachesModal: FunctionComponent<{
                     value={term}
                     containerStyle={{
                       width: '100%',
-                      backgroundColor: theme.palette.lightGray,
+                      backgroundColor: theme.palette.backgroundColor,
                       borderRadius: 8,
                       paddingHorizontal: 8,
                     }}
@@ -187,6 +187,9 @@ const ManageCoachesModal: FunctionComponent<{
                       style={{
                         inputAndroidContainer: {
                           alignItems: 'center',
+                          borderWidth: 1,
+                          borderColor: 'white',
+                          borderRadius: 12,
                         },
                         inputAndroid: {
                           color: theme.palette.text,
@@ -246,7 +249,7 @@ const ManageCoachesModal: FunctionComponent<{
                 </Picker> */}
                 <RegularButton
                   onPress={addNewCoach}
-                  btnStyles={{backgroundColor: theme.palette.lightGray}}
+                  btnStyles={{backgroundColor: theme.palette.gray}}
                   text="Add Coach"
                 />
               </View>
@@ -312,10 +315,16 @@ const ManageCoachesModal: FunctionComponent<{
             <></>
           )}
 
-          <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '100%',
+              flex: 1,
+            }}>
             <RegularButton
               onPress={props.onRequestClose}
-              btnStyles={{backgroundColor: theme.palette.lightGray}}
+              btnStyles={{backgroundColor: theme.palette.gray, width: '100%'}}
               text="Close"
             />
           </View>

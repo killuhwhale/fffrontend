@@ -167,7 +167,7 @@ const ManageMembersModal: FunctionComponent<{
                     value={term}
                     containerStyle={{
                       width: '100%',
-                      backgroundColor: theme.palette.lightGray,
+                      backgroundColor: theme.palette.backgroundColor,
                       borderRadius: 8,
                       paddingHorizontal: 8,
                     }}
@@ -194,6 +194,9 @@ const ManageMembersModal: FunctionComponent<{
                     style={{
                       inputAndroidContainer: {
                         alignItems: 'center',
+                        borderWidth: 1,
+                        borderColor: 'white',
+                        borderRadius: 12,
                       },
                       inputAndroid: {
                         color: theme.palette.text,
@@ -253,7 +256,7 @@ const ManageMembersModal: FunctionComponent<{
                 <RegularButton
                   onPress={addNewMember}
                   btnStyles={{
-                    backgroundColor: theme.palette.lightGray,
+                    backgroundColor: theme.palette.gray,
                   }}
                   text="Add Member"
                 />
@@ -321,7 +324,8 @@ const ManageMembersModal: FunctionComponent<{
             <RegularButton
               onPress={props.onRequestClose}
               btnStyles={{
-                backgroundColor: theme.palette.lightGray,
+                backgroundColor: theme.palette.gray,
+                width: '100%',
                 paddingLeft: 16,
                 paddingRight: 16,
               }}

@@ -138,6 +138,7 @@ const GymScreen: FunctionComponent<Props> = ({navigation, route: {params}}) => {
           style={{
             height: 92,
             width: 92,
+            borderRadius: 8,
           }}
           source={{uri: mainURL}}
         />

@@ -118,9 +118,10 @@ const FilterItemsModal: FunctionComponent<{
                   onChangeText={filterText}
                   testID={TestIDs.AddItemFilterModalInputField.name()}
                   value={term}
+                  inputStyles={{fontSize: 14}}
                   containerStyle={{
                     width: '100%',
-                    backgroundColor: theme.palette.lightGray,
+                    backgroundColor: theme.palette.backgroundColor,
                     borderRadius: 8,
                   }}
                   fontSize={16}

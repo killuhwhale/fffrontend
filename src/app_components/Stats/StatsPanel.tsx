@@ -135,19 +135,41 @@ export const StatsPanel: FunctionComponent<{tags: {}; names: {}}> = ({
   const theme = useTheme();
 
   return (
-    <View style={{margin: 4}}>
-      <View style={{alignItems: 'flex-start'}}>
-        <View style={{borderBottomWidth: 1, borderColor: theme.palette.text}}>
-          <RegularText>Tag Summary</RegularText>
-        </View>
-        <WorkoutStatsByTagHorizontalList data={Object.values(tags)} />
-      </View>
-      <View style={{alignItems: 'flex-start'}}>
-        <View style={{borderBottomWidth: 1, borderColor: theme.palette.text}}>
-          <RegularText>Item Summary</RegularText>
-        </View>
-        <WorkoutStatsByNameHorizontalList data={Object.values(names)} />
-      </View>
+    <View style={{margin: 4, flex: 1}}>
+      {Object.values(tags).length > 0 ? (
+        <>
+          <View
+            style={{
+              borderTopWidth: 1,
+              height: 1,
+              borderColor: theme.palette.text,
+            }}
+          />
+          <View style={{alignItems: 'flex-start'}}>
+            <View
+              style={{borderBottomWidth: 1, borderColor: theme.palette.text}}>
+              <RegularText>Tag Summary</RegularText>
+            </View>
+            <WorkoutStatsByTagHorizontalList data={Object.values(tags)} />
+          </View>
+          <View style={{alignItems: 'flex-start'}}>
+            <View
+              style={{borderBottomWidth: 1, borderColor: theme.palette.text}}>
+              <RegularText>Item Summary</RegularText>
+            </View>
+            <WorkoutStatsByNameHorizontalList data={Object.values(names)} />
+          </View>
+          <View
+            style={{
+              borderTopWidth: 1,
+              height: 1,
+              borderColor: theme.palette.text,
+            }}
+          />
+        </>
+      ) : (
+        <></>
+      )}
     </View>
   );
 };

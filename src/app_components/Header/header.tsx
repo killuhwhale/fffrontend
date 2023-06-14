@@ -6,7 +6,7 @@ export type Props = StackScreenProps<RootStackParamList, 'Header'>;
 import {NavigationContext} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as RootNavigation from '../../navigators/RootNavigation';
-import {View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {RegularText} from '../Text/Text';
 import {TestIDs} from '../../utils/constants';
 import LinearGradient from 'react-native-linear-gradient';
@@ -17,25 +17,22 @@ const Header: FunctionComponent = () => {
   const nav = React.useContext(NavigationContext);
   console.log('Nav: ', nav);
   // Access value
-
+  // style={{
+  //   borderTopLeftRadius: 16,
+  //   borderBottomLeftRadius: 16,
+  // }}
   return (
-    <View style={{backgroundColor: '#000000FF'}}>
-      <LinearGradient
-        colors={['#000000', theme.palette.backgroundColor]}
-        start={{x: 0, y: 0}}
-        end={{x: 0, y: 1}}
-        style={{
-          borderTopLeftRadius: 16,
-          borderBottomLeftRadius: 16,
+    <View style={{backgroundColor: theme.palette.backgroundColor}}>
+      <TouchableOpacity
+        activeOpacity={0.69}
+        onPress={() => {
+          RootNavigation.navigate('HomePage', {});
         }}>
         <View
           style={{flexDirection: 'row', paddingVertical: 8, marginLeft: 16}}>
           <Icon
             testID={TestIDs.PlanetHome.name()}
             name="planet-outline"
-            onPress={() => {
-              RootNavigation.navigate('HomePage', {});
-            }}
             color={theme.palette.text}
             style={{
               fontSize: 23,
@@ -45,7 +42,7 @@ const Header: FunctionComponent = () => {
           />
           <GradientText text="FitForm" />
         </View>
-      </LinearGradient>
+      </TouchableOpacity>
     </View>
   );
 };

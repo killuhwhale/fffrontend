@@ -33,7 +33,7 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
   return (
     <TouchableHighlight
       underlayColor={theme.palette.transparent}
-      activeOpacity={0.9}
+      activeOpacity={0.69}
       onPress={handlePress}
       style={{
         flex: 1,
@@ -42,11 +42,9 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
         borderTopRightRadius: bRadiusRight,
         borderBottomRightRadius: bRadiusRight,
       }}>
-      <LinearGradient
-        colors={['#00000000', '#40E0D0']}
-        start={{x: 0.25, y: 0}}
-        end={{x: 0.42, y: 1}}
+      <View
         style={{
+          backgroundColor: theme.palette.primary.main,
           flex: 1,
           borderTopLeftRadius: 16,
           borderBottomLeftRadius: 16,
@@ -89,7 +87,7 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
             </View>
           </View>
         </View>
-      </LinearGradient>
+      </View>
     </TouchableHighlight>
   );
 };

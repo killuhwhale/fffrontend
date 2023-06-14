@@ -7,6 +7,7 @@ import {
   ViewStyle,
   TextInput as TTextInput,
   TouchableWithoutFeedback,
+  KeyboardTypeOptions,
 } from 'react-native';
 import {useTheme} from 'styled-components';
 
@@ -36,6 +37,7 @@ interface InputProps {
   secureTextEntry?: boolean;
   autoCapitalize?: AutoCaptilizeEnum; //'none', 'sentences', 'words', 'characters'
   testID?: string;
+  keyboardType?: KeyboardTypeOptions;
 }
 
 const Input: FunctionComponent<InputProps> = props => {
@@ -77,6 +79,7 @@ const Input: FunctionComponent<InputProps> = props => {
                     ? false
                     : props.secureTextEntry
                 }
+                keyboardType={props.keyboardType}
                 autoCapitalize={
                   props.autoCapitalize == undefined
                     ? 'sentences'
@@ -90,6 +93,8 @@ const Input: FunctionComponent<InputProps> = props => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     alignContent: 'center',
+
+                    padding: 0,
                   },
                   props.inputStyles,
                 ]}

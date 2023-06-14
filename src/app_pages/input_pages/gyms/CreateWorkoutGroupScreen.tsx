@@ -23,6 +23,7 @@ import {dateFormat} from '../../StatsScreen';
 import {RegularButton} from '../../../app_components/Buttons/buttons';
 import Input from '../../../app_components/Input/input';
 import {TestIDs} from '../../../utils/constants';
+import AlertModal from '../../../app_components/modals/AlertModal';
 export type Props = StackScreenProps<
   RootStackParamList,
   'CreateWorkoutGroupScreen'
@@ -66,7 +67,7 @@ const MediaPicker: FunctionComponent<{
     <View>
       <RegularButton
         onPress={pickFile}
-        btnStyles={{backgroundColor: theme.palette.lightGray}}
+        btnStyles={{backgroundColor: theme.palette.darkGray}}
         text={props.title}
       />
     </View>
@@ -80,13 +81,13 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
   },
 }) => {
   const theme = useTheme();
-  console.log('WGroup params: ', ownedByClass, ownerID);
 
   // Access/ send actions
   const dispatch = useAppDispatch();
   const [files, setFiles] = useState<ImageOrVideo[]>();
   const [title, setTitle] = useState('');
   const [forDate, setForDate] = useState<Date>(new Date());
+  const [showAlert, setShowAlert] = useState(false);
 
   // Need to set ownedByClass somehow......
   // 1. User has classes, use a picker || Deciding to not use a picker. We will just go to the class and add from there...
@@ -129,15 +130,15 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
     }
 
     console.log('FOrmdata');
-    console.log('FOrmdata');
-    console.log('FOrmdata');
     console.log('FOrmdata', data);
 
     try {
       const workoutGroup = await createWorkoutGroup(data).unwrap();
-      console.log('Gym class res', workoutGroup);
+      console.log('Gym class res', workoutGroup.status);
       if (workoutGroup.id) {
         navigation.goBack();
+      } else if (workoutGroup.err_type === 1) {
+        setShowAlert(true);
       }
     } catch (err) {
       console.log('Error creating  WorkoutGroup', err);
@@ -162,7 +163,7 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
               label="Title"
               containerStyle={{
                 width: '100%',
-                backgroundColor: theme.palette.lightGray,
+                backgroundColor: theme.palette.darkGray,
                 borderRadius: 8,
                 paddingHorizontal: 8,
               }}
@@ -185,7 +186,7 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
               label="Caption"
               containerStyle={{
                 width: '100%',
-                backgroundColor: theme.palette.lightGray,
+                backgroundColor: theme.palette.darkGray,
                 borderRadius: 8,
                 paddingHorizontal: 8,
               }}
@@ -235,7 +236,7 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
               onPress={_createWorkout.bind(this)}
               testID={TestIDs.WorkoutGroupCreateBtn.name()}
               btnStyles={{
-                backgroundColor: theme.palette.lightGray,
+                backgroundColor: theme.palette.darkGray,
               }}
               text="Create"
             />
@@ -244,6 +245,12 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
           )}
         </View>
       </View>
+      <AlertModal
+        closeText="Close"
+        bodyText="This account can only create 1 workout per day."
+        modalVisible={showAlert}
+        onRequestClose={() => setShowAlert(false)}
+      />
     </PageContainer>
   );
 };

@@ -194,7 +194,6 @@ const asyncBaseQuery =
       }
       return {error: {status: 404, data: 'Errorneous behavior!'}};
     } catch (err: any) {
-      console.log('APISlice returning error!', err);
       return {
         error: {
           status: 0,
@@ -224,6 +223,7 @@ export const apiSlice = createApi({
     'Members',
     'GymFavs',
     'GymClassFavs',
+    'StatsQuery',
   ],
   endpoints: builder => ({
     // Users, Coaches and Members
@@ -368,7 +368,6 @@ export const apiSlice = createApi({
       },
       //
       providesTags: (result, error, arg) => {
-        console.log('P0vide gym view: GymClasses', result);
         return [{type: 'GymClasses', id: result?.id}];
       },
     }),
@@ -382,7 +381,6 @@ export const apiSlice = createApi({
         params: {contentType: 'multipart/form-data'},
       }),
       invalidatesTags: (result, error, arg) => {
-        console.log('Create class invalidate: ', arg, result);
         return [{type: 'GymClasses', id: arg.gym}];
       },
     }),
@@ -441,10 +439,6 @@ export const apiSlice = createApi({
         return {url: `workoutGroups/${id}/class_workouts/`};
       },
       providesTags: (result, error, arg) => {
-        console.log('Providing tags', result, {
-          type: 'WorkoutGroupWorkouts',
-          id: arg,
-        });
         return [{type: 'WorkoutGroupWorkouts', id: arg}, 'UserWorkoutGroups'];
       },
     }),
@@ -455,7 +449,6 @@ export const apiSlice = createApi({
         return {url: `workoutGroups/${id}/user_workouts/`};
       },
       providesTags: (result, error, arg) => {
-        console.log('Providing tags to users own workout group', arg);
         return [{type: 'WorkoutGroupWorkouts', id: arg}];
       },
     }),
@@ -469,7 +462,6 @@ export const apiSlice = createApi({
       invalidatesTags: (result, err, arg) => {
         const data = new Map<string, string>(arg._parts);
 
-        console.log('Invaldtes Tag: ', data);
         return data.get('owned_by_class')
           ? [{type: 'GymClassWorkoutGroups', id: data.get('owner_id')}]
           : ['UserWorkoutGroups'];
@@ -485,20 +477,14 @@ export const apiSlice = createApi({
       invalidatesTags: (result, error, arg) => {
         // inavlidates query for useGetWorkoutsForGymClassWorkoutGroupQuery
         const data = new Map<string, string>(arg._parts);
-        console.log('Invalidating WorkoutGroupWorkouts', {
-          type: 'WorkoutGroupWorkouts',
-          id: data.get('group'),
-        });
+
         return [{type: 'WorkoutGroupWorkouts', id: data.get('group')}];
       },
     }),
     deleteWorkoutGroup: builder.mutation({
       query: data => {
         const mapData = new Map<string, string>(data._parts);
-        console.log(
-          'Delete workoutGroup mutation! URL: ',
-          `workoutGroups/${mapData.get('id')}/`,
-        );
+
         return {
           url: `workoutGroups/${mapData.get('id')}/`,
           method: 'DELETE',
@@ -508,7 +494,7 @@ export const apiSlice = createApi({
       },
       invalidatesTags: (result, err, arg) => {
         const data = new Map<string, string>(arg._parts);
-        console.log('Invaldtes Tag deleteWorkoutGroup: ', data);
+
         return data.get('owned_by_class')
           ? [{type: 'GymClassWorkoutGroups', id: data.get('owner_id')}]
           : ['UserWorkoutGroups'];
@@ -535,7 +521,7 @@ export const apiSlice = createApi({
     deleteWorkout: builder.mutation({
       query: arg => {
         const data = new Map<string, string>(arg._parts);
-        console.log('Deleting workout query dsa', data);
+
         return {
           url: `workouts/${data.get('id')}/`,
           method: 'DELETE',
@@ -548,7 +534,7 @@ export const apiSlice = createApi({
           return [];
         }
         const data = new Map<string, string>(arg._parts);
-        console.log('Invalidating workouts...,', data);
+
         return [{type: 'WorkoutGroupWorkouts', id: data.get('group')}];
       },
     }),
@@ -562,8 +548,11 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: (resut, error, arg) => {
         const data = new Map<string, string>(arg._parts);
-        console.log('APISLICECreate invaldiate workoutGroup : ', data);
-        return [{type: 'WorkoutGroupWorkouts', id: data.get('workout_group')}];
+
+        return [
+          {type: 'WorkoutGroupWorkouts', id: data.get('workout_group')},
+          {type: 'StatsQuery'},
+        ];
       },
     }),
 
@@ -594,11 +583,6 @@ export const apiSlice = createApi({
         }
 
         const data = new Map<string, string>(arg._parts);
-        console.log('Invalidating compelted: ', data, {
-          type: 'WorkoutGroupWorkouts',
-          id: data.get('workout_group'),
-        });
-
         // Cases:
         // 1. A user completes a WorkoutGroup from a gym Class
         // 2. A user completes a WorkoutGroup from another User.
@@ -607,6 +591,7 @@ export const apiSlice = createApi({
           {type: 'WorkoutGroupWorkouts', id: data.get('workout_group')}, // Reset WorkoutScreen
           'UserWorkoutGroups', // Reset Profile workout list
           {type: 'GymClassWorkoutGroups', id: data.get('owner_id')},
+          {type: 'StatsQuery'},
         ];
       },
     }),
@@ -620,10 +605,6 @@ export const apiSlice = createApi({
         url: `completedWorkoutGroups/${id}/completed_workout_group_by_og_workout_group/`,
       }),
       providesTags: (result, error, arg) => {
-        console.log('Providing tagzz', result, {
-          type: 'WorkoutGroupWorkouts',
-          id: arg,
-        });
         return [{type: 'WorkoutGroupWorkouts', id: arg}];
       },
     }),
@@ -643,10 +624,6 @@ export const apiSlice = createApi({
         }
 
         const data = new Map<string, string>(arg._parts);
-        console.log('Invalidating compelted: ', data, {
-          type: 'WorkoutGroupWorkouts',
-          id: data.get('workout_group'),
-        });
 
         // Cases:
         // 1. A user completes a WorkoutGroup from a gym Class
@@ -716,6 +693,9 @@ export const apiSlice = createApi({
         return {
           url: `stats/${data.id}/user_workouts/?start_date=${data.startDate}&end_date=${data.endDate}`,
         };
+      },
+      providesTags: (result, error, arg) => {
+        return [{type: 'StatsQuery', id: arg}];
       },
     }),
   }),

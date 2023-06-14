@@ -50,39 +50,43 @@ class AuthManager {
 
   async login(email, password) {
     // Perform login, update tokens access and fresh tokens
-    const res = await post(`${BASEURL}token/`, {email: email, password});
-    const result = await res.json();
-    console.log('Login res: ', result);
-    // WHen user is_active=False
-    // {"detail": "No active account found with the given credentials"}
+    try {
+      const res = await post(`${BASEURL}token/`, {email: email, password});
+      const result = await res.json();
+      console.log('Login res: ', result);
+      // WHen user is_active=False
+      // {"detail": "No active account found with the given credentials"}
 
-    let loggedIn = false;
-    let msg = '';
-    if (result.refresh && result.access) {
-      if (
-        (await storeToken(result.access)) &&
-        (await storeToken(result.refresh, false))
+      let loggedIn = false;
+      let msg = '';
+      if (result.refresh && result.access) {
+        if (
+          (await storeToken(result.access)) &&
+          (await storeToken(result.refresh, false))
+        ) {
+          loggedIn = true;
+        } else {
+          msg = 'Failed to store token.';
+        }
+      } else if (
+        result.detail == 'No active account found with the given credentials'
       ) {
-        loggedIn = true;
+        msg = 'No active account found with the given credentials';
       } else {
-        msg = 'Failed to store token.';
+        msg = 'Failed to login';
       }
-    } else if (
-      result.detail == 'No active account found with the given credentials'
-    ) {
-      msg = 'No active account found with the given credentials';
-    } else {
-      msg = 'Failed to login';
-    }
 
-    [...this.onLogin.keys()].forEach(key => {
-      console.log('calling this on login@');
-      const fn = this.onLogin.get(key);
-      if (fn) {
-        fn(loggedIn, msg);
-      }
-    });
-    // Only call this on successful login.
+      [...this.onLogin.keys()].forEach(key => {
+        console.log('calling this on login@');
+        const fn = this.onLogin.get(key);
+        if (fn) {
+          fn(loggedIn, msg);
+        }
+      });
+      // Only call this on successful login.
+    } catch (error) {
+      console.log('Error logging in: ', error);
+    }
   }
 
   async logout() {

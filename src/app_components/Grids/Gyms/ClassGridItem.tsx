@@ -8,7 +8,6 @@ import {View, Image, Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Props as GymScreenProps} from '../../../app_pages/GymScreen';
 
-import LinearGradient from 'react-native-linear-gradient';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 
 const ClassGridItem: FunctionComponent<{
@@ -16,10 +15,8 @@ const ClassGridItem: FunctionComponent<{
 }> = props => {
   const theme = useTheme();
 
-  // Gym class card is on the Gym screen
   const navigation = useNavigation<GymScreenProps['navigation']>();
   const handlePress = () => {
-    // Need to find out how to drill closeModal from extraProps here....
     navigation.navigate('GymClassScreen', {...props.card});
   };
   const logoURL = withSpaceURL(
@@ -36,11 +33,12 @@ const ClassGridItem: FunctionComponent<{
         flex: 1,
       }}>
       <TouchableHighlight onPress={handlePress}>
-        <LinearGradient
-          colors={['#000000', '#40E0D0']}
-          start={{x: 0.15, y: 0}}
-          end={{x: 0.42, y: 1}}
-          style={{flex: 1, borderRadius: 16}}>
+        <View
+          style={{
+            flex: 1,
+            borderRadius: 16,
+            backgroundColor: theme.palette.primary.main,
+          }}>
           <View
             style={{
               flexDirection: 'row',
@@ -59,7 +57,7 @@ const ClassGridItem: FunctionComponent<{
               </SmallText>
             </View>
           </View>
-        </LinearGradient>
+        </View>
       </TouchableHighlight>
     </View>
   );

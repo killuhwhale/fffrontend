@@ -151,22 +151,17 @@ const AddItem: FunctionComponent<{
     // distance: distance.length == 0 ? '0' : distance,
 
     // Enforce default values per workout type.
-    if (WORKOUT_TYPES[props.schemeType] == STANDARD_W) {
-      if (setsItem === 0) {
-        setsItem = 1; // ensure there is at least 1 set.
-      }
-      if (repsItem.length === 0) {
-        repsItem = '0';
-      }
-      if (durationItem.length === 0) {
-        durationItem = '0';
-      }
-      if (distanceItem.length === 0) {
-        distanceItem = '0';
-      }
-    } else if (WORKOUT_TYPES[props.schemeType] == REPS_W) {
-    } else if (WORKOUT_TYPES[props.schemeType] == ROUNDS_W) {
-    } else if (WORKOUT_TYPES[props.schemeType] == DURATION_W) {
+    if (setsItem === 0) {
+      setsItem = 1; // ensure there is at least 1 set.
+    }
+    if (repsItem.length === 0 || parseInt(repsItem) === 0) {
+      repsItem = '0';
+    }
+    if (durationItem.length === 0 || parseInt(durationItem) === 0) {
+      durationItem = '0';
+    }
+    if (distanceItem.length === 0 || parseInt(distanceItem) === 0) {
+      distanceItem = '0';
     }
 
     if (QuantityLabels[showQuantity] == 'Reps' && parseInt(repsItem) === 0) {
@@ -250,7 +245,7 @@ const AddItem: FunctionComponent<{
                 <View style={{flex: 1, width: '100%'}}>
                   {!showWorkoutNamesModal ? (
                     <Button
-                      title={data[workoutName].name}
+                      title={data[workoutName]?.name ?? 'No workout name found'}
                       testID={TestIDs.AddItemChooseWorkoutNameField.name()}
                       onPress={() => setShowWorkoutNamesModal(true)}
                     />
@@ -262,7 +257,7 @@ const AddItem: FunctionComponent<{
                         setShowWorkoutNamesModal(!showWorkoutNamesModal);
                       }}
                       items={workoutNames}
-                      searchTextPlaceHolder="Search workoutnames"
+                      searchTextPlaceHolder="Search"
                       extraProps={{
                         onSelect: onNameSelect,
                       }}
@@ -432,7 +427,7 @@ const AddItem: FunctionComponent<{
                   },
                 ]}
                 label=""
-                testID={TestIDs.AddItemRepsField.name()}
+                testID={TestIDs.AddItemRepsField?.name()}
                 placeholder="Reps"
                 centerInput
                 fontSize={AddItemFontsize}
@@ -723,7 +718,7 @@ const AddItem: FunctionComponent<{
           onPress={_addItem}
           testID={TestIDs.CreateWorkoutAddItemBtn.name()}
           btnStyles={{
-            backgroundColor: theme.palette.lightGray,
+            backgroundColor: theme.palette.darkGray,
           }}
           text="Add Item"
         />

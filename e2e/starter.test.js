@@ -20,8 +20,8 @@ describe('App', () => {
       await element(by.id(TestIDs.AuthSignUpRegisterBtn.name())).tap();
 
       const signIn = await element(by.id('signInScreen')).getAttributes();
-      await element(by.id(TestIDs.SignInEmailField.name())).typeText('t@t.com');
-      await element(by.id(TestIDs.SignInPasswordField.name())).typeText('123');
+      // await element(by.id(TestIDs.SignInEmailField.name())).typeText('t@t.com');
+      // await element(by.id(TestIDs.SignInPasswordField.name())).typeText('123');
       await element(by.id(TestIDs.SignInSubmit.name())).tap();
 
       console.log('Sign in', signIn);
@@ -198,6 +198,7 @@ describe('App', () => {
     // await sleep();
     await element(by.id(TestIDs.CreateWorkoutCreateBtn.name())).tap();
 
+    await sleep(1000);
     const swipey = await element(by.id(TestIDs.WorkoutScreenScrollView.name()));
     await swipey.swipe('up', 'fast', 0.5);
 

@@ -26,7 +26,11 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {Modal, TouchableHighlight, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import AuthManager from '../utils/auth';
-import {GymCardProps, GymClassCardProps} from '../app_components/Cards/types';
+import {
+  GymCardProps,
+  GymClass,
+  GymClassCardProps,
+} from '../app_components/Cards/types';
 import Input from '../app_components/Input/input';
 import {debounce} from '../utils/algos';
 import {
@@ -72,7 +76,7 @@ interface FavGymClassCardProps {
   id?: string | number;
   user_id: string;
   date: string;
-  gym_class: GymClassCardProps;
+  gym_class: GymClass;
 }
 interface FavGymClassesPanelProps {
   data: FavGymClassCardProps[];
@@ -175,7 +179,7 @@ const GymsPanel: FunctionComponent<GymsPanelProps> = ({data, onDelete}) => {
               height: 50,
               justifyContent: 'space-between',
               borderWidth: 1,
-              borderColor: theme.palette.lightGray,
+              borderColor: theme.palette.darkGray,
               borderRadius: 8,
               marginVertical: 8,
             }}
@@ -268,7 +272,11 @@ const FavGymClassesPanel: FunctionComponent<
         const {
           id,
           date,
-          gym_class: {title, id: gym_class_id},
+          gym_class: {
+            title,
+            id: gym_class_id,
+            gym: {title: gymTitle},
+          },
         } = favGymClass;
         return (
           <View
@@ -278,7 +286,11 @@ const FavGymClassesPanel: FunctionComponent<
               key={id}
               underlayColor={theme.palette.transparent}
               activeOpacity={0.9}
-              onPress={() => goToGymClass(favGymClass.gym_class)}>
+              onPress={() =>
+                goToGymClass(
+                  favGymClass.gym_class as unknown as GymClassCardProps,
+                )
+              }>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Icon
                   name="star"
@@ -287,7 +299,9 @@ const FavGymClassesPanel: FunctionComponent<
                   style={{fontSize: 24, margin: 12}}
                 />
 
-                <SmallText>{title}</SmallText>
+                <SmallText>
+                  {title} - {gymTitle}
+                </SmallText>
               </View>
             </Touchable>
           </View>
@@ -531,7 +545,7 @@ const ProfileSettingsModal: FunctionComponent<{
               underlayColor="#CACACACA"
               onPress={props.onRequestClose}
               btnStyles={{
-                backgroundColor: theme.palette.lightGray,
+                backgroundColor: theme.palette.tertiary.main,
                 width: '75%',
               }}
               text="Close"
@@ -626,18 +640,22 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
             </View>
             <View style={{flex: 1}}>
               <TouchableHighlight
+                hitSlop={{bottom: 12, left: 12, right: 12, top: 12}}
                 onPress={() => setModalVisible(!modalVisible)}
                 testID={TestIDs.OpenSettingsModalBtn.name()}
                 style={{
                   flex: 1,
                   height: '100%',
                   justifyContent: 'center',
-                  alignItems: 'flex-end',
+                  alignItems: 'center',
+                  borderRadius: 12,
                 }}>
                 <Icon
-                  name="menu"
+                  name="settings"
                   color={theme.palette.text}
-                  style={{fontSize: 48, marginRight: 8}}
+                  style={{
+                    fontSize: 24,
+                  }}
                 />
               </TouchableHighlight>
             </View>
@@ -708,7 +726,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
           )}
 
           {usersGyms?.length ? (
-            <View style={{flex: 6, width: '100%'}}>
+            <View style={{flex: 8, width: '100%'}}>
               <RegularText>My Gyms</RegularText>
               <ScrollView style={{width: '100%'}}>
                 <GymsPanel data={usersGyms} onDelete={onConfirmDelete} />

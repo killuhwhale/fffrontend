@@ -14,6 +14,9 @@ import Input from '../Input/input';
 import {mdFontSize} from '../shared';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RegularButton} from '../Buttons/buttons';
+import twrnc from 'twrnc';
+const lightRed = twrnc.color('bg-red-400');
+const darkRed = twrnc.color('bg-red-900');
 
 const DeleteActionCancelModal: FunctionComponent<{
   modalVisible: boolean;
@@ -51,7 +54,7 @@ const DeleteActionCancelModal: FunctionComponent<{
             <SmallText>In order to delete, type</SmallText>
           </View>
           <View style={{marginBottom: 8}}>
-            <RegularText textStyles={{color: theme.palette.primary.main}}>
+            <RegularText textStyles={{color: theme.palette.tertiary.main}}>
               {props.confirmName}
             </RegularText>
           </View>
@@ -70,7 +73,7 @@ const DeleteActionCancelModal: FunctionComponent<{
                 value={confirmText}
                 containerStyle={{
                   width: '100%',
-                  backgroundColor: theme.palette.lightGray,
+                  backgroundColor: theme.palette.tertiary.main,
                   borderRadius: 8,
                   paddingHorizontal: 8,
                 }}
@@ -92,7 +95,7 @@ const DeleteActionCancelModal: FunctionComponent<{
               onPress={props.onRequestClose}
               btnStyles={{
                 marginRight: 4,
-                backgroundColor: theme.palette.lightGray,
+                backgroundColor: theme.palette.gray,
               }}
               text={props.closeText}
             />
@@ -101,9 +104,10 @@ const DeleteActionCancelModal: FunctionComponent<{
               onPress={() =>
                 isValid() ? props.onAction() : console.log('Invalid name')
               }
+              underlayColor={isValid() ? '' : lightRed}
               btnStyles={{
                 marginLeft: 4,
-                backgroundColor: isValid() ? 'red' : theme.palette.lightGray,
+                backgroundColor: isValid() ? darkRed : lightRed,
               }}
               text={props.actionText}
             />

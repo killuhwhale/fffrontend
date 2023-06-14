@@ -22,6 +22,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import Input from '../../../app_components/Input/input';
 import {RegularButton} from '../../../app_components/Buttons/buttons';
 import {TestIDs} from '../../../utils/constants';
+import AlertModal from '../../../app_components/modals/AlertModal';
 export type Props = StackScreenProps<RootStackParamList, 'CreateGymScreen'>;
 
 const PageContainer = styled(Container)`
@@ -63,7 +64,7 @@ const ImagePicker: FunctionComponent<{
     <View>
       <RegularButton
         onPress={pickFile}
-        btnStyles={{backgroundColor: theme.palette.lightGray}}
+        btnStyles={{backgroundColor: theme.palette.darkGray}}
         text={props.title}
       />
     </View>
@@ -83,6 +84,7 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
   // Create gym class mutation
 
   const [isCreating, setIsCreating] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
   const _createGym = async () => {
     console.log('Creatting gym: ', mainFile, logoFile, title, desc);
@@ -123,6 +125,8 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
       console.log('Newly creaated gym', gym);
       if (gym.id) {
         navigation.navigate('HomePageTabs', {screen: 'Profile'});
+      } else if (gym.err_type === 1) {
+        setShowAlert(true);
       }
     } catch (err) {
       console.log('Error creating gym', err);
@@ -143,7 +147,7 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
               value={title}
               containerStyle={{
                 width: '100%',
-                backgroundColor: theme.palette.lightGray,
+                backgroundColor: theme.palette.darkGray,
                 borderRadius: 8,
                 paddingHorizontal: 8,
               }}
@@ -166,7 +170,7 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
               testID={TestIDs.GymDescField.name()}
               containerStyle={{
                 width: '100%',
-                backgroundColor: theme.palette.lightGray,
+                backgroundColor: theme.palette.darkGray,
                 borderRadius: 8,
                 paddingHorizontal: 8,
               }}
@@ -200,7 +204,7 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
             <RegularButton
               testID={TestIDs.GymSubmitBtn.name()}
               onPress={_createGym.bind(this)}
-              btnStyles={{backgroundColor: theme.palette.lightGray}}
+              btnStyles={{backgroundColor: theme.palette.darkGray}}
               text="Create"
             />
           ) : (
@@ -208,6 +212,12 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
           )}
         </View>
       </View>
+      <AlertModal
+        closeText="Close"
+        bodyText="This account can only create 3 gyms max."
+        modalVisible={showAlert}
+        onRequestClose={() => setShowAlert(false)}
+      />
     </PageContainer>
   );
 };

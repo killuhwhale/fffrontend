@@ -79,7 +79,7 @@ const GymSearchScreen: FunctionComponent<Props> = ({navigation}) => {
           fontSize={16}
           containerStyle={{
             width: '100%',
-            backgroundColor: theme.palette.lightGray,
+            backgroundColor: theme.palette.darkGray,
             borderRadius: 8,
             paddingHorizontal: 8,
           }}

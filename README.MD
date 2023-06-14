@@ -106,19 +106,12 @@ git push origin HEAD:staging HEAD
 
 # TODO
 
-- Add error notifications when limits are reached and other stuff.
+- ## Create a drop down on CreateWorkoutScreen so that Title, Desc and Rep Schemes are able to be hidden to fgive more room for workouts.
 
-- Lock to portrait only
-- Profile - Fav gym classes - add gym title
+- Create Workouts should trigger StatsPage to refetch works.. Invalidate tags.
 
-- Workout screen - on workout list -> Rounds 5 change to 5 Rounds and same for rep scheme 21 15 9 -> Change to 21 15 9 Rep Scheme. Number first then text.
-  - This is the text on the animated button to see/ delete a workout on a workoutGroup.
-  - Find a better icon than a menu for the workout item card.
-- Date on GymClass WorkoutGroups should dispaly for_date, It hink its currently displaying date created.
-
-- Add Workout Item
-
-  - reps & rounds based scheme, when entering no reps, zero is ented, by defualt 1 should be entered if nothing is entered by the user.
+- Lock to portrait only - Need to Change on iOS still.
+  On iOS, in the General tab and Deployment Info section of Xcode enable the Device Orientation you want to support (ensure you have selected iPhone from the Devices menu when making the changes). For Android, open the AndroidManifest.xml file and within the activity element add 'android:screenOrientation="portrait"' to lock to portrait or 'android:screenOrientation="landscape"' to lock to landscape.
 
 - Create good sample workout
   - Good for demos and screenshots

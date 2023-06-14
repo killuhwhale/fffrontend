@@ -50,7 +50,6 @@ const GymCardList: FunctionComponent<GymCardListProps> = props => {
       ItemSeparatorComponent={() => <View style={{height: 20}} />}
       keyExtractor={({id}: any) => id.toString()}
       renderItem={({item}: {item: GymCardProps}) => {
-        console.log('Gym card item', item);
         return <GymCard {...item} />;
       }}
     />
@@ -130,8 +129,6 @@ const WorkoutItemPreviewHorizontalList: FunctionComponent<{
   testID?: string;
 }> = props => {
   const theme = useTheme();
-  console.log('TestID for Horiz WOrkout Items', props.testID);
-  console.log('Data for Horiz WOrkout Items', props.data);
   return (
     <FlatList
       data={props.data}
@@ -148,7 +145,6 @@ const WorkoutItemPreviewHorizontalList: FunctionComponent<{
       accessibilityLabel={props.testID}
       testID={props.testID}
       keyExtractor={(item: any, idx) => {
-        console.log('Null id item ', item);
         // id.toString();
         return `${idx}_${item.id}`;
       }}

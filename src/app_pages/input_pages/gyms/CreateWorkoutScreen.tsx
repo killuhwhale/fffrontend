@@ -45,6 +45,7 @@ import Input from '../../../app_components/Input/input';
 import ItemString from '../../../app_components/WorkoutItems/ItemString';
 import {TestIDs} from '../../../utils/constants';
 import AddItem from './AddWorkoutItemPanel';
+import AlertModal from '../../../app_components/modals/AlertModal';
 export type Props = StackScreenProps<RootStackParamList, 'CreateWorkoutScreen'>;
 
 export const COLORSPALETTE = [
@@ -91,7 +92,7 @@ const RepSheme: FunctionComponent<{
   const theme = useTheme();
 
   return (
-    <View style={{marginBottom: 15, height: 40}}>
+    <View style={{marginBottom: 15, height: 35}}>
       <Input
         placeholder="Reps"
         editable={props.editable}
@@ -100,7 +101,7 @@ const RepSheme: FunctionComponent<{
         label="Reps"
         containerStyle={{
           width: '100%',
-          backgroundColor: theme.palette.lightGray,
+          backgroundColor: theme.palette.darkGray,
           borderRadius: 8,
           paddingHorizontal: 8,
         }}
@@ -131,7 +132,7 @@ const RoundSheme: FunctionComponent<{
       }
     : {};
   return (
-    <View style={{marginBottom: 15, height: 40}}>
+    <View style={{marginBottom: 15, height: 35}}>
       <Input
         placeholder="Rounds"
         onChangeText={props.onSchemeRoundChange}
@@ -142,7 +143,7 @@ const RoundSheme: FunctionComponent<{
         editable={props.editable}
         containerStyle={{
           width: '100%',
-          backgroundColor: theme.palette.lightGray,
+          backgroundColor: theme.palette.darkGray,
           borderRadius: 8,
           paddingHorizontal: 8,
         }}
@@ -165,7 +166,7 @@ const TimeSheme: FunctionComponent<{
 }> = props => {
   const theme = useTheme();
   return (
-    <View style={{marginBottom: 15, height: 40}}>
+    <View style={{marginBottom: 15, height: 35}}>
       <Input
         placeholder="Time (mins)"
         onChangeText={props.onSchemeRoundChange}
@@ -174,7 +175,7 @@ const TimeSheme: FunctionComponent<{
         helperText="Please enter number of rounds"
         containerStyle={{
           width: '100%',
-          backgroundColor: theme.palette.lightGray,
+          backgroundColor: theme.palette.darkGray,
           borderRadius: 8,
           paddingHorizontal: 8,
         }}
@@ -349,10 +350,13 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
   const [isCreating, setIsCreating] = useState(false);
 
   const [createWorkoutError, setCreateWorkoutError] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
 
   const _createWorkoutWithItems = async () => {
     // Need to get file from the URI
+    if (items.length == 0 || items.length > 15) return setShowAlert(true);
     setIsCreating(true);
+
     const workoutData = new FormData();
     const data = new FormData();
     workoutData.append('group', workoutGroupID);
@@ -371,6 +375,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
       const createdWorkout = await createWorkout(workoutData).unwrap();
       console.log('Workout res', createdWorkout);
 
+      // TODO() Catch this error better, shoudl return a specific error num for  unique constraint errors.
       // eslint-disable-next-line dot-notation
       if (createdWorkout['err_type'] >= 0) {
         console.log('Failed to create workout', createdWorkout.error);
@@ -398,7 +403,6 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
       console.log('Error creating workout', err);
     }
     setIsCreating(false);
-    // TODO possibly dispatch to refresh data
   };
 
   const removeItem = idx => {
@@ -460,6 +464,8 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
   const [allowMarkConstant, setAllowMarkConstant] = useState(false);
 
   const updateItemConstant = (idx: number) => {
+    // Determines if an item should ignore a RepScheme.
+    // "Do a constant number of reps each round."
     if (idx < 0 || idx >= items.length) {
       return;
     }
@@ -474,71 +480,84 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
 
   return (
     <PageContainer>
-      <View style={{margin: 5}}>
+      <View>
         <SmallText>Create Workout</SmallText>
       </View>
-      <View style={{margin: 5}}>
+      <View>
         <RegularText>{workoutGroupTitle}</RegularText>
       </View>
 
-      <View style={{height: '100%', width: '100%'}}>
+      <View
+        style={{
+          height: '100%',
+          width: '100%',
+          flex: 1,
+          justifyContent: 'space-between',
+        }}>
         {createWorkoutError.length ? (
           <SmallText>{createWorkoutError}</SmallText>
         ) : (
           <></>
         )}
-        <View style={{marginBottom: 15, height: 40}}>
-          <Input
-            onChangeText={t => {
-              setTitle(t);
-              setCreateWorkoutError('');
-              setIsCreating(false);
-            }}
-            value={title}
-            label=""
-            testID={TestIDs.CreateWorkoutTitleField.name()}
-            placeholder="Title"
-            fontSize={mdFontSize}
-            containerStyle={{
-              width: '100%',
-              backgroundColor: theme.palette.lightGray,
-              borderRadius: 8,
-              paddingHorizontal: 8,
-            }}
-            leading={
-              <Icon
-                name="person"
-                color={theme.palette.text}
-                style={{fontSize: mdFontSize}}
-              />
-            }
-          />
-        </View>
 
-        <View style={{marginBottom: 15, height: 40}}>
-          <Input
-            label=""
-            placeholder="Description"
-            testID={TestIDs.CreateWorkoutDescField.name()}
-            value={desc}
-            fontSize={mdFontSize}
-            onChangeText={d => setDesc(d)}
-            containerStyle={{
-              width: '100%',
-              backgroundColor: theme.palette.lightGray,
-              borderRadius: 8,
-              paddingHorizontal: 8,
-            }}
-            leading={
-              <Icon
-                name="person"
-                color={theme.palette.text}
-                style={{fontSize: mdFontSize}}
-              />
-            }
-          />
+        <View style={{flex: 2, marginBottom: 15}}>
+          <View style={{height: 35, marginBottom: 8}}>
+            <Input
+              onChangeText={t => {
+                setTitle(t);
+                setCreateWorkoutError('');
+                setIsCreating(false);
+              }}
+              value={title}
+              label=""
+              testID={TestIDs.CreateWorkoutTitleField.name()}
+              placeholder="Title"
+              fontSize={mdFontSize}
+              inputStyles={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              containerStyle={{
+                width: '100%',
+                backgroundColor: theme.palette.darkGray,
+                borderRadius: 8,
+                paddingHorizontal: 8,
+              }}
+              leading={
+                <Icon
+                  name="person"
+                  color={theme.palette.text}
+                  style={{fontSize: mdFontSize}}
+                />
+              }
+            />
+          </View>
+
+          <View style={{height: 35}}>
+            <Input
+              label=""
+              placeholder="Description"
+              testID={TestIDs.CreateWorkoutDescField.name()}
+              value={desc}
+              fontSize={mdFontSize}
+              onChangeText={d => setDesc(d)}
+              containerStyle={{
+                width: '100%',
+                backgroundColor: theme.palette.darkGray,
+                borderRadius: 8,
+                paddingHorizontal: 8,
+              }}
+              leading={
+                <Icon
+                  name="person"
+                  color={theme.palette.text}
+                  style={{fontSize: mdFontSize}}
+                />
+              }
+            />
+          </View>
         </View>
-        <View>
+        <View style={{flex: 1}}>
           {WORKOUT_TYPES[schemeType] == STANDARD_W ? (
             <></>
           ) : WORKOUT_TYPES[schemeType] == REPS_W ? (
@@ -579,10 +598,11 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
             <></>
           )}
         </View>
+        <View style={{flex: 10}}>
+          <AddItem onAddItem={addWorkoutItem} schemeType={schemeType} />
+        </View>
 
-        <AddItem onAddItem={addWorkoutItem} schemeType={schemeType} />
-
-        <View style={{flex: 2}}>
+        <View style={{flex: 11}}>
           {schemeType == 0 ? (
             <View
               style={{
@@ -613,7 +633,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
                   }}
                   trackColor={{
                     true: theme.palette.primary.contrastText,
-                    false: theme.palette.lightGray,
+                    false: theme.palette.darkGray,
                   }}
                   thumbColor={
                     showAddSSID
@@ -649,7 +669,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
                 }}
                 trackColor={{
                   true: theme.palette.primary.contrastText,
-                  false: theme.palette.lightGray,
+                  false: theme.palette.darkGray,
                 }}
                 thumbColor={
                   showAddSSID ? theme.palette.primary.main : theme.palette.gray
@@ -756,12 +776,12 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
             </ScrollView>
           )}
         </View>
-        <View style={{flex: 1}}>
+        <View style={{flex: 2}}>
           {!isCreating ? (
             <RegularButton
               onPress={_createWorkoutWithItems.bind(this)}
               testID={TestIDs.CreateWorkoutCreateBtn.name()}
-              btnStyles={{backgroundColor: theme.palette.lightGray}}
+              btnStyles={{backgroundColor: theme.palette.darkGray}}
               text="Create"
             />
           ) : (
@@ -769,6 +789,17 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
           )}
         </View>
       </View>
+
+      <AlertModal
+        closeText="Close"
+        bodyText={
+          items.length == 0
+            ? 'Workout must contain workout items.'
+            : 'This account can only create 15 workout items per workout max.'
+        }
+        modalVisible={showAlert}
+        onRequestClose={() => setShowAlert(false)}
+      />
     </PageContainer>
   );
 };

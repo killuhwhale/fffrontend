@@ -40,6 +40,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import Input from '../../../app_components/Input/input';
 import {RegularButton} from '../../../app_components/Buttons/buttons';
 import {TestIDs} from '../../../utils/constants';
+import AlertModal from '../../../app_components/modals/AlertModal';
 export type Props = StackScreenProps<
   RootStackParamList,
   'CreateGymClassScreen'
@@ -86,7 +87,7 @@ const ImagePicker: FunctionComponent<{
       <RegularButton
         onPress={pickFile}
         btnStyles={{
-          backgroundColor: theme.palette.lightGray,
+          backgroundColor: theme.palette.darkGray,
         }}
         text={props.title}
       />
@@ -118,6 +119,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
 
   const [isCreating, setIsCreating] = useState(false);
 
+  const [showAlert, setShowAlert] = useState(false);
   const _createGymClass = async () => {
     console.log('Creatting gym class: ', mainFile, logoFile, title, desc, gym);
 
@@ -152,6 +154,8 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
       console.log('Gym class res', gymClass);
       if (gymClass.id) {
         navigation.navigate('HomePageTabs', {screen: 'Profile'});
+      } else if (gymClass.err_type === 1) {
+        setShowAlert(true);
       }
     } catch (err) {
       console.log('Error creating gym class', err);
@@ -172,7 +176,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
               value={title}
               containerStyle={{
                 width: '100%',
-                backgroundColor: theme.palette.lightGray,
+                backgroundColor: theme.palette.darkGray,
                 borderRadius: 8,
                 paddingHorizontal: 8,
               }}
@@ -194,7 +198,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
               value={desc}
               containerStyle={{
                 width: '100%',
-                backgroundColor: theme.palette.lightGray,
+                backgroundColor: theme.palette.darkGray,
                 borderRadius: 8,
                 paddingHorizontal: 8,
               }}
@@ -238,7 +242,9 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
                 margin: 6,
                 padding: 6,
               }}>
-              <SmallText>Gym</SmallText>
+              <SmallText textStyles={{textAlign: 'center', marginBottom: 12}}>
+                Gym
+              </SmallText>
               <RNPickerSelect
                 ref={pickerRef}
                 onValueChange={(itemValue, itemIndex) => setGym(itemValue)}
@@ -254,6 +260,12 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
                 style={{
                   inputAndroidContainer: {
                     alignItems: 'center',
+                    borderBottomColor: theme.palette.text,
+                    borderBottomWidth: 1,
+                    borderLeftColor: theme.palette.text,
+                    borderLeftWidth: 1,
+                    borderRightColor: theme.palette.text,
+                    borderRightWidth: 1,
                   },
                   inputAndroid: {
                     color: theme.palette.text,
@@ -299,7 +311,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
               testID={TestIDs.GymClassCreateBtn.name()}
               onPress={_createGymClass.bind(this)}
               btnStyles={{
-                backgroundColor: theme.palette.lightGray,
+                backgroundColor: theme.palette.darkGray,
               }}
               text="Create"
             />
@@ -308,6 +320,13 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
           )}
         </View>
       </View>
+
+      <AlertModal
+        closeText="Close"
+        bodyText="This account can only create 3 Gym Classes per gym max."
+        modalVisible={showAlert}
+        onRequestClose={() => setShowAlert(false)}
+      />
     </PageContainer>
   );
 };

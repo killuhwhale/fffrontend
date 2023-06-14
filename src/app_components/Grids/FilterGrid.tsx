@@ -56,7 +56,7 @@ const FilterGrid: FunctionComponent<{
             value={term}
             containerStyle={{
               width: '100%',
-              backgroundColor: theme.palette.lightGray,
+              backgroundColor: theme.palette.darkGray,
               borderRadius: 8,
               // paddingHorizontal: 8,
             }}

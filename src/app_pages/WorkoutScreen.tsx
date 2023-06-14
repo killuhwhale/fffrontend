@@ -545,28 +545,9 @@ const WorkoutScreen: FunctionComponent<Props> = ({
           paddingVertical: 20,
           paddingLeft: 10,
         }}>
-        <View
-          style={{
-            borderTopWidth: 1,
-            height: 1,
-            borderColor: theme.palette.text,
-          }}
-        />
         <Row>
           <StatsPanel tags={tags} names={names} />
-          {/* <ScrollView>
-                        <View style={{ marginTop: 16, marginRight: 8 }}>
-
-                        </View>
-                    </ScrollView> */}
         </Row>
-        <View
-          style={{
-            borderTopWidth: 1,
-            height: 1,
-            borderColor: theme.palette.text,
-          }}
-        />
       </View>
       <Row style={{width: '100%', borderRadius: 8}} />
 

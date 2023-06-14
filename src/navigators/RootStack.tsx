@@ -37,7 +37,7 @@ import UserWorkoutsScreen from '../app_pages/UserWorkoutsScreen';
 import {TestIDs} from '../utils/constants';
 import GymSearchScreen from '../app_pages/GymSearchScreen';
 import {Platform, StyleSheet, View} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import twrnc from 'twrnc';
 // Screens and props each screen expects...
 export type RootStackParamList = {
   HomePage: undefined;
@@ -76,33 +76,25 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const tabBarFlex = Platform.OS === 'ios' ? 0.12 : 0.09;
+const tabIconColor = (focused: boolean): string => {
+  return (
+    (focused ? twrnc.color(`bg-emerald-900`) : twrnc.color(`bg-slate-200`)) ??
+    'white'
+  );
+};
 
 function HomePageTabs() {
   const theme = useTheme();
-  const tabBarColor = '';
+  const tabBarColor = twrnc.color(`bg-sky-900`);
   return (
     <Tab.Navigator>
       <Tab.Screen
         name="HomePage"
-        component={HomePage}
+        component={GymSearchScreen}
         options={{
           headerShown: false,
           tabBarTestID: TestIDs.HomeTab.name(),
-          tabBarBackground() {
-            return (
-              <LinearGradient
-                // colors={[theme.palette.backgroundColor, '#0072FF']}
-                colors={[
-                  theme.palette.backgroundColor,
-                  '#0072FFAA',
-                  '#0072FFFF',
-                ]}
-                start={{x: 0, y: 0.4}}
-                end={{x: 0, y: 1}}
-                style={{flex: 1}}
-              />
-            );
-          },
+
           tabBarStyle: {
             backgroundColor: tabBarColor,
             flex: tabBarFlex,
@@ -125,6 +117,64 @@ function HomePageTabs() {
           ),
         }}
       />
+      <Tab.Screen
+        name="My Workouts"
+        component={UserWorkoutsScreen}
+        options={{
+          headerShown: false,
+          tabBarTestID: TestIDs.HomeTab.name(),
+
+          tabBarStyle: {
+            backgroundColor: tabBarColor,
+            flex: tabBarFlex,
+            paddingBottom: 4,
+          },
+          tabBarLabel: ({color, focused, position}) => (
+            <SmallText
+              textStyles={{
+                color: focused ? theme.palette.accent : theme.palette.text,
+              }}>
+              My Workouts
+            </SmallText>
+          ),
+          tabBarIcon: ({color, focused, size}) => (
+            <Icon
+              name="barbell-outline"
+              color={focused ? theme.palette.accent : theme.palette.text}
+              style={{fontSize: size}}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Stats"
+        component={StatsScreen}
+        options={{
+          headerShown: false,
+          tabBarTestID: TestIDs.HomeTab.name(),
+
+          tabBarStyle: {
+            backgroundColor: tabBarColor,
+            flex: tabBarFlex,
+            paddingBottom: 4,
+          },
+          tabBarLabel: ({color, focused, position}) => (
+            <SmallText
+              textStyles={{
+                color: focused ? theme.palette.accent : theme.palette.text,
+              }}>
+              Stats
+            </SmallText>
+          ),
+          tabBarIcon: ({color, focused, size}) => (
+            <Icon
+              name="stats-chart-outline"
+              color={focused ? theme.palette.accent : theme.palette.text}
+              style={{fontSize: size}}
+            />
+          ),
+        }}
+      />
 
       <Tab.Screen
         name="Profile"
@@ -137,21 +187,7 @@ function HomePageTabs() {
             flex: tabBarFlex,
             paddingBottom: 4,
           },
-          tabBarBackground() {
-            return (
-              <LinearGradient
-                // colors={[theme.palette.backgroundColor, '#0072FF']}
-                colors={[
-                  theme.palette.backgroundColor,
-                  '#0072FFAA',
-                  '#0072FFFF',
-                ]}
-                start={{x: 0, y: 0.4}}
-                end={{x: 0, y: 1}}
-                style={{flex: 1}}
-              />
-            );
-          },
+
           tabBarLabel: ({color, focused, position}) => (
             <SmallText
               textStyles={{

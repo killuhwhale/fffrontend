@@ -48,7 +48,7 @@ const RegularButton: FunctionComponent<ButtonProps> = props => {
     <TouchableHighlight
       testID={props.testID}
       onPress={props.disabled ? () => {} : props.onPress}
-      underlayColor={props.underlayColor || theme.palette.secondary.main}
+      underlayColor={props.underlayColor || theme.palette.backgroundColor}
       style={[
         {
           paddingVertical: 4,

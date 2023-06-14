@@ -60,6 +60,7 @@ export type Props = StackScreenProps<
 import Input from '../../../app_components/Input/input';
 import ItemString from '../../../app_components/WorkoutItems/ItemString';
 import {RegularButton} from '../../../app_components/Buttons/buttons';
+import AlertModal from '../../../app_components/modals/AlertModal';
 
 const PageContainer = styled(Container)`
   background-color: ${props => props.theme.palette.backgroundColor};
@@ -173,7 +174,7 @@ const EditWorkoutItem: FunctionComponent<{
               inputStyles={{textAlign: 'center'}}
               containerStyle={[
                 numberInputStyle.containerStyle,
-                {borderRadius: 4, backgroundColor: theme.palette.lightGray},
+                {borderRadius: 4, backgroundColor: theme.palette.darkGray},
               ]}
               label="Sets"
               value={newSets === 0 ? '' : newSets.toString()}
@@ -224,7 +225,7 @@ const EditWorkoutItem: FunctionComponent<{
               inputStyles={{textAlign: 'center'}}
               containerStyle={[
                 numberInputStyle.containerStyle,
-                {borderRadius: 4, backgroundColor: theme.palette.lightGray},
+                {borderRadius: 4, backgroundColor: theme.palette.darkGray},
               ]}
               label="Reps"
               value={newReps}
@@ -286,7 +287,7 @@ const EditWorkoutItem: FunctionComponent<{
                 inputStyles={{textAlign: 'center'}}
                 containerStyle={[
                   numberInputStyle.containerStyle,
-                  {borderRadius: 4, backgroundColor: theme.palette.lightGray},
+                  {borderRadius: 4, backgroundColor: theme.palette.darkGray},
                 ]}
                 onChangeText={t => {
                   let val = '';
@@ -423,7 +424,7 @@ const EditWorkoutItem: FunctionComponent<{
                 inputStyles={{textAlign: 'center'}}
                 containerStyle={[
                   numberInputStyle.containerStyle,
-                  {borderRadius: 4, backgroundColor: theme.palette.lightGray},
+                  {borderRadius: 4, backgroundColor: theme.palette.darkGray},
                 ]}
                 label="Distance"
                 value={newDistance}
@@ -557,7 +558,7 @@ const EditWorkoutItem: FunctionComponent<{
               containerStyle={[
                 [
                   numberInputStyle.containerStyle,
-                  {borderRadius: 4, backgroundColor: theme.palette.lightGray},
+                  {borderRadius: 4, backgroundColor: theme.palette.darkGray},
                 ],
                 {width: '100%'},
               ]}
@@ -626,7 +627,7 @@ const EditWorkoutItem: FunctionComponent<{
                       numberInputStyle.containerStyle,
                       {
                         borderRadius: 4,
-                        backgroundColor: theme.palette.lightGray,
+                        backgroundColor: theme.palette.darkGray,
                       },
                     ],
                     {width: '100%'},
@@ -853,6 +854,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
 
   const [isCreating, setIsCreating] = useState(false);
 
+  const [showAlert, setShowAlert] = useState(false);
   const completeWorkout = async () => {
     setShowCompleteWorkout(false);
 
@@ -893,6 +895,8 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
     console.log('CompltedWG res: ', res);
     if (res.id) {
       navigation.goBack();
+    } else if (res.err_type === 1) {
+      setShowAlert(true);
     }
     setIsCreating(false);
   };
@@ -927,7 +931,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
               fontSize={16}
               containerStyle={{
                 width: '100%',
-                backgroundColor: theme.palette.lightGray,
+                backgroundColor: theme.palette.darkGray,
                 borderRadius: 8,
                 paddingHorizontal: 8,
               }}
@@ -960,7 +964,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
             onDateChange={setForDate}
             mode="date"
             locale="en"
-            fadeToColor={theme.palette.lightGray}
+            fadeToColor={theme.palette.darkGray}
             textColor={theme.palette.text}
             style={{height: SCREEN_HEIGHT * 0.06, transform: [{scale: 0.65}]}}
           />
@@ -1034,7 +1038,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
             <RegularButton
               onPress={() => setShowCompleteWorkout(true)}
               btnStyles={{
-                backgroundColor: theme.palette.lightGray,
+                backgroundColor: theme.palette.darkGray,
               }}
               text="Complete!"
             />
@@ -1050,6 +1054,13 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
         onAction={completeWorkout}
         modalVisible={showCompleteWorkout}
         onRequestClose={() => setShowCompleteWorkout(false)}
+      />
+
+      <AlertModal
+        closeText="Close"
+        bodyText="This account can only complete 1 workout per day max."
+        modalVisible={showAlert}
+        onRequestClose={() => setShowAlert(false)}
       />
     </PageContainer>
   );

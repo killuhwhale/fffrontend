@@ -11,6 +11,7 @@ const post = async (
 ) => {
   const _data =
     contentType === 'application/json' ? JSON.stringify(data) : data;
+  console.log('Posting data: ', url, contentType, _data);
   return fetch(url, {
     method: 'POST',
     headers: {

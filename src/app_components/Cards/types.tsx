@@ -24,6 +24,23 @@ export interface GymClassCardProps {
   mainImage: string;
   logoImage: string;
 }
+
+export type Gym = {
+  id?: string;
+  title: string;
+  desc: string;
+  owner_id: string;
+  date: string;
+};
+export type GymClass = {
+  id?: string;
+  gym: Gym;
+  title: string;
+  private: boolean;
+  desc: string;
+  date: string;
+};
+
 export interface GymClassCardListProps {
   data: Array<GymClassCardProps>;
 }

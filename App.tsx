@@ -20,15 +20,18 @@ import {BASEURL} from './src/utils/constants';
 
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import auth from './src/utils/auth';
+import twrnc from 'twrnc';
 
-const primaryColor = '#007cff';
-const secondaryColor = '#006d77';
+const primaryColor = twrnc.color('bg-sky-800');
+const secondaryColor = twrnc.color('bg-emerald-900');
+const tertiaryColor = twrnc.color('bg-violet-500');
 
-const d_text = '#f1faee';
-const d_lightGray = '#474747';
-const d_gray = '#2c365a';
-const d_darkGray = '#2d2d2d';
-const d_background = '#000814';
+const d_accent = twrnc.color('bg-sky-400');
+const d_text = twrnc.color('bg-slate-50');
+const d_lightGray = twrnc.color('bg-slate-300');
+const d_gray = twrnc.color('bg-slate-500');
+const d_darkGray = twrnc.color('bg-slate-700');
+const d_background = twrnc.color('bg-slate-900');
 
 const l_text = '#283618';
 const l_lightGray = '#a8dadc';
@@ -48,10 +51,10 @@ const DarkTheme: DefaultTheme = {
       contrastText: '#fff',
     },
     tertiary: {
-      main: '#007cff',
+      main: tertiaryColor,
       contrastText: '#fff',
     },
-    accent: '#00f5d4',
+    accent: d_accent,
     transparent: '#34353578',
 
     text: d_text,

@@ -9,6 +9,7 @@ import {BASEURL} from '../../utils/constants';
 import Input, {AutoCaptilizeEnum} from '../Input/input';
 import {useTheme} from 'styled-components';
 import {validEmailRegex} from '../../utils/algos';
+import {mdFontSize} from '../shared';
 
 export const ResetPassword: FunctionComponent = () => {
   const theme = useTheme();
@@ -59,7 +60,7 @@ export const ResetPassword: FunctionComponent = () => {
       <View style={{height: 45, marginBottom: 16}}>
         <Input
           containerStyle={{
-            backgroundColor: theme.palette.lightGray,
+            backgroundColor: theme.palette.gray,
             borderRadius: 8,
           }}
           label="Email"
@@ -67,6 +68,7 @@ export const ResetPassword: FunctionComponent = () => {
           isError={emailError.length > 0}
           helperText={emailError}
           autoCapitalize={AutoCaptilizeEnum.None}
+          fontSize={mdFontSize}
           onChangeText={(_email: string) => {
             if (!validEmailRegex.test(_email)) {
               setEmailError('Invalid email');
@@ -75,21 +77,19 @@ export const ResetPassword: FunctionComponent = () => {
             }
             setEmail(_email);
           }}
-          inputStyles={{paddingLeft: 8}}
+          inputStyles={{paddingLeft: 24}}
           value={email}
         />
       </View>
 
-      <View style={{width: '100%', alignItems: 'center'}}>
-        <View style={{width: '80%'}}>
-          <RegularButton
-            btnStyles={{height: 45, justifyContent: 'center'}}
-            textStyles={{textAlign: 'center', fontSize: 16}}
-            onPress={sendEmail}
-            text="Send Reset Code"
-            disabled={showHint}
-          />
-        </View>
+      <View style={{alignItems: 'center'}}>
+        <RegularButton
+          btnStyles={{height: 45, width: '100%', justifyContent: 'center'}}
+          textStyles={{textAlign: 'center', fontSize: 16}}
+          onPress={sendEmail}
+          text="Send Reset Code"
+          disabled={showHint}
+        />
       </View>
     </View>
   );

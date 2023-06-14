@@ -90,7 +90,8 @@ const WorkoutItemPanel: FunctionComponent<{
               height: '100%',
             }}>
             <Icon
-              name="menu"
+              // name="reader"
+              name={['reader', 'map', 'receipt', 'menu'][(idx ?? 0) % 4]}
               onPress={navToWorkoutNameDetail}
               color={
                 schemeType == 0 && item.ssid >= 0
