@@ -29,15 +29,13 @@ killuhwhal3-rn-secure-storage@2.0.8
 - Android build
   cd android/ && ./gradlew clean && cd .. && detox build --configuration android.emu.debug
   detox test --configuration android.emu.debug
-  detox build --configuration android.emu.releasew
+  detox build --configuration android.emu.release
 
 - iOS build
   detox build --configuration ios.sim.debug
   detox build --configuration ios.sim.release
 
   Testings IDS
-
-# Build Android
 
 ## Image
 
