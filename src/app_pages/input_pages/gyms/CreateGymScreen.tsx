@@ -21,8 +21,10 @@ import {RootStackParamList} from '../../../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
 import Input from '../../../app_components/Input/input';
 import {RegularButton} from '../../../app_components/Buttons/buttons';
-import {TestIDs} from '../../../utils/constants';
+import {TestIDs, nodeEnv} from '../../../utils/constants';
 import AlertModal from '../../../app_components/modals/AlertModal';
+import BannerAddMembership from '../../../app_components/ads/BannerAd';
+import InterstitialAdMembership from '../../../app_components/ads/InterstitialAd';
 export type Props = StackScreenProps<RootStackParamList, 'CreateGymScreen'>;
 
 const PageContainer = styled(Container)`
@@ -125,7 +127,7 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
       console.log('Newly creaated gym', gym);
       if (gym.id) {
         navigation.navigate('HomePageTabs', {screen: 'Profile'});
-      } else if (gym.err_type === 1) {
+      } else if (gym.err_type === 1 || gym.detail) {
         setShowAlert(true);
       }
     } catch (err) {
@@ -137,6 +139,7 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
 
   return (
     <PageContainer>
+      <BannerAddMembership />
       <LargeText textStyles={{marginBottom: 8}}>Create Gym</LargeText>
       <View style={{height: '100%', width: '100%'}}>
         <View style={{flex: 1}}>
@@ -201,12 +204,19 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
             style={{width: '100%', height: 100, resizeMode: 'contain'}}
           />
           {!isCreating ? (
-            <RegularButton
-              testID={TestIDs.GymSubmitBtn.name()}
-              onPress={_createGym.bind(this)}
-              btnStyles={{backgroundColor: theme.palette.darkGray}}
-              text="Create"
-            />
+            nodeEnv === 'test' ? (
+              <RegularButton
+                testID={TestIDs.GymSubmitBtn.name()}
+                onPress={_createGym.bind(this)}
+                btnStyles={{backgroundColor: theme.palette.darkGray}}
+                text="Create"
+              />
+            ) : (
+              <InterstitialAdMembership
+                text="Create"
+                onClose={_createGym.bind(this)}
+              />
+            )
           ) : (
             <ActivityIndicator size="small" color={theme.palette.text} />
           )}
@@ -214,7 +224,7 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
       </View>
       <AlertModal
         closeText="Close"
-        bodyText="This account can only create 3 gyms max."
+        bodyText="Failed to create gym: gyms can only be created by members and are limited to 15 gyms with unique names."
         modalVisible={showAlert}
         onRequestClose={() => setShowAlert(false)}
       />

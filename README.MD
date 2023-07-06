@@ -58,6 +58,15 @@ android:icon="@mipmap/ic_launcher"
 
 ## Build android
 
+### Debug
+
+adb shell input keyevent 82
+
+\*\* Muted Audio in Config File -- Fixes Audio static
+/home/$USER/Android/Sdk/tools/lib/monitor-x86_64/configuration/config.ini
+hw.audioInput=no
+hw.audioOutput=no
+
 Change versions in android/app/build.gradle
 cd android/ && ./gradlew clean && ./gradlew bundleRelease
 android/app/build/outputs/bundle/[app-release.aab]
@@ -65,11 +74,10 @@ android/app/build/outputs/bundle/[app-release.aab]
 adb -s 710KPMZ0409387 reverse tcp:8081 tcp:8081
 adb -s 710KPMZ0409387 reverse tcp:8000 tcp:8000
 
+npx react-native run-android --active-arch-only
 adb -s emulator-5554 reverse tcp:8081 tcp:8081
 adb -s emulator-5554 reverse tcp:8000 tcp:8000
 npx react-native start
-
-npx react-native run-android --active-arch-only
 
 // When building your android app locally, by default you build all the 4 Application
 // Binary Interfaces (ABIs) : armeabi-v7a, arm64-v8a, x86 & x86_64.
@@ -106,8 +114,6 @@ git push origin HEAD:staging HEAD
 
 - ## Create a drop down on CreateWorkoutScreen so that Title, Desc and Rep Schemes are able to be hidden to fgive more room for workouts.
 
-- Create Workouts should trigger StatsPage to refetch works.. Invalidate tags.
-
 - Lock to portrait only - Need to Change on iOS still.
   On iOS, in the General tab and Deployment Info section of Xcode enable the Device Orientation you want to support (ensure you have selected iPhone from the Devices menu when making the changes). For Android, open the AndroidManifest.xml file and within the activity element add 'android:screenOrientation="portrait"' to lock to portrait or 'android:screenOrientation="landscape"' to lock to landscape.
 
@@ -125,12 +131,11 @@ git push origin HEAD:staging HEAD
   - Request success, backend success, front end response failure...
 
 '''
-Welcome to our fitness app! This app is designed to help you track your workouts and reach your fitness goals. With our user-friendly interface, you can easily log your exercises, set goals, and monitor your progress. Our app also offers a variety of helpful features, such as personalized workout plans and the ability to connect with friends for added motivation. Get started on your fitness journey today with our app!
+Ready to try an app that is designed to help you track and visualize your workouts to reach your fitness goals. With FitForm Trackerr, you can easily log your exercises and view your progress over time. Our user-friendly interface allows you to set goals and track your progress towards achieving them. Get started today and see the progress you can make with our app!
 
-Welcome to our fitness app! This app is designed to help you track and visualize your workouts to reach your fitness goals. With our app, you can easily log your exercises and view your progress over time. Our user-friendly interface allows you to set goals and track your progress towards achieving them. You can also use our app to create personalized workout plans and connect with friends for added motivation. Get started on your fitness journey today and see the progress you can make with our app!
+I have an app with the description: "Ready to try an app that is designed to help you track and visualize your workouts to reach your fitness goals. With FitForm Trackerr, you can easily log your exercises and view your progress over time. Our user-friendly interface allows you to set goals and track your progress towards achieving them. Get started today and see the progress you can make with our app!"
 
-Welcome to our fitness app! This app is designed to help you track and visualize your workouts to reach your fitness goals. With our app, you can easily log your exercises and view your progress over time. Our user-friendly interface allows you to set goals and track your progress towards achieving them. You can also use our app to find workouts from your friends or your gym, or create personalized workout plans for added variety. Connect with friends for added motivation and support on your fitness journey. Get started today and see the progress you can make with our app!
-
+It can track personal workouts, allows users to create classes and add workouts in order to provide workouts to class members. users can compete workouts created by classes and modify the details to reflect what they did. They can visialize the data via graphs with date ranges to see break downs by exercise or exercise category.
 '''
 
 V2 Features:

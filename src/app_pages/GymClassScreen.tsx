@@ -33,6 +33,7 @@ import {TouchableHighlight} from 'react-native-gesture-handler';
 import FilterGrid from '../app_components/Grids/FilterGrid';
 import {WorkoutGroupSquares} from '../app_components/Grids/GymClasses/WorkoutGroupSquares';
 import {TestIDs} from '../utils/constants';
+import BannerAddMembership from '../app_components/ads/BannerAd';
 export type Props = StackScreenProps<RootStackParamList, 'GymClassScreen'>;
 
 const GymClassScreenContainer = styled(Container)`
@@ -176,6 +177,7 @@ const GymClassScreen: FunctionComponent<Props> = ({
 
   return (
     <GymClassScreenContainer>
+      <BannerAddMembership />
       <View
         style={{
           flexDirection: 'row',

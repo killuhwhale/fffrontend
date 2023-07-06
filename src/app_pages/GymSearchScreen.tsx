@@ -12,13 +12,16 @@ import * as RootNavigation from '../navigators/RootNavigation';
 import {useTheme} from 'styled-components';
 import {GymCardList} from '../app_components/Cards/cardList';
 import {useAppSelector, useAppDispatch} from '../redux/hooks';
-import {useGetGymsQuery} from '../redux/api/apiSlice';
+import {useGetGymsQuery, useGetUserInfoQuery} from '../redux/api/apiSlice';
 import AuthManager from '../utils/auth';
 import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Keyboard, Text, View} from 'react-native';
 import {filter} from '../utils/algos';
 import Input from '../app_components/Input/input';
+
+import BannerAddMembership from '../app_components/ads/BannerAd';
+
 export type Props = StackScreenProps<RootStackParamList, 'HomePage'>;
 
 const HomePageContainer = styled(Container)`
@@ -29,9 +32,6 @@ const HomePageContainer = styled(Container)`
 
 const GymSearchScreen: FunctionComponent<Props> = ({navigation}) => {
   const theme = useTheme();
-  // Access value
-  const count = useAppSelector(state => state.counter.value);
-  const dispatch = useAppDispatch();
 
   const {data, isLoading, isSuccess, isError, error} = useGetGymsQuery('');
   const isTokenError =
@@ -72,6 +72,7 @@ const GymSearchScreen: FunctionComponent<Props> = ({navigation}) => {
 
   return (
     <HomePageContainer>
+      <BannerAddMembership />
       <View style={{height: 40, marginTop: 16}}>
         <Input
           onChangeText={filterText}

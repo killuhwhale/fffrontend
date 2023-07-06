@@ -38,6 +38,7 @@ export type Props = StackScreenProps<RootStackParamList, 'GymScreen'>;
 
 import FilterGrid from '../app_components/Grids/FilterGrid';
 import {GymClassSquares} from '../app_components/Grids/Gyms/GymClassSquares';
+import BannerAddMembership from '../app_components/ads/BannerAd';
 
 const GymScreenContainer = styled(Container)`
   background-color: ${props => props.theme.palette.backgroundColor};
@@ -126,6 +127,7 @@ const GymScreen: FunctionComponent<Props> = ({navigation, route: {params}}) => {
 
   return (
     <GymScreenContainer>
+      <BannerAddMembership />
       <View
         style={{
           flexDirection: 'row',

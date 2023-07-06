@@ -23,7 +23,14 @@ import {RootStackParamList} from '../navigators/RootStack';
 
 import * as RootNavigation from '../navigators/RootNavigation';
 import {StackScreenProps} from '@react-navigation/stack';
-import {Modal, TouchableHighlight, View} from 'react-native';
+import {
+  Modal,
+  StyleProp,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import AuthManager from '../utils/auth';
 import {
@@ -42,6 +49,7 @@ import DeleteActionCancelModal from '../app_components/modals/deleteByNameModal'
 import {RegularButton} from '../app_components/Buttons/buttons';
 import {TestIDs} from '../utils/constants';
 import {UserProps} from './types';
+import BannerAddMembership from '../app_components/ads/BannerAd';
 
 export type Props = StackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -82,9 +90,23 @@ interface FavGymClassesPanelProps {
   data: FavGymClassCardProps[];
 }
 
+function isDateInFuture(date: Date): boolean {
+  const currentDate = new Date();
+  if (typeof date == typeof '') {
+    date = new Date(date);
+  }
+
+  console.log('COMPARING DATES!~! !', date, currentDate, date > currentDate);
+  return date > currentDate;
+}
+
 const UserInfoPanel: FunctionComponent<UserInfoPanelProps> = props => {
   const theme = useTheme();
-  const {id, email, username} = props.user || {id: 0, email: '', username: ''};
+  const {id, email, username, sub_end_date} = props.user || {
+    id: 0,
+    email: '',
+    username: '',
+  };
   const [showEditusername, setShowEditUsername] = useState(false);
   const [newUsername, setNewUsername] = useState(username);
   const [_updateUsername, {isLoading}] = useUpdateUsernameMutation();
@@ -152,9 +174,27 @@ const UserInfoPanel: FunctionComponent<UserInfoPanelProps> = props => {
             placeholder="Username"
           />
         ) : (
-          <RegularText textStyles={{textAlign: 'center'}}>
-            {newUsername}
-          </RegularText>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <RegularText textStyles={{textAlign: 'center'}}>
+              {newUsername}
+            </RegularText>
+            <SmallText
+              textStyles={{
+                color: theme.palette.primary.main,
+                marginLeft: 6,
+                textAlign: 'center',
+                alignContent: 'center',
+                alignItems: 'center',
+              }}>
+              {isDateInFuture(sub_end_date) ? 'Member' : 'Non-member'}
+            </SmallText>
+          </View>
         )}
       </View>
     </View>
@@ -318,6 +358,7 @@ export const ActionCancelModal: FunctionComponent<{
   actionText: string;
   modalText: string;
   onAction(): void;
+  containerStyle?: StyleProp<ViewStyle>;
 }> = props => {
   const theme = useTheme();
   return (
@@ -326,40 +367,54 @@ export const ActionCancelModal: FunctionComponent<{
       transparent={true}
       visible={props.modalVisible}
       onRequestClose={props.onRequestClose}>
-      <View style={centeredViewStyle.centeredView}>
-        <View
-          style={{
-            ...modalViewStyle.modalView,
-            backgroundColor: theme.palette.darkGray,
-          }}>
+      <View
+        style={[
+          centeredViewStyle.centeredView,
+          {backgroundColor: '#000000DD'},
+        ]}>
+        <TouchableOpacity
+          style={[
+            centeredViewStyle.centeredView,
+            {width: '100%', height: '100%'},
+          ]}
+          onPress={() => props.onRequestClose()}>
           <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginBottom: 12,
-            }}>
-            <RegularText>{props.modalText}</RegularText>
-          </View>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <RegularButton
-              onPress={props.onRequestClose}
-              btnStyles={{
-                backgroundColor: '#DB4437',
-                marginRight: 4,
-              }}
-              text={props.closeText}
-            />
+            style={[
+              modalViewStyle.modalView,
+              {
+                backgroundColor: theme.palette.darkGray,
+              },
+              props.containerStyle,
+            ]}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginBottom: 12,
+              }}>
+              <RegularText>{props.modalText}</RegularText>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <RegularButton
+                onPress={props.onRequestClose}
+                btnStyles={{
+                  backgroundColor: '#DB4437',
+                  marginRight: 4,
+                }}
+                text={props.closeText}
+              />
 
-            <RegularButton
-              onPress={props.onAction}
-              btnStyles={{
-                backgroundColor: theme.palette.primary.main,
-                marginLeft: 4,
-              }}
-              text={props.actionText}
-            />
+              <RegularButton
+                onPress={props.onAction}
+                btnStyles={{
+                  backgroundColor: theme.palette.primary.main,
+                  marginLeft: 4,
+                }}
+                text={props.actionText}
+              />
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
     </Modal>
   );
@@ -478,7 +533,7 @@ const ProfileSettingsModal: FunctionComponent<{
                 RootNavigation.navigate('CreateGymScreen', {});
                 props.onRequestClose();
               }}
-              title="Create gym"
+              title="Create Gym"
             />
             <View
               style={{
@@ -493,7 +548,7 @@ const ProfileSettingsModal: FunctionComponent<{
                 RootNavigation.navigate('CreateGymClassScreen', {});
                 props.onRequestClose();
               }}
-              title="Create gym class"
+              title="Create Gym Class"
             />
             <View
               style={{
@@ -511,7 +566,7 @@ const ProfileSettingsModal: FunctionComponent<{
                 });
                 props.onRequestClose();
               }}
-              title="Create personal workout group"
+              title="Create Personal Workout Group"
             />
             <View
               style={{
@@ -526,7 +581,7 @@ const ProfileSettingsModal: FunctionComponent<{
                 RootNavigation.navigate('ResetPasswordScreen', {});
                 props.onRequestClose();
               }}
-              title="Reset password"
+              title="Change Password"
             />
           </View>
 
@@ -553,6 +608,7 @@ const ProfileSettingsModal: FunctionComponent<{
           </View>
 
           <ActionCancelModal
+            containerStyle={{borderWidth: 2, borderColor: 'white'}}
             actionText="Logout"
             closeText="Close"
             modalText={'Are you sure?'}
@@ -620,9 +676,10 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
       console.log('Error deleting gym: ', error);
     }
   };
-
+  console.log('Profile user: ', data?.user);
   return (
     <PageContainer>
+      <BannerAddMembership />
       {isLoading ? (
         <SmallText>Loading....</SmallText>
       ) : isSuccess ? (

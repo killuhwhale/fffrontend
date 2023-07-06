@@ -39,8 +39,10 @@ import {RootStackParamList} from '../../../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
 import Input from '../../../app_components/Input/input';
 import {RegularButton} from '../../../app_components/Buttons/buttons';
-import {TestIDs} from '../../../utils/constants';
+import {TestIDs, nodeEnv} from '../../../utils/constants';
 import AlertModal from '../../../app_components/modals/AlertModal';
+import BannerAddMembership from '../../../app_components/ads/BannerAd';
+import InterstitialAdMembership from '../../../app_components/ads/InterstitialAd';
 export type Props = StackScreenProps<
   RootStackParamList,
   'CreateGymClassScreen'
@@ -154,7 +156,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
       console.log('Gym class res', gymClass);
       if (gymClass.id) {
         navigation.navigate('HomePageTabs', {screen: 'Profile'});
-      } else if (gymClass.err_type === 1) {
+      } else if (gymClass.err_type === 1 || gymClass.detail) {
         setShowAlert(true);
       }
     } catch (err) {
@@ -166,8 +168,15 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
 
   return (
     <PageContainer>
-      <RegularText textStyles={{marginBottom: 8}}>Create Gym Class</RegularText>
       <View style={{height: '100%', width: '100%'}}>
+        <View style={{flex: 2}}>
+          <BannerAddMembership />
+        </View>
+        <View style={{flex: 1}}>
+          <RegularText textStyles={{marginBottom: 8}}>
+            Create Gym Class
+          </RegularText>
+        </View>
         <View style={{flex: 3}}>
           <View style={{height: 55, marginBottom: 8}}>
             <Input
@@ -307,14 +316,19 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
             style={{width: '100%', height: 100, resizeMode: 'contain'}}
           />
           {!isCreating ? (
-            <RegularButton
-              testID={TestIDs.GymClassCreateBtn.name()}
-              onPress={_createGymClass.bind(this)}
-              btnStyles={{
-                backgroundColor: theme.palette.darkGray,
-              }}
-              text="Create"
-            />
+            nodeEnv === 'test' ? (
+              <RegularButton
+                testID={TestIDs.GymClassCreateBtn.name()}
+                onPress={_createGymClass.bind(this)}
+                btnStyles={{backgroundColor: theme.palette.darkGray}}
+                text="Create"
+              />
+            ) : (
+              <InterstitialAdMembership
+                text="Create"
+                onClose={_createGymClass.bind(this)}
+              />
+            )
           ) : (
             <ActivityIndicator size="small" color={theme.palette.text} />
           )}
@@ -323,7 +337,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
 
       <AlertModal
         closeText="Close"
-        bodyText="This account can only create 3 Gym Classes per gym max."
+        bodyText="Failed to create class: classes can only be created by members and are limited to 15 classes per gym with unique names."
         modalVisible={showAlert}
         onRequestClose={() => setShowAlert(false)}
       />

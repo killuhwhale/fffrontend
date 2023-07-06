@@ -895,7 +895,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
     console.log('CompltedWG res: ', res);
     if (res.id) {
       navigation.goBack();
-    } else if (res.err_type === 1) {
+    } else if (res.err_type === 1 || res.detail) {
       setShowAlert(true);
     }
     setIsCreating(false);
@@ -1058,7 +1058,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
 
       <AlertModal
         closeText="Close"
-        bodyText="This account can only complete 1 workout per day max."
+        bodyText="Failed to complete workout: non-members can only create or complete 1 workout per day. All users have 15 workouts per day limit."
         modalVisible={showAlert}
         onRequestClose={() => setShowAlert(false)}
       />

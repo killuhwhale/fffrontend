@@ -9,10 +9,11 @@ import {
   useGetProfileViewQuery,
   useGetProfileWorkoutGroupsQuery,
 } from '../redux/api/apiSlice';
-import {LargeText, SmallText} from '../app_components/Text/Text';
+import {LargeText, RegularText, SmallText} from '../app_components/Text/Text';
 import {RegularButton} from '../app_components/Buttons/buttons';
 import * as RootNavigation from '../navigators/RootNavigation';
 import Icon from 'react-native-vector-icons/Ionicons';
+import BannerAddMembership from '../app_components/ads/BannerAd';
 
 const UserWorkoutsScreen: FunctionComponent = props => {
   const theme = useTheme();
@@ -48,6 +49,7 @@ const UserWorkoutsScreen: FunctionComponent = props => {
         flex: 1,
         backgroundColor: theme.palette.backgroundColor,
       }}>
+      <BannerAddMembership />
       {userWorkouts.length ? (
         <View style={{padding: 12, flex: 1, height: '100%', width: '100%'}}>
           <View
@@ -89,40 +91,42 @@ const UserWorkoutsScreen: FunctionComponent = props => {
         </View>
       ) : (
         <View style={{height: '100%', width: '100%', justifyContent: 'center'}}>
-          <SmallText textStyles={{textAlign: 'center'}}>
-            No workouts, go add a workout!
+          <SmallText textStyles={{textAlign: 'center', marginBottom: 22}}>
+            No workouts!
           </SmallText>
           {data && !isLoading ? (
-            <RegularButton
-              underlayColor="#cacaca30"
-              btnStyles={{
-                backgroundColor: '#cacaca00',
-                borderTopColor: '#cacaca92',
-                borderBottomColor: '#cacaca92',
-                borderWidth: 2,
-                width: '100%',
-              }}
-              onPress={() => {
-                RootNavigation.navigate('CreateWorkoutGroupScreen', {
-                  ownedByClass: false,
-                  ownerID: data.user.id,
-                });
-              }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
+            <View style={{width: '50%', alignSelf: 'center'}}>
+              <RegularButton
+                underlayColor="#cacaca30"
+                btnStyles={{
+                  backgroundColor: '#cacaca00',
+                  borderTopColor: '#cacaca92',
+                  borderBottomColor: '#cacaca92',
+                  borderWidth: 2,
                   width: '100%',
+                }}
+                onPress={() => {
+                  RootNavigation.navigate('CreateWorkoutGroupScreen', {
+                    ownedByClass: false,
+                    ownerID: data.user.id,
+                  });
                 }}>
-                <Icon
-                  name="barbell-outline"
-                  color={theme.palette.text}
-                  style={{fontSize: 64, marginRight: 16}}
-                />
-                <LargeText>New workout</LargeText>
-              </View>
-            </RegularButton>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '100%',
+                  }}>
+                  <Icon
+                    name="add"
+                    color={theme.palette.text}
+                    style={{fontSize: 32, marginRight: 16}}
+                  />
+                  <RegularText>New workout</RegularText>
+                </View>
+              </RegularButton>
+            </View>
           ) : (
             <></>
           )}

@@ -1,4 +1,8 @@
 {
   "name": "FitForm",
-  "displayName": "FitForm"
+  "displayName": "FitForm",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-9369132738006643~2252555759",
+    "ios_app_id": "ca-app-pub-9369132738006643~4687147405"
+  }
 }

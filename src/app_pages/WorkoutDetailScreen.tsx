@@ -16,6 +16,7 @@ import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
 import {View} from 'react-native';
 import {StatsPanel} from '../app_components/Stats/StatsPanel';
+import BannerAddMembership from '../app_components/ads/BannerAd';
 
 export type Props = StackScreenProps<RootStackParamList, 'WorkoutDetailScreen'>;
 
@@ -94,6 +95,7 @@ const WorkoutDetailScreen: FunctionComponent<Props> = ({
 
   return (
     <ScreenContainer>
+      <BannerAddMembership />
       <View style={{width: '100%'}}>
         <View style={{width: '100%', alignItems: 'flex-end'}} />
         <LargeText>{title}</LargeText>

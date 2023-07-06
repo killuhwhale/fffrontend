@@ -17,6 +17,7 @@ import DatePicker from 'react-native-date-picker';
 import TotalsBarChart from '../app_components/charts/barChart';
 import TotalsLineChart from '../app_components/charts/lineChart';
 import FreqCalendar from '../app_components/charts/freqCalendar';
+import BannerAddMembership from '../app_components/ads/BannerAd';
 export type Props = StackScreenProps<RootStackParamList, 'StatsScreen'>;
 
 const ScreenContainer = styled(Container)`
@@ -141,6 +142,7 @@ const StatsScreen: FunctionComponent<Props> = ({
   return (
     <ScreenContainer>
       {/* Date Picker */}
+      <BannerAddMembership />
       <View style={{flex: 2, width: '100%', alignItems: 'center'}}>
         <View
           style={{

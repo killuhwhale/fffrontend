@@ -22,8 +22,10 @@ import DatePicker from 'react-native-date-picker';
 import {dateFormat} from '../../StatsScreen';
 import {RegularButton} from '../../../app_components/Buttons/buttons';
 import Input from '../../../app_components/Input/input';
-import {TestIDs} from '../../../utils/constants';
+import {TestIDs, nodeEnv} from '../../../utils/constants';
 import AlertModal from '../../../app_components/modals/AlertModal';
+import BannerAddMembership from '../../../app_components/ads/BannerAd';
+import InterstitialAdMembership from '../../../app_components/ads/InterstitialAd';
 export type Props = StackScreenProps<
   RootStackParamList,
   'CreateWorkoutGroupScreen'
@@ -137,7 +139,7 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
       console.log('Gym class res', workoutGroup.status);
       if (workoutGroup.id) {
         navigation.goBack();
-      } else if (workoutGroup.err_type === 1) {
+      } else if (workoutGroup.err_type === 1 || workoutGroup.detail) {
         setShowAlert(true);
       }
     } catch (err) {
@@ -149,10 +151,16 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
 
   return (
     <PageContainer>
-      <RegularText textStyles={{marginBottom: 8}}>
-        Create Workout Group
-      </RegularText>
       <View style={{height: '100%', width: '100%'}}>
+        <View style={{flex: 2}}>
+          <BannerAddMembership />
+        </View>
+        <View style={{flex: 1}}>
+          <RegularText textStyles={{marginBottom: 8}}>
+            Create Workout Group
+          </RegularText>
+        </View>
+
         <View style={{flex: 4}}>
           <View style={{marginBottom: 15, height: 40}}>
             <Input
@@ -232,14 +240,19 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
         </View>
         <View style={{flex: 2}}>
           {!isCreating ? (
-            <RegularButton
-              onPress={_createWorkout.bind(this)}
-              testID={TestIDs.WorkoutGroupCreateBtn.name()}
-              btnStyles={{
-                backgroundColor: theme.palette.darkGray,
-              }}
-              text="Create"
-            />
+            nodeEnv === 'test' ? (
+              <RegularButton
+                testID={TestIDs.GymClassCreateBtn.name()}
+                onPress={() => _createWorkout.bind(this)}
+                btnStyles={{backgroundColor: theme.palette.darkGray}}
+                text="Create"
+              />
+            ) : (
+              <InterstitialAdMembership
+                text="Create"
+                onClose={() => _createWorkout.bind(this)}
+              />
+            )
           ) : (
             <ActivityIndicator size="small" color={theme.palette.text} />
           )}
@@ -247,7 +260,7 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
       </View>
       <AlertModal
         closeText="Close"
-        bodyText="This account can only create 1 workout per day."
+        bodyText="Failed to create workoutGroup: members are limited to 15 workouts per day and non members 1 workout per day including Completed workouts."
         modalVisible={showAlert}
         onRequestClose={() => setShowAlert(false)}
       />

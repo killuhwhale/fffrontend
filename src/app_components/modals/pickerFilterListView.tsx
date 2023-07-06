@@ -75,6 +75,7 @@ const PickerFilterListView: FunctionComponent<{
   data: [WorkoutNameProps];
   onSelect(workoutName: WorkoutNameProps);
 }> = props => {
+  /** The list view to display the filtered results. */
   const theme = useTheme();
 
   return (
@@ -82,6 +83,7 @@ const PickerFilterListView: FunctionComponent<{
       <FlatList
         data={props.data}
         horizontal={false}
+        keyboardShouldPersistTaps="always"
         contentContainerStyle={{flexGrow: 1}}
         keyExtractor={({id}: any) => id.toString()}
         renderItem={({item}: {item: WorkoutNameProps}) => {

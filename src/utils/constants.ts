@@ -3,7 +3,8 @@ const nodeEnv = process.env.NODE_ENV || '';
 const BASEURL =
   ['development', 'test'].indexOf(nodeEnv) >= 0
     ? 'http://localhost:8000/'
-    : 'https://starfish-app-r4hzq.ondigitalocean.app/'; // iOS simulator & physical device w/ adb reverse
+    : 'https://fittrackrr.com/ffapi/'; // iOS simulator & physical device w/ adb reverse
+// : 'https://starfish-app-r4hzq.ondigitalocean.app/'; // iOS simulator & physical device w/ adb reverse
 console.log('Using Baseurl: ', BASEURL);
 console.log('Env vars: ', process.env);
 // const BASEURL = "http://10.0.2.2:8000/" // android emulator
@@ -146,4 +147,4 @@ class TestIDs {
   }
 }
 
-export {BASEURL, SPACES_URL, TestIDs};
+export {BASEURL, SPACES_URL, TestIDs, nodeEnv};

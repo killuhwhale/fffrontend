@@ -33,6 +33,7 @@ import {
   WorkoutItemProps,
 } from '../app_components/Cards/types';
 import {MediaURLSliderClass} from '../app_components/MediaSlider/MediaSlider';
+import BannerAddMembership from '../app_components/ads/BannerAd';
 export type Props = StackScreenProps<
   RootStackParamList,
   'WorkoutNameDetailScreen'
@@ -56,6 +57,7 @@ const WorkoutNameDetailScreen: FunctionComponent<Props> = ({
   return (
     <ScreenContainer>
       <View style={{width: '100%'}}>
+        <BannerAddMembership />
         <LargeText
           textStyles={{
             color: theme.palette.primary.main,
