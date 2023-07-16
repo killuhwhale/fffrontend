@@ -109,6 +109,7 @@ const StatsScreen: FunctionComponent<Props> = ({
   const tagLabels: string[] = Array.from(new Set(Object.keys(tags)));
   const nameLabels: string[] = Array.from(new Set(Object.keys(names)));
 
+  console.log('Tag Labels: ', tagLabels);
   // I dont need to show all of these
   // This is on both Bar and Line Chart....
   // But if the current dataset shows zero for one of these, it should not show.
@@ -204,6 +205,7 @@ const StatsScreen: FunctionComponent<Props> = ({
                 endDate={endDate}
                 data={data}
               />
+              <></>
 
               <TotalsBarChart dataTypes={dataTypes} tags={tags} names={names} />
 

@@ -1,41 +1,93 @@
-import React, {FunctionComponent, useState} from 'react';
-import {View} from 'react-native';
+import React, {FunctionComponent, useEffect, useMemo, useState} from 'react';
+import {ScrollView, View} from 'react-native';
 import styled from 'styled-components/native';
 import {useTheme} from 'styled-components';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
+import {
+  SmallText,
+  RegularText,
+  LargeText,
+  TitleText,
+  XSmallText,
+} from '../Text/Text';
 import {Container, SCREEN_WIDTH} from '../shared';
 
 import {LineChart} from 'react-native-chart-kit';
 import HorizontalPicker from '../Pickers/HorizontalPicker';
 import {chartConfig} from '../../app_pages/StatsScreen';
 
-const ScreenContainer = styled(Container)`
-  background-color: ${props => props.theme.palette.backgroundColor};
-  justify-content: space-between;
-  width: 100%;
-`;
+const displayNum = (x: number): string => {
+  const s = x.toString();
+  const slen = s.length;
+  let num3s = Math.floor(slen / 3);
+  let suffix = '';
+
+  if (slen <= 3) {
+    return s;
+  }
+
+  if (num3s === 0) {
+    suffix = '';
+  } else if (num3s === 1) {
+    suffix = 'k';
+  } else if (num3s === 2) {
+    suffix = 'm';
+  } else if (num3s === 3) {
+    suffix = 'b';
+  } else if (num3s === 4) {
+    suffix = 't';
+  } else if (num3s === 5) {
+    suffix = 'quad';
+  } else if (num3s === 5) {
+    suffix = 'quint';
+  }
+
+  return `${s[0]}.${s[1]}${s[2]}${suffix}`;
+};
+
+const Decorator = ({x, y, index, indexData}) => {
+  const trialAndErrorFactor = 4;
+  const numChars = Math.ceil(
+    (indexData.toString().length * trialAndErrorFactor) / 2,
+  ); // divide by 2 for midpoint
+
+  return (
+    <XSmallText
+      textStyles={{
+        position: 'absolute',
+        left: x - numChars,
+        top: y - 15,
+        textAlign: 'center',
+      }}
+      key={index}>
+      {displayNum(indexData)}
+    </XSmallText>
+  );
+};
+
 export const dateFormat = (d: Date) => {
   return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
 };
 const shortDateFormat = (d: Date) => {
   return `${d.getMonth() + 1}-${d.getDate()}`;
 };
-const bLineData = (workouts, tagName, metric) => {
+const bLineData = (workouts: any[], tagName, metric) => {
   let labels: string[] = [];
   let data: number[] = [];
-  workouts.forEach(workoutStats => {
-    console.log('bLineData:', workoutStats);
-    labels.push(shortDateFormat(new Date(workoutStats.date)));
+  workouts
+    .sort((a, b) => (a['date'] < b['date'] ? -1 : 1))
+    .forEach(workoutStats => {
+      // console.log('bLineData:', workoutStats);
+      labels.push(shortDateFormat(new Date(workoutStats.date)));
 
-    if (workoutStats[tagName] && workoutStats[tagName][metric]) {
-      const stat = workoutStats[tagName][metric];
-      data.push(stat);
-    } else {
-      data.push(0);
-    }
-  });
-  console.log('Line data: ', data);
+      if (workoutStats[tagName] && workoutStats[tagName][metric]) {
+        const stat = workoutStats[tagName][metric];
+        data.push(stat);
+      } else {
+        data.push(0);
+      }
+    });
+  // console.log('Line data: ', data);
   return {
     labels,
     datasets: [
@@ -56,51 +108,38 @@ const TotalsLineChart: FunctionComponent<{
 }> = props => {
   const theme = useTheme();
 
-  const filterLineDataTypes = (): string[][] => {
+  const filterLineDataTypes = (tagName: string): string[][] => {
     const workouts: {}[] = showTags
       ? props.workoutTagStats
       : props.workoutNameStats;
-
-    const tagNames = showTags ? props.tagLabels : props.nameLabels;
 
     let filteredDataTypes: string[] = [];
     let filteredDataTypesAbbrev: string[] = [];
 
     props.dataTypes.forEach((metric, i) => {
       let validMetric = false;
-      tagNames.forEach(tagName => {
-        workouts.forEach(workoutStats => {
-          if (workoutStats[tagName]) {
-            const stat = workoutStats[tagName][metric];
-            if (stat > 0) {
-              validMetric = true;
-            }
+      // tagNames.forEach(tagName => {
+      workouts.forEach(workoutStats => {
+        if (workoutStats[tagName]) {
+          const stat = workoutStats[tagName][metric];
+          // console.log(`Tag: ${tagName} - Metric: ${metric} -  Stat: ${stat} `);
+          if (stat > 0) {
+            validMetric = true;
           }
-        });
+        }
       });
+      // });
 
       if (validMetric) {
         filteredDataTypes.push(metric);
         filteredDataTypesAbbrev.push(props.dataTypeYAxisSuffix[i]);
       }
     });
+
     return [filteredDataTypes, filteredDataTypesAbbrev];
   };
 
-  const [__filteredDataTypes, __filteredDataTypesAbbrev] =
-    filterLineDataTypes();
-
-  console.log(
-    'Filtered data types line:',
-    __filteredDataTypes,
-    __filteredDataTypesAbbrev,
-  );
-
   const [showTags, setShowTags] = useState(true); // Toggles between names and tags on the Bar Chart graph
-
-  const [showLineChartDataType, setShowLineChartDataType] = useState(
-    __filteredDataTypes.length > 1 ? 1 : 0,
-  ); // Which data to show in the LineChart [totalReps etc...]
 
   // To stay aligned with horizontal picker, we will start at Idx 1, expcet when we only have 1 item to select from. Then it is set to 0
 
@@ -111,6 +150,61 @@ const TotalsLineChart: FunctionComponent<{
   const [showLineChartNameType, setShowLineChartNameType] = useState(
     props.nameLabels.length == 1 ? 0 : 1,
   ); // Which data to show in the LineChart
+
+  const [__filteredDataTypes, __filteredDataTypesAbbrev] = useMemo(() => {
+    return filterLineDataTypes(
+      showTags
+        ? props.tagLabels[showLineChartTagType]
+        : props.nameLabels[showLineChartNameType],
+    );
+  }, [showLineChartTagType, showLineChartNameType]);
+
+  // Filtered data types line: ["totalKgSec", "totalKgs", "totalLbSec", "totalLbs", "totalReps", "totalTime"] ["kg*sec", "kgs", "lb*sec", "lbs", "reps", "sec"]
+  // console.log(
+  //   'Filtered data types line:',
+  //   __filteredDataTypes,
+  //   __filteredDataTypesAbbrev,
+  // );
+
+  const [showLineChartDataType, setShowLineChartDataType] = useState(
+    __filteredDataTypes.length > 1 ? 1 : 0,
+  ); // Which data to show in the LineChart [totalReps etc...]
+  const [prevDTLength, setPrevDTLength] = useState(__filteredDataTypes.length);
+
+  // Helps align data and horizontal list when Tag or Name Chagnes.
+  useEffect(() => {
+    // Case 1
+    // WE are at a data point with only reps length 1 showLineChartDataType== 0
+    // Switch to Length 2> and the list shows highlighted at 2 but data is at 1 still from previous
+    // We should then switch to 1 since we are at 0 or less than something...?
+
+    // Case 2
+    // We are at length 3 and move to length 1
+    // Nothing shows.
+    // We should update showLineChartDataType to the end index
+
+    // Rule 1
+    // When at a single data point list, and move to something with 2 or more, set to index 1.
+    // idx 0 when Len of 1 to Len of 2> set to 1
+
+    // Horizontal list, anytime it goes to a new list with a different length, it will go to 0 if Length of new liust is 1 and 1 if the new list is longer than 1.
+    //       If the lists are the same length, the highlighted index remains the same
+
+    //
+
+    if (prevDTLength == __filteredDataTypes.length) {
+      return;
+    } else if (__filteredDataTypes.length == 1) {
+      setShowLineChartDataType(0);
+    } else {
+      //else if(__filteredDataTypes.length > prevDTLength)
+      setShowLineChartDataType(1);
+    }
+    // else if (__filteredDataTypes.length < prevDTLength) {
+    //   setShowLineChartDataType(__filteredDataTypes.length - 1);
+    // }
+    setPrevDTLength(__filteredDataTypes.length);
+  }, [showLineChartTagType, showLineChartNameType, showLineChartDataType]);
 
   // generate bar data, given all data with chosen metric/ dataType
   // We can generate a filtered dataTypes by parsing tags or names.
@@ -188,17 +282,18 @@ const TotalsLineChart: FunctionComponent<{
         </View>
       </View>
 
-      <View style={{width: '100%', height: 180}}>
+      <ScrollView horizontal={true} style={{flex: 1, height: 260}}>
         <LineChart
           data={BLineData}
-          width={SCREEN_WIDTH}
-          height={180}
-          verticalLabelRotation={8}
+          width={BLineData.labels.length * 30}
+          height={260}
+          verticalLabelRotation={90}
           chartConfig={chartConfig}
+          renderDotContent={Decorator}
           bezier
           fromZero
         />
-      </View>
+      </ScrollView>
     </View>
   );
 };

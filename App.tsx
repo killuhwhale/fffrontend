@@ -14,6 +14,8 @@ import {navigationRef} from './src/navigators/RootNavigation';
 import Header from './src/app_components/Header/header';
 import {apiSlice, getToken} from './src/redux/api/apiSlice';
 
+import * as RootNavigation from './src/navigators/RootNavigation';
+
 import AuthScreen from './src/app_pages/AuthScreen';
 import Uploady from '@rpldy/native-uploady';
 import {BASEURL} from './src/utils/constants';
@@ -160,6 +162,8 @@ const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   console.log("User's preffered color scheme", useColorScheme(), isDarkMode);
   const theme = useTheme();
+  const [showBackButton, setShowBackButton] = useState(false);
+
   return (
     <Provider store={store}>
       <ThemeProvider theme={DarkTheme}>
@@ -169,10 +173,13 @@ const App = () => {
             <SafeAreaView>
               {/* <StatusBar barStyle={isDarkMode ? 'dark-content' : 'light-content'} /> */}
               <StatusBar barStyle={'dark-content'} />
-              <Header />
+              <Header showBackButton={showBackButton} />
             </SafeAreaView>
             <AuthNew>
-              <RootStack navref={navigationRef} />
+              <RootStack
+                setShowBackButton={setShowBackButton}
+                navref={navigationRef}
+              />
               <AuthScreen />
             </AuthNew>
           </GestureHandlerRootView>

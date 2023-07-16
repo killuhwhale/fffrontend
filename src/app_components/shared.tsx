@@ -20,6 +20,7 @@ export const lgFontSize: number = Platform.OS === 'ios' ? 36 : 32;
 export const regFontSize: number = Platform.OS === 'ios' ? 24 : 20;
 export const mdFontSize: number = Platform.OS === 'ios' ? 18 : 18;
 export const smFontSize: number = Platform.OS === 'ios' ? 12 : 12;
+export const xsmFontSize: number = Platform.OS === 'ios' ? 8 : 8;
 
 export const STANDARD_W = 'STANDARD';
 export const REPS_W = 'REPS';
@@ -210,8 +211,15 @@ export class CalcWorkoutStats {
     totalVol: number,
     sets: number | null,
   ) {
+    console.log('Calc item repsz: ');
     if (sets && quantity) {
       this.tags[pCat].totalReps += sets * quantity;
+      console.log(
+        'Calc item reps: ',
+        pCat,
+        sets * quantity,
+        this.tags[pCat].totalReps,
+      );
       this.names[workoutName].totalReps += sets * quantity;
     }
 
@@ -533,6 +541,9 @@ export class CalcWorkoutStats {
         // Tags
         const pCat = item.name.primary?.title;
         const sCat = item.name.secondary?.title;
+        if (pCat === undefined) {
+          console.log('Primary category is undefined: ', item.name, item);
+        }
         // Title
         const workoutName = item.name.name;
         this.checkInItemTagAndName(pCat, workoutName);

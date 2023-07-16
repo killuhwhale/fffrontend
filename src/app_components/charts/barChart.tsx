@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useState} from 'react';
-import {View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 
 import {useTheme} from 'styled-components';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -89,8 +89,6 @@ const TotalsBarChart: FunctionComponent<{
   return (
     <View
       style={{
-        flex: 3,
-        width: '100%',
         marginBottom: 24,
         paddingBottom: 12,
         borderBottomWidth: 1,
@@ -116,20 +114,21 @@ const TotalsBarChart: FunctionComponent<{
         />
       </View>
 
-      <View style={{width: '100%', height: 180}}>
+      <ScrollView horizontal={true} style={{flex: 1, height: 420}}>
         <BarChart
           style={{}}
           yAxisSuffix=""
+          xLabelsOffset={-15}
           data={BarData}
-          width={SCREEN_WIDTH}
-          height={180}
+          width={BarData.labels.length * 30 + 35}
+          height={420}
           yAxisLabel=""
           chartConfig={chartConfig}
-          verticalLabelRotation={2}
+          verticalLabelRotation={90}
           showValuesOnTopOfBars
           fromZero
         />
-      </View>
+      </ScrollView>
     </View>
   );
 };

@@ -161,7 +161,7 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
           </RegularText>
         </View>
 
-        <View style={{flex: 4}}>
+        <View style={{flex: 5}}>
           <View style={{marginBottom: 15, height: 40}}>
             <Input
               placeholder="Title"
@@ -231,7 +231,7 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
             />
           </View>
         </View>
-        <View style={{flex: 9}}>
+        <View style={{flex: 8}}>
           <MediaPicker
             setState={setFiles.bind(this)}
             title="Select Main Image"
@@ -243,14 +243,14 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
             nodeEnv === 'test' ? (
               <RegularButton
                 testID={TestIDs.GymClassCreateBtn.name()}
-                onPress={() => _createWorkout.bind(this)}
+                onPress={() => _createWorkout()}
                 btnStyles={{backgroundColor: theme.palette.darkGray}}
                 text="Create"
               />
             ) : (
               <InterstitialAdMembership
                 text="Create"
-                onClose={() => _createWorkout.bind(this)}
+                onClose={() => _createWorkout()}
               />
             )
           ) : (

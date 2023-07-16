@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, useEffect} from 'react';
 import {
   NavigationContainer,
   NavigationContainerRefWithCurrent,
@@ -213,6 +213,7 @@ function HomePageTabs() {
 interface RootstackProps {
   // navref: string;
   navref: NavigationContainerRefWithCurrent<ReactNavigation.RootParamList>;
+  setShowBackButton(show: boolean): void;
 }
 
 const RootStack: FunctionComponent<RootstackProps> = props => {
@@ -220,6 +221,32 @@ const RootStack: FunctionComponent<RootstackProps> = props => {
   const headerStyle = {
     backgroundColor: theme.palette.backgroundColor,
   };
+
+  useEffect(() => {
+    // Get the current route name when the component is mounted or the route changes
+    if (!props.navref.current) return;
+    const routeNameUnsub = props.navref.current?.addListener('state', state => {
+      console.log('Header state: ', props.navref.current?.getCurrentRoute());
+      const cr = props.navref.current?.getCurrentRoute()?.name;
+      const homeRoutes = ['HomePage', 'My Workouts', 'Stats', 'Profile'];
+      if (cr && homeRoutes.indexOf(cr) < 0) {
+        console.log('setShowBackButton(true): ');
+        props.setShowBackButton(true);
+      } else {
+        console.log('setShowBackButton(false: ');
+        props.setShowBackButton(false);
+      }
+      // setUpdateState(!updateState);
+    });
+
+    // Clean up the effect
+    return () => {
+      console.log('Header component unmounted');
+      if (routeNameUnsub) {
+        routeNameUnsub();
+      }
+    };
+  }, []);
 
   return (
     <NavigationContainer ref={props.navref}>
