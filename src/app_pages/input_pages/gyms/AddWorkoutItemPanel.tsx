@@ -264,50 +264,9 @@ const AddItem: FunctionComponent<{
                       uiView={PickerFilterListView}
                     />
                   )}
-
-                  {/* <RNPickerSelect
-                    ref={pickerRef}
-                    onValueChange={(itemValue, itemIndex) => {
-                      console.log('OnValChangfe', itemValue, itemIndex);
-                      setWorkoutName(itemIndex);
-                    }}
-                    touchableWrapperProps={{
-                      testID: TestIDs.AddItemRNPickerTouchableItemPicker.name(),
-                      accessibilityLabel: 'testAccessID2',
-                    }}
-                    modalProps={{
-                      testID: TestIDs.AddItemRNPickerModalItemPicker.name(),
-                      accessibilityLabel: 'testAccessID',
-                    }}
-                    pickerProps={{}}
-                    touchableDoneProps={{}}
-                    useNativeAndroidPickerStyle={false}
-                    placeholder={{}}
-                    // value={workoutName}
-                    style={{
-                      inputAndroidContainer: {
-                        alignItems: 'center',
-                      },
-                      inputAndroid: {
-                        color: theme.palette.text,
-                      },
-                      inputIOSContainer: {
-                        alignItems: 'center',
-                      },
-                      inputIOS: {
-                        color: theme.palette.text,
-                        height: '100%',
-                      },
-                    }}
-                    items={data.map((name, i) => {
-                      return {
-                        label: name.name,
-                        value: name.name,
-                      };
-                    })}
-                  /> */}
                 </View>
               </View>
+
               {isPausedItem ? (
                 <View style={{flex: 1}}>
                   <SmallText
@@ -370,6 +329,7 @@ const AddItem: FunctionComponent<{
           </View>
         </View>
       </View>
+
       {/* Row 2 */}
       <View style={{flexDirection: 'row', flex: 1, marginBottom: 4}}>
         {props.schemeType == 0 ? (

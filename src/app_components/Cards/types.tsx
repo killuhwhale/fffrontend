@@ -83,6 +83,44 @@ export interface WorkoutItemProps {
   date: string;
   workout: number;
 }
+export interface WorkoutDualItemProps {
+  id: number;
+  name: WorkoutNameProps;
+  ssid: number;
+  constant: boolean;
+
+  sets: number;
+  reps: string;
+  pause_duration: number;
+  duration: string;
+  duration_unit: number;
+  distance: string;
+  distance_unit: number;
+  weights: string;
+  weight_unit: string;
+  rest_duration: number;
+  rest_duration_unit: number;
+  percent_of: string;
+
+  finished?: boolean;
+  penalty?: string;
+  r_sets?: number;
+  r_reps?: string;
+  r_pause_duration?: number;
+  r_duration?: string;
+  r_duration_unit?: number;
+  r_distance?: string;
+  r_distance_unit?: number;
+  r_weights?: string;
+  r_weight_unit?: string;
+  r_rest_duration?: number;
+  r_rest_duration_unit?: number;
+  r_percent_of?: string;
+
+  order: number;
+  date: string;
+  workout: number;
+}
 
 export interface WorkoutItemListProps {
   data: Array<WorkoutItemProps>;
@@ -91,7 +129,7 @@ export interface WorkoutItemListProps {
 export interface WorkoutCardProps {
   id: number;
   group?: WorkoutGroupProps;
-  workout_items?: Array<WorkoutItemProps>;
+  workout_items?: Array<WorkoutItemProps | WorkoutDualItemProps>;
   completed_workout_items?: Array<WorkoutItemProps>;
   title: string;
   desc: string;
@@ -101,6 +139,7 @@ export interface WorkoutCardProps {
   editable?: boolean;
   testID?: string;
 }
+
 export interface WorkoutCardListProps {
   data: Array<WorkoutCardProps>;
   editable?: boolean;

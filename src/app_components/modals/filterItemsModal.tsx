@@ -138,15 +138,6 @@ const FilterItemsModal: FunctionComponent<{
               </View>
             </View>
 
-            {/*
-
-                TODO()
-                  1. Move this file outside of Modals Folder
-                  2. Change WorkoutCard UI to a Small Row style.
-                    - Make in a new file, separate from Profile view maybe?
-                  3. Change backgriound color
-
-                */}
             <View style={{flex: 1}}>
               <props.uiView
                 {...props.extraProps}

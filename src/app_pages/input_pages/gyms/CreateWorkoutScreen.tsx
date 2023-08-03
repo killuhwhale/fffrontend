@@ -25,16 +25,22 @@ import {
   parseNumList,
   jList,
   mdFontSize,
+  TIMESCORE_W,
+  TIMELIMIT_W,
 } from '../../../app_components/shared';
 import {useAppDispatch} from '../../../redux/hooks';
 import {
   useCreateWorkoutMutation,
   useCreateWorkoutItemsMutation,
+  useCreateWorkoutDualItemsMutation,
 } from '../../../redux/api/apiSlice';
 
 import {RootStackParamList} from '../../../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
-import {WorkoutItemProps} from '../../../app_components/Cards/types';
+import {
+  WorkoutDualItemProps,
+  WorkoutItemProps,
+} from '../../../app_components/Cards/types';
 import {
   AnimatedButton,
   RegularButton,
@@ -46,6 +52,8 @@ import ItemString from '../../../app_components/WorkoutItems/ItemString';
 import {TestIDs} from '../../../utils/constants';
 import AddItem from './AddWorkoutItemPanel';
 import AlertModal from '../../../app_components/modals/AlertModal';
+import CreateWorkoutItemList from './workoutScreen/CreateWorkoutItemList';
+import CreateWorkoutDualItemList from './workoutScreen/CreateWorkoutDualItemList';
 export type Props = StackScreenProps<RootStackParamList, 'CreateWorkoutScreen'>;
 
 export const COLORSPALETTE = [
@@ -160,7 +168,7 @@ const RoundSheme: FunctionComponent<{
   );
 };
 
-const TimeSheme: FunctionComponent<{
+const TimeScheme: FunctionComponent<{
   onSchemeRoundChange(scheme: string);
   schemeRounds: string;
 }> = props => {
@@ -192,7 +200,144 @@ const TimeSheme: FunctionComponent<{
   );
 };
 
-const ColorPalette: FunctionComponent<{
+const TimeScoreScheme: FunctionComponent<{
+  onSchemeRoundChange(scheme: string);
+  schemeRounds: string;
+}> = props => {
+  const theme = useTheme();
+  return (
+    <View style={{marginBottom: 15, height: 35}}>
+      <Input
+        placeholder="Time limit (mins)"
+        onChangeText={props.onSchemeRoundChange}
+        value={props.schemeRounds}
+        label="Time limit (mins)"
+        helperText="Please enter number of rounds"
+        containerStyle={{
+          width: '100%',
+          backgroundColor: theme.palette.darkGray,
+          borderRadius: 8,
+          paddingHorizontal: 8,
+        }}
+        fontSize={mdFontSize}
+        leading={
+          <Icon
+            name="person"
+            color={theme.palette.text}
+            style={{fontSize: mdFontSize}}
+          />
+        }
+      />
+    </View>
+  );
+};
+
+const TimeLimitScheme: FunctionComponent<{
+  onSchemeRoundChange(scheme: string);
+  schemeRounds: string;
+}> = props => {
+  const theme = useTheme();
+  return (
+    <View style={{marginBottom: 15, height: 35}}>
+      <Input
+        placeholder="Time limit (mins)"
+        onChangeText={props.onSchemeRoundChange}
+        value={props.schemeRounds}
+        label="Rep Challenge"
+        helperText="Please enter number of rounds"
+        containerStyle={{
+          width: '100%',
+          backgroundColor: theme.palette.darkGray,
+          borderRadius: 8,
+          paddingHorizontal: 8,
+        }}
+        fontSize={mdFontSize}
+        leading={
+          <Icon
+            name="person"
+            color={theme.palette.text}
+            style={{fontSize: mdFontSize}}
+          />
+        }
+      />
+    </View>
+  );
+};
+
+const SchemeField: FunctionComponent<{
+  schemeType: number;
+  setSchemeRounds(a: string): void;
+  schemeRounds: string;
+
+  setSchemeRoundsError(a: boolean): void;
+  schemeRoundsError: boolean;
+}> = ({
+  schemeType,
+  setSchemeRounds,
+  schemeRounds,
+  setSchemeRoundsError,
+  schemeRoundsError,
+}) => {
+  return (
+    <View
+      style={{
+        flex:
+          WORKOUT_TYPES[schemeType] == STANDARD_W ||
+          WORKOUT_TYPES[schemeType] == TIMESCORE_W
+            ? 1
+            : 2,
+      }}>
+      {WORKOUT_TYPES[schemeType] == STANDARD_W ? (
+        <></>
+      ) : WORKOUT_TYPES[schemeType] == REPS_W ? (
+        <>
+          <SmallText>Rep Scheme</SmallText>
+          <RepSheme
+            onSchemeRoundChange={t => setSchemeRounds(numFilterWithSpaces(t))}
+            schemeRounds={schemeRounds}
+          />
+        </>
+      ) : WORKOUT_TYPES[schemeType] == ROUNDS_W ? (
+        <>
+          <SmallText>Number of Rounds</SmallText>
+          <RoundSheme
+            onSchemeRoundChange={t => {
+              // Reset
+              if (schemeRoundsError) {
+                setSchemeRoundsError(false);
+              }
+              setSchemeRounds(numFilter(t));
+            }}
+            isError={schemeRoundsError}
+            schemeRounds={schemeRounds}
+          />
+        </>
+      ) : WORKOUT_TYPES[schemeType] == DURATION_W ? (
+        <>
+          <SmallText>Duration of workout</SmallText>
+          <TimeScheme
+            onSchemeRoundChange={t => setSchemeRounds(numFilter(t))}
+            schemeRounds={schemeRounds}
+          />
+        </>
+      ) : WORKOUT_TYPES[schemeType] == TIMESCORE_W ? (
+        <></>
+      ) : WORKOUT_TYPES[schemeType] == TIMELIMIT_W ? (
+        <>
+          <SmallText>Workout Time Limit</SmallText>
+          <TimeLimitScheme
+            onSchemeRoundChange={t => setSchemeRounds(numFilter(t))}
+            schemeRounds={schemeRounds}
+          />
+        </>
+      ) : (
+        <></>
+      )}
+    </View>
+  );
+};
+
+export const ColorPalette: FunctionComponent<{
   onSelect(colorIdx: number);
   selectedIdx: number;
 }> = props => {
@@ -325,6 +470,8 @@ const verifyWorkoutItem = (
   return {success: true, errorType: -1, errorMsg: ''};
 };
 
+type WorkoutItems = WorkoutItemProps[] | WorkoutDualItemProps[];
+
 const CreateWorkoutScreen: FunctionComponent<Props> = ({
   navigation,
   route: {
@@ -332,19 +479,22 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
   },
 }) => {
   const theme = useTheme();
-
-  // Access/ send actions
-  const dispatch = useAppDispatch();
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
   const [schemeRounds, setSchemeRounds] = useState('');
-  const [items, setItems] = useState([] as WorkoutItemProps[]);
+
+  const _items: WorkoutItems = [];
+  const [items, setItems] = useState(_items);
+
   const [showAddSSID, setShowAddSSID] = useState(false);
   const [curColor, setCurColor] = useState(-1);
   const [createWorkout, {isLoading: workoutIsLoading}] =
     useCreateWorkoutMutation();
   const [createWorkoutItem, {isLoading: workoutItemIsLoading}] =
     useCreateWorkoutItemsMutation();
+
+  const [createWorkoutDualItem, {isLoading: workoutDualItemIsLoading}] =
+    useCreateWorkoutDualItemsMutation();
 
   const [schemeRoundsError, setSchemeRoundsError] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
@@ -392,7 +542,14 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
       data.append('items', JSON.stringify(items));
       data.append('workout', createdWorkout.id);
       data.append('workout_group', workoutGroupID);
-      const createdItems = await createWorkoutItem(data).unwrap();
+      let createdItems;
+      if (schemeType <= 2) {
+        // For reg, reps, and rounds type workouts, the description is the prescription.
+        createdItems = await createWorkoutItem(data).unwrap();
+      } else {
+        // For Time based workouts, or do you best workouts, we store prescription and record separately
+        createdItems = await createWorkoutDualItem(data).unwrap();
+      }
       console.log('Workout item res', createdItems);
 
       // TODO handle errors
@@ -440,6 +597,19 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
     return {success: true, errorType: -1, errorMsg: ''};
   };
 
+  const addPenalty = (penalty: string, selectedIdx: number) => {
+    if (items.length > 0) {
+      const updatedItems = items.map((item: WorkoutDualItemProps, idx) => {
+        if (idx === selectedIdx) {
+          item.penalty = penalty;
+        }
+        return item;
+      });
+
+      setItems(updatedItems);
+    }
+  };
+
   const removeItemSSID = idx => {
     console.log('Removing idx: ', idx);
     const newItems = [...items];
@@ -461,7 +631,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
     }
   };
 
-  const [allowMarkConstant, setAllowMarkConstant] = useState(false);
+  // const [allowMarkConstant, setAllowMarkConstant] = useState(false);
 
   const updateItemConstant = (idx: number) => {
     // Determines if an item should ignore a RepScheme.
@@ -480,19 +650,21 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
 
   return (
     <PageContainer>
-      <View>
-        <SmallText>Create Workout</SmallText>
-      </View>
-      <View>
-        <RegularText>{workoutGroupTitle}</RegularText>
+      <View style={{flex: 1}}>
+        <View>
+          <SmallText>Create Workout</SmallText>
+        </View>
+        <View>
+          <RegularText>{workoutGroupTitle}</RegularText>
+        </View>
       </View>
 
       <View
         style={{
           height: '100%',
           width: '100%',
-          flex: 1,
-          justifyContent: 'space-between',
+          flex: 15,
+          // justifyContent: 'space-between',
         }}>
         {createWorkoutError.length ? (
           <SmallText>{createWorkoutError}</SmallText>
@@ -500,7 +672,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
           <></>
         )}
 
-        <View style={{flex: 2, marginBottom: 15}}>
+        <View style={{flex: 2}}>
           <View style={{height: 35, marginBottom: 8}}>
             <Input
               onChangeText={t => {
@@ -557,53 +729,46 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
             />
           </View>
         </View>
-        <View style={{flex: 1}}>
-          {WORKOUT_TYPES[schemeType] == STANDARD_W ? (
-            <></>
-          ) : WORKOUT_TYPES[schemeType] == REPS_W ? (
-            <>
-              <SmallText>Rep Scheme</SmallText>
-              <RepSheme
-                onSchemeRoundChange={t =>
-                  setSchemeRounds(numFilterWithSpaces(t))
-                }
-                schemeRounds={schemeRounds}
-              />
-            </>
-          ) : WORKOUT_TYPES[schemeType] == ROUNDS_W ? (
-            <>
-              <SmallText>Number of Rounds</SmallText>
-              <RoundSheme
-                onSchemeRoundChange={t => {
-                  // Reset
-                  if (schemeRoundsError) {
-                    setSchemeRoundsError(false);
-                  }
-                  setSchemeRounds(numFilter(t));
-                }}
-                editable={items.length === 0}
-                isError={schemeRoundsError}
-                schemeRounds={schemeRounds}
-              />
-            </>
-          ) : WORKOUT_TYPES[schemeType] == DURATION_W ? (
-            <>
-              <SmallText>Duration of workout</SmallText>
-              <TimeSheme
-                onSchemeRoundChange={t => setSchemeRounds(numFilter(t))}
-                schemeRounds={schemeRounds}
-              />
-            </>
-          ) : (
-            <></>
-          )}
-        </View>
-        <View style={{flex: 10}}>
+
+        <SchemeField
+          schemeType={schemeType}
+          schemeRounds={schemeRounds}
+          setSchemeRounds={setSchemeRounds}
+          schemeRoundsError={schemeRoundsError}
+          setSchemeRoundsError={setSchemeRoundsError}
+        />
+
+        <View style={{flex: 6}}>
           <AddItem onAddItem={addWorkoutItem} schemeType={schemeType} />
         </View>
 
-        <View style={{flex: 11}}>
-          {schemeType == 0 ? (
+        <View style={{flex: 4}}>
+          {schemeType <= 2 ? (
+            <CreateWorkoutItemList
+              items={items}
+              schemeType={schemeType}
+              curColor={curColor}
+              showAddSSID={showAddSSID}
+              setShowAddSSID={setShowAddSSID}
+              setCurColor={setCurColor}
+              removeItemSSID={removeItemSSID}
+              addItemToSSID={addItemToSSID}
+              updateItemConstant={updateItemConstant}
+              removeItem={removeItem}
+            />
+          ) : (
+            <CreateWorkoutDualItemList
+              items={items as WorkoutDualItemProps[]}
+              schemeType={schemeType}
+              removeItem={removeItem}
+              addPenalty={addPenalty}
+            />
+          )}
+
+          {/** Item List */}
+          {/*
+
+                 {schemeType == 0 ? (
             <View
               style={{
                 width: '100%',
@@ -739,6 +904,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
             </View>
           ) : (
             <ScrollView>
+
               {items.map((item, idx) => {
                 return (
                   <AnimatedButton
@@ -774,9 +940,9 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
                 );
               })}
             </ScrollView>
-          )}
+          )} */}
         </View>
-        <View style={{flex: 2}}>
+        <View style={{flex: 1}}>
           {!isCreating ? (
             <RegularButton
               onPress={_createWorkoutWithItems.bind(this)}

@@ -60,7 +60,7 @@ const WorkoutCard: FunctionComponent<WorkoutCardProps> = props => {
       deleteCompletedWorkout(props.id);
     }
   };
-  console.log('Workout card testID', props.testID);
+
   return (
     <View
       testID={props.testID}

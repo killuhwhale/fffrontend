@@ -107,12 +107,13 @@ const TotalsLineChart: FunctionComponent<{
   workoutNameStats: {}[];
 }> = props => {
   const theme = useTheme();
+  const [showTags, setShowTags] = useState(true); // Toggles between names and tags on the Bar Chart graph
+
+  const workouts: {}[] = showTags
+    ? props.workoutTagStats
+    : props.workoutNameStats;
 
   const filterLineDataTypes = (tagName: string): string[][] => {
-    const workouts: {}[] = showTags
-      ? props.workoutTagStats
-      : props.workoutNameStats;
-
     let filteredDataTypes: string[] = [];
     let filteredDataTypesAbbrev: string[] = [];
 
@@ -139,25 +140,28 @@ const TotalsLineChart: FunctionComponent<{
     return [filteredDataTypes, filteredDataTypesAbbrev];
   };
 
-  const [showTags, setShowTags] = useState(true); // Toggles between names and tags on the Bar Chart graph
-
   // To stay aligned with horizontal picker, we will start at Idx 1, expcet when we only have 1 item to select from. Then it is set to 0
-
+  const sTagLabels = props.tagLabels.sort((a, b) => (a < b ? -1 : 1));
+  const sNameLabels = props.nameLabels.sort((a, b) => (a < b ? -1 : 1));
   const [showLineChartTagType, setShowLineChartTagType] = useState(
-    props.tagLabels.length == 1 ? 0 : 1,
+    sTagLabels.length == 1 ? 0 : 1,
   ); // Which data to show in the LineChart
 
   const [showLineChartNameType, setShowLineChartNameType] = useState(
-    props.nameLabels.length == 1 ? 0 : 1,
+    sNameLabels.length == 1 ? 0 : 1,
   ); // Which data to show in the LineChart
 
   const [__filteredDataTypes, __filteredDataTypesAbbrev] = useMemo(() => {
+    console.log(
+      'Filtering: ',
+      showTags ? showLineChartTagType : showLineChartNameType,
+    );
     return filterLineDataTypes(
       showTags
-        ? props.tagLabels[showLineChartTagType]
-        : props.nameLabels[showLineChartNameType],
+        ? sTagLabels[showLineChartTagType]
+        : sNameLabels[showLineChartNameType],
     );
-  }, [showLineChartTagType, showLineChartNameType]);
+  }, [showLineChartTagType, showLineChartNameType, workouts]);
 
   // Filtered data types line: ["totalKgSec", "totalKgs", "totalLbSec", "totalLbs", "totalReps", "totalTime"] ["kg*sec", "kgs", "lb*sec", "lbs", "reps", "sec"]
   // console.log(
@@ -173,25 +177,8 @@ const TotalsLineChart: FunctionComponent<{
 
   // Helps align data and horizontal list when Tag or Name Chagnes.
   useEffect(() => {
-    // Case 1
-    // WE are at a data point with only reps length 1 showLineChartDataType== 0
-    // Switch to Length 2> and the list shows highlighted at 2 but data is at 1 still from previous
-    // We should then switch to 1 since we are at 0 or less than something...?
-
-    // Case 2
-    // We are at length 3 and move to length 1
-    // Nothing shows.
-    // We should update showLineChartDataType to the end index
-
-    // Rule 1
-    // When at a single data point list, and move to something with 2 or more, set to index 1.
-    // idx 0 when Len of 1 to Len of 2> set to 1
-
-    // Horizontal list, anytime it goes to a new list with a different length, it will go to 0 if Length of new liust is 1 and 1 if the new list is longer than 1.
-    //       If the lists are the same length, the highlighted index remains the same
-
-    //
-
+    // We need to update the current Data Metric index when the user changes, workouts, or selects another option like another Name, Tag or Metric
+    // Becasue we filter our Metrics that have no entries...
     if (prevDTLength == __filteredDataTypes.length) {
       return;
     } else if (__filteredDataTypes.length == 1) {
@@ -200,11 +187,14 @@ const TotalsLineChart: FunctionComponent<{
       //else if(__filteredDataTypes.length > prevDTLength)
       setShowLineChartDataType(1);
     }
-    // else if (__filteredDataTypes.length < prevDTLength) {
-    //   setShowLineChartDataType(__filteredDataTypes.length - 1);
-    // }
+
     setPrevDTLength(__filteredDataTypes.length);
-  }, [showLineChartTagType, showLineChartNameType, showLineChartDataType]);
+  }, [
+    showLineChartTagType,
+    showLineChartNameType,
+    showLineChartDataType,
+    workouts,
+  ]);
 
   // generate bar data, given all data with chosen metric/ dataType
   // We can generate a filtered dataTypes by parsing tags or names.
@@ -215,8 +205,8 @@ const TotalsLineChart: FunctionComponent<{
   const BLineData = bLineData(
     showTags ? props.workoutTagStats : props.workoutNameStats,
     showTags
-      ? props.tagLabels[showLineChartTagType]
-      : props.nameLabels[showLineChartNameType],
+      ? sTagLabels[showLineChartTagType]
+      : sNameLabels[showLineChartNameType],
     __filteredDataTypes[showLineChartDataType],
   );
 
@@ -232,19 +222,19 @@ const TotalsLineChart: FunctionComponent<{
 
         <HorizontalPicker
           key={`hp_${showTags}_${
-            showTags ? props.tagLabels.length : props.nameLabels.length
+            showTags ? sTagLabels.length : sNameLabels.length
           }`}
           data={
-            showTags && props.tagLabels.length > 0
-              ? props.tagLabels
-              : !showTags && props.nameLabels.length > 0
-              ? props.nameLabels
+            showTags && sTagLabels.length > 0
+              ? sTagLabels
+              : !showTags && sNameLabels.length > 0
+              ? sNameLabels
               : []
           }
           onChange={
-            showTags && props.tagLabels.length > 0
+            showTags && sTagLabels.length > 0
               ? setShowLineChartTagType
-              : !showTags && props.nameLabels.length > 0
+              : !showTags && sNameLabels.length > 0
               ? setShowLineChartNameType
               : val => {
                   console.log('Empty onChange called!!', val);
@@ -268,8 +258,8 @@ const TotalsLineChart: FunctionComponent<{
             onPress={() => {
               // When the user changes between the 2 sets of data for the bLine Chart,
               // The horizontal picker resets to to 1, so we need to update the data to reflect the change in the child component.
-              setShowLineChartTagType(props.tagLabels.length == 1 ? 0 : 1);
-              setShowLineChartNameType(props.nameLabels.length == 1 ? 0 : 1);
+              setShowLineChartTagType(sTagLabels.length == 1 ? 0 : 1);
+              setShowLineChartNameType(sNameLabels.length == 1 ? 0 : 1);
               setShowTags(!showTags);
             }}
           />
@@ -285,7 +275,7 @@ const TotalsLineChart: FunctionComponent<{
       <ScrollView horizontal={true} style={{flex: 1, height: 260}}>
         <LineChart
           data={BLineData}
-          width={BLineData.labels.length * 30}
+          width={Math.max(SCREEN_WIDTH, BLineData.labels.length * 30)}
           height={260}
           verticalLabelRotation={90}
           chartConfig={chartConfig}

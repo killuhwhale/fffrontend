@@ -556,6 +556,40 @@ export const apiSlice = createApi({
       },
     }),
 
+    createWorkoutDualItems: builder.mutation({
+      query: (data = {}) => ({
+        url: 'workoutDualItems/items/',
+        method: 'POST',
+        data: data,
+        params: {contentType: 'multipart/form-data'},
+      }),
+      invalidatesTags: (resut, error, arg) => {
+        const data = new Map<string, string>(arg._parts);
+
+        return [
+          {type: 'WorkoutGroupWorkouts', id: data.get('workout_group')},
+          {type: 'StatsQuery'},
+        ];
+      },
+    }),
+
+    updateWorkoutDualItems: builder.mutation({
+      query: (data = {}) => ({
+        url: 'workoutDualItems/record_items/',
+        method: 'POST',
+        data: data,
+        params: {contentType: 'multipart/form-data'},
+      }),
+      invalidatesTags: (resut, error, arg) => {
+        const data = new Map<string, string>(arg._parts);
+
+        return [
+          {type: 'WorkoutGroupWorkouts', id: data.get('workout_group')},
+          {type: 'StatsQuery'},
+        ];
+      },
+    }),
+
     // Completed Workouts
     createCompletedWorkout: builder.mutation({
       query: (data = {}) => ({
@@ -733,6 +767,7 @@ export const {
   useGetWorkoutsForUsersWorkoutGroupQuery,
 
   useGetCompletedWorkoutQuery,
+  // usesTagLabelsByWorkoutIDQuery,
   useGetCompletedWorkoutByWorkoutIDQuery,
   useDeleteCompletedWorkoutGroupMutation,
   useDeleteCompletedWorkoutMutation,
@@ -754,6 +789,9 @@ export const {
   useDeleteWorkoutGroupMutation,
   useCreateWorkoutMutation,
   useCreateWorkoutItemsMutation,
+  useCreateWorkoutDualItemsMutation,
+  useUpdateWorkoutDualItemsMutation,
   useCreateCompletedWorkoutMutation,
   useGetCompletedWorkoutGroupsForUserByDateRangeQuery,
+  // usesTagLabelsGroupsForUserByDateRangeQuery,
 } = apiSlice;

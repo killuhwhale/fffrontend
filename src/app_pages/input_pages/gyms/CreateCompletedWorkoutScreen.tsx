@@ -10,6 +10,7 @@ import {
   DURATION_UNITS,
   DURATION_W,
   jList,
+  jsonCopy,
   mdFontSize,
   numFilter,
   numFilterWithSpaces,
@@ -70,7 +71,7 @@ const PageContainer = styled(Container)`
 
 // Convert a JSON stringified list to a space demilimited string
 
-const jListToNumStr = jsonListStr => {
+export const jListToNumStr = jsonListStr => {
   try {
     const list = JSON.parse(jsonListStr);
     // return list.toString().replaceAll(',', ' ');
@@ -782,7 +783,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
   const dispatch = useAppDispatch();
 
   // todo() put this in state,....
-  let initGroup = JSON.parse(JSON.stringify(params)) as WorkoutGroupProps;
+  let initGroup = jsonCopy(params) as WorkoutGroupProps;
   const [editedWorkoutGroup, setEditedWorkoutGroup] =
     useState<WorkoutGroupProps>(initGroup);
   const [showCompleteWorkout, setShowCompleteWorkout] = useState(false);
@@ -970,7 +971,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
           />
         </View>
 
-        <View style={{flex: 1}}>
+        {/* <View style={{flex: 1}}>
           <MediaPicker setState={setFiles.bind(this)} title="Select Media" />
         </View>
         {files && files.length > 0 ? (
@@ -979,7 +980,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
           </View>
         ) : (
           <></>
-        )}
+        )} */}
         <View style={{flex: 4}}>
           <ScrollView>
             <View style={{flex: 3}}>

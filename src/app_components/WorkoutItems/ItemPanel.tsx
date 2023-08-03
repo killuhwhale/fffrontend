@@ -2,7 +2,7 @@ import React, {FunctionComponent} from 'react';
 import {TouchableHighlight, View} from 'react-native';
 import {useTheme} from 'styled-components';
 import {COLORSPALETTE} from '../../app_pages/input_pages/gyms/CreateWorkoutScreen';
-import {WorkoutItemProps} from '../Cards/types';
+import {WorkoutDualItemProps, WorkoutItemProps} from '../Cards/types';
 import {
   displayJList,
   DISTANCE_UNITS,
@@ -14,13 +14,23 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import * as RootNavigation from '../../navigators/RootNavigation';
 import LinearGradient from 'react-native-linear-gradient';
 
+const isDual = (item: any) => {
+  return item.penalty;
+};
+
 const WorkoutItemPanel: FunctionComponent<{
-  item: WorkoutItemProps;
+  item: WorkoutItemProps | WorkoutDualItemProps;
   schemeType: number;
   itemWidth: number;
   idx?: number;
 }> = ({item, schemeType, itemWidth, idx}) => {
   const theme = useTheme();
+  let _item;
+  if (isDual(item)) {
+    _item = item as WorkoutItemProps;
+  } else {
+    _item = item as WorkoutDualItemProps;
+  }
 
   const navToWorkoutNameDetail = () => {
     console.log('Navigating with props:', item);
@@ -31,6 +41,8 @@ const WorkoutItemPanel: FunctionComponent<{
     item.distance == '' || item.distance == '0' ? '0' : item.distance;
   const itemDuration =
     item.duration == '' || item.duration == '0' ? '0' : item.duration;
+
+  console.log('WorkoutItem Panel: ', item);
   return (
     <LinearGradient
       //   colors={['#00000000', '#4682B4']} // Steel BLUE
@@ -60,7 +72,11 @@ const WorkoutItemPanel: FunctionComponent<{
         <SmallText>{idx}</SmallText>
       </View>
       <View style={{flex: 4}}>
-        <SmallText>{item.name.name}</SmallText>
+        <SmallText textStyles={{textAlign: 'center'}}>
+          {_item.name.name}
+        </SmallText>
+        {<SmallText>{_item.penalty}</SmallText>}
+
         {item.pause_duration > 0 ? (
           <SmallText textStyles={{textAlign: 'center'}}>
             for: {item.pause_duration} s

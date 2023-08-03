@@ -17,7 +17,11 @@ import {WorkoutCardFullList} from '../app_components/Cards/cardList';
 
 import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
-import {WorkoutGroupProps} from '../app_components/Cards/types';
+import {
+  WorkoutCardProps,
+  WorkoutDualItemProps,
+  WorkoutGroupProps,
+} from '../app_components/Cards/types';
 import {ScrollView} from 'react-native-gesture-handler';
 import {
   Switch,
@@ -44,6 +48,7 @@ import {StatsPanel} from '../app_components/Stats/StatsPanel';
 import {RegularButton} from '../app_components/Buttons/buttons';
 import {TestIDs} from '../utils/constants';
 import BannerAddMembership from '../app_components/ads/BannerAd';
+import FinishDualWorkoutItems from '../app_components/modals/finishDualWorkoutItems';
 export type Props = StackScreenProps<RootStackParamList, 'WorkoutScreen'>;
 
 const Row = styled.View`
@@ -51,12 +56,29 @@ const Row = styled.View`
   justify-content: space-between;
 `;
 
+const hasUnfinsihedDualItems = (workouts: WorkoutCardProps[]) => {
+  let found = false;
+  workouts.forEach(workout => {
+    if (workout.scheme_type > 2) {
+      //  Check dualItems
+      workout.workout_items?.forEach((item: WorkoutDualItemProps) => {
+        if (!item.finished) {
+          found = true;
+        }
+      });
+    }
+  });
+  return found;
+};
+
 const WorkoutScreen: FunctionComponent<Props> = ({
   navigation,
   route: {params},
 }) => {
   const theme = useTheme();
   const [showClassIsDeleted, setShowClassIsDeleted] = useState(false);
+  const [showFinishDualWorkoutItems, setShowFinishDualWorkoutItems] =
+    useState(false);
   const {
     id,
     title,
@@ -202,7 +224,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
   ] = useDeleteCompletedWorkoutGroupMutation();
   const [deleteWorkoutGroupModalVisible, setDeleteWorkoutGroupModalVisible] =
     useState(false);
-  const [finishWorkoutGroupModalVisible, setFinishWorkoutGroupModalVisible] =
+  const [showFinishWorkoutGroupModal, setShowFinishWorkoutGroupModal] =
     useState(false);
 
   const workouts = workoutGroup.workouts
@@ -270,6 +292,22 @@ const WorkoutScreen: FunctionComponent<Props> = ({
       schemeType: 3,
     });
   };
+  const openCreateWorkoutScreenForTimeScore = () => {
+    navigation.navigate('CreateWorkoutScreen', {
+      workoutGroupID: oGData.id.toString(),
+      workoutGroupTitle: title,
+      schemeType: 4,
+    });
+  };
+
+  const openCreateWorkoutScreenForTimeLimit = () => {
+    navigation.navigate('CreateWorkoutScreen', {
+      workoutGroupID: oGData.id.toString(),
+      workoutGroupTitle: title,
+      schemeType: 5,
+    });
+  };
+
   const onConfirmDelete = () => {
     setDeleteWorkoutGroupModalVisible(true);
   };
@@ -301,14 +339,27 @@ const WorkoutScreen: FunctionComponent<Props> = ({
   };
 
   const _finishGroupWorkout = async () => {
-    const data = new FormData();
-    data.append('group', oGData.id);
-    try {
-      const res = await finishWorkoutGroup(data).unwrap();
-      console.log('res finsih', res);
-      setFinishWorkoutGroupModalVisible(false);
-    } catch (err) {
-      console.log('Error finishing workout', err);
+    console.log(
+      'Need to check if the workout froups have a Workout with Dual Items that are not yet completed.....',
+    );
+
+    if (hasUnfinsihedDualItems(workouts) && owned_by_class === false) {
+      console.log(
+        'User needs to submit their results if this is not owned by a class',
+      );
+      // Show a modal to allow the user to enter the information for the workouts
+      setShowFinishDualWorkoutItems(true);
+    } else {
+      // Allow user to submit finish to WorkoutGroup for class.
+      const data = new FormData();
+      data.append('group', oGData.id);
+      try {
+        const res = await finishWorkoutGroup(data).unwrap();
+        console.log('res finsih', res);
+        setShowFinishWorkoutGroupModal(false);
+      } catch (err) {
+        console.log('Error finishing workout', err);
+      }
     }
   };
 
@@ -319,7 +370,16 @@ const WorkoutScreen: FunctionComponent<Props> = ({
     }
   };
 
-  // console.log("Current workout Group:", workoutGroup, oGData, completedData, isShowingOGWorkoutGroup, showingOGWorkoutGroup)
+  // console.log(
+  //   'Current workout Group:',
+  //   workoutGroup,
+  //   oGData,
+  //   completedData,
+  //   isShowingOGWorkoutGroup,
+  //   showingOGWorkoutGroup,
+  // );
+
+  console.log('Workouts: ', workouts);
 
   return (
     <View style={{height: SCREEN_HEIGHT, width: SCREEN_WIDTH}}>
@@ -373,7 +433,8 @@ const WorkoutScreen: FunctionComponent<Props> = ({
               )}
             </View>
             <View style={{flex: 3}}>
-              <RegularText textStyles={{textAlign: 'center'}}>
+              <RegularText
+                textStyles={{textAlign: 'center', marginVertical: 8}}>
                 {workoutGroup.title}
               </RegularText>
             </View>
@@ -422,7 +483,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
           </View>
         </Row>
 
-        {workoutGroup.media_ids &&
+        {/* {workoutGroup.media_ids &&
         JSON.parse(workoutGroup.media_ids).length > 0 ? (
           <Row style={{height: 300}}>
             <MediaURLSliderClass
@@ -435,7 +496,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
           <View style={{margin: 69}}>
             <SmallText>Add some pictures next time!</SmallText>
           </View>
-        )}
+        )} */}
 
         <View
           style={{
@@ -471,7 +532,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                 <View
                   style={{
                     display: showCreate ? 'flex' : 'none',
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                   }}>
                   <RegularButton
                     onPress={openCreateWorkoutScreenForStandard.bind(this)}
@@ -502,8 +563,27 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                     }}
                     text="Timed"
                   />
+                  <RegularButton
+                    onPress={openCreateWorkoutScreenForTimeScore.bind(this)}
+                    btnStyles={{
+                      backgroundColor: '#2dd4bf',
+                    }}
+                    text="Scored Time"
+                  />
+                  <RegularButton
+                    onPress={openCreateWorkoutScreenForTimeLimit.bind(this)}
+                    btnStyles={{
+                      backgroundColor: '#38bdf8',
+                    }}
+                    text="Time Limit"
+                  />
                 </View>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View
+                  style={{
+                    flexDirection: showCreate ? 'column' : 'row',
+                    justifyContent: 'center',
+                    height: '100%',
+                  }}>
                   <RegularButton
                     onPress={() => setShowCreate(!showCreate)}
                     testID={TestIDs.ToggleShowCreateWorkoutBtns.name()}
@@ -516,7 +596,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                   />
 
                   <RegularButton
-                    onPress={() => setFinishWorkoutGroupModalVisible(true)}
+                    onPress={() => setShowFinishWorkoutGroupModal(true)}
                     textStyles={{marginHorizontal: 12}}
                     btnStyles={{
                       backgroundColor: theme.palette.primary.main,
@@ -639,8 +719,8 @@ const WorkoutScreen: FunctionComponent<Props> = ({
           closeText="Close"
           modalText={`Finish ${title}? \n \t cannot be undone`}
           onAction={_finishGroupWorkout}
-          modalVisible={finishWorkoutGroupModalVisible}
-          onRequestClose={() => setFinishWorkoutGroupModalVisible(false)}
+          modalVisible={showFinishWorkoutGroupModal}
+          onRequestClose={() => setShowFinishWorkoutGroupModal(false)}
         />
       </ScrollView>
 
@@ -661,6 +741,16 @@ const WorkoutScreen: FunctionComponent<Props> = ({
           Wokout Deleted by Class{' '}
         </LargeText>
       </View>
+
+      <FinishDualWorkoutItems
+        bodyText="How many did you do?"
+        workoutGroup={workoutGroup}
+        key={'showFinishedDualItems'}
+        closeText="Close"
+        modalVisible={showFinishDualWorkoutItems}
+        onRequestClose={() => setShowFinishDualWorkoutItems(false)}
+        setShowFinishWorkoutGroupModal={setShowFinishWorkoutGroupModal}
+      />
     </View>
   );
 };

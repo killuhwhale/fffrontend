@@ -114,10 +114,10 @@ const FreqCalendar: FunctionComponent<{
       style={{
         flex: 3,
         width: '100%',
-        marginBottom: 24,
+        marginBottom: 12,
         paddingBottom: 12,
-        borderBottomWidth: 1,
-        borderColor: theme.palette.text,
+        // borderBottomWidth: 1,
+        // borderColor: theme.palette.text,
       }}>
       <RegularText>{calendarText}</RegularText>
       <ScrollView horizontal>

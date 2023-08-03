@@ -231,13 +231,13 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
             />
           </View>
         </View>
-        <View style={{flex: 8}}>
+        {/* <View style={{flex: 8}}>
           <MediaPicker
             setState={setFiles.bind(this)}
             title="Select Main Image"
           />
           {files && files.length > 0 ? <MediaSlider data={files} /> : <></>}
-        </View>
+        </View> */}
         <View style={{flex: 2}}>
           {!isCreating ? (
             nodeEnv === 'test' ? (

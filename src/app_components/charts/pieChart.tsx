@@ -6,40 +6,68 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
 import {SCREEN_WIDTH} from '../shared';
 
-import {BarChart} from 'react-native-chart-kit';
+import {BarChart, PieChart} from 'react-native-chart-kit';
 import HorizontalPicker from '../Pickers/HorizontalPicker';
 import {chartConfig} from '../../app_pages/StatsScreen';
+import {ChartData} from 'react-native-chart-kit/dist/HelperTypes';
 
 export const dateFormat = (d: Date) => {
   return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
 };
 
-const barData = (tags, metric) => {
+const pieColors = [
+  '#a8a29e',
+  '#f87171',
+  '#fb923c',
+  '#fbbf24',
+  '#facc15',
+  '#a3e635',
+  '#4ade80',
+  '#34d399',
+  '#2dd4bf',
+  '#22d3ee',
+  '#38bdf8',
+  '#60a5fa',
+  '#818cf8',
+  '#a78bfa',
+  '#c084fc',
+  '#e879f9',
+  '#f472b6',
+  '#fb7185',
+];
+
+const pieData = (tags, metric) => {
   // Given a metric [dataTypes], return data
 
-  const data: number[] = [];
+  const data: any[] = [];
   const labels: string[] = [];
   Object.keys(tags)
     .sort((a, b) => (a < b ? -1 : 1))
-    .forEach(key => {
+    .forEach((key, i) => {
       labels.push(key);
       if (tags[key] && tags[key][metric]) {
         const val = parseInt(tags[key][metric]);
         console.log('Val: ', key, metric, val);
-        data.push(val);
-      } else {
-        data.push(0);
+        data.push({
+          total: val,
+          name: key,
+          color: pieColors[i % pieColors.length],
+          legendFontColor: '#FFF',
+          legendFontSize: 10,
+        });
       }
+      // } else {
+      //   data.push({
+      //     total: 0,
+      //     name: key,
+      //     color: '#94a3b8',
+      //     legendFontColor: '#94a3b8',
+      //     legendFontSize: 8,
+      //   });
+      // }
     });
 
-  return {
-    labels,
-    datasets: [
-      {
-        data,
-      },
-    ],
-  };
+  return data;
 };
 
 const TotalsBarChart: FunctionComponent<{
@@ -49,6 +77,7 @@ const TotalsBarChart: FunctionComponent<{
 }> = props => {
   const theme = useTheme();
 
+  const [showAbsolute, setShowAbsolute] = useState(false);
   const [showTags, setShowTags] = useState(true);
 
   // todo,
@@ -83,7 +112,7 @@ const TotalsBarChart: FunctionComponent<{
   // We can generate a filtered dataTypes by parsing tags or names.
   // If we look at a dataType, metric, we can check if all values are zero...
   //  Then we can use that list for Horizontal Picker and the IDX will match the filteredList, and pick the right metric
-  const BarData = barData(
+  const PieData = pieData(
     showTags ? props.tags : props.names,
     barDataFilteredDataTypes[showBarChartDataType],
   );
@@ -108,6 +137,14 @@ const TotalsBarChart: FunctionComponent<{
             setShowTags(!showTags);
           }}
         />
+        <Icon
+          name="analytics"
+          color={theme.palette.text}
+          style={{fontSize: 24, marginHorizontal: 8}}
+          onPress={() => {
+            setShowAbsolute(!showAbsolute);
+          }}
+        />
 
         <HorizontalPicker
           key={`barChartKey_${barDataFilteredDataTypes.length}`}
@@ -116,18 +153,18 @@ const TotalsBarChart: FunctionComponent<{
         />
       </View>
 
-      <ScrollView horizontal={true} style={{flex: 1, height: 420}}>
-        <BarChart
-          yAxisSuffix=""
-          xLabelsOffset={-15}
-          data={BarData}
-          width={Math.max(BarData.labels.length * 30 + 35, SCREEN_WIDTH)}
-          height={420}
+      <ScrollView horizontal={true} style={{flex: 1, height: 200}}>
+        <PieChart
+          backgroundColor="transparent"
+          paddingLeft="5"
+          data={PieData}
+          width={SCREEN_WIDTH}
+          height={200}
           yAxisLabel=""
           chartConfig={chartConfig}
-          verticalLabelRotation={90}
-          showValuesOnTopOfBars
+          accessor="total"
           fromZero
+          absolute={showAbsolute}
         />
       </ScrollView>
     </View>

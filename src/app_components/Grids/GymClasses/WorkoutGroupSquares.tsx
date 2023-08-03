@@ -26,6 +26,7 @@ const WorkoutGroupSquares: FunctionComponent<{
 
   return (
     <StyledList
+      keyboardShouldPersistTaps="always"
       data={props.data}
       horizontal={false}
       contentContainerStyle={{paddingBottom: SCREEN_HEIGHT * 0.05}}

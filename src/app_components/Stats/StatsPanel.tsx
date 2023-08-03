@@ -133,7 +133,13 @@ export const StatsPanel: FunctionComponent<{tags: {}; names: {}}> = ({
   names,
 }) => {
   const theme = useTheme();
-
+  console.log('Stats Panel: ', tags);
+  const sTags = Object.keys(tags)
+    .sort((a, b) => (a < b ? -1 : 1))
+    .map(key => tags[key]);
+  const sNames = Object.keys(names)
+    .sort((a, b) => (a < b ? -1 : 1))
+    .map(key => names[key]);
   return (
     <View style={{margin: 4, flex: 1}}>
       {Object.values(tags).length > 0 ? (
@@ -150,14 +156,14 @@ export const StatsPanel: FunctionComponent<{tags: {}; names: {}}> = ({
               style={{borderBottomWidth: 1, borderColor: theme.palette.text}}>
               <RegularText>Tag Summary</RegularText>
             </View>
-            <WorkoutStatsByTagHorizontalList data={Object.values(tags)} />
+            <WorkoutStatsByTagHorizontalList data={Object.values(sTags)} />
           </View>
           <View style={{alignItems: 'flex-start'}}>
             <View
               style={{borderBottomWidth: 1, borderColor: theme.palette.text}}>
               <RegularText>Item Summary</RegularText>
             </View>
-            <WorkoutStatsByNameHorizontalList data={Object.values(names)} />
+            <WorkoutStatsByNameHorizontalList data={Object.values(sNames)} />
           </View>
           <View
             style={{

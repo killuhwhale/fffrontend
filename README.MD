@@ -112,6 +112,81 @@ git push origin HEAD:staging HEAD
 
 # TODO
 
+-Deleteing isnt Workout Groupts as Regular User isnt working....
+
+- It is working from as Class Owner User
+
+  - Check permissions....
+
+- 2 more workout types to finish:
+
+  - For time
+  - Time limit
+
+    - 10 mins complete following, score is time or reps compeleted
+
+      - 100 Burpees
+      - Every 1 min, do 10 thrusters
+
+      SCORE:
+      8:53
+      OR
+      x burpees and x thrusters.
+
+      Submit form might look like:
+      Reps: x of WorkoutName for each item
+      Time: 8:53 OR Did Not Finish
+
+      The creator can just create a normal workout and we can add support for:
+      We will add a "Every x METRIC item"
+
+      - Every x reps
+      - Every x duration
+      - Every x distance
+
+    Then we will have a normal workout with items that are to be completed with special instructions
+
+    we wont be able to calculate this workout's stats until the user has completed.
+    We will skip calculation this workout on the class page for StatsPanel
+    We will require the user fill in the amount fone when completing the workout.
+    We will have an optional section when creating as a perosnal workout to allow the user fill in what they did.'
+
+    This means we need to add something to a workout to track what they did as wel as the instructions.
+    Currently the instructions is what they did.
+    But now the instructions are suggesting what to do and not an exact amount.
+
+- Apple Connect
+
+  - App Access - Account Creds for Apple
+
+    - apple@fittrackrr.com
+    - !Apple1
+
+  - ## Support URL
+
+- Google Play
+
+  - https://play.google.com/console/u/0/developers/6076092592456292244/app/4974726312031903268/publishing
+    Media:
+
+    - Your app icon must be a PNG or JPEG, up to 1 MB, 512 px by 512 px, and meet our design specifications and metadata policy
+    - Your feature graphic must be a PNG or JPEG, up to 15 MB, and 1,024 px by 500 px
+    - Upload 2-8 phone screenshots. Screenshots must be PNG or JPEG, up to 8 MB each, 16:9 or 9:16 aspect ratio, with each side between 320 px and 3,840 px
+    - Upload up to eight 7-inch tablet screenshots. Screenshots must be PNG or JPEG, up to 8 MB each, 16:9 or 9:16 aspect ratio, with each side between 320 px and 3,840 px
+    - Upload up to eight 10-inch tablet screenshots. Screenshots must be PNG or JPEG, up to 8 MB each, 16:9 or 9:16 aspect ratio, with each side between 1,080 px and 7,680 px
+    - Upload 4-8 screenshots. Screenshots must be PNG or JPEG, up to 8 MB each, 16:9 or 9:16 aspect ratio, with each side between 1,080 px and 7,680 px
+
+  - Privacy Policy - add https://fittrackrr.com/privacy
+  - Delete Account w/ all data - add https://fittrackrr.com/removeAccount
+  - App Access - Account Creds for Google
+    - google@fittrackrr.com
+    - !Google1
+
+- Images for App Stores
+- Live Stripe
+- Live Google Ads
+- Update registration email to explain to upgrade to Membership,
+
 - ## Create a drop down on CreateWorkoutScreen so that Title, Desc and Rep Schemes are able to be hidden to fgive more room for workouts.
 
 - Lock to portrait only - Need to Change on iOS still.

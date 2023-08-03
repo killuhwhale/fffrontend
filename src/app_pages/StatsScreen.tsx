@@ -16,8 +16,10 @@ import DatePicker from 'react-native-date-picker';
 
 import TotalsBarChart from '../app_components/charts/barChart';
 import TotalsLineChart from '../app_components/charts/lineChart';
+import TotalsPieChart from '../app_components/charts/pieChart';
 import FreqCalendar from '../app_components/charts/freqCalendar';
 import BannerAddMembership from '../app_components/ads/BannerAd';
+import {StatsPanel} from '../app_components/Stats/StatsPanel';
 export type Props = StackScreenProps<RootStackParamList, 'StatsScreen'>;
 
 const ScreenContainer = styled(Container)`
@@ -109,7 +111,6 @@ const StatsScreen: FunctionComponent<Props> = ({
   const tagLabels: string[] = Array.from(new Set(Object.keys(tags)));
   const nameLabels: string[] = Array.from(new Set(Object.keys(names)));
 
-  console.log('Tag Labels: ', tagLabels);
   // I dont need to show all of these
   // This is on both Bar and Line Chart....
   // But if the current dataset shows zero for one of these, it should not show.
@@ -205,7 +206,9 @@ const StatsScreen: FunctionComponent<Props> = ({
                 endDate={endDate}
                 data={data}
               />
-              <></>
+              <View style={{marginBottom: 24}}>
+                <StatsPanel tags={tags} names={names} />
+              </View>
 
               <TotalsBarChart dataTypes={dataTypes} tags={tags} names={names} />
 
@@ -217,6 +220,8 @@ const StatsScreen: FunctionComponent<Props> = ({
                 workoutNameStats={workoutNameStats}
                 workoutTagStats={workoutTagStats}
               />
+
+              <TotalsPieChart dataTypes={dataTypes} tags={tags} names={names} />
             </>
           ) : (
             <></>

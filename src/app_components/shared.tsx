@@ -26,17 +26,22 @@ export const STANDARD_W = 'STANDARD';
 export const REPS_W = 'REPS';
 export const ROUNDS_W = 'ROUNDS';
 export const DURATION_W = 'DURATION';
+export const TIMESCORE_W = 'TIMESCORE';
+export const TIMELIMIT_W = 'TIMELIMIT';
 export const WORKOUT_TYPES: Array<string> = [
   STANDARD_W,
   REPS_W,
   ROUNDS_W,
   DURATION_W,
+  TIMESCORE_W,
+  TIMELIMIT_W,
 ];
 export const WORKOUT_TYPE_LABELS: Array<string> = [
   '',
   'Rep scheme',
   'Rounds',
   'Time',
+  'Score',
 ];
 export const AddItemFontsize = 14;
 
@@ -95,6 +100,10 @@ export const jList = (str: string): string => {
   }
   return JSON.stringify(S.split(' ').map((strnum: string) => parseInt(strnum)));
 };
+
+export function jsonCopy<T>(item: T): T {
+  return JSON.parse(JSON.stringify(item));
+}
 
 export const defaultStats = {
   totalReps: 0,
