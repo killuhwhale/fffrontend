@@ -28,7 +28,7 @@ const itemDescKeys = [
   'pause_duration',
   'duration',
   'distance',
-  'weights',
+  // 'weights', // we will render weight no matter what since its possible somone added weights to their workout.
   'rest_duration',
   'percent_of',
 ];
@@ -44,8 +44,6 @@ const isItemFieldEmpty = (key: string, value: any) => {
       return value == 0;
     case 'percent_of':
       return value == '';
-    case 'weights':
-      return JSON.parse(value).length == 0;
   }
 };
 
@@ -66,6 +64,14 @@ const DualItemUpdateFields: FunctionComponent<{
     <View style={{flex: 1}}>
       {itemDescKeys.map(key => {
         const isEmpty = isItemFieldEmpty(key, item[key]);
+        console.log('\n\n\n\n');
+        console.log(
+          'DualItemUpdate is empty: ',
+          isEmpty,
+          item.name.name,
+          key,
+          item[key],
+        );
 
         return (
           <View key={`${item.id}_${key}_${item.order}`} style={{flex: 1}}>
@@ -76,7 +82,7 @@ const DualItemUpdateFields: FunctionComponent<{
                 workoutIdx={workoutIdx}
                 schemeType={schemeType}
                 workoutItem={item}
-                key={`${item.id}_${key}_${item.order}_edititem`}
+                key={`${item.id}_${key}_${item.order}_editdualitem`}
               />
             ) : (
               <></>

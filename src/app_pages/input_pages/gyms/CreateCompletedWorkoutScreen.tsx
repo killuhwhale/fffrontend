@@ -62,6 +62,8 @@ import Input from '../../../app_components/Input/input';
 import ItemString from '../../../app_components/WorkoutItems/ItemString';
 import {RegularButton} from '../../../app_components/Buttons/buttons';
 import AlertModal from '../../../app_components/modals/AlertModal';
+import {isDual} from '../../../app_components/WorkoutItems/ItemPanel';
+import EditWorkoutDualItem from './workoutScreen/EditWorkoutDualItem';
 
 const PageContainer = styled(Container)`
   background-color: ${props => props.theme.palette.backgroundColor};
@@ -853,6 +855,56 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
     return {success, errorType, errorMsg};
   };
 
+  const editDualItem = (
+    workoutIdx,
+    itemIdx,
+    key,
+    value,
+  ): {success: boolean; errorType: number; errorMsg: string} => {
+    const newWorkoutGroup = jsonCopy(editedWorkoutGroup) as WorkoutGroupProps;
+    if (
+      !newWorkoutGroup.workouts ||
+      workoutIdx >= newWorkoutGroup.workouts.length
+    ) {
+      console.log('Err dualitem: ', 'Workouts not found');
+      return {success: false, errorType: 11, errorMsg: 'Workouts not found'};
+    }
+
+    const workout = newWorkoutGroup.workouts[workoutIdx];
+    if (!workout.workout_items || itemIdx >= workout.workout_items.length) {
+      console.log('Err dualitem: ', 'Workout items not found');
+      return {
+        success: false,
+        errorType: 10,
+        errorMsg: 'Workout items not found',
+      };
+    }
+
+    const item = workout.workout_items[itemIdx];
+    console.log('Settings key', `r_${key}`, value, item);
+    if (
+      [
+        'sets',
+        'weight_unit',
+        'percent_of',
+        'duration_unit',
+        'distance_unit',
+      ].indexOf(key) >= 0
+    ) {
+      item[`r_${key}`] = value;
+    } else {
+      item[`r_${key}`] = jList(value);
+    }
+
+    setEditedWorkoutGroup(jsonCopy(newWorkoutGroup));
+
+    return {
+      success: true,
+      errorType: -1,
+      errorMsg: '',
+    };
+  };
+
   const [isCreating, setIsCreating] = useState(false);
 
   const [showAlert, setShowAlert] = useState(false);
@@ -879,6 +931,11 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
     data.append('for_date', dateFormat(forDate));
     data.append('workouts', JSON.stringify(editedWorkoutGroup.workouts));
     data.append('workout_group', editedWorkoutGroup.id);
+    console.log(
+      'Creating comp workout - workouts: ',
+      JSON.stringify(editedWorkoutGroup.workouts),
+    );
+
     if (files) {
       files.forEach(file => {
         console.log('Uploading files ', file.path);
@@ -1012,12 +1069,15 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
             </View>
           </ScrollView>
         </View>
-        <View style={{flex: 6}}>
+
+        <View style={{flex: 7}}>
           <ScrollView>
             <View>
               {selectedIdxIsvalid() ? (
                 selectedWorkout.workout_items?.map((item, i) => {
-                  return (
+                  const isD = isDual(item);
+                  console.log('Complete workout isD: ', isD, item);
+                  return !isD ? (
                     <EditWorkoutItem
                       key={`edititem_${selectedWorkoutIdx}_${item.id}`}
                       workoutItem={item}
@@ -1026,6 +1086,30 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
                       itemIdx={i}
                       workoutIdx={selectedWorkoutIdx}
                     />
+                  ) : (
+                    <ScrollView style={{flex: 1, height: '100%'}}>
+                      <View style={{height: '100%', padding: 12}}>
+                        <View
+                          style={{backgroundColor: '#3b82f6', borderRadius: 4}}>
+                          <ItemString
+                            item={item}
+                            schemeType={selectedWorkout.scheme_type}
+                            prefix="Total completed for: "
+                          />
+                        </View>
+                        <View style={{marginBottom: 12}}>
+                          <EditWorkoutDualItem
+                            editDualItem={editDualItem}
+                            itemIdx={i}
+                            workoutIdx={selectedWorkoutIdx}
+                            schemeType={selectedWorkout.scheme_type}
+                            workoutItem={item}
+                            greyInputBackground={true}
+                            key={`editdualitem_${selectedWorkoutIdx}_${item.id}`}
+                          />
+                        </View>
+                      </View>
+                    </ScrollView>
                   );
                 })
               ) : (

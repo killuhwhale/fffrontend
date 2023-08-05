@@ -110,13 +110,14 @@ const WorkoutCardFullList: FunctionComponent<WorkoutCardListProps> = props => {
       }}>
       {props.data.map(item => {
         const num_items = item.workout_items?.length || 0;
-        console.log('WorkoutCardFullList item: ', item);
+        console.log('WorkoutCardFullList item: ', props.group.owned_by_class);
         return (
           <WorkoutCard
             testID={`${TestIDs.WorkoutCardItemList}_${item.title}_${num_items}`}
             key={`wcfl__${item.id}`}
             editable={props.editable}
             {...item}
+            ownedByClass={props.group.owned_by_class}
           />
         );
       })}
@@ -129,6 +130,7 @@ const WorkoutItemPreviewHorizontalList: FunctionComponent<{
   schemeType: number;
   itemWidth: number;
   testID?: string;
+  ownedByClass: boolean;
 }> = props => {
   const theme = useTheme();
   return (
@@ -159,6 +161,7 @@ const WorkoutItemPreviewHorizontalList: FunctionComponent<{
             schemeType={props.schemeType}
             itemWidth={props.itemWidth}
             idx={index + 1}
+            ownedByClass={props.ownedByClass}
           />
         );
       }}

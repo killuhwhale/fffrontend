@@ -76,6 +76,7 @@ const WorkoutCard: FunctionComponent<WorkoutCardProps> = props => {
           data={items}
           schemeType={props.scheme_type}
           itemWidth={colWidth}
+          ownedByClass={props.ownedByClass}
         />
       </View>
       <View

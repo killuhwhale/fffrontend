@@ -45,6 +45,7 @@ const EditWorkoutDualItem: FunctionComponent<{
   ): {success: boolean; errorType: number; errorMsg: string};
   itemIdx: number;
   workoutIdx: number;
+  greyInputBackground?: boolean;
 }> = props => {
   const theme = useTheme();
   const {workoutItem, schemeType} = props;
@@ -124,7 +125,9 @@ const EditWorkoutDualItem: FunctionComponent<{
                 numberInputStyle.containerStyle,
                 {
                   borderRadius: 4,
-                  backgroundColor: theme.palette.backgroundColor,
+                  backgroundColor: props.greyInputBackground
+                    ? theme.palette.darkGray
+                    : theme.palette.backgroundColor,
                 },
               ]}
               label="Sets"
@@ -180,7 +183,9 @@ const EditWorkoutDualItem: FunctionComponent<{
                 numberInputStyle.containerStyle,
                 {
                   borderRadius: 4,
-                  backgroundColor: theme.palette.backgroundColor,
+                  backgroundColor: props.greyInputBackground
+                    ? theme.palette.darkGray
+                    : theme.palette.backgroundColor,
                 },
               ]}
               label="Reps"
@@ -245,7 +250,9 @@ const EditWorkoutDualItem: FunctionComponent<{
                   numberInputStyle.containerStyle,
                   {
                     borderRadius: 4,
-                    backgroundColor: theme.palette.backgroundColor,
+                    backgroundColor: props.greyInputBackground
+                      ? theme.palette.darkGray
+                      : theme.palette.backgroundColor,
                   },
                 ]}
                 onChangeText={t => {
@@ -356,7 +363,9 @@ const EditWorkoutDualItem: FunctionComponent<{
                   numberInputStyle.containerStyle,
                   {
                     borderRadius: 4,
-                    backgroundColor: theme.palette.backgroundColor,
+                    backgroundColor: props.greyInputBackground
+                      ? theme.palette.darkGray
+                      : theme.palette.backgroundColor,
                   },
                 ]}
                 label="Distance"
@@ -464,7 +473,9 @@ const EditWorkoutDualItem: FunctionComponent<{
                 numberInputStyle.containerStyle,
                 {
                   borderRadius: 4,
-                  backgroundColor: theme.palette.backgroundColor,
+                  backgroundColor: props.greyInputBackground
+                    ? theme.palette.darkGray
+                    : theme.palette.backgroundColor,
                 },
               ],
               {width: '100%'},
@@ -533,7 +544,9 @@ const EditWorkoutDualItem: FunctionComponent<{
                     numberInputStyle.containerStyle,
                     {
                       borderRadius: 4,
-                      backgroundColor: theme.palette.backgroundColor,
+                      backgroundColor: props.greyInputBackground
+                        ? theme.palette.darkGray
+                        : theme.palette.backgroundColor,
                     },
                   ],
                   {width: '100%'},

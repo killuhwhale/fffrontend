@@ -14,16 +14,67 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import * as RootNavigation from '../../navigators/RootNavigation';
 import LinearGradient from 'react-native-linear-gradient';
 
-const isDual = (item: any) => {
-  return item.penalty;
+export const isDual = (item: any) => {
+  return item.penalty !== undefined;
+};
+
+function recordedInfo(
+  key: string,
+  item: WorkoutItemProps | WorkoutDualItemProps,
+  ownedByClass: boolean,
+): string {
+  console.log('Owned by class: ', ownedByClass);
+
+  if (key === 'duration') {
+    return isDual(item) && !ownedByClass
+      ? `(${displayJList(item[`r_${key}`])} ${
+          DURATION_UNITS[item[`r_duration_unit`]]
+        })`
+      : '';
+  } else if (key === 'distance') {
+    return isDual(item) && !ownedByClass
+      ? `(${displayJList(item[`r_${key}`])} ${
+          DISTANCE_UNITS[item[`r_distance_unit`]]
+        })`
+      : '';
+  }
+  return isDual(item) && !ownedByClass
+    ? `(${displayJList(item[`r_${key}`])})`
+    : '';
+}
+
+const WorkoutItemRepsDurDistance: FunctionComponent<{
+  item: WorkoutItemProps | WorkoutDualItemProps;
+  ownedByClass: boolean;
+}> = ({item, ownedByClass}) => {
+  return (
+    <>
+      {item.reps !== '[0]'
+        ? `${displayJList(item.reps)} ${recordedInfo(
+            'reps',
+            item,
+            ownedByClass,
+          )}`
+        : item.distance !== '[0]'
+        ? `${displayJList(item.distance)} ${
+            DISTANCE_UNITS[item.distance_unit]
+          } ${recordedInfo('distance', item, ownedByClass)}`
+        : item.duration !== '[0]'
+        ? `${displayJList(item.duration)} ${
+            DURATION_UNITS[item.duration_unit]
+          } ${recordedInfo('duration', item, ownedByClass)}`
+        : ''}
+    </>
+  );
 };
 
 const WorkoutItemPanel: FunctionComponent<{
   item: WorkoutItemProps | WorkoutDualItemProps;
   schemeType: number;
   itemWidth: number;
+  ownedByClass: boolean;
   idx?: number;
-}> = ({item, schemeType, itemWidth, idx}) => {
+}> = ({item, schemeType, itemWidth, idx, ownedByClass}) => {
   const theme = useTheme();
   let _item;
   if (isDual(item)) {
@@ -36,13 +87,7 @@ const WorkoutItemPanel: FunctionComponent<{
     console.log('Navigating with props:', item);
     RootNavigation.navigate('WorkoutNameDetailScreen', item.name);
   };
-  const itemReps = item.reps == '' || item.reps == '0' ? '0' : item.reps;
-  const itemDistance =
-    item.distance == '' || item.distance == '0' ? '0' : item.distance;
-  const itemDuration =
-    item.duration == '' || item.duration == '0' ? '0' : item.duration;
 
-  console.log('WorkoutItem Panel: ', item);
   return (
     <LinearGradient
       //   colors={['#00000000', '#4682B4']} // Steel BLUE
@@ -142,17 +187,7 @@ const WorkoutItemPanel: FunctionComponent<{
         <SmallText textStyles={{textAlign: 'center'}}>
           {item.sets > 0 && schemeType === 0 ? `${item.sets} x ` : ''}
 
-          {item.reps !== '[0]'
-            ? `${displayJList(item.reps)}  `
-            : item.distance !== '[0]'
-            ? `${displayJList(item.distance)} ${
-                DISTANCE_UNITS[item.distance_unit]
-              } `
-            : item.duration !== '[0]'
-            ? `${displayJList(item.duration)} ${
-                DURATION_UNITS[item.duration_unit]
-              }`
-            : ''}
+          <WorkoutItemRepsDurDistance item={item} ownedByClass={ownedByClass} />
         </SmallText>
       </View>
       <View style={{alignItems: 'center', flex: 5, width: '100%'}}>

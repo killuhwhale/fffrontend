@@ -112,11 +112,11 @@ git push origin HEAD:staging HEAD
 
 # TODO
 
--Deleteing isnt Workout Groupts as Regular User isnt working....
+- Show the users recorded values when neccessary
 
-- It is working from as Class Owner User
-
-  - Check permissions....
+  - Deleteing Workout Groupts as Regular User isnt working....
+  - It is working from as Class Owner User\
+    - Check permissions....
 
 - 2 more workout types to finish:
 

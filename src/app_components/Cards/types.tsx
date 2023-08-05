@@ -138,11 +138,13 @@ export interface WorkoutCardProps {
   date: string;
   editable?: boolean;
   testID?: string;
+  ownedByClass: boolean;
 }
 
 export interface WorkoutCardListProps {
   data: Array<WorkoutCardProps>;
   editable?: boolean;
+  group: WorkoutGroupProps;
 }
 
 export interface WorkoutGroupCardProps {

@@ -688,7 +688,11 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                 <SmallText>Loading....</SmallText>
               ) : (showingOGWorkoutGroup && oGIsSuccess) ||
                 (!showingOGWorkoutGroup && completedIsSuccess) ? (
-                <WorkoutCardFullList data={workouts} editable={editable} />
+                <WorkoutCardFullList
+                  data={workouts}
+                  editable={editable}
+                  group={workoutGroup}
+                />
               ) : (showingOGWorkoutGroup && oGIsError) ||
                 (!showingOGWorkoutGroup && completedIsError) ? (
                 <SmallText>
