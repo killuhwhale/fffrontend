@@ -1,4 +1,5 @@
 import {
+  WorkoutCardProps,
   WorkoutCategoryProps,
   WorkoutItemProps,
 } from '../src/app_components/Cards/types';
@@ -256,7 +257,7 @@ test('Stats multiple stats are correct w/ constant distance', () => {
       title: 'A',
       workout_items: items,
     },
-  ];
+  ] as WorkoutCardProps[];
 
   calculator.calcMulti(workouts);
 
@@ -414,7 +415,7 @@ test('Stats multiple stats are correct w/ constant duration', () => {
       title: 'A',
       workout_items: items,
     },
-  ];
+  ] as WorkoutCardProps[];
 
   calculator.calcMulti(workouts);
 

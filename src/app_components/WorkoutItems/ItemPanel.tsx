@@ -2,7 +2,11 @@ import React, {FunctionComponent} from 'react';
 import {TouchableHighlight, View} from 'react-native';
 import {useTheme} from 'styled-components';
 import {COLORSPALETTE} from '../../app_pages/input_pages/gyms/CreateWorkoutScreen';
-import {WorkoutDualItemProps, WorkoutItemProps} from '../Cards/types';
+import {
+  AnyWorkoutItem,
+  WorkoutDualItemProps,
+  WorkoutItemProps,
+} from '../Cards/types';
 import {
   displayJList,
   DISTANCE_UNITS,
@@ -20,7 +24,7 @@ export const isDual = (item: any) => {
 
 function recordedInfo(
   key: string,
-  item: WorkoutItemProps | WorkoutDualItemProps,
+  item: AnyWorkoutItem,
   ownedByClass: boolean,
 ): string {
   console.log('Owned by class: ', ownedByClass);
@@ -43,33 +47,104 @@ function recordedInfo(
     : '';
 }
 
+const WorkoutItemRest: FunctionComponent<{
+  item: AnyWorkoutItem;
+  ownedByClass: boolean;
+}> = ({item, ownedByClass}) => {
+  const restDuration =
+    (ownedByClass ? item.rest_duration : item['r_rest_duration']) ??
+    item.rest_duration;
+  const restDurationUnit =
+    (ownedByClass ? item.rest_duration_unit : item['r_rest_duration_unit']) ??
+    item.rest_duration_unit;
+
+  return (
+    <SmallText textStyles={{alignSelf: 'center'}}>
+      {restDuration > 0
+        ? `Rest: ${restDuration} ${DURATION_UNITS[restDurationUnit]}`
+        : ''}
+    </SmallText>
+  );
+};
+const WorkoutItemWeights: FunctionComponent<{
+  item: AnyWorkoutItem;
+  ownedByClass: boolean;
+}> = ({item, ownedByClass}) => {
+  const weights =
+    (ownedByClass ? item.weights : item['r_weights']) ?? item.weights;
+  const weightUnit =
+    (ownedByClass ? item.weight_unit : item['r_weight_unit']) ??
+    item.weight_unit;
+  const percentOf =
+    (ownedByClass ? item.percent_of : item['r_percent_of']) ?? item.percent_of;
+  // console.log('WorkoutItemWeights: ', item.weights, item['r_weights'], item);
+  return (
+    <>
+      {weights &&
+      JSON.parse(weights).length > 0 &&
+      JSON.parse(weights)[0] > 0 ? (
+        <SmallText>
+          {`@ ${displayJList(weights)} ${
+            item.weight_unit === '%' ? '' : weightUnit
+          }`}
+        </SmallText>
+      ) : (
+        <></>
+      )}
+
+      {weightUnit === '%' &&
+      JSON.parse(weights)[0] > 0 &&
+      JSON.parse(weights).legnth > 1 ? (
+        <SmallText>{`Percent of ${percentOf}`}</SmallText>
+      ) : (
+        <></>
+      )}
+    </>
+  );
+};
+
+const recordedTextColor = '#be123c';
 const WorkoutItemRepsDurDistance: FunctionComponent<{
-  item: WorkoutItemProps | WorkoutDualItemProps;
+  item: AnyWorkoutItem;
   ownedByClass: boolean;
 }> = ({item, ownedByClass}) => {
   return (
     <>
-      {item.reps !== '[0]'
-        ? `${displayJList(item.reps)} ${recordedInfo(
-            'reps',
-            item,
-            ownedByClass,
-          )}`
-        : item.distance !== '[0]'
-        ? `${displayJList(item.distance)} ${
-            DISTANCE_UNITS[item.distance_unit]
-          } ${recordedInfo('distance', item, ownedByClass)}`
-        : item.duration !== '[0]'
-        ? `${displayJList(item.duration)} ${
-            DURATION_UNITS[item.duration_unit]
-          } ${recordedInfo('duration', item, ownedByClass)}`
-        : ''}
+      {item.reps !== '[0]' ? (
+        <>
+          {displayJList(item.reps)}
+          {` `}
+          <SmallText textStyles={{color: recordedTextColor}}>
+            {recordedInfo('reps', item, ownedByClass)}
+          </SmallText>
+        </>
+      ) : item.distance !== '[0]' ? (
+        <>
+          {displayJList(item.distance)}
+          {DISTANCE_UNITS[item.distance_unit]}
+          {` `}
+          <SmallText textStyles={{color: recordedTextColor}}>
+            {recordedInfo('distance', item, ownedByClass)}
+          </SmallText>
+        </>
+      ) : item.duration !== '[0]' ? (
+        <>
+          {displayJList(item.duration)}
+          {DISTANCE_UNITS[item.duration_unit]}
+          {` `}
+          <SmallText textStyles={{color: recordedTextColor}}>
+            {recordedInfo('duration', item, ownedByClass)}
+          </SmallText>
+        </>
+      ) : (
+        ''
+      )}
     </>
   );
 };
 
 const WorkoutItemPanel: FunctionComponent<{
-  item: WorkoutItemProps | WorkoutDualItemProps;
+  item: AnyWorkoutItem;
   schemeType: number;
   itemWidth: number;
   ownedByClass: boolean;
@@ -186,36 +261,12 @@ const WorkoutItemPanel: FunctionComponent<{
         }}>
         <SmallText textStyles={{textAlign: 'center'}}>
           {item.sets > 0 && schemeType === 0 ? `${item.sets} x ` : ''}
-
           <WorkoutItemRepsDurDistance item={item} ownedByClass={ownedByClass} />
         </SmallText>
       </View>
       <View style={{alignItems: 'center', flex: 5, width: '100%'}}>
-        {JSON.parse(item.weights).length > 0 &&
-        JSON.parse(item.weights)[0] > 0 ? (
-          <SmallText>
-            {`@ ${displayJList(item.weights)} ${
-              item.weight_unit === '%' ? '' : item.weight_unit
-            }`}
-          </SmallText>
-        ) : (
-          <></>
-        )}
-        {item.weight_unit === '%' &&
-        JSON.parse(item.weights)[0] > 0 &&
-        JSON.parse(item.weights).legnth > 1 ? (
-          <SmallText>{`Percent of ${item.percent_of}`}</SmallText>
-        ) : (
-          <></>
-        )}
-
-        <SmallText textStyles={{alignSelf: 'center'}}>
-          {item.rest_duration > 0
-            ? `Rest: ${item.rest_duration} ${
-                DURATION_UNITS[item.rest_duration_unit]
-              }`
-            : ''}
-        </SmallText>
+        <WorkoutItemWeights item={item} ownedByClass={ownedByClass} />
+        <WorkoutItemRest item={item} ownedByClass={ownedByClass} />
       </View>
     </LinearGradient>
   );

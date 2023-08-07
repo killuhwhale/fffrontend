@@ -11,7 +11,11 @@ import {
 import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
 import {useGetCompletedWorkoutGroupsForUserByDateRangeQuery} from '../redux/api/apiSlice';
-import {WorkoutCardProps} from '../app_components/Cards/types';
+import {
+  AnyWorkoutItem,
+  WorkoutCardProps,
+  WorkoutGroupProps,
+} from '../app_components/Cards/types';
 import DatePicker from 'react-native-date-picker';
 
 import TotalsBarChart from '../app_components/charts/barChart';
@@ -80,11 +84,12 @@ const StatsScreen: FunctionComponent<Props> = ({
       let _workoutNameStats: {}[] = [];
       const calc = new CalcWorkoutStats();
 
-      data.forEach(workoutGroup => {
+      data.forEach((workoutGroup: WorkoutGroupProps) => {
         console.log('\n .Workout Group ', workoutGroup, '\n');
-        const workouts = workoutGroup.completed_workouts
-          ? workoutGroup.completed_workouts
-          : workoutGroup.workouts;
+        const workouts: WorkoutCardProps[] =
+          (workoutGroup.completed_workouts
+            ? workoutGroup.completed_workouts
+            : workoutGroup.workouts) ?? [];
 
         console.log('Workout groups workouts: ', workouts);
         _allWorkouts.push(...workouts); // Collect all workouts for bar data

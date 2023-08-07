@@ -112,49 +112,6 @@ git push origin HEAD:staging HEAD
 
 # TODO
 
-- Show the users recorded values when neccessary
-
-  - Deleteing Workout Groupts as Regular User isnt working....
-  - It is working from as Class Owner User\
-    - Check permissions....
-
-- 2 more workout types to finish:
-
-  - For time
-  - Time limit
-
-    - 10 mins complete following, score is time or reps compeleted
-
-      - 100 Burpees
-      - Every 1 min, do 10 thrusters
-
-      SCORE:
-      8:53
-      OR
-      x burpees and x thrusters.
-
-      Submit form might look like:
-      Reps: x of WorkoutName for each item
-      Time: 8:53 OR Did Not Finish
-
-      The creator can just create a normal workout and we can add support for:
-      We will add a "Every x METRIC item"
-
-      - Every x reps
-      - Every x duration
-      - Every x distance
-
-    Then we will have a normal workout with items that are to be completed with special instructions
-
-    we wont be able to calculate this workout's stats until the user has completed.
-    We will skip calculation this workout on the class page for StatsPanel
-    We will require the user fill in the amount fone when completing the workout.
-    We will have an optional section when creating as a perosnal workout to allow the user fill in what they did.'
-
-    This means we need to add something to a workout to track what they did as wel as the instructions.
-    Currently the instructions is what they did.
-    But now the instructions are suggesting what to do and not an exact amount.
-
 - Apple Connect
 
   - App Access - Account Creds for Apple

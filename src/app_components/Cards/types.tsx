@@ -60,6 +60,9 @@ export interface WorkoutNameProps {
   date: string;
 }
 
+export type AnyWorkoutItem = WorkoutItemProps | WorkoutDualItemProps;
+export type WorkkoutItemsList = Array<AnyWorkoutItem>;
+
 export interface WorkoutItemProps {
   id: number;
   name: WorkoutNameProps;
@@ -83,6 +86,7 @@ export interface WorkoutItemProps {
   date: string;
   workout: number;
 }
+
 export interface WorkoutDualItemProps {
   id: number;
   name: WorkoutNameProps;
@@ -122,6 +126,7 @@ export interface WorkoutDualItemProps {
   workout: number;
 }
 
+// TODO() refactor and remove.... possibly w/ WorkkoutItemsList
 export interface WorkoutItemListProps {
   data: Array<WorkoutItemProps>;
 }
@@ -129,7 +134,7 @@ export interface WorkoutItemListProps {
 export interface WorkoutCardProps {
   id: number;
   group?: WorkoutGroupProps;
-  workout_items?: Array<WorkoutItemProps | WorkoutDualItemProps>;
+  workout_items?: WorkkoutItemsList;
   completed_workout_items?: Array<WorkoutItemProps>;
   title: string;
   desc: string;

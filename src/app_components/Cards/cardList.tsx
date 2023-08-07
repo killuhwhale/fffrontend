@@ -14,6 +14,7 @@ import {
   GymCardProps,
   GymClassCardProps,
   WorkoutDualItemProps,
+  WorkkoutItemsList,
 } from './types';
 import GymCard from './GymCard';
 import GymClassCard, {GymClassTextCard} from './GymClassCard';
@@ -126,7 +127,7 @@ const WorkoutCardFullList: FunctionComponent<WorkoutCardListProps> = props => {
 };
 
 const WorkoutItemPreviewHorizontalList: FunctionComponent<{
-  data: (WorkoutItemProps | WorkoutDualItemProps)[];
+  data: WorkkoutItemsList;
   schemeType: number;
   itemWidth: number;
   testID?: string;

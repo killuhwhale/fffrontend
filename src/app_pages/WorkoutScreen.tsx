@@ -235,8 +235,12 @@ const WorkoutScreen: FunctionComponent<Props> = ({
 
   const [tags, names] = useMemo(() => {
     const calc = new CalcWorkoutStats();
-    console.log('Muti stats', workouts);
-    calc.calcMulti(workouts);
+    console.log(
+      'Muti stats owned by class: ',
+      workoutGroup.owned_by_class,
+      workouts,
+    );
+    calc.calcMulti(workouts, workoutGroup.owned_by_class);
 
     return calc.getStats();
   }, [workouts]);

@@ -2,7 +2,13 @@ import {Dimensions, Platform} from 'react-native';
 import styled from 'styled-components/native';
 import {WorkoutStats} from '../app_components/Stats/StatsPanel';
 import {SPACES_URL} from '../utils/constants';
-import {WorkoutCardProps, WorkoutItemProps} from './Cards/types';
+import {
+  WorkkoutItemsList,
+  WorkoutCardProps,
+  WorkoutDualItemProps,
+  AnyWorkoutItem,
+  WorkoutItemProps,
+} from './Cards/types';
 export const Container = styled.View`
   flex: 1;
   align-items: center;
@@ -150,10 +156,10 @@ export class CalcWorkoutStats {
    */
   schemeRounds: string;
   schemeType: number;
-  items: WorkoutItemProps[];
+  items: WorkkoutItemsList;
 
   isFormatted = false;
-
+  ownedByClass = false;
   tags = {};
   names = {};
 
@@ -205,7 +211,7 @@ export class CalcWorkoutStats {
   setWorkoutParams(
     schemeRounds: string,
     schemeType: number,
-    items: WorkoutItemProps[],
+    items: WorkkoutItemsList,
   ) {
     this.schemeRounds = schemeRounds;
     this.schemeType = schemeType;
@@ -213,7 +219,7 @@ export class CalcWorkoutStats {
   }
 
   calcItemReps(
-    item: WorkoutItemProps,
+    item: AnyWorkoutItem,
     pCat: string,
     workoutName: string,
     quantity: number | null,
@@ -249,7 +255,7 @@ export class CalcWorkoutStats {
   }
 
   calcItemDuration(
-    item: WorkoutItemProps,
+    item: AnyWorkoutItem,
     pCat: string,
     workoutName: string,
     quantity: number | null,
@@ -279,7 +285,7 @@ export class CalcWorkoutStats {
   }
 
   calcItemDistance(
-    item: WorkoutItemProps,
+    item: AnyWorkoutItem,
     pCat: string,
     workoutName: string,
     quantity: number | null,
@@ -307,11 +313,7 @@ export class CalcWorkoutStats {
     }
   }
 
-  calcStandardScheme(
-    item: WorkoutItemProps,
-    pCat: string,
-    workoutName: string,
-  ) {
+  calcStandardScheme(item: AnyWorkoutItem, pCat: string, workoutName: string) {
     const weights = JSON.parse(item.weights);
     // Expand a single value arrray
     const itemWeights = expandArray(weights, item.sets);
@@ -358,7 +360,7 @@ export class CalcWorkoutStats {
     }
   }
 
-  calcRepsScheme(item: WorkoutItemProps, pCat: string, workoutName: string) {
+  calcRepsScheme(item: AnyWorkoutItem, pCat: string, workoutName: string) {
     const repsPerRounds = parseNumList(this.schemeRounds); // Comes from previous screen, param, string
     const reps = JSON.parse(item.reps);
     const itemReps =
@@ -438,7 +440,7 @@ export class CalcWorkoutStats {
     });
   }
 
-  calcRoundsScheme(item: WorkoutItemProps, pCat: string, workoutName: string) {
+  calcRoundsScheme(item: AnyWorkoutItem, pCat: string, workoutName: string) {
     const rounds = parseInt(this.schemeRounds);
     const reps = JSON.parse(item.reps);
     const distance = JSON.parse(item.reps);
@@ -481,26 +483,40 @@ export class CalcWorkoutStats {
     }
   }
 
-  calcDurationScheme(
-    item: WorkoutItemProps,
-    pCat: string,
-    workoutName: string,
-  ) {
+  getRecord(item: AnyWorkoutItem, key: string) {
+    return item[`r_${key}`];
+  }
+
+  // calcRecordScheme essentailly will calculate anything (really doesnt calculate anything, just reports or tallys up the total from the recorded values unless owned by class.)
+  calcRecordScheme(item: AnyWorkoutItem, pCat: string, workoutName: string) {
     // Problem is, we dont know how much was accomplished until after the fact.
     // WE can calculate what a single round would be, then once we save this as completed, we can calculate the toatls....
     // For now, we will calc a single round only.
-    const itemReps = JSON.parse(item.reps);
-    const itemDuration = JSON.parse(item.duration);
-    const itemDistance = JSON.parse(item.distance);
-    const weights = JSON.parse(item.weights);
+    // Wellll welll well, we finally have a solution....
+    // Now we just need to know if this is owned by the class because then we will calculate normally with .reps and not .r_reps
+    // But when the item is from  a workout that is completed => completedDualItem, or regular => workoutItem
+    //   Then, if the workout is owned by a class, it will be normal.
+    // if ownedByClass // should onyl be true when user is on WorkoutsScreen viewing a class workout
+    //    const itemReps = JSON.parse(item.reps);
+    // else //
+    //    const itemReps = JSON.parse(item.r_reps);
+    //
+    //
+    //
+    //
 
-    const quantity = itemReps[0]
-      ? itemReps[0]
-      : itemDuration[0]
-      ? itemDuration[0]
-      : itemDistance[0]
-      ? itemDistance[0]
-      : 0;
+    const itemReps = this.ownedByClass
+      ? JSON.parse(item.reps)
+      : JSON.parse(this.getRecord(item, 'reps'));
+    const itemDuration = this.ownedByClass
+      ? JSON.parse(item.duration)
+      : JSON.parse(this.getRecord(item, 'duration'));
+    const itemDistance = this.ownedByClass
+      ? JSON.parse(item.distance)
+      : JSON.parse(this.getRecord(item, 'distance'));
+    const weights = this.ownedByClass
+      ? JSON.parse(item.weights)
+      : JSON.parse(this.getRecord(item, 'weights'));
 
     // Reps
     if (itemReps[0]) {
@@ -564,8 +580,12 @@ export class CalcWorkoutStats {
           this.calcRepsScheme(item, pCat, workoutName);
         } else if (WORKOUT_TYPES[this.schemeType] == ROUNDS_W) {
           this.calcRoundsScheme(item, pCat, workoutName);
-        } else if (WORKOUT_TYPES[this.schemeType] == DURATION_W) {
-          this.calcDurationScheme(item, pCat, workoutName);
+        }
+        // else if (WORKOUT_TYPES[this.schemeType] == DURATION_W) {
+        // The other workout types are all record types with r_ prefix
+        // calcDuationScheme will calculate all of these types. No
+        else {
+          this.calcRecordScheme(item, pCat, workoutName);
         }
       });
       // console.log('Calc res ', this.getStats());
@@ -577,8 +597,9 @@ export class CalcWorkoutStats {
     return false;
   }
 
-  calcMulti(data: WorkoutCardProps[]) {
+  calcMulti(data: WorkoutCardProps[], ownedByClass = false) {
     this.isFormatted = false;
+    this.ownedByClass = ownedByClass;
     // console.log('CalcMulti Data: ', data);
     data.forEach(workout => {
       const {
@@ -611,6 +632,7 @@ export class CalcWorkoutStats {
   reset() {
     this.schemeRounds = '';
     this.schemeType = -1;
+    this.ownedByClass = false;
     this.items = [];
 
     this.tags = {};
