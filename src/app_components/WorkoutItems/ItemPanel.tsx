@@ -27,8 +27,6 @@ function recordedInfo(
   item: AnyWorkoutItem,
   ownedByClass: boolean,
 ): string {
-  console.log('Owned by class: ', ownedByClass);
-
   if (key === 'duration') {
     return isDual(item) && !ownedByClass
       ? `(${displayJList(item[`r_${key}`])} ${

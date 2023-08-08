@@ -30,7 +30,6 @@ const PenaltyModal: FunctionComponent<{
 }) => {
   const theme = useTheme();
 
-  console.log('New Penaly Mdoal Render', text);
   return (
     <Modal
       animationType="slide"

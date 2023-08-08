@@ -241,7 +241,6 @@ const RootStack: FunctionComponent<RootstackProps> = props => {
 
     // Clean up the effect
     return () => {
-      console.log('Header component unmounted');
       if (routeNameUnsub) {
         routeNameUnsub();
       }

@@ -29,8 +29,6 @@ const WorkoutGroupGridItem: FunctionComponent<{
     });
   };
 
-  console.log('WGCard: ', props);
-
   return (
     <View
       style={{

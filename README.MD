@@ -74,6 +74,7 @@ android/app/build/outputs/bundle/[app-release.aab]
 adb -s 710KPMZ0409387 reverse tcp:8081 tcp:8081
 adb -s 710KPMZ0409387 reverse tcp:8000 tcp:8000
 
+emulator -noaudio -avd Pixel_4_API_30 &
 npx react-native run-android --active-arch-only
 adb -s emulator-5554 reverse tcp:8081 tcp:8081
 adb -s emulator-5554 reverse tcp:8000 tcp:8000

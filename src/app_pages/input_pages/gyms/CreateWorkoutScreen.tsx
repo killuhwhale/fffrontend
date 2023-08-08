@@ -18,7 +18,7 @@ import {
   WORKOUT_TYPES,
   STANDARD_W,
   ROUNDS_W,
-  DURATION_W,
+  CREATIVE_W,
   REPS_W,
   numFilter,
   numFilterWithSpaces,
@@ -168,19 +168,19 @@ const RoundSheme: FunctionComponent<{
   );
 };
 
-const TimeScheme: FunctionComponent<{
-  onSchemeRoundChange(scheme: string);
-  schemeRounds: string;
+const CreativeScheme: FunctionComponent<{
+  onSchemeInstructionChange(instructions: string);
+  instruction: string;
 }> = props => {
   const theme = useTheme();
   return (
     <View style={{marginBottom: 15, height: 35}}>
       <Input
-        placeholder="Time (mins)"
-        onChangeText={props.onSchemeRoundChange}
-        value={props.schemeRounds}
-        label="Time (mins)"
-        helperText="Please enter number of rounds"
+        placeholder="20 min AMRAP"
+        onChangeText={props.onSchemeInstructionChange}
+        value={props.instruction}
+        label="Instructions"
+        helperText=""
         containerStyle={{
           width: '100%',
           backgroundColor: theme.palette.darkGray,
@@ -200,6 +200,7 @@ const TimeScheme: FunctionComponent<{
   );
 };
 
+// Depracated
 const TimeScoreScheme: FunctionComponent<{
   onSchemeRoundChange(scheme: string);
   schemeRounds: string;
@@ -232,6 +233,7 @@ const TimeScoreScheme: FunctionComponent<{
   );
 };
 
+// Depracated
 const TimeLimitScheme: FunctionComponent<{
   onSchemeRoundChange(scheme: string);
   schemeRounds: string;
@@ -267,8 +269,9 @@ const TimeLimitScheme: FunctionComponent<{
 const SchemeField: FunctionComponent<{
   schemeType: number;
   setSchemeRounds(a: string): void;
+  setInstruction(a: string): void;
   schemeRounds: string;
-
+  instruction?: string;
   setSchemeRoundsError(a: boolean): void;
   schemeRoundsError: boolean;
 }> = ({
@@ -277,6 +280,8 @@ const SchemeField: FunctionComponent<{
   schemeRounds,
   setSchemeRoundsError,
   schemeRoundsError,
+  instruction,
+  setInstruction,
 }) => {
   return (
     <View
@@ -312,12 +317,12 @@ const SchemeField: FunctionComponent<{
             schemeRounds={schemeRounds}
           />
         </>
-      ) : WORKOUT_TYPES[schemeType] == DURATION_W ? (
+      ) : WORKOUT_TYPES[schemeType] == CREATIVE_W ? (
         <>
           <SmallText>Duration of workout</SmallText>
-          <TimeScheme
-            onSchemeRoundChange={t => setSchemeRounds(numFilter(t))}
-            schemeRounds={schemeRounds}
+          <CreativeScheme
+            onSchemeInstructionChange={t => setInstruction(t)}
+            instruction={instruction ?? ''}
           />
         </>
       ) : WORKOUT_TYPES[schemeType] == TIMESCORE_W ? (
@@ -482,6 +487,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
   const [schemeRounds, setSchemeRounds] = useState('');
+  const [instruction, setInstruction] = useState('');
 
   const _items: WorkoutItems = [];
   const [items, setItems] = useState(_items);
@@ -512,6 +518,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
     workoutData.append('group', workoutGroupID);
     workoutData.append('title', title);
     workoutData.append('desc', desc);
+    workoutData.append('instruction', instruction);
     workoutData.append('scheme_type', schemeType);
     workoutData.append('scheme_rounds', schemeRounds);
 
@@ -734,8 +741,10 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
           schemeType={schemeType}
           schemeRounds={schemeRounds}
           setSchemeRounds={setSchemeRounds}
+          setInstruction={setInstruction}
           schemeRoundsError={schemeRoundsError}
           setSchemeRoundsError={setSchemeRoundsError}
+          instruction={instruction}
         />
 
         <View style={{flex: 6}}>
@@ -764,183 +773,6 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
               addPenalty={addPenalty}
             />
           )}
-
-          {/** Item List */}
-          {/*
-
-                 {schemeType == 0 ? (
-            <View
-              style={{
-                width: '100%',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignContent: 'center',
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  flex: 2,
-                  alignItems: 'flex-start',
-                  alignContent: 'flex-start',
-                  justifyContent: 'flex-start',
-                }}>
-                <SmallText
-                  textStyles={{color: theme.palette.text, textAlign: 'left'}}>
-                  Add Superset
-                </SmallText>
-                <Switch
-                  value={showAddSSID}
-                  onValueChange={v => {
-                    setShowAddSSID(v);
-                    if (!v) {
-                      setCurColor(-1);
-                    }
-                  }}
-                  trackColor={{
-                    true: theme.palette.primary.contrastText,
-                    false: theme.palette.darkGray,
-                  }}
-                  thumbColor={
-                    showAddSSID
-                      ? theme.palette.primary.main
-                      : theme.palette.gray
-                  }
-                />
-              </View>
-              <View style={{flex: 5}}>
-                {showAddSSID ? (
-                  <ColorPalette onSelect={setCurColor} selectedIdx={curColor} />
-                ) : (
-                  <></>
-                )}
-              </View>
-            </View>
-          ) : schemeType === 1 ? (
-            <View
-              style={{
-                width: '100%',
-                justifyContent: 'center',
-                alignItems: 'baseline',
-              }}>
-              <SmallText
-                textStyles={{color: theme.palette.text, textAlign: 'left'}}>
-                Mark item as constant (ignore rep scheme)
-              </SmallText>
-              <Switch
-                value={allowMarkConstant}
-                onValueChange={v => {
-                  console.log('Allow mark constant', v);
-                  setAllowMarkConstant(v);
-                }}
-                trackColor={{
-                  true: theme.palette.primary.contrastText,
-                  false: theme.palette.darkGray,
-                }}
-                thumbColor={
-                  showAddSSID ? theme.palette.primary.main : theme.palette.gray
-                }
-              />
-            </View>
-          ) : (
-            <></>
-          )}
-
-          {showAddSSID || allowMarkConstant ? (
-            <View>
-              <ScrollView>
-                {items.map((item, idx) => {
-                  return (
-                    <TouchableWithoutFeedback
-                      key={`item_test_${Math.random()}`}
-                      style={{}}
-                      onPress={() => {
-                        if (WORKOUT_TYPES[schemeType] == STANDARD_W) {
-                          item.ssid >= 0
-                            ? removeItemSSID(idx)
-                            : curColor > -1
-                            ? addItemToSSID(idx)
-                            : console.log('Select a color first!');
-                        } else if (WORKOUT_TYPES[schemeType] == REPS_W) {
-                          updateItemConstant(idx);
-                        }
-                      }}>
-                      <View
-                        style={{
-                          height: SCREEN_HEIGHT * 0.05,
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          width: '100%',
-                        }}>
-                        <View style={{flex: 10}}>
-                          <ItemString item={item} schemeType={schemeType} />
-                        </View>
-                        <View style={{flex: 1}}>
-                          {WORKOUT_TYPES[schemeType] == STANDARD_W ? (
-                            <Icon
-                              name="person"
-                              color={
-                                item.ssid >= 0
-                                  ? COLORSPALETTE[item.ssid]
-                                  : theme.palette.text
-                              }
-                            />
-                          ) : (
-                            <Icon
-                              name="person"
-                              color={
-                                item.constant
-                                  ? COLORSPALETTE[0]
-                                  : theme.palette.text
-                              }
-                            />
-                          )}
-                        </View>
-                      </View>
-                    </TouchableWithoutFeedback>
-                  );
-                })}
-              </ScrollView>
-            </View>
-          ) : (
-            <ScrollView>
-
-              {items.map((item, idx) => {
-                return (
-                  <AnimatedButton
-                    title={item.name.name}
-                    style={{width: '100%'}}
-                    onFinish={() => removeItem(idx)}
-                    key={`itemz_${idx}_${Math.random()}`}>
-                    <View
-                      style={{
-                        height: SCREEN_HEIGHT * 0.05,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                      }}>
-                      <View style={{flex: 10}}>
-                        <ItemString item={item} schemeType={schemeType} />
-                      </View>
-                      <View style={{flex: 1}}>
-                        <Icon
-                          name="person"
-                          color={
-                            WORKOUT_TYPES[schemeType] == REPS_W && item.constant
-                              ? COLORSPALETTE[0]
-                              : WORKOUT_TYPES[schemeType] == STANDARD_W &&
-                                item.ssid >= 0
-                              ? COLORSPALETTE[item.ssid]
-                              : theme.palette.text
-                          }
-                        />
-                      </View>
-                    </View>
-                  </AnimatedButton>
-                );
-              })}
-            </ScrollView>
-          )} */}
         </View>
         <View style={{flex: 1}}>
           {!isCreating ? (

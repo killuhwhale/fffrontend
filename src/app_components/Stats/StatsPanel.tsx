@@ -133,7 +133,7 @@ export const StatsPanel: FunctionComponent<{tags: {}; names: {}}> = ({
   names,
 }) => {
   const theme = useTheme();
-  console.log('Stats Panel: ', tags);
+
   const sTags = Object.keys(tags)
     .sort((a, b) => (a < b ? -1 : 1))
     .map(key => tags[key]);

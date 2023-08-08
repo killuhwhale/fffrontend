@@ -138,6 +138,7 @@ export interface WorkoutCardProps {
   completed_workout_items?: Array<WorkoutItemProps>;
   title: string;
   desc: string;
+  instruction?: string;
   scheme_type: number;
   scheme_rounds: string;
   date: string;

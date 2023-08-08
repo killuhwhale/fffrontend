@@ -8,7 +8,7 @@ import {
   displayJList,
   DISTANCE_UNITS,
   DURATION_UNITS,
-  DURATION_W,
+  CREATIVE_W,
   jList,
   jsonCopy,
   mdFontSize,
@@ -154,7 +154,7 @@ const EditWorkoutItem: FunctionComponent<{
           width: '100%',
           justifyContent: 'space-between',
         }}>
-        <ItemString item={workoutItem} schemeType={schemeType} />
+        <ItemString item={workoutItem} prefix="" schemeType={schemeType} />
       </View>
 
       {hasSets ? (
@@ -239,7 +239,7 @@ const EditWorkoutItem: FunctionComponent<{
                 if (
                   WORKOUT_TYPES[props.schemeType] == STANDARD_W ||
                   WORKOUT_TYPES[props.schemeType] == REPS_W ||
-                  WORKOUT_TYPES[props.schemeType] == DURATION_W
+                  WORKOUT_TYPES[props.schemeType] == CREATIVE_W
                 ) {
                   val = numFilter(t);
                 } else {
@@ -298,7 +298,7 @@ const EditWorkoutItem: FunctionComponent<{
                   if (
                     WORKOUT_TYPES[props.schemeType] == STANDARD_W ||
                     WORKOUT_TYPES[props.schemeType] == REPS_W ||
-                    WORKOUT_TYPES[props.schemeType] == DURATION_W
+                    WORKOUT_TYPES[props.schemeType] == CREATIVE_W
                   ) {
                     val = numFilter(t);
                   } else {
@@ -438,7 +438,7 @@ const EditWorkoutItem: FunctionComponent<{
                   if (
                     WORKOUT_TYPES[props.schemeType] == STANDARD_W ||
                     WORKOUT_TYPES[props.schemeType] == REPS_W ||
-                    WORKOUT_TYPES[props.schemeType] == DURATION_W
+                    WORKOUT_TYPES[props.schemeType] == CREATIVE_W
                   ) {
                     // updateItem('distance', numFilter(t))
                     val = numFilter(t);

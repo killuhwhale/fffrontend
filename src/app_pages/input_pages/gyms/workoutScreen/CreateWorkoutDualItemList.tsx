@@ -20,7 +20,7 @@ import {
   WORKOUT_TYPES,
   STANDARD_W,
   ROUNDS_W,
-  DURATION_W,
+  CREATIVE_W,
   REPS_W,
   numFilter,
   numFilterWithSpaces,
@@ -72,7 +72,7 @@ const CreateWorkoutDualItemList: FunctionComponent<{
                   justifyContent: 'space-between',
                 }}>
                 <View style={{flex: 10}}>
-                  <ItemString item={item} schemeType={schemeType} />
+                  <ItemString item={item} schemeType={schemeType} prefix="" />
                 </View>
                 <View
                   style={{

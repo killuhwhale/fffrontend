@@ -449,6 +449,7 @@ export const apiSlice = createApi({
         return {url: `workoutGroups/${id}/user_workouts/`};
       },
       providesTags: (result, error, arg) => {
+        console.log('Provides tag, WorkoutGroupWorkouts: ', arg);
         return [{type: 'WorkoutGroupWorkouts', id: arg}];
       },
     }),
@@ -548,9 +549,14 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: (resut, error, arg) => {
         const data = new Map<string, string>(arg._parts);
-
+        console.log(
+          'Invalidating create normal Item: ',
+          data.get('workout_group'),
+          data,
+        );
         return [
           {type: 'WorkoutGroupWorkouts', id: data.get('workout_group')},
+          {type: 'UserWorkoutGroups'},
           {type: 'StatsQuery'},
         ];
       },
@@ -565,9 +571,14 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: (resut, error, arg) => {
         const data = new Map<string, string>(arg._parts);
-
+        console.log(
+          'Invalidating create Dual Item: ',
+          data.get('workout_group'),
+          data,
+        );
         return [
           {type: 'WorkoutGroupWorkouts', id: data.get('workout_group')},
+          {type: 'UserWorkoutGroups'},
           {type: 'StatsQuery'},
         ];
       },
@@ -585,6 +596,7 @@ export const apiSlice = createApi({
 
         return [
           {type: 'WorkoutGroupWorkouts', id: data.get('workout_group')},
+          {type: 'UserWorkoutGroups'},
           {type: 'StatsQuery'},
         ];
       },

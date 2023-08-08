@@ -111,7 +111,6 @@ const WorkoutCardFullList: FunctionComponent<WorkoutCardListProps> = props => {
       }}>
       {props.data.map(item => {
         const num_items = item.workout_items?.length || 0;
-        console.log('WorkoutCardFullList item: ', props.group.owned_by_class);
         return (
           <WorkoutCard
             testID={`${TestIDs.WorkoutCardItemList}_${item.title}_${num_items}`}
@@ -155,7 +154,7 @@ const WorkoutItemPreviewHorizontalList: FunctionComponent<{
       }}
       renderItem={renderProps => {
         const index = renderProps.index == undefined ? 0 : renderProps.index;
-        console.log('Rendering hori item: ', index);
+
         return (
           <WorkoutItemPanel
             item={renderProps.item as WorkoutDualItemProps}

@@ -30,7 +30,7 @@ const InterstitialAdMembership: FunctionComponent<{
   } = useGetUserInfoQuery('');
 
   const userData = _userData as UserProps;
-  console.log('User data', userData);
+
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {

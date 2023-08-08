@@ -20,7 +20,7 @@ import {
   WORKOUT_TYPES,
   STANDARD_W,
   ROUNDS_W,
-  DURATION_W,
+  CREATIVE_W,
   REPS_W,
   numFilter,
   numFilterWithSpaces,
@@ -166,7 +166,11 @@ const CreateWorkoutItemList: FunctionComponent<{
                       width: '100%',
                     }}>
                     <View style={{flex: 10}}>
-                      <ItemString item={item} schemeType={schemeType} />
+                      <ItemString
+                        item={item}
+                        schemeType={schemeType}
+                        prefix=""
+                      />
                     </View>
                     <View style={{flex: 1}}>
                       {WORKOUT_TYPES[schemeType] == STANDARD_W ? (
@@ -212,7 +216,7 @@ const CreateWorkoutItemList: FunctionComponent<{
                     justifyContent: 'space-between',
                   }}>
                   <View style={{flex: 10}}>
-                    <ItemString item={item} schemeType={schemeType} />
+                    <ItemString item={item} schemeType={schemeType} prefix="" />
                   </View>
                   <View style={{flex: 1}}>
                     <Icon

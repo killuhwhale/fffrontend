@@ -85,8 +85,6 @@ const WorkoutGroupCard: FunctionComponent<{
     });
   };
 
-  console.log('WGCard: ', props);
-
   return (
     <CardBG
       source={bluish}

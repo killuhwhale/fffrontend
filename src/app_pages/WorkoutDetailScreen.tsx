@@ -77,7 +77,9 @@ const WorkoutDetailScreen: FunctionComponent<Props> = ({
     date,
     scheme_rounds,
     scheme_type,
+    instruction,
     editable,
+    ownedByClass,
   } = params || {};
   const items = workout_items
     ? workout_items
@@ -99,9 +101,13 @@ const WorkoutDetailScreen: FunctionComponent<Props> = ({
       <View style={{width: '100%'}}>
         <View style={{width: '100%', alignItems: 'flex-end'}} />
         <LargeText>{title}</LargeText>
-        <RegularText>{desc}</RegularText>
-        <SmallText>{formatLongDate(new Date(date))}</SmallText>
-        <View style={{marginTop: 8}}>
+
+        <SmallText textStyles={{padding: 6}}>{desc}</SmallText>
+        <RegularText textStyles={{padding: 6}}>{instruction}</RegularText>
+        <SmallText textStyles={{padding: 6}}>
+          {formatLongDate(new Date(date))}
+        </SmallText>
+        <View style={{marginTop: 8, padding: 6}}>
           <RegularText>
             {WORKOUT_TYPES[scheme_type]} {displayJList(scheme_rounds)}
           </RegularText>
@@ -112,6 +118,7 @@ const WorkoutDetailScreen: FunctionComponent<Props> = ({
             data={items}
             schemeType={scheme_type}
             itemWidth={200}
+            ownedByClass={ownedByClass}
           />
         </View>
         <StatsPanel tags={tags} names={names} />

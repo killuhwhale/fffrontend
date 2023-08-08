@@ -15,7 +15,7 @@ import {
   WORKOUT_TYPES,
   STANDARD_W,
   ROUNDS_W,
-  DURATION_W,
+  CREATIVE_W,
   REPS_W,
   nanOrNah,
   numFilter,
@@ -403,7 +403,7 @@ const AddItem: FunctionComponent<{
                   if (
                     WORKOUT_TYPES[props.schemeType] == STANDARD_W ||
                     WORKOUT_TYPES[props.schemeType] == REPS_W ||
-                    WORKOUT_TYPES[props.schemeType] == DURATION_W
+                    WORKOUT_TYPES[props.schemeType] == CREATIVE_W
                   ) {
                     setReps(numFilter(text));
                   } else {
@@ -441,7 +441,7 @@ const AddItem: FunctionComponent<{
                       if (
                         WORKOUT_TYPES[props.schemeType] == STANDARD_W ||
                         WORKOUT_TYPES[props.schemeType] == REPS_W ||
-                        WORKOUT_TYPES[props.schemeType] == DURATION_W
+                        WORKOUT_TYPES[props.schemeType] == CREATIVE_W
                       ) {
                         setDuration(numFilter(t));
                       } else {
@@ -494,7 +494,7 @@ const AddItem: FunctionComponent<{
                       if (
                         WORKOUT_TYPES[props.schemeType] == STANDARD_W ||
                         WORKOUT_TYPES[props.schemeType] == REPS_W ||
-                        WORKOUT_TYPES[props.schemeType] == DURATION_W
+                        WORKOUT_TYPES[props.schemeType] == CREATIVE_W
                       ) {
                         setDistance(numFilter(t));
                       } else {

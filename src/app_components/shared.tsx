@@ -31,14 +31,15 @@ export const xsmFontSize: number = Platform.OS === 'ios' ? 8 : 8;
 export const STANDARD_W = 'STANDARD';
 export const REPS_W = 'REPS';
 export const ROUNDS_W = 'ROUNDS';
-export const DURATION_W = 'DURATION';
+export const CREATIVE_W = 'CREATIVE';
+// export const CREATIVE_W = 'DURATION';
 export const TIMESCORE_W = 'TIMESCORE';
 export const TIMELIMIT_W = 'TIMELIMIT';
 export const WORKOUT_TYPES: Array<string> = [
   STANDARD_W,
   REPS_W,
   ROUNDS_W,
-  DURATION_W,
+  CREATIVE_W,
   TIMESCORE_W,
   TIMELIMIT_W,
 ];
@@ -226,15 +227,8 @@ export class CalcWorkoutStats {
     totalVol: number,
     sets: number | null,
   ) {
-    console.log('Calc item repsz: ');
     if (sets && quantity) {
       this.tags[pCat].totalReps += sets * quantity;
-      console.log(
-        'Calc item reps: ',
-        pCat,
-        sets * quantity,
-        this.tags[pCat].totalReps,
-      );
       this.names[workoutName].totalReps += sets * quantity;
     }
 
@@ -581,7 +575,7 @@ export class CalcWorkoutStats {
         } else if (WORKOUT_TYPES[this.schemeType] == ROUNDS_W) {
           this.calcRoundsScheme(item, pCat, workoutName);
         }
-        // else if (WORKOUT_TYPES[this.schemeType] == DURATION_W) {
+        // else if (WORKOUT_TYPES[this.schemeType] == CREATIVE_W) {
         // The other workout types are all record types with r_ prefix
         // calcDuationScheme will calculate all of these types. No
         else {

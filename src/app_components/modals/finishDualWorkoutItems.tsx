@@ -47,6 +47,21 @@ const isItemFieldEmpty = (key: string, value: any) => {
   }
 };
 
+const isRecordedItemFieldEmpty = (key: string, value: any) => {
+  switch (key) {
+    case 'r_reps':
+    case 'r_duration':
+    case 'r_distance':
+      console.log('isRecordedItemFieldEmpty', key, value[0]);
+      return JSON.parse(value)[0] == 0;
+    case 'r_pause_duration':
+    case 'r_rest_duration':
+      return value == 0;
+    case 'r_percent_of':
+      return value == '';
+  }
+};
+
 const DualItemUpdateFields: FunctionComponent<{
   item: WorkoutDualItemProps;
   workoutIdx: number;
@@ -64,14 +79,14 @@ const DualItemUpdateFields: FunctionComponent<{
     <View style={{flex: 1}}>
       {itemDescKeys.map(key => {
         const isEmpty = isItemFieldEmpty(key, item[key]);
-        console.log('\n\n\n\n');
-        console.log(
-          'DualItemUpdate is empty: ',
-          isEmpty,
-          item.name.name,
-          key,
-          item[key],
-        );
+        // console.log('\n\n\n\n');
+        // console.log(
+        //   'DualItemUpdate is empty: ',
+        //   isEmpty,
+        //   item.name.name,
+        //   key,
+        //   item[key],
+        // );
 
         return (
           <View key={`${item.id}_${key}_${item.order}`} style={{flex: 1}}>
@@ -119,8 +134,9 @@ const FinishDualWorkoutItems: FunctionComponent<{
   useEffect(() => {
     // Our copy of initGroup does not have data on first render since we are fetching from API. onces its ready, fill it
     if (
-      Object.keys(editedWorkoutGroup).length === 0 &&
-      Object.keys(workoutGroup).length !== 0
+      (Object.keys(editedWorkoutGroup).length === 0 &&
+        Object.keys(workoutGroup).length !== 0) ||
+      editedWorkoutGroup.workouts?.length != initGroup.workouts?.length
     ) {
       setEditedWorkoutGroup(jsonCopy(workoutGroup));
     }
@@ -181,34 +197,43 @@ const FinishDualWorkoutItems: FunctionComponent<{
     const promises: Promise<any>[] =
       editedWorkoutGroup.workouts
         ?.filter((workout: WorkoutCardProps) => {
-          // workout.workout_items?.forEach((item: WorkoutDualItemProps) => {
-          //   console.log(
-          //     'Submitting: ',
-          //     item.name.name,
-          //     item.r_reps,
-          //     item.r_duration,
-          //     item.r_duration_unit,
-          //     item.r_weights,
-          //     item.r_weight_unit,
-          //   );
-          // });
           return workout.scheme_type > 2;
         })
         .map((workout: WorkoutCardProps) => {
           const data = new FormData();
           data.append('workout', workout.id);
-          data.append('items', JSON.stringify(workout.workout_items));
+          // If the user just submits the form without updating the values, we need to push the default values from reps, duration, distance to r_reps, etc...
+          const updatedItems = workout.workout_items?.map(
+            (_item: WorkoutDualItemProps, idx: number) => {
+              const item = {..._item};
 
-          console.log('Updating: ', workout.workout_items);
+              // keys that have values fields provided by the workout, reps, weights, etc
+              const keys = itemDescKeys.filter((key: string) => {
+                return !isItemFieldEmpty(key, item[key]);
+              });
+              // console.log('Item has these fields to fill out: ', keys);
+
+              keys.forEach((key: string) => {
+                const rKey = `r_${key}`;
+                if (isRecordedItemFieldEmpty(rKey, item[rKey])) {
+                  item[rKey] = item[key]; // when recorded field is empty, update it with the instructed field aka default
+                }
+              });
+              return item;
+            },
+          );
+          data.append('items', JSON.stringify(updatedItems));
+
+          // console.log('Updating: ', updatedItems);
           return updateWorkout(data);
         }) ?? [];
 
     Promise.all(promises)
       .then(results => {
         results.forEach(async res => {
-          console.log('Update res: ', res);
+          // console.log('Update res: ', res);
           if (res.data) {
-            console.log('Update success: ', res);
+            // console.log('Update success: ', res);
             // Send Finish Workout request
 
             try {
@@ -260,7 +285,6 @@ const FinishDualWorkoutItems: FunctionComponent<{
                         <>
                           <SmallText>{workout.title}</SmallText>
                           {workout.workout_items?.map((item, itemIdx) => {
-                            console.log('Edit dual Item: ', item.name.name);
                             return (
                               <View
                                 key={`${item.id}_${item.order}_itemToUpdate`}>
@@ -268,6 +292,7 @@ const FinishDualWorkoutItems: FunctionComponent<{
                                   item={item}
                                   schemeType={workout.scheme_type}
                                   key={`${item.id}_dualitemfinish`}
+                                  prefix="OG: "
                                 />
 
                                 <DualItemUpdateFields
@@ -283,7 +308,8 @@ const FinishDualWorkoutItems: FunctionComponent<{
                           })}
                         </>
                       ) : (
-                        <SmallText>Not a dually - {workout.title}</SmallText>
+                        // <SmallText>Not a dually - {workout.title}</SmallText>
+                        <></>
                       )}
                     </View>
                   );

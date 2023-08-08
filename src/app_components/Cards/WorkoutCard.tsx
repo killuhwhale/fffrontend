@@ -107,8 +107,10 @@ const WorkoutCard: FunctionComponent<WorkoutCardProps> = props => {
               }}>
               <RegularText>{props.title} </RegularText>
               <SmallText>
-                {displayJList(props.scheme_rounds)}{' '}
-                {WORKOUT_TYPE_LABELS[props.scheme_type]}
+                {displayJList(props.scheme_rounds)} {props.instruction}{' '}
+                {props.scheme_type <= 2
+                  ? WORKOUT_TYPE_LABELS[props.scheme_type]
+                  : ''}
               </SmallText>
 
               <Icon

@@ -30,7 +30,7 @@ const FilterGrid: FunctionComponent<{
   };
 
   useEffect(() => {
-    console.log('Running init filter effect');
+    // console.log('Running init filter effect');
     setOgData(props.items ? props.items.map(item => item.title) : []);
     setFilterResult(
       Array.from(Array(props.items?.length || 0).keys()).map(idx => idx),

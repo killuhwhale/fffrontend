@@ -4,7 +4,7 @@ import {
   Container,
   DISTANCE_UNITS,
   DURATION_UNITS,
-  DURATION_W,
+  CREATIVE_W,
   formatLongDate,
   MEDIA_CLASSES,
   REPS_W,

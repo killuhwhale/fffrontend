@@ -151,7 +151,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
     // Fetch OG Workout by ID
   } else if (owned_by_class) {
     // we have OG workout owneed by class
-    console.log('OG workout owneed by class');
+    // console.log('OG workout owneed by class');
     const {data, isLoading, isSuccess, isError, error} =
       useGetWorkoutsForGymClassWorkoutGroupQuery(id);
     console.log('Owned by class, data: ', data);
@@ -170,7 +170,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
       error: errorCompleted,
     } = useGetCompletedWorkoutByWorkoutIDQuery(id);
 
-    console.log('Completed data: ', dataCompleted);
+    // console.log('Completed data: ', dataCompleted);
 
     if (dataCompleted && dataCompleted.completed_workouts?.length > 0) {
       completedData = dataCompleted;
@@ -189,7 +189,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
     // completedIsError = isError
     // completedError = error
     // isShowingOGWorkoutGroup = false
-    console.log('OG workout owneed by user');
+    // console.log('OG workout owneed by user');
     const {data, isLoading, isSuccess, isError, error} =
       useGetWorkoutsForUsersWorkoutGroupQuery(id);
     oGData = data;
@@ -210,6 +210,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
       ? completedData
       : ({} as WorkoutGroupProps);
 
+  console.log('WorkoutGroups num workouts: ', workoutGroup.workouts?.length);
   // const isOGWorkoutGroup = workoutGroup.workouts ? true : false
   mediaClass = showingOGWorkoutGroup ? WORKOUT_MEDIA : COMPLETED_WORKOUT_MEDIA;
 
@@ -235,11 +236,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
 
   const [tags, names] = useMemo(() => {
     const calc = new CalcWorkoutStats();
-    console.log(
-      'Muti stats owned by class: ',
-      workoutGroup.owned_by_class,
-      workouts,
-    );
+
     calc.calcMulti(workouts, workoutGroup.owned_by_class);
 
     return calc.getStats();
@@ -266,8 +263,6 @@ const WorkoutScreen: FunctionComponent<Props> = ({
       workoutGroup.owned_by_class) ||
     Object.keys(workoutGroup).indexOf('completed_workouts') >= 0;
 
-  console.log('workout is WGOwner', WGOwner, workoutGroup);
-
   const openCreateWorkoutScreenForStandard = () => {
     navigation.navigate('CreateWorkoutScreen', {
       workoutGroupID: oGData.id.toString(),
@@ -289,7 +284,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
       schemeType: 2,
     });
   };
-  const openCreateWorkoutScreenForTime = () => {
+  const openCreateWorkoutScreenCreative = () => {
     navigation.navigate('CreateWorkoutScreen', {
       workoutGroupID: oGData.id.toString(),
       workoutGroupTitle: title,
@@ -382,8 +377,6 @@ const WorkoutScreen: FunctionComponent<Props> = ({
   //   isShowingOGWorkoutGroup,
   //   showingOGWorkoutGroup,
   // );
-
-  console.log('Workouts: ', workouts);
 
   return (
     <View style={{height: SCREEN_HEIGHT, width: SCREEN_WIDTH}}>
@@ -544,7 +537,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                     btnStyles={{
                       backgroundColor: '#4285F4',
                     }}
-                    text="Reg"
+                    text="Standard"
                   />
                   <RegularButton
                     onPress={openCreateWorkoutScreenForReps.bind(this)}
@@ -561,13 +554,13 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                     text="Rounds"
                   />
                   <RegularButton
-                    onPress={openCreateWorkoutScreenForTime.bind(this)}
+                    onPress={openCreateWorkoutScreenCreative.bind(this)}
                     btnStyles={{
                       backgroundColor: '#0F9D58',
                     }}
-                    text="Timed"
+                    text="Creative"
                   />
-                  <RegularButton
+                  {/* <RegularButton
                     onPress={openCreateWorkoutScreenForTimeScore.bind(this)}
                     btnStyles={{
                       backgroundColor: '#2dd4bf',
@@ -580,7 +573,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                       backgroundColor: '#38bdf8',
                     }}
                     text="Time Limit"
-                  />
+                  /> */}
                 </View>
                 <View
                   style={{
@@ -750,15 +743,19 @@ const WorkoutScreen: FunctionComponent<Props> = ({
         </LargeText>
       </View>
 
-      <FinishDualWorkoutItems
-        bodyText="How many did you do?"
-        workoutGroup={workoutGroup}
-        key={'showFinishedDualItems'}
-        closeText="Close"
-        modalVisible={showFinishDualWorkoutItems}
-        onRequestClose={() => setShowFinishDualWorkoutItems(false)}
-        setShowFinishWorkoutGroupModal={setShowFinishWorkoutGroupModal}
-      />
+      {workoutGroup.workouts && workoutGroup.workouts?.length > 0 ? (
+        <FinishDualWorkoutItems
+          bodyText="How many did you do?"
+          workoutGroup={workoutGroup}
+          key={'showFinishedDualItems'}
+          closeText="Close"
+          modalVisible={showFinishDualWorkoutItems}
+          onRequestClose={() => setShowFinishDualWorkoutItems(false)}
+          setShowFinishWorkoutGroupModal={setShowFinishWorkoutGroupModal}
+        />
+      ) : (
+        <></>
+      )}
     </View>
   );
 };

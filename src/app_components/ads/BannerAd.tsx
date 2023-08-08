@@ -17,7 +17,6 @@ const BannerAddMembership: FunctionComponent = () => {
   } = useGetUserInfoQuery('');
 
   const userData = _userData as UserProps;
-  console.log('User data', userData);
 
   return (
     <>
