@@ -33,6 +33,7 @@ import {TouchableHighlight} from 'react-native-gesture-handler';
 import FilterGrid from '../app_components/Grids/FilterGrid';
 import {WorkoutGroupSquares} from '../app_components/Grids/GymClasses/WorkoutGroupSquares';
 import {TestIDs} from '../utils/constants';
+import moc from '../../assets/bgs/moc.png';
 import BannerAddMembership from '../app_components/ads/BannerAd';
 export type Props = StackScreenProps<RootStackParamList, 'GymClassScreen'>;
 
@@ -175,6 +176,11 @@ const GymClassScreen: FunctionComponent<Props> = ({
   // TODO replace with separate use...
   const workoutGroups = data?.workout_groups || [];
 
+  const [useDefault, setUseDefault] = useState(false);
+
+  const handleError = () => {
+    setUseDefault(true);
+  };
   return (
     <GymClassScreenContainer>
       <BannerAddMembership />
@@ -193,7 +199,10 @@ const GymClassScreen: FunctionComponent<Props> = ({
             width: 92,
             borderRadius: 8,
           }}
-          source={{uri: mainURL}}
+          source={useDefault ? moc : {uri: mainURL}}
+          onError={() => {
+            handleError();
+          }}
         />
         <View style={{flex: 1, marginLeft: 16, alignItems: 'center'}}>
           <RegularText textStyles={{textAlign: 'center'}}>

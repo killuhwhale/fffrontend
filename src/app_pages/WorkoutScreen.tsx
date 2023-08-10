@@ -379,7 +379,12 @@ const WorkoutScreen: FunctionComponent<Props> = ({
   // );
 
   return (
-    <View style={{height: SCREEN_HEIGHT, width: SCREEN_WIDTH}}>
+    <View
+      style={{
+        height: SCREEN_HEIGHT + 4,
+        minHeight: SCREEN_HEIGHT,
+        width: SCREEN_WIDTH,
+      }}>
       <BannerAddMembership />
       <ScrollView
         style={{
@@ -509,6 +514,8 @@ const WorkoutScreen: FunctionComponent<Props> = ({
           style={{
             width: '100%',
             alignItems: 'flex-start',
+            padding: 6,
+            marginBottom: 12,
           }}>
           <SmallText>{workoutGroup.caption}</SmallText>
         </View>

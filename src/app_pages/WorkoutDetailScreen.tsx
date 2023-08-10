@@ -98,21 +98,32 @@ const WorkoutDetailScreen: FunctionComponent<Props> = ({
   return (
     <ScreenContainer>
       <BannerAddMembership />
-      <View style={{width: '100%'}}>
-        <View style={{width: '100%', alignItems: 'flex-end'}} />
-        <LargeText>{title}</LargeText>
+      <View style={{width: '100%', flex: 1}}>
+        <View style={{flex: 1}}>
+          <LargeText>{title}</LargeText>
 
-        <SmallText textStyles={{padding: 6}}>{desc}</SmallText>
-        <RegularText textStyles={{padding: 6}}>{instruction}</RegularText>
-        <SmallText textStyles={{padding: 6}}>
-          {formatLongDate(new Date(date))}
-        </SmallText>
-        <View style={{marginTop: 8, padding: 6}}>
-          <RegularText>
-            {WORKOUT_TYPES[scheme_type]} {displayJList(scheme_rounds)}
-          </RegularText>
+          <SmallText textStyles={{padding: 6}}>{desc}</SmallText>
+          {instruction ? (
+            <RegularText textStyles={{padding: 6}}>{instruction}</RegularText>
+          ) : (
+            <></>
+          )}
+          <SmallText textStyles={{padding: 6}}>
+            {formatLongDate(new Date(date))}
+          </SmallText>
         </View>
-        <View style={{height: SCREEN_HEIGHT * 0.25}}>
+
+        <View style={{flex: 3}}>
+          <StatsPanel tags={tags} names={names} />
+        </View>
+
+        <View style={{flex: 2, justifyContent: 'center'}}>
+          <View style={{marginTop: 8, padding: 6}}>
+            <RegularText>
+              {WORKOUT_TYPES[scheme_type]} {displayJList(scheme_rounds)}
+            </RegularText>
+          </View>
+
           <WorkoutItemPreviewHorizontalList
             testID={''}
             data={items}
@@ -121,7 +132,6 @@ const WorkoutDetailScreen: FunctionComponent<Props> = ({
             ownedByClass={ownedByClass}
           />
         </View>
-        <StatsPanel tags={tags} names={names} />
       </View>
     </ScreenContainer>
   );

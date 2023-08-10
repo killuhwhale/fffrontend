@@ -87,7 +87,7 @@ const PickerFilterListView: FunctionComponent<{
         contentContainerStyle={{flexGrow: 1}}
         keyExtractor={({id}: any) => id.toString()}
         renderItem={({item}: {item: WorkoutNameProps}) => {
-          console.log('WorkoutName item: ', item);
+          // console.log('WorkoutName item: ', item);
           return (
             <WorkoutNameRowItem workoutName={item} onSelect={props.onSelect} />
           );

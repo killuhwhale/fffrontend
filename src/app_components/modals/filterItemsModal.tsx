@@ -2,7 +2,13 @@ import React, {FunctionComponent, useEffect, useRef, useState} from 'react';
 import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
 import {useTheme} from 'styled-components';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Modal, ScrollView, TouchableOpacity, View} from 'react-native';
+import {
+  Modal,
+  ScrollView,
+  TouchableOpacity,
+  View,
+  TextInput as TTextInput,
+} from 'react-native';
 import {
   useCreateCoachMutation,
   useDeleteCoachMutation,
@@ -114,27 +120,32 @@ const FilterItemsModal: FunctionComponent<{
                   justifyContent: 'center',
                   paddingHorizontal: 10,
                 }}>
-                <Input
-                  onChangeText={filterText}
-                  testID={TestIDs.AddItemFilterModalInputField.name()}
-                  value={term}
-                  inputStyles={{fontSize: 14}}
-                  containerStyle={{
-                    width: '100%',
-                    backgroundColor: theme.palette.backgroundColor,
-                    borderRadius: 8,
-                  }}
-                  fontSize={16}
-                  leading={
-                    <Icon
-                      name="search"
-                      style={{fontSize: 16}}
-                      color={theme.palette.text}
-                    />
-                  }
-                  label=""
-                  placeholder={props.searchTextPlaceHolder}
-                />
+                {props.modalVisible ? (
+                  <Input
+                    onChangeText={filterText}
+                    testID={TestIDs.AddItemFilterModalInputField.name()}
+                    value={term}
+                    inputStyles={{fontSize: 14}}
+                    focus={true}
+                    containerStyle={{
+                      width: '100%',
+                      backgroundColor: theme.palette.backgroundColor,
+                      borderRadius: 8,
+                    }}
+                    fontSize={16}
+                    leading={
+                      <Icon
+                        name="search"
+                        style={{fontSize: 16}}
+                        color={theme.palette.text}
+                      />
+                    }
+                    label=""
+                    placeholder={props.searchTextPlaceHolder}
+                  />
+                ) : (
+                  <></>
+                )}
               </View>
             </View>
 

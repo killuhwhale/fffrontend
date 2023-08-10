@@ -251,6 +251,12 @@ const RootStack: FunctionComponent<RootstackProps> = props => {
     <NavigationContainer ref={props.navref}>
       <Stack.Navigator
         screenOptions={{
+          contentStyle: {
+            height: SCREEN_HEIGHT,
+            backgroundColor: 'red',
+            // minHeight: SCREEN_HEIGHT,
+          },
+
           headerStyle: headerStyle,
           headerTintColor: '#fff',
           headerTitleStyle: {

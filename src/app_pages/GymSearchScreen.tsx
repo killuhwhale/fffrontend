@@ -39,7 +39,6 @@ const GymSearchScreen: FunctionComponent<Props> = ({navigation}) => {
       ? true
       : false;
 
-  console.log('Gym data : ', data, isTokenError);
   const [stringData, setOgData] = useState<string[]>(
     data && data.map ? data.map(gym => gym.title) : [],
   );

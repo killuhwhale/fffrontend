@@ -1,4 +1,10 @@
-import React, {FunctionComponent, useRef, ReactNode} from 'react';
+import React, {
+  FunctionComponent,
+  useRef,
+  ReactNode,
+  useEffect,
+  useState,
+} from 'react';
 import {
   View,
   TextInput as NTextInput,
@@ -10,7 +16,7 @@ import {
   KeyboardTypeOptions,
 } from 'react-native';
 import {useTheme} from 'styled-components';
-
+import {Keyboard} from 'react-native';
 import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
 
 enum AutoCaptilizeEnum {
@@ -38,22 +44,16 @@ interface InputProps {
   autoCapitalize?: AutoCaptilizeEnum; //'none', 'sentences', 'words', 'characters'
   testID?: string;
   keyboardType?: KeyboardTypeOptions;
+  focus?: boolean;
 }
 
 const Input: FunctionComponent<InputProps> = props => {
   const theme = useTheme();
   const inpRef = useRef<TTextInput>(null);
 
-  const focus = () => {
-    console.log('Focus!');
-    if (inpRef.current) {
-      inpRef.current.focus();
-    }
-  };
-
   return (
     <View style={[props.containerStyle, {width: '100%', flex: 1}]}>
-      <TouchableWithoutFeedback onPress={() => focus()}>
+      <TouchableWithoutFeedback>
         <View style={{width: '100%'}}>
           <View style={{flexDirection: 'row', width: '100%', height: '100%'}}>
             <View
@@ -74,12 +74,13 @@ const Input: FunctionComponent<InputProps> = props => {
               }}>
               <NTextInput
                 testID={props.testID}
-                secureTextEntry={
-                  props.secureTextEntry == undefined
-                    ? false
-                    : props.secureTextEntry
-                }
-                keyboardType={props.keyboardType}
+                secureTextEntry={props.secureTextEntry ?? false}
+                // secureTextEntry={
+                //   props.secureTextEntry == undefined
+                //     ? false
+                //     : props.secureTextEntry
+                // }
+                keyboardType={props.keyboardType ?? 'default'}
                 autoCapitalize={
                   props.autoCapitalize == undefined
                     ? 'sentences'

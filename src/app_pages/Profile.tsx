@@ -186,9 +186,12 @@ const UserInfoPanel: FunctionComponent<UserInfoPanelProps> = props => {
             </RegularText>
             <SmallText
               textStyles={{
-                color: theme.palette.primary.main,
-                marginLeft: 6,
+                color: `${
+                  isDateInFuture(sub_end_date) ? '#FFD700' : '#C0C000'
+                }`,
+                marginLeft: 10,
                 textAlign: 'center',
+                textAlignVertical: 'center',
                 alignContent: 'center',
                 alignItems: 'center',
               }}>

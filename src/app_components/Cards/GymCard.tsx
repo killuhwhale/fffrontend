@@ -15,7 +15,7 @@ import {Image, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Props as HomeScreenProps} from '../../app_pages/home';
 import {TouchableHighlight} from 'react-native-gesture-handler';
-import LinearGradient from 'react-native-linear-gradient';
+import moc from '../../../assets/bgs/moc.png';
 
 const GymCard: FunctionComponent<GymCardProps> = props => {
   const theme = useTheme();
@@ -27,9 +27,14 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
     console.log('Navigating to GymScreen!');
     navigation.navigate('GymScreen', {...props});
   };
-  const mainURL = withSpaceURL('main', parseInt(props.id), MEDIA_CLASSES[0]);
+  // const mainURL = withSpaceURL('main', parseInt(props.id), MEDIA_CLASSES[0]);
   const logoURL = withSpaceURL('logo', parseInt(props.id), MEDIA_CLASSES[0]);
   const bRadiusRight = 24;
+  const [useDefault, setUseDefault] = useState(false);
+
+  const handleError = () => {
+    setUseDefault(true);
+  };
   return (
     <TouchableHighlight
       underlayColor={theme.palette.transparent}
@@ -73,17 +78,26 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
                 width: 50,
                 height: 50,
               }}
-              source={{uri: logoURL}}
+              source={
+                useDefault
+                  ? moc
+                  : {
+                      uri: logoURL,
+                    }
+              }
+              onError={() => handleError()}
             />
             <View
               style={{
-                marginLeft: 24,
+                marginLeft: 8,
                 justifyContent: 'space-around',
               }}>
-              <RegularText textStyles={{textAlign: 'center'}}>
+              <RegularText textStyles={{textAlign: 'left'}}>
                 {props.title}
               </RegularText>
-              <SmallText textStyles={{marginLeft: 12}}>{props.desc}</SmallText>
+              <SmallText textStyles={{marginLeft: 2, textAlign: 'left'}}>
+                {props.desc.slice(0, 40)} {props.desc.length > 40 ? '...' : ''}
+              </SmallText>
             </View>
           </View>
         </View>

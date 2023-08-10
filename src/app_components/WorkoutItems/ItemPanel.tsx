@@ -105,10 +105,13 @@ const recordedTextColor = '#be123c';
 const WorkoutItemRepsDurDistance: FunctionComponent<{
   item: AnyWorkoutItem;
   ownedByClass: boolean;
-}> = ({item, ownedByClass}) => {
+  schemeType: number;
+}> = ({item, ownedByClass, schemeType}) => {
   return (
     <>
-      {item.reps !== '[0]' ? (
+      {schemeType === 1 && !item.constant ? (
+        <></>
+      ) : item.reps !== '[0]' ? (
         <>
           {displayJList(item.reps)}
           {` `}
@@ -137,6 +140,8 @@ const WorkoutItemRepsDurDistance: FunctionComponent<{
       ) : (
         ''
       )}
+
+      {item.constant ? <SmallText>per round</SmallText> : <></>}
     </>
   );
 };
@@ -259,7 +264,11 @@ const WorkoutItemPanel: FunctionComponent<{
         }}>
         <SmallText textStyles={{textAlign: 'center'}}>
           {item.sets > 0 && schemeType === 0 ? `${item.sets} x ` : ''}
-          <WorkoutItemRepsDurDistance item={item} ownedByClass={ownedByClass} />
+          <WorkoutItemRepsDurDistance
+            item={item}
+            ownedByClass={ownedByClass}
+            schemeType={schemeType}
+          />
         </SmallText>
       </View>
       <View style={{alignItems: 'center', flex: 5, width: '100%'}}>

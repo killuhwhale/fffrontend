@@ -113,6 +113,13 @@ git push origin HEAD:staging HEAD
 
 # TODO
 
+StatsScreen
+
+- When workout changes, it seems to break stuff
+- Maybe a simple key that correlates with the current search even if Math.random()
+
+  - This way things are reset properly? Not a huge deal but kinda crusty..
+
 - Apple Connect
 
   - App Access - Account Creds for Apple

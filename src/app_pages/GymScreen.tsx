@@ -39,6 +39,7 @@ export type Props = StackScreenProps<RootStackParamList, 'GymScreen'>;
 import FilterGrid from '../app_components/Grids/FilterGrid';
 import {GymClassSquares} from '../app_components/Grids/Gyms/GymClassSquares';
 import BannerAddMembership from '../app_components/ads/BannerAd';
+import moc from '../../assets/bgs/moc.png';
 
 const GymScreenContainer = styled(Container)`
   background-color: ${props => props.theme.palette.backgroundColor};
@@ -125,6 +126,12 @@ const GymScreen: FunctionComponent<Props> = ({navigation, route: {params}}) => {
 
   const [showSearchClasses, setShowSearchClasses] = useState(false);
 
+  const [useDefault, setUseDefault] = useState(false);
+
+  const handleError = () => {
+    setUseDefault(true);
+  };
+
   return (
     <GymScreenContainer>
       <BannerAddMembership />
@@ -142,7 +149,10 @@ const GymScreen: FunctionComponent<Props> = ({navigation, route: {params}}) => {
             width: 92,
             borderRadius: 8,
           }}
-          source={{uri: mainURL}}
+          source={useDefault ? moc : {uri: mainURL}}
+          onError={() => {
+            handleError();
+          }}
         />
         <View style={{flex: 1, marginLeft: 16, alignItems: 'center'}}>
           <RegularText>{title}</RegularText>

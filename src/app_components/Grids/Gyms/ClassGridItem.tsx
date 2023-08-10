@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, useState} from 'react';
 import {useTheme} from 'styled-components';
 import {SmallText} from '../../Text/Text';
 import {MEDIA_CLASSES, withSpaceURL} from '../../shared';
@@ -9,6 +9,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Props as GymScreenProps} from '../../../app_pages/GymScreen';
 
 import {TouchableHighlight} from 'react-native-gesture-handler';
+import moc from '../../../../assets/bgs/moc.png';
 
 const ClassGridItem: FunctionComponent<{
   card: GymClassCardProps;
@@ -24,6 +25,12 @@ const ClassGridItem: FunctionComponent<{
     parseInt(props.card.id),
     MEDIA_CLASSES[1],
   );
+
+  const [useDefault, setUseDefault] = useState(false);
+
+  const handleError = () => {
+    setUseDefault(true);
+  };
 
   return (
     <View
@@ -47,12 +54,19 @@ const ClassGridItem: FunctionComponent<{
             }}>
             <Image
               style={{width: 40, height: 40, borderRadius: 16}}
-              source={{
-                uri: 'https://i.etsystatic.com/11209681/r/il/fa7063/847010458/il_794xN.847010458_dalj.jpg',
+              onError={() => {
+                handleError();
               }}
+              source={
+                useDefault
+                  ? moc
+                  : {
+                      uri: logoURL,
+                    }
+              }
             />
             <View style={{flex: 1}}>
-              <SmallText textStyles={{textAlign: 'center'}}>
+              <SmallText textStyles={{textAlign: 'left', marginLeft: 4}}>
                 {props.card.title}
               </SmallText>
             </View>
