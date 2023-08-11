@@ -122,6 +122,10 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
   const [isCreating, setIsCreating] = useState(false);
 
   const [showAlert, setShowAlert] = useState(false);
+  const f_createGymClass = () => {
+    console.log('Creatting gym class: ', mainFile, logoFile, title, desc, gym);
+  }
+  
   const _createGymClass = async () => {
     console.log('Creatting gym class: ', mainFile, logoFile, title, desc, gym);
 
@@ -319,14 +323,14 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
             nodeEnv === 'test' ? (
               <RegularButton
                 testID={TestIDs.GymClassCreateBtn.name()}
-                onPress={_createGymClass.bind(this)}
+                onPress={() => _createGymClass()}
                 btnStyles={{backgroundColor: theme.palette.darkGray}}
                 text="Create"
               />
             ) : (
               <InterstitialAdMembership
                 text="Create"
-                onClose={_createGymClass.bind(this)}
+                onClose={() => _createGymClass()}
               />
             )
           ) : (

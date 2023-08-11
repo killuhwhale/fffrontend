@@ -16,24 +16,24 @@ export const dateFormat = (d: Date) => {
 };
 
 const pieColors = [
-  '#a8a29e',
-  '#f87171',
-  '#fb923c',
-  '#fbbf24',
+  '#34d399',
   '#facc15',
   '#a3e635',
   '#4ade80',
-  '#34d399',
+  '#f87171',
   '#2dd4bf',
   '#22d3ee',
   '#38bdf8',
   '#60a5fa',
   '#818cf8',
   '#a78bfa',
+  '#fb923c',
   '#c084fc',
+  '#fbbf24',
   '#e879f9',
   '#f472b6',
   '#fb7185',
+  '#a8a29e',
 ];
 
 const pieData = (tags, metric) => {

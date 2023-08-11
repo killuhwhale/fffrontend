@@ -79,6 +79,8 @@ const WorkoutScreen: FunctionComponent<Props> = ({
   const [showClassIsDeleted, setShowClassIsDeleted] = useState(false);
   const [showFinishDualWorkoutItems, setShowFinishDualWorkoutItems] =
     useState(false);
+
+    console.log("showFinishDualWorkoutItems: ", showFinishDualWorkoutItems)
   const {
     id,
     title,
@@ -337,29 +339,37 @@ const WorkoutScreen: FunctionComponent<Props> = ({
     navigation.goBack();
   };
 
-  const _finishGroupWorkout = async () => {
-    console.log(
-      'Need to check if the workout froups have a Workout with Dual Items that are not yet completed.....',
-    );
 
-    if (hasUnfinsihedDualItems(workouts) && owned_by_class === false) {
+  
+
+
+  const promptUpdateDualItems = () => {
+    const shouldShow = hasUnfinsihedDualItems(workouts) && owned_by_class === false
+    if (shouldShow) {
       console.log(
         'User needs to submit their results if this is not owned by a class',
       );
+      console.log("Workouts length: ", workoutGroup.workouts?.length)
       // Show a modal to allow the user to enter the information for the workouts
-      setShowFinishDualWorkoutItems(true);
-    } else {
-      // Allow user to submit finish to WorkoutGroup for class.
-      const data = new FormData();
-      data.append('group', oGData.id);
-      try {
-        const res = await finishWorkoutGroup(data).unwrap();
-        console.log('res finsih', res);
-        setShowFinishWorkoutGroupModal(false);
-      } catch (err) {
-        console.log('Error finishing workout', err);
-      }
+      setShowFinishDualWorkoutItems(true); 
     }
+    return shouldShow
+  }
+
+  const _finishGroupWorkout = async () => {
+    console.log('Need to check......: ', hasUnfinsihedDualItems(workouts), workouts);
+
+  // Allow user to submit finish to WorkoutGroup for class.
+  const data = new FormData();
+  data.append('group', oGData.id);
+  try {
+    // const res = await finishWorkoutGroup(data).unwrap();
+    // console.log('res finsih', res);
+    setShowFinishWorkoutGroupModal(false);
+  } catch (err) {
+    console.log('Error finishing workout', err);
+  }
+
   };
 
   const navigateToCompletedWorkoutGroupScreen = () => {
@@ -726,7 +736,12 @@ const WorkoutScreen: FunctionComponent<Props> = ({
           actionText="Finish"
           closeText="Close"
           modalText={`Finish ${title}? \n \t cannot be undone`}
-          onAction={_finishGroupWorkout}
+          onAction={() => {
+            setShowFinishWorkoutGroupModal(false)
+          if(!promptUpdateDualItems()){
+            _finishGroupWorkout()
+          }
+          }}
           modalVisible={showFinishWorkoutGroupModal}
           onRequestClose={() => setShowFinishWorkoutGroupModal(false)}
         />
@@ -758,7 +773,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
           closeText="Close"
           modalVisible={showFinishDualWorkoutItems}
           onRequestClose={() => setShowFinishDualWorkoutItems(false)}
-          setShowFinishWorkoutGroupModal={setShowFinishWorkoutGroupModal}
+          setShowFinishWorkoutGroupModal={() => setShowFinishWorkoutGroupModal(false)}
         />
       ) : (
         <></>

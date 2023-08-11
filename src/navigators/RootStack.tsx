@@ -2,6 +2,7 @@ import React, {FunctionComponent, useEffect} from 'react';
 import {
   NavigationContainer,
   NavigationContainerRefWithCurrent,
+  
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -100,6 +101,9 @@ function HomePageTabs() {
             flex: tabBarFlex,
             paddingBottom: 4,
           },
+          tabBarItemStyle: {
+            marginBottom:  Platform.OS === 'ios' ? 12 : 0
+          },
           tabBarLabel: ({color, focused, position}) => (
             <SmallText
               textStyles={{
@@ -128,6 +132,9 @@ function HomePageTabs() {
             backgroundColor: tabBarColor,
             flex: tabBarFlex,
             paddingBottom: 4,
+          },
+          tabBarItemStyle: {
+            marginBottom:  Platform.OS === 'ios' ? 12 : 0
           },
           tabBarLabel: ({color, focused, position}) => (
             <SmallText
@@ -158,6 +165,9 @@ function HomePageTabs() {
             flex: tabBarFlex,
             paddingBottom: 4,
           },
+          tabBarItemStyle: {
+            marginBottom:  Platform.OS === 'ios' ? 12 : 0
+          },
           tabBarLabel: ({color, focused, position}) => (
             <SmallText
               textStyles={{
@@ -186,6 +196,9 @@ function HomePageTabs() {
             backgroundColor: tabBarColor,
             flex: tabBarFlex,
             paddingBottom: 4,
+          },
+          tabBarItemStyle: {
+            marginBottom:  Platform.OS === 'ios' ? 12 : 0
           },
 
           tabBarLabel: ({color, focused, position}) => (
@@ -253,7 +266,7 @@ const RootStack: FunctionComponent<RootstackProps> = props => {
         screenOptions={{
           contentStyle: {
             height: SCREEN_HEIGHT,
-            backgroundColor: 'red',
+            backgroundColor: theme.palette.backgroundColor,
             // minHeight: SCREEN_HEIGHT,
           },
 

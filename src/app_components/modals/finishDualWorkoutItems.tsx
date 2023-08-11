@@ -269,6 +269,7 @@ const FinishDualWorkoutItems: FunctionComponent<{
             ...modalViewStyle.modalView,
             backgroundColor: theme.palette.darkGray,
             height: '90%',
+            zIndex: 100,
           }}>
           <View
             style={{height: '100%', flex: 1, justifyContent: 'space-between'}}>
@@ -324,7 +325,7 @@ const FinishDualWorkoutItems: FunctionComponent<{
                 }}
                 btnStyles={{
                   backgroundColor: theme.palette.tertiary.main,
-                  width: '25%',
+                  width: '33%',
                 }}
                 text="Close"
               />
@@ -335,7 +336,7 @@ const FinishDualWorkoutItems: FunctionComponent<{
                 }}
                 btnStyles={{
                   backgroundColor: theme.palette.tertiary.main,
-                  width: '25%',
+                  width: '33%',
                 }}
                 text="Finish"
               />

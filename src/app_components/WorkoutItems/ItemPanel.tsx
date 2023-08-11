@@ -101,7 +101,7 @@ const WorkoutItemWeights: FunctionComponent<{
   );
 };
 
-const recordedTextColor = '#be123c';
+const recordedTextColor = '#f0abfc';
 const WorkoutItemRepsDurDistance: FunctionComponent<{
   item: AnyWorkoutItem;
   ownedByClass: boolean;
