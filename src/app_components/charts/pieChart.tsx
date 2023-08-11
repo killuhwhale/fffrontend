@@ -10,30 +10,35 @@ import {BarChart, PieChart} from 'react-native-chart-kit';
 import HorizontalPicker from '../Pickers/HorizontalPicker';
 import {chartConfig} from '../../app_pages/StatsScreen';
 import {ChartData} from 'react-native-chart-kit/dist/HelperTypes';
-
+import twrnc from 'twrnc';
 export const dateFormat = (d: Date) => {
   return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
 };
 
+const shade = 400;
 const pieColors = [
-  '#34d399',
-  '#facc15',
-  '#a3e635',
-  '#4ade80',
-  '#f87171',
-  '#2dd4bf',
-  '#22d3ee',
-  '#38bdf8',
-  '#60a5fa',
-  '#818cf8',
-  '#a78bfa',
-  '#fb923c',
-  '#c084fc',
-  '#fbbf24',
-  '#e879f9',
-  '#f472b6',
-  '#fb7185',
-  '#a8a29e',
+  twrnc.color(`bg-red-${shade}`),
+  twrnc.color(`bg-orange-${shade + 100}`),
+
+  twrnc.color(`bg-amber-${shade}`),
+  twrnc.color(`bg-yellow-${shade}`),
+
+  twrnc.color(`bg-lime-${shade}`),
+  twrnc.color(`bg-green-${shade}`),
+  twrnc.color(`bg-emerald-${shade}`),
+
+  twrnc.color(`bg-teal-${shade + 100}`),
+  twrnc.color(`bg-cyan-${shade}`),
+  twrnc.color(`bg-sky-${shade}`),
+  twrnc.color(`bg-blue-${shade + 100}`),
+
+  twrnc.color(`bg-indigo-${shade}`),
+  twrnc.color(`bg-violet-${shade + 100}`),
+  twrnc.color(`bg-purple-${shade}`),
+
+  twrnc.color(`bg-fuchsia-${shade}`),
+  twrnc.color(`bg-pink-${shade}`),
+  twrnc.color(`bg-rose-${shade}`),
 ];
 
 const pieData = (tags, metric) => {
