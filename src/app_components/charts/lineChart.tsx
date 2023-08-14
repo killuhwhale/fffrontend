@@ -3,14 +3,8 @@ import {ScrollView, View} from 'react-native';
 import styled from 'styled-components/native';
 import {useTheme} from 'styled-components';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {
-  SmallText,
-  RegularText,
-  LargeText,
-  TitleText,
-  XSmallText,
-} from '../Text/Text';
-import {Container, SCREEN_WIDTH} from '../shared';
+import {TSParagrapghText, XSmallText} from '../Text/Text';
+import {SCREEN_WIDTH} from '../shared';
 
 import {LineChart} from 'react-native-chart-kit';
 import HorizontalPicker from '../Pickers/HorizontalPicker';
@@ -218,7 +212,7 @@ const TotalsLineChart: FunctionComponent<{
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
-        <RegularText>Totals by date</RegularText>
+        <TSParagrapghText>Totals by date</TSParagrapghText>
 
         <HorizontalPicker
           key={`hp_${showTags}_${

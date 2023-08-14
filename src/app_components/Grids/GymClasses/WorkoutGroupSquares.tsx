@@ -1,13 +1,9 @@
 import React, {FunctionComponent} from 'react';
 import styled from 'styled-components/native';
-import {Container, SCREEN_HEIGHT, SCREEN_WIDTH} from '../../shared';
-import {SmallText, RegularText, LargeText, TitleText} from '../../Text/Text';
+import {SCREEN_HEIGHT} from '../../shared';
 import {useTheme} from 'styled-components';
-
 import {View} from 'react-native';
-
 import {WorkoutGroupCardProps} from '../../Cards/types';
-
 import WorkoutGroupGridItem from './WorkoutGroupGridItem';
 
 export const StyledList = styled.FlatList`

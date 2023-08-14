@@ -1,4 +1,9 @@
-import React, {FunctionComponent, useState, useCallback} from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  useCallback,
+  useEffect,
+} from 'react';
 import styled from 'styled-components/native';
 import {ActivityIndicator, View} from 'react-native';
 import {
@@ -6,7 +11,10 @@ import {
   mdFontSize,
   SCREEN_HEIGHT,
 } from '../../../app_components/shared';
-import {SmallText, RegularText} from '../../../app_components/Text/Text';
+import {
+  TSCaptionText,
+  TSParagrapghText,
+} from '../../../app_components/Text/Text';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
 import DocumentPicker from 'react-native-document-picker';
@@ -108,6 +116,22 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
 
   const [isCreating, setIsCreating] = useState(false);
 
+  const [showAd, setShowAd] = useState(false);
+  const [readyToCreate, setReadyToCreate] = useState(false);
+  useEffect(() => {
+    if (readyToCreate && !showAd) {
+      _createWorkout()
+        .then(res => setReadyToCreate(false))
+        .catch(err => console.log('Error creating workoutGroup: ', err));
+    }
+  }, [readyToCreate]);
+
+  // const _createWorkout = () => {
+  //   console.log('title: ', title);
+  //   console.log('caption: ', caption);
+  //   console.log('forDate: ', forDate);
+  // };
+
   const _createWorkout = async () => {
     console.log('Creatting workout: ');
 
@@ -131,8 +155,8 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
       );
     }
 
-    console.log('FOrmdata');
-    console.log('FOrmdata', data);
+    console.log('_createWorkout FOrmdata');
+    console.log('_createWorkout FOrmdata', data);
 
     try {
       const workoutGroup = await createWorkoutGroup(data).unwrap();
@@ -156,9 +180,9 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
           <BannerAddMembership />
         </View>
         <View style={{flex: 1}}>
-          <RegularText textStyles={{marginBottom: 8}}>
+          <TSParagrapghText textStyles={{marginBottom: 8}}>
             Create Workout Group
-          </RegularText>
+          </TSParagrapghText>
         </View>
 
         <View style={{flex: 5}}>
@@ -166,7 +190,7 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
             <Input
               placeholder="Title"
               testID={TestIDs.WorkoutGroupTitleField.name()}
-              onChangeText={setTitle}
+              onChangeText={t => setTitle(t)}
               value={title || ''}
               label="Title"
               containerStyle={{
@@ -175,7 +199,6 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
                 borderRadius: 8,
                 paddingHorizontal: 8,
               }}
-              fontSize={mdFontSize}
               leading={
                 <Icon
                   name="checkmark-circle-outline"
@@ -198,7 +221,6 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
                 borderRadius: 8,
                 paddingHorizontal: 8,
               }}
-              fontSize={mdFontSize}
               leading={
                 <Icon
                   name="checkmark-circle-outline"
@@ -217,9 +239,9 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <SmallText textStyles={{textAlign: 'center', paddingLeft: 16}}>
+            <TSCaptionText textStyles={{textAlign: 'center', paddingLeft: 16}}>
               For:{' '}
-            </SmallText>
+            </TSCaptionText>
             <DatePicker
               date={forDate}
               onDateChange={setForDate}
@@ -240,19 +262,24 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
         </View> */}
         <View style={{flex: 2}}>
           {!isCreating ? (
-            nodeEnv === 'test' ? (
+            <>
               <RegularButton
-                testID={TestIDs.GymClassCreateBtn.name()}
-                onPress={() => _createWorkout()}
+                onPress={() => {
+                  setShowAd(true);
+                }}
                 btnStyles={{backgroundColor: theme.palette.darkGray}}
                 text="Create"
               />
-            ) : (
               <InterstitialAdMembership
                 text="Create"
-                onClose={() => _createWorkout()}
+                onClose={() => {
+                  setShowAd(false); // return to prev state.
+                  setReadyToCreate(true); // Trigger useEffect
+                }}
+                show={showAd}
+                testID={TestIDs.GymClassCreateBtn.name()}
               />
-            )
+            </>
           ) : (
             <ActivityIndicator size="small" color={theme.palette.text} />
           )}

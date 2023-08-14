@@ -1,11 +1,11 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
-import {MediumText, RegularText, SmallText} from '../Text/Text';
+import {MediumText, TSParagrapghText, TSCaptionText} from '../Text/Text';
 
 import {Modal, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useTheme} from 'styled-components';
 import {RegularButton} from '../Buttons/buttons';
-import Input from '../Input/input';
+import Input, {AutoCaptilizeEnum} from '../Input/input';
 import {SCREEN_WIDTH, mdFontSize} from '../shared';
 import {centeredViewStyle, modalViewStyle} from './modalStyles';
 
@@ -54,13 +54,14 @@ const PenaltyModal: FunctionComponent<{
                 onChangeText={setText}
                 value={text}
                 label="Penalty"
+                autoCapitalize={AutoCaptilizeEnum.Sent}
+                multiline
                 containerStyle={{
                   width: '100%',
                   backgroundColor: theme.palette.backgroundColor,
                   borderRadius: 8,
                   paddingHorizontal: 8,
                 }}
-                fontSize={mdFontSize}
                 leading={
                   <Icon
                     name="flame"
@@ -83,9 +84,8 @@ const PenaltyModal: FunctionComponent<{
                   onRequestClose();
                 }}
                 btnStyles={{
-                  height: 40,
-                  width: SCREEN_WIDTH * 0.25,
                   backgroundColor: theme.palette.tertiary.main,
+                  justifyContent: 'center',
                 }}
                 text={closeText}
               />
@@ -96,9 +96,8 @@ const PenaltyModal: FunctionComponent<{
                   onRequestClose();
                 }}
                 btnStyles={{
-                  height: 40,
-                  width: SCREEN_WIDTH * 0.25,
                   backgroundColor: theme.palette.tertiary.main,
+                  justifyContent: 'center',
                 }}
                 text="Submit"
               />

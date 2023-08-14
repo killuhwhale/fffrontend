@@ -20,6 +20,35 @@ const LB2KG = 0.453592;
 
 export const SCREEN_WIDTH = Dimensions.get('screen').width;
 export const SCREEN_HEIGHT = Dimensions.get('screen').height;
+export function lightenHexColor(hexColor: string, factor: number): string {
+  // Convert hex to RGB
+  let r: number = parseInt(hexColor.substring(1, 3), 16);
+  let g: number = parseInt(hexColor.substring(3, 5), 16);
+  let b: number = parseInt(hexColor.substring(5, 7), 16);
+
+  // Lighten the color
+  r = Math.round(r * factor);
+  g = Math.round(g * factor);
+  b = Math.round(b * factor);
+
+  // Ensure values are within [0, 255]
+  r = Math.min(255, Math.max(0, r));
+  g = Math.min(255, Math.max(0, g));
+  b = Math.min(255, Math.max(0, b));
+
+  // Convert RGB back to HEX
+  return `#${r.toString(16).padStart(2, '0')}${g
+    .toString(16)
+    .padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+}
+
+export const tsPageTitle: number = Platform.OS === 'ios' ? 20 : 20;
+export const tsParagrapgh: number = Platform.OS === 'ios' ? 14 : 14;
+export const tsListTitle: number = Platform.OS === 'ios' ? 14 : 14; // medium weight
+export const tsSnippet: number = Platform.OS === 'ios' ? 16 : 16;
+export const tsCaption: number = Platform.OS === 'ios' ? 14 : 14; // lighter color
+export const tsButton: number = Platform.OS === 'ios' ? 14 : 14; // medium weight
+export const tsInput: number = Platform.OS === 'ios' ? 16 : 16;
 
 export const titleFontSize: number = Platform.OS === 'ios' ? 48 : 44;
 export const lgFontSize: number = Platform.OS === 'ios' ? 36 : 32;
@@ -40,8 +69,6 @@ export const WORKOUT_TYPES: Array<string> = [
   REPS_W,
   ROUNDS_W,
   CREATIVE_W,
-  TIMESCORE_W,
-  TIMELIMIT_W,
 ];
 export const WORKOUT_TYPE_LABELS: Array<string> = [
   '',

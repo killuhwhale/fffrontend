@@ -1,10 +1,4 @@
-import React, {
-  FunctionComponent,
-  useRef,
-  ReactNode,
-  useEffect,
-  useState,
-} from 'react';
+import React, {FunctionComponent, useRef, ReactNode} from 'react';
 import {
   View,
   TextInput as NTextInput,
@@ -16,8 +10,8 @@ import {
   KeyboardTypeOptions,
 } from 'react-native';
 import {useTheme} from 'styled-components';
-import {Keyboard} from 'react-native';
-import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
+import {TSCaptionText} from '../Text/Text';
+import {tsInput} from '../shared';
 
 enum AutoCaptilizeEnum {
   None = 'none',
@@ -45,6 +39,18 @@ interface InputProps {
   testID?: string;
   keyboardType?: KeyboardTypeOptions;
   focus?: boolean;
+  multiline?: boolean;
+}
+function intercept(s: string, og: string): string {
+  const lines = s.split('\n');
+  let violation = false;
+  lines.forEach((line: string) => {
+    if (line.length > 140) {
+      violation = true;
+    }
+  });
+  const numLines = lines.length;
+  return numLines <= 10 && !violation ? s : og;
 }
 
 const Input: FunctionComponent<InputProps> = props => {
@@ -74,6 +80,9 @@ const Input: FunctionComponent<InputProps> = props => {
               }}>
               <NTextInput
                 testID={props.testID}
+                multiline={props.multiline ?? false}
+                // numberOfLines={props.multiline ? 10 : 1}
+                numberOfLines={2}
                 secureTextEntry={props.secureTextEntry ?? false}
                 // secureTextEntry={
                 //   props.secureTextEntry == undefined
@@ -83,14 +92,14 @@ const Input: FunctionComponent<InputProps> = props => {
                 keyboardType={props.keyboardType ?? 'default'}
                 autoCapitalize={
                   props.autoCapitalize == undefined
-                    ? 'sentences'
+                    ? AutoCaptilizeEnum.Sent
                     : props.autoCapitalize
                 }
                 style={[
                   {
                     color: theme.palette.text,
                     width: '100%',
-                    fontSize: props.fontSize || 24,
+                    fontSize: props.fontSize || tsInput,
                     justifyContent: 'center',
                     alignItems: 'center',
                     alignContent: 'center',
@@ -100,7 +109,9 @@ const Input: FunctionComponent<InputProps> = props => {
                   props.inputStyles,
                 ]}
                 ref={inpRef}
-                onChangeText={props.onChangeText}
+                onChangeText={(t: string) =>
+                  props.onChangeText(intercept(t, props.value))
+                }
                 value={props.value}
                 placeholder={props.placeholder}
                 placeholderTextColor={theme.palette.text}
@@ -124,9 +135,9 @@ const Input: FunctionComponent<InputProps> = props => {
                 left: props.leading ? 40 : 5,
                 bottom: 0,
               }}>
-              <SmallText textStyles={{color: 'red'}}>
+              <TSCaptionText textStyles={{color: 'red'}}>
                 {props.helperText}
-              </SmallText>
+              </TSCaptionText>
             </View>
           ) : (
             <></>

@@ -2,7 +2,7 @@ import React, {FunctionComponent, useMemo, useState} from 'react';
 import {ScrollView, TouchableWithoutFeedback, View} from 'react-native';
 import styled from 'styled-components/native';
 import {useTheme} from 'styled-components';
-import {SmallText} from '../app_components/Text/Text';
+import {TSCaptionText} from '../app_components/Text/Text';
 import {
   Container,
   SCREEN_HEIGHT,
@@ -161,9 +161,9 @@ const StatsScreen: FunctionComponent<Props> = ({
             borderBottomWidth: 2,
             borderColor: theme.palette.text,
           }}>
-          <SmallText textStyles={{textAlign: 'center', paddingLeft: 16}}>
+          <TSCaptionText textStyles={{textAlign: 'center', paddingLeft: 16}}>
             Start Date
-          </SmallText>
+          </TSCaptionText>
           <DatePicker
             date={startDate}
             onDateChange={setStartDate}
@@ -184,9 +184,9 @@ const StatsScreen: FunctionComponent<Props> = ({
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <SmallText textStyles={{textAlign: 'center', paddingLeft: 16}}>
+          <TSCaptionText textStyles={{textAlign: 'center', paddingLeft: 16}}>
             End Date
-          </SmallText>
+          </TSCaptionText>
           <DatePicker
             date={endDate}
             onDateChange={setEndDate}
@@ -199,10 +199,10 @@ const StatsScreen: FunctionComponent<Props> = ({
         </View>
       </View>
       <View style={{flex: 8}}>
-        <SmallText>
+        <TSCaptionText>
           Found {dataReady ? data?.length : 0}{' '}
           {dataReady && data?.length == 1 ? 'workout' : 'workouts'}
-        </SmallText>
+        </TSCaptionText>
         <ScrollView>
           {dataReady ? (
             <>

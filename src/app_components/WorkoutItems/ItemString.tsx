@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import {useTheme} from 'styled-components';
 import {WorkoutItemProps} from '../Cards/types';
 import {displayJList, DISTANCE_UNITS, DURATION_UNITS} from '../shared';
-import {SmallText} from '../Text/Text';
+import {TSCaptionText} from '../Text/Text';
 
 const ItemString: FunctionComponent<{
   item: WorkoutItemProps;
@@ -15,7 +15,7 @@ const ItemString: FunctionComponent<{
   return (
     <View
       style={{width: '100%', borderRadius: 8, marginVertical: 6, padding: 6}}>
-      <SmallText>
+      <TSCaptionText>
         {`${prefix} `}
         {item.sets > 0 && schemeType === 0 ? `${item.sets} x ` : ''}
 
@@ -48,7 +48,7 @@ const ItemString: FunctionComponent<{
               DURATION_UNITS[item.rest_duration_unit]
             }`
           : ''}
-      </SmallText>
+      </TSCaptionText>
     </View>
   );
 };

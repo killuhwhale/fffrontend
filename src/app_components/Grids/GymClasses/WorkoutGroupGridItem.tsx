@@ -1,9 +1,8 @@
 import React, {FunctionComponent} from 'react';
-import styled from 'styled-components/native';
 import {useTheme} from 'styled-components';
-import {SmallText, RegularText, LargeText, TitleText} from '../../Text/Text';
+import {TSCaptionText, TSParagrapghText} from '../../Text/Text';
 import {useNavigation} from '@react-navigation/native';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../shared';
+
 import {WorkoutGroupCardProps} from '../../Cards/types';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -55,12 +54,12 @@ const WorkoutGroupGridItem: FunctionComponent<{
             />
             <View style={{flex: 5}}>
               <View style={{marginVertical: 4}}>
-                <RegularText textStyles={{marginLeft: 16}}>
+                <TSParagrapghText textStyles={{marginLeft: 16}}>
                   {props.card.title}
-                </RegularText>
-                <SmallText textStyles={{textAlign: 'left', marginLeft: 16}}>
+                </TSParagrapghText>
+                <TSCaptionText textStyles={{textAlign: 'left', marginLeft: 16}}>
                   {dateFormat(new Date(props.card.for_date))}
-                </SmallText>
+                </TSCaptionText>
               </View>
             </View>
             <View style={{flex: 1, alignItems: 'center'}}>
@@ -76,9 +75,10 @@ const WorkoutGroupGridItem: FunctionComponent<{
               {props.card.owned_by_class === true ? (
                 <></>
               ) : (
-                <SmallText textStyles={{textAlign: 'right', marginRight: 14}}>
+                <TSCaptionText
+                  textStyles={{textAlign: 'right', marginRight: 14}}>
                   {props.card.owned_by_class === false ? 'you' : 'class'}
-                </SmallText>
+                </TSCaptionText>
               )}
             </View>
           </View>

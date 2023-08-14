@@ -17,7 +17,6 @@ import {
   REPS_W,
   ROUNDS_W,
   SCREEN_HEIGHT,
-  SCREEN_WIDTH,
   STANDARD_W,
   WEIGHT_UNITS,
   WORKOUT_TYPES,
@@ -31,17 +30,15 @@ import DatePicker from 'react-native-date-picker';
 import {ImageOrVideo} from 'react-native-image-crop-picker';
 
 import {
-  SmallText,
-  RegularText,
-  LargeText,
-  TitleText,
+  TSCaptionText,
+  TSParagrapghText,
 } from '../../../app_components/Text/Text';
 import {useAppDispatch} from '../../../redux/hooks';
 import {useCreateCompletedWorkoutMutation} from '../../../redux/api/apiSlice';
 
 import {RootStackParamList} from '../../../navigators/RootStack';
-import {MediaPicker} from './CreateWorkoutGroupScreen';
-import {MediaSlider} from '../../../app_components/MediaSlider/MediaSlider';
+// import {MediaPicker} from './CreateWorkoutGroupScreen';
+// import {MediaSlider} from '../../../app_components/MediaSlider/MediaSlider';
 import {
   WorkoutCardProps,
   WorkoutGroupProps,
@@ -49,7 +46,7 @@ import {
 } from '../../../app_components/Cards/types';
 import {
   numberInputStyle,
-  pickerStyle,
+  // pickerStyle,
   verifyWorkoutItem,
 } from './CreateWorkoutScreen';
 import {ActionCancelModal} from '../../Profile';
@@ -166,7 +163,7 @@ const EditWorkoutItem: FunctionComponent<{
             justifyContent: 'space-between',
             width: '90%',
           }}>
-          <SmallText textStyles={{textAlign: 'center'}}>Sets</SmallText>
+          <TSCaptionText textStyles={{textAlign: 'center'}}>Sets</TSCaptionText>
           <View
             style={{
               marginHorizontal: 8,
@@ -217,7 +214,7 @@ const EditWorkoutItem: FunctionComponent<{
             justifyContent: 'space-between',
             width: '90%',
           }}>
-          <SmallText textStyles={{textAlign: 'center'}}>Reps</SmallText>
+          <TSCaptionText textStyles={{textAlign: 'center'}}>Reps</TSCaptionText>
           <View
             style={{
               marginHorizontal: 8,
@@ -275,9 +272,9 @@ const EditWorkoutItem: FunctionComponent<{
             justifyContent: 'space-between',
             width: '90%',
           }}>
-          <SmallText textStyles={{textAlign: 'center'}}>
+          <TSCaptionText textStyles={{textAlign: 'center'}}>
             Duration ({DURATION_UNITS[oldDurationUnit]})
-          </SmallText>
+          </TSCaptionText>
           <View
             style={{
               marginHorizontal: 8,
@@ -318,7 +315,6 @@ const EditWorkoutItem: FunctionComponent<{
                   }
                   setNewDuration(val);
                 }}
-                fontSize={mdFontSize}
                 value={newDuration}
                 label="Duration"
                 isError={durationError.length > 0}
@@ -411,9 +407,9 @@ const EditWorkoutItem: FunctionComponent<{
             justifyContent: 'space-between',
             width: '90%',
           }}>
-          <SmallText textStyles={{textAlign: 'center'}}>
+          <TSCaptionText textStyles={{textAlign: 'center'}}>
             Distance ({DISTANCE_UNITS[oldDistanceUnit]})
-          </SmallText>
+          </TSCaptionText>
           <View
             style={{
               marginHorizontal: 8,
@@ -423,7 +419,6 @@ const EditWorkoutItem: FunctionComponent<{
             }}>
             <View style={{flex: 3}}>
               <Input
-                fontSize={mdFontSize}
                 inputStyles={{textAlign: 'center'}}
                 containerStyle={[
                   numberInputStyle.containerStyle,
@@ -549,7 +544,9 @@ const EditWorkoutItem: FunctionComponent<{
             justifyContent: 'space-between',
             width: '90%',
           }}>
-          <SmallText textStyles={{textAlign: 'center'}}>Weights</SmallText>
+          <TSCaptionText textStyles={{textAlign: 'center'}}>
+            Weights
+          </TSCaptionText>
           <View
             style={{
               marginHorizontal: 8,
@@ -609,9 +606,9 @@ const EditWorkoutItem: FunctionComponent<{
             justifyContent: 'space-between',
             width: '90%',
           }}>
-          <SmallText textStyles={{textAlign: 'center'}}>
+          <TSCaptionText textStyles={{textAlign: 'center'}}>
             Weight Unit ({oldWeightUnit})
-          </SmallText>
+          </TSCaptionText>
           <View
             style={{
               marginHorizontal: 8,
@@ -755,8 +752,10 @@ const EditWorkout: FunctionComponent<{
           flexDirection: 'row',
           paddingHorizontal: 15,
         }}>
-        <RegularText>Edit {workout.title}</RegularText>
-        <RegularText>{displayJList(workout.scheme_rounds)}</RegularText>
+        <TSParagrapghText>Edit {workout.title}</TSParagrapghText>
+        <TSParagrapghText>
+          {displayJList(workout.scheme_rounds)}
+        </TSParagrapghText>
       </View>
       <View style={{width: '100%', paddingLeft: 45}}>
         {/* {workout.workout_items?.map((item, i) => {
@@ -976,9 +975,9 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
     <PageContainer>
       <View style={{width: '100%', flex: 1}}>
         <View style={{flex: 1}}>
-          <RegularText textStyles={{textAlign: 'center'}}>
+          <TSParagrapghText textStyles={{textAlign: 'center'}}>
             Complete: {params.title}
-          </RegularText>
+          </TSParagrapghText>
         </View>
 
         <View style={{flex: 1, justifyContent: 'center'}}>
@@ -986,7 +985,6 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
             <Input
               onChangeText={setCaption}
               value={caption}
-              fontSize={16}
               containerStyle={{
                 width: '100%',
                 backgroundColor: theme.palette.darkGray,
@@ -1014,9 +1012,9 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
             alignItems: 'center',
             width: '100%',
           }}>
-          <SmallText textStyles={{textAlign: 'center', paddingLeft: 16}}>
+          <TSCaptionText textStyles={{textAlign: 'center', paddingLeft: 16}}>
             For:{' '}
-          </SmallText>
+          </TSCaptionText>
           <DatePicker
             date={forDate}
             onDateChange={setForDate}
@@ -1041,7 +1039,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
         <View style={{flex: 4}}>
           <ScrollView>
             <View style={{flex: 3}}>
-              <RegularText>Edit workouts below</RegularText>
+              <TSParagrapghText>Edit workouts below</TSParagrapghText>
 
               {editedWorkoutGroup.workouts?.map((workout, i) => {
                 return (

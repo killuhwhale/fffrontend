@@ -6,7 +6,12 @@ import {
   SCREEN_WIDTH,
   withSpaceURL,
 } from '../app_components/shared';
-import {SmallText, RegularText} from '../app_components/Text/Text';
+import {
+  SmallText,
+  TSCaptionText,
+  TSParagrapghText,
+  TSTitleText,
+} from '../app_components/Text/Text';
 import {useTheme} from 'styled-components';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RootStackParamList} from '../navigators/RootStack';
@@ -186,6 +191,7 @@ const GymClassScreen: FunctionComponent<Props> = ({
       <BannerAddMembership />
       <View
         style={{
+          marginTop: 20,
           flexDirection: 'row',
           paddingLeft: 32,
           width: '100%',
@@ -194,25 +200,27 @@ const GymClassScreen: FunctionComponent<Props> = ({
         }}>
         <Image
           style={{
-            marginTop: 42,
-            height: 92,
-            width: 92,
+            // marginTop: 42,
+            // height: 92,
+            // width: 92,
+            resizeMode: 'center',
             borderRadius: 8,
+            flex: 1,
           }}
           source={useDefault ? moc : {uri: mainURL}}
           onError={() => {
             handleError();
           }}
         />
-        <View style={{flex: 1, marginLeft: 16, alignItems: 'center'}}>
-          <RegularText textStyles={{textAlign: 'center'}}>
+        <View style={{flex: 2, marginLeft: 16, alignItems: 'center'}}>
+          <TSTitleText textStyles={{textAlign: 'center'}}>
             {title}{' '}
             {data?.user_is_owner
               ? '(Owner)'
               : data?.user_is_coach
               ? '(Coach)'
               : ''}
-          </RegularText>
+          </TSTitleText>
         </View>
 
         <View style={{flex: 1, alignItems: 'center'}}>
@@ -223,58 +231,56 @@ const GymClassScreen: FunctionComponent<Props> = ({
       <View
         style={{
           flexDirection: 'row',
-          paddingLeft: 32,
-          flex: 0.25,
           alignItems: 'center',
+          justifyContent: 'flex-end',
+          width: '100%',
+          flex: 1,
         }}>
-        <SmallText>{desc}</SmallText>
-      </View>
-
-      {data?.user_is_owner || data?.user_is_coach ? (
         <View
           style={{
             flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            width: '100%',
+            paddingLeft: 32,
+            paddingTop: 12,
             flex: 1,
+            alignItems: 'center',
+            // backgroundColor: 'red',
           }}>
-          {data?.user_is_owner ? (
-            <TouchableHighlight onPress={() => setShowCoachModal(true)}>
-              <View style={{paddingHorizontal: 8, alignItems: 'center'}}>
-                <Icon
-                  name="ios-stopwatch-outline"
-                  color={theme.palette.primary.main}
-                  style={{fontSize: 24}}
-                />
-                <SmallText>
-                  Coaches: {allCoaches?.length ? allCoaches.length : 0}
-                </SmallText>
-              </View>
-            </TouchableHighlight>
-          ) : (
-            <></>
-          )}
-          {data?.user_is_owner || data?.user_is_coach ? (
-            <TouchableHighlight onPress={() => setShowMembersModal(true)}>
-              <View style={{paddingHorizontal: 8, alignItems: 'center'}}>
-                <Icon
-                  name="ios-people-outline"
-                  color={theme.palette.secondary.main}
-                  style={{fontSize: 24}}
-                />
-                <SmallText>
-                  Members: {allMembers?.length ? allMembers.length : 0}
-                </SmallText>
-              </View>
-            </TouchableHighlight>
-          ) : (
-            <></>
-          )}
+          <TSCaptionText>{desc}</TSCaptionText>
         </View>
-      ) : (
-        <></>
-      )}
+
+        {data?.user_is_owner ? (
+          <TouchableHighlight onPress={() => setShowCoachModal(true)}>
+            <View style={{paddingHorizontal: 8, alignItems: 'center'}}>
+              <Icon
+                name="ios-stopwatch-outline"
+                color={theme.palette.primary.main}
+                style={{fontSize: 24}}
+              />
+              <SmallText>
+                Coaches: {allCoaches?.length ? allCoaches.length : 0}
+              </SmallText>
+            </View>
+          </TouchableHighlight>
+        ) : (
+          <></>
+        )}
+        {data?.user_is_owner || data?.user_is_coach ? (
+          <TouchableHighlight onPress={() => setShowMembersModal(true)}>
+            <View style={{paddingHorizontal: 8, alignItems: 'center'}}>
+              <Icon
+                name="ios-people-outline"
+                color={theme.palette.secondary.main}
+                style={{fontSize: 24}}
+              />
+              <SmallText>
+                Members: {allMembers?.length ? allMembers.length : 0}
+              </SmallText>
+            </View>
+          </TouchableHighlight>
+        ) : (
+          <></>
+        )}
+      </View>
 
       {!isLoading && data && data.user_can_edit ? (
         <View style={{flex: 1}}>
@@ -287,6 +293,12 @@ const GymClassScreen: FunctionComponent<Props> = ({
               width: '100%',
             }}>
             <TouchableHighlight
+              style={{
+                borderRadius: 8,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                backgroundColor: theme.palette.secondary.main,
+              }}
               onPress={() => {
                 navigation.navigate('CreateWorkoutGroupScreen', {
                   ownedByClass: true,
@@ -295,11 +307,17 @@ const GymClassScreen: FunctionComponent<Props> = ({
                 });
               }}
               testID={TestIDs.CreateWorkoutGroupScreenForClassBtn.name()}>
-              <Icon
-                name="add-outline"
-                color={theme.palette.primary.main}
-                style={{fontSize: 24, marginHorizontal: 8}}
-              />
+              <View
+                style={{
+                  backgroundColor: theme.palette.primary.main,
+                  borderRadius: 8,
+                }}>
+                <Icon
+                  name="add-outline"
+                  color={theme.palette.text}
+                  style={{fontSize: 24, margin: 1}}
+                />
+              </View>
             </TouchableHighlight>
 
             {data?.user_is_owner ? (

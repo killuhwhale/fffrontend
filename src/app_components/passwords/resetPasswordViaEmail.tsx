@@ -1,17 +1,15 @@
-import React, {FunctionComponent, useRef, useState} from 'react';
-import emailjs from '@emailjs/browser';
+import React, {FunctionComponent, useState} from 'react';
+
 import {View} from 'react-native';
-import {useGetProfileViewQuery} from '../../redux/api/apiSlice';
-import {RegularText, SmallText} from '../Text/Text';
+import {TSParagrapghText, TSCaptionText} from '../Text/Text';
 import {RegularButton} from '../Buttons/buttons';
 import {post} from '../../utils/fetchAPI';
 import {BASEURL} from '../../utils/constants';
 import Input, {AutoCaptilizeEnum} from '../Input/input';
 import {useTheme} from 'styled-components';
 import {validEmailRegex} from '../../utils/algos';
-import {mdFontSize} from '../shared';
 
-export const ResetPassword: FunctionComponent = () => {
+const ResetPasswordViaEmail: FunctionComponent = () => {
   const theme = useTheme();
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -42,22 +40,27 @@ export const ResetPassword: FunctionComponent = () => {
 
   return (
     <View style={{width: '100%'}}>
-      <RegularText textStyles={{textAlign: 'center', marginBottom: 16}}>
-        Password reset
-      </RegularText>
+      <TSParagrapghText
+        textStyles={{
+          textAlign: 'center',
+          marginBottom: 16,
+          marginHorizontal: 30,
+        }}>
+        Please enter the email registered to your account
+      </TSParagrapghText>
       {errorMsg.length > 0 ? (
-        <SmallText textStyles={{textAlign: 'center', marginBottom: 16}}>
+        <TSCaptionText textStyles={{textAlign: 'center', marginBottom: 16}}>
           {errorMsg}
-        </SmallText>
+        </TSCaptionText>
       ) : showHint ? (
-        <SmallText textStyles={{textAlign: 'center', marginBottom: 16}}>
+        <TSCaptionText textStyles={{textAlign: 'center', marginBottom: 16}}>
           Only one code will be sent per email every 15mins
-        </SmallText>
+        </TSCaptionText>
       ) : (
         <></>
       )}
 
-      <View style={{height: 45, marginBottom: 16}}>
+      <View style={{height: 35, marginBottom: 16}}>
         <Input
           containerStyle={{
             backgroundColor: theme.palette.gray,
@@ -68,7 +71,6 @@ export const ResetPassword: FunctionComponent = () => {
           isError={emailError.length > 0}
           helperText={emailError}
           autoCapitalize={AutoCaptilizeEnum.None}
-          fontSize={mdFontSize}
           onChangeText={(_email: string) => {
             if (!validEmailRegex.test(_email)) {
               setEmailError('Invalid email');
@@ -84,7 +86,7 @@ export const ResetPassword: FunctionComponent = () => {
 
       <View style={{alignItems: 'center'}}>
         <RegularButton
-          btnStyles={{height: 45, width: '100%', justifyContent: 'center'}}
+          btnStyles={{width: '100%', justifyContent: 'center'}}
           textStyles={{textAlign: 'center', fontSize: 16}}
           onPress={sendEmail}
           text="Send Reset Code"
@@ -94,3 +96,4 @@ export const ResetPassword: FunctionComponent = () => {
     </View>
   );
 };
+export default ResetPasswordViaEmail;

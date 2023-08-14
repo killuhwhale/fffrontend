@@ -1,17 +1,17 @@
-import React, {FunctionComponent, useEffect, useRef, useState} from 'react';
-import emailjs from '@emailjs/browser';
+import React, {FunctionComponent, useState} from 'react';
+
 import {View} from 'react-native';
-import {useGetProfileViewQuery} from '../../redux/api/apiSlice';
-import {RegularText, SmallText} from '../Text/Text';
+
+import {TSParagrapghText} from '../Text/Text';
 import {RegularButton} from '../Buttons/buttons';
-import {authPost, post} from '../../utils/fetchAPI';
+import {authPost} from '../../utils/fetchAPI';
 import {BASEURL} from '../../utils/constants';
-import Input, {AutoCaptilizeEnum} from '../Input/input';
+import Input from '../Input/input';
 import {useTheme} from 'styled-components';
-import {validEmailRegex} from '../../utils/algos';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 
-export const ResetPasswordOld: FunctionComponent = () => {
+const ResetPasswordOld: FunctionComponent = () => {
   const theme = useTheme();
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -59,9 +59,10 @@ export const ResetPasswordOld: FunctionComponent = () => {
     <View style={{width: '100%'}}>
       {!disabledUpdateBtn ? (
         <>
-          <RegularText textStyles={{textAlign: 'center', marginBottom: 12}}>
+          <TSParagrapghText
+            textStyles={{textAlign: 'center', marginBottom: 12}}>
             Update Password
-          </RegularText>
+          </TSParagrapghText>
           <View style={{height: 45, marginBottom: 16}}>
             <Input
               containerStyle={{
@@ -72,7 +73,6 @@ export const ResetPasswordOld: FunctionComponent = () => {
               }}
               label=""
               placeholder="Current Password"
-              fontSize={16}
               value={password}
               onChangeText={setPassword}
               secureTextEntry={hidePassword}
@@ -97,7 +97,6 @@ export const ResetPasswordOld: FunctionComponent = () => {
               }}
               label=""
               placeholder="New Password"
-              fontSize={16}
               value={newPassword}
               onChangeText={setNewPassword}
               secureTextEntry={hideNewPassword}
@@ -120,7 +119,6 @@ export const ResetPasswordOld: FunctionComponent = () => {
               }}
               label=""
               placeholder="Password Confirm"
-              fontSize={16}
               value={passwordConfirm}
               onChangeText={setPasswordConfirm}
               secureTextEntry={hidePasswordConfirm}
@@ -153,8 +151,9 @@ export const ResetPasswordOld: FunctionComponent = () => {
           </View>
         </>
       ) : (
-        <RegularText>Updated!</RegularText>
+        <TSParagrapghText>Updated!</TSParagrapghText>
       )}
     </View>
   );
 };
+export default ResetPasswordOld;

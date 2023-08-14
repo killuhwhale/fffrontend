@@ -2,11 +2,12 @@ import React, {FunctionComponent} from 'react';
 import {View} from 'react-native';
 import {RegularButton} from '../../app_components/Buttons/buttons';
 import {TestIDs} from '../../utils/constants';
-import {RegularText} from '../../app_components/Text/Text';
+import {TSParagrapghText} from '../../app_components/Text/Text';
 import Input, {AutoCaptilizeEnum} from '../../app_components/Input/input';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useTheme} from 'styled-components';
-import {ResetPassword} from '../../app_components/email/email';
+
+import ResetPasswordViaEmail from '../../app_components/passwords/resetPasswordViaEmail';
 
 interface ResetPasswordAuthPageProps {
   setAuthMode(authMode: number): void;
@@ -24,7 +25,7 @@ const ResetPasswordAuthPage: FunctionComponent<ResetPasswordAuthPageProps> = ({
         flex: 10,
       }}>
       <View style={{flex: 3, justifyContent: 'center'}}>
-        <ResetPassword />
+        <ResetPasswordViaEmail />
       </View>
       <View style={{flex: 7}}></View>
     </View>

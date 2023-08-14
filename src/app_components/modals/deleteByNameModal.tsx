@@ -1,12 +1,5 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
-import {
-  SmallText,
-  RegularText,
-  LargeText,
-  TitleText,
-  MediumText,
-} from '../Text/Text';
-
+import {TSCaptionText, TSParagrapghText} from '../Text/Text';
 import {useTheme} from 'styled-components';
 import {Modal, View} from 'react-native';
 import {centeredViewStyle, modalViewStyle} from './modalStyles';
@@ -15,6 +8,7 @@ import {mdFontSize} from '../shared';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RegularButton} from '../Buttons/buttons';
 import twrnc from 'twrnc';
+
 const lightRed = twrnc.color('bg-red-400');
 const darkRed = twrnc.color('bg-red-900');
 
@@ -51,15 +45,15 @@ const DeleteActionCancelModal: FunctionComponent<{
             backgroundColor: theme.palette.darkGray,
           }}>
           <View style={{marginBottom: 8}}>
-            <SmallText>In order to delete, type</SmallText>
+            <TSCaptionText>In order to delete, type</TSCaptionText>
           </View>
           <View style={{marginBottom: 8}}>
-            <RegularText textStyles={{color: theme.palette.tertiary.main}}>
+            <TSParagrapghText textStyles={{color: theme.palette.tertiary.main}}>
               {props.confirmName}
-            </RegularText>
+            </TSParagrapghText>
           </View>
           <View style={{marginBottom: 8}}>
-            <SmallText>and press Delete</SmallText>
+            <TSCaptionText>and press Delete</TSCaptionText>
           </View>
           <View
             style={{

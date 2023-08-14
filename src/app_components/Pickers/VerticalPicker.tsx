@@ -10,7 +10,7 @@ import Animated, {
   runOnJS,
 } from 'react-native-reanimated';
 
-import {SmallText} from '../Text/Text';
+import {SmallText, TSCaptionText} from '../Text/Text';
 
 {
   /* https://www.youtube.com/watch?v=PVSjPswRn0U&ab_channel=WilliamCandillon */

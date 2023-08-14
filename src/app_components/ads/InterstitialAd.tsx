@@ -10,6 +10,7 @@ import React, {FunctionComponent, useEffect, useState} from 'react';
 import {UserProps} from '../../app_pages/types';
 import {useTheme} from 'styled-components';
 import {RegularButton} from '../Buttons/buttons';
+import {View} from 'react-native';
 
 const interstitial = InterstitialAd.createForAdRequest(TestIds.INTERSTITIAL, {
   requestNonPersonalizedAdsOnly: true,
@@ -17,8 +18,10 @@ const interstitial = InterstitialAd.createForAdRequest(TestIds.INTERSTITIAL, {
 });
 
 const InterstitialAdMembership: FunctionComponent<{
-  onClose(): void;
+  onClose?(): void;
   text: string;
+  testID?: string;
+  show?: boolean;
 }> = props => {
   const theme = useTheme();
   const {
@@ -43,7 +46,7 @@ const InterstitialAdMembership: FunctionComponent<{
     const unsubscribeClosed = interstitial.addAdEventListener(
       AdEventType.CLOSED,
       () => {
-        props.onClose();
+        if (props.onClose) props.onClose();
         setLoaded(false);
       },
     );
@@ -58,20 +61,25 @@ const InterstitialAdMembership: FunctionComponent<{
     };
   }, [loaded]);
 
+  const hack = () => {
+    interstitial.show();
+    return true;
+  };
+
   return (
-    <>
-      <RegularButton
-        onPress={() => {
-          if (new Date(userData.sub_end_date) < new Date()) {
-            interstitial.show();
-          } else {
-            props.onClose();
-          }
-        }}
-        btnStyles={{backgroundColor: theme.palette.darkGray}}
-        text={props.text}
-      />
-    </>
+    <View>{props.show && hack() ? <></> : <></>}</View>
+    // <RegularButton
+    //   testID={props.testID}
+    //   onPress={() => {
+    //     if (new Date(userData.sub_end_date) < new Date()) {
+    //       interstitial.show();
+    //     } else if (props.onClose) {
+    //       props.onClose();
+    //     }
+    //   }}
+    //   btnStyles={{backgroundColor: theme.palette.darkGray}}
+    //   text={props.text}
+    // />
   );
 };
 

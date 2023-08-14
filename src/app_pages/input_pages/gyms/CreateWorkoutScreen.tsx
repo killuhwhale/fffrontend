@@ -11,7 +11,12 @@ import {useTheme} from 'styled-components';
 import styled from 'styled-components/native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import {SmallText, RegularText} from '../../../app_components/Text/Text';
+import {
+  SmallText,
+  TSCaptionText,
+  TSListTitleText,
+  TSParagrapghText,
+} from '../../../app_components/Text/Text';
 import {
   Container,
   SCREEN_HEIGHT,
@@ -113,7 +118,6 @@ const RepSheme: FunctionComponent<{
           borderRadius: 8,
           paddingHorizontal: 8,
         }}
-        fontSize={mdFontSize}
         leading={
           <Icon
             name="person"
@@ -155,7 +159,6 @@ const RoundSheme: FunctionComponent<{
           borderRadius: 8,
           paddingHorizontal: 8,
         }}
-        fontSize={mdFontSize}
         leading={
           <Icon
             name="person"
@@ -187,7 +190,6 @@ const CreativeScheme: FunctionComponent<{
           borderRadius: 8,
           paddingHorizontal: 8,
         }}
-        fontSize={mdFontSize}
         leading={
           <Icon
             name="person"
@@ -220,7 +222,6 @@ const TimeScoreScheme: FunctionComponent<{
           borderRadius: 8,
           paddingHorizontal: 8,
         }}
-        fontSize={mdFontSize}
         leading={
           <Icon
             name="person"
@@ -253,7 +254,6 @@ const TimeLimitScheme: FunctionComponent<{
           borderRadius: 8,
           paddingHorizontal: 8,
         }}
-        fontSize={mdFontSize}
         leading={
           <Icon
             name="person"
@@ -296,7 +296,7 @@ const SchemeField: FunctionComponent<{
         <></>
       ) : WORKOUT_TYPES[schemeType] == REPS_W ? (
         <>
-          <SmallText>Rep Scheme</SmallText>
+          <TSCaptionText>Rep Scheme</TSCaptionText>
           <RepSheme
             onSchemeRoundChange={t => setSchemeRounds(numFilterWithSpaces(t))}
             schemeRounds={schemeRounds}
@@ -304,7 +304,7 @@ const SchemeField: FunctionComponent<{
         </>
       ) : WORKOUT_TYPES[schemeType] == ROUNDS_W ? (
         <>
-          <SmallText>Number of Rounds</SmallText>
+          <TSCaptionText>Number of Rounds</TSCaptionText>
           <RoundSheme
             onSchemeRoundChange={t => {
               // Reset
@@ -319,7 +319,7 @@ const SchemeField: FunctionComponent<{
         </>
       ) : WORKOUT_TYPES[schemeType] == CREATIVE_W ? (
         <>
-          <SmallText>Duration of workout</SmallText>
+          <TSListTitleText>Duration of workout</TSListTitleText>
           <CreativeScheme
             onSchemeInstructionChange={t => setInstruction(t)}
             instruction={instruction ?? ''}
@@ -329,7 +329,7 @@ const SchemeField: FunctionComponent<{
         <></>
       ) : WORKOUT_TYPES[schemeType] == TIMELIMIT_W ? (
         <>
-          <SmallText>Workout Time Limit</SmallText>
+          <TSCaptionText>Workout Time Limit</TSCaptionText>
           <TimeLimitScheme
             onSchemeRoundChange={t => setSchemeRounds(numFilter(t))}
             schemeRounds={schemeRounds}
@@ -657,86 +657,84 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
 
   return (
     <PageContainer>
-      <View style={{flex: 1}}>
-        <View>
-          <SmallText>Create Workout</SmallText>
-        </View>
-        <View>
-          <RegularText>{workoutGroupTitle}</RegularText>
-        </View>
+      <View style={{flex: 1, justifyContent: 'center', width: '100%'}}>
+        <TSParagrapghText textStyles={{textAlign: 'center'}}>
+          Create Workout
+        </TSParagrapghText>
+        <TSCaptionText textStyles={{textAlign: 'center'}}>
+          {workoutGroupTitle}
+        </TSCaptionText>
       </View>
+
+      {createWorkoutError.length ? (
+        <TSCaptionText>{createWorkoutError}</TSCaptionText>
+      ) : (
+        <></>
+      )}
 
       <View
         style={{
-          height: '100%',
+          flex:
+            [REPS_W, ROUNDS_W, CREATIVE_W].indexOf(WORKOUT_TYPES[schemeType]) >=
+            0
+              ? 3
+              : 2,
+          justifyContent: 'center',
           width: '100%',
-          flex: 15,
-          // justifyContent: 'space-between',
         }}>
-        {createWorkoutError.length ? (
-          <SmallText>{createWorkoutError}</SmallText>
-        ) : (
-          <></>
-        )}
-
-        <View style={{flex: 2}}>
-          <View style={{height: 35, marginBottom: 8}}>
-            <Input
-              onChangeText={t => {
-                setTitle(t);
-                setCreateWorkoutError('');
-                setIsCreating(false);
-              }}
-              value={title}
-              label=""
-              testID={TestIDs.CreateWorkoutTitleField.name()}
-              placeholder="Title"
-              fontSize={mdFontSize}
-              inputStyles={{
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              containerStyle={{
-                width: '100%',
-                backgroundColor: theme.palette.darkGray,
-                borderRadius: 8,
-                paddingHorizontal: 8,
-              }}
-              leading={
-                <Icon
-                  name="person"
-                  color={theme.palette.text}
-                  style={{fontSize: mdFontSize}}
-                />
-              }
-            />
-          </View>
-
-          <View style={{height: 35}}>
-            <Input
-              label=""
-              placeholder="Description"
-              testID={TestIDs.CreateWorkoutDescField.name()}
-              value={desc}
-              fontSize={mdFontSize}
-              onChangeText={d => setDesc(d)}
-              containerStyle={{
-                width: '100%',
-                backgroundColor: theme.palette.darkGray,
-                borderRadius: 8,
-                paddingHorizontal: 8,
-              }}
-              leading={
-                <Icon
-                  name="person"
-                  color={theme.palette.text}
-                  style={{fontSize: mdFontSize}}
-                />
-              }
-            />
-          </View>
+        <View style={{height: 35, marginBottom: 8}}>
+          <Input
+            onChangeText={t => {
+              setTitle(t);
+              setCreateWorkoutError('');
+              setIsCreating(false);
+            }}
+            value={title}
+            label=""
+            testID={TestIDs.CreateWorkoutTitleField.name()}
+            placeholder="Title"
+            inputStyles={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            containerStyle={{
+              width: '100%',
+              backgroundColor: theme.palette.darkGray,
+              borderRadius: 8,
+              paddingHorizontal: 8,
+            }}
+            leading={
+              <Icon
+                name="person"
+                color={theme.palette.text}
+                style={{fontSize: mdFontSize}}
+              />
+            }
+          />
         </View>
 
+        <View style={{height: 35}}>
+          <Input
+            label=""
+            placeholder="Description"
+            testID={TestIDs.CreateWorkoutDescField.name()}
+            value={desc}
+            onChangeText={d => setDesc(d)}
+            containerStyle={{
+              width: '100%',
+              backgroundColor: theme.palette.darkGray,
+              borderRadius: 8,
+              paddingHorizontal: 8,
+            }}
+            leading={
+              <Icon
+                name="person"
+                color={theme.palette.text}
+                style={{fontSize: mdFontSize}}
+              />
+            }
+          />
+        </View>
         <SchemeField
           schemeType={schemeType}
           schemeRounds={schemeRounds}
@@ -746,12 +744,27 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
           setSchemeRoundsError={setSchemeRoundsError}
           instruction={instruction}
         />
+      </View>
 
-        <View style={{flex: 6}}>
-          <AddItem onAddItem={addWorkoutItem} schemeType={schemeType} />
-        </View>
+      <View
+        style={{
+          flex: 4,
+          width: '100%',
+          justifyContent: 'center',
+        }}>
+        <AddItem onAddItem={addWorkoutItem} schemeType={schemeType} />
+      </View>
 
-        <View style={{flex: 4}}>
+      <View
+        style={{
+          flex: 6,
+          justifyContent: 'flex-start',
+          alignContent: 'flex-start',
+          alignItems: 'flex-start',
+          height: '100%',
+          width: '100%',
+        }}>
+        <View style={{height: '100%', width: '100%', marginTop: 8}}>
           {schemeType <= 2 ? (
             <CreateWorkoutItemList
               items={items}
@@ -774,18 +787,18 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
             />
           )}
         </View>
-        <View style={{flex: 1}}>
-          {!isCreating ? (
-            <RegularButton
-              onPress={_createWorkoutWithItems.bind(this)}
-              testID={TestIDs.CreateWorkoutCreateBtn.name()}
-              btnStyles={{backgroundColor: theme.palette.darkGray}}
-              text="Create"
-            />
-          ) : (
-            <ActivityIndicator size="small" color={theme.palette.text} />
-          )}
-        </View>
+      </View>
+      <View style={{flex: 1, width: '100%', justifyContent: 'center'}}>
+        {!isCreating ? (
+          <RegularButton
+            onPress={_createWorkoutWithItems.bind(this)}
+            testID={TestIDs.CreateWorkoutCreateBtn.name()}
+            btnStyles={{backgroundColor: theme.palette.darkGray}}
+            text="Create"
+          />
+        ) : (
+          <ActivityIndicator size="small" color={theme.palette.text} />
+        )}
       </View>
 
       <AlertModal

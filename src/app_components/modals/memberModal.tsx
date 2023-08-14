@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useEffect, useRef, useState} from 'react';
-import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
+import {TSParagrapghText} from '../Text/Text';
 import {useTheme} from 'styled-components';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Modal, ScrollView, View} from 'react-native';
@@ -151,7 +151,7 @@ const ManageMembersModal: FunctionComponent<{
               marginBottom: 12,
               flex: 1,
             }}>
-            <RegularText>Manage Members</RegularText>
+            <TSParagrapghText>Manage Members</TSParagrapghText>
           </View>
 
           <View style={{flex: 3, width: '100%'}}>
@@ -171,7 +171,6 @@ const ManageMembersModal: FunctionComponent<{
                       borderRadius: 8,
                       paddingHorizontal: 8,
                     }}
-                    fontSize={mdFontSize}
                     leading={
                       <Icon
                         name="search"
@@ -267,9 +266,9 @@ const ManageMembersModal: FunctionComponent<{
           </View>
 
           <View style={{flex: 1, width: '100%'}}>
-            <RegularText textStyles={{alignSelf: 'flex-start'}}>
+            <TSParagrapghText textStyles={{alignSelf: 'flex-start'}}>
               Members
-            </RegularText>
+            </TSParagrapghText>
           </View>
 
           {!membersLoading ? (
@@ -299,7 +298,7 @@ const ManageMembersModal: FunctionComponent<{
                             alignItems: 'flex-start',
                             paddingLeft: 16,
                           }}>
-                          <RegularText>{member.username}</RegularText>
+                          <TSParagrapghText>{member.username}</TSParagrapghText>
                         </View>
                         <View style={{flex: 1}}>
                           <Icon

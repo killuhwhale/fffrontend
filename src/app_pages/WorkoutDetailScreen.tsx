@@ -8,7 +8,12 @@ import {
   SCREEN_HEIGHT,
   WORKOUT_TYPES,
 } from '../app_components/shared';
-import {SmallText, RegularText, LargeText} from '../app_components/Text/Text';
+import {
+  TSCaptionText,
+  TSParagrapghText,
+  LargeText,
+  TSTitleText,
+} from '../app_components/Text/Text';
 import {useTheme} from 'styled-components';
 import {WorkoutItemPreviewHorizontalList} from '../app_components/Cards/cardList';
 
@@ -100,17 +105,19 @@ const WorkoutDetailScreen: FunctionComponent<Props> = ({
       <BannerAddMembership />
       <View style={{width: '100%', flex: 1}}>
         <View style={{flex: 1}}>
-          <LargeText>{title}</LargeText>
+          <TSTitleText>{title}</TSTitleText>
 
-          <SmallText textStyles={{padding: 6}}>{desc}</SmallText>
+          <TSCaptionText textStyles={{padding: 6}}>{desc}</TSCaptionText>
           {instruction ? (
-            <RegularText textStyles={{padding: 6}}>{instruction}</RegularText>
+            <TSParagrapghText textStyles={{padding: 6}}>
+              {instruction}
+            </TSParagrapghText>
           ) : (
             <></>
           )}
-          <SmallText textStyles={{padding: 6}}>
+          <TSCaptionText textStyles={{padding: 6}}>
             {formatLongDate(new Date(date))}
-          </SmallText>
+          </TSCaptionText>
         </View>
 
         <View style={{flex: 3}}>
@@ -119,9 +126,9 @@ const WorkoutDetailScreen: FunctionComponent<Props> = ({
 
         <View style={{flex: 2, justifyContent: 'center'}}>
           <View style={{marginTop: 8, padding: 6}}>
-            <RegularText>
+            <TSParagrapghText>
               {WORKOUT_TYPES[scheme_type]} {displayJList(scheme_rounds)}
-            </RegularText>
+            </TSParagrapghText>
           </View>
 
           <WorkoutItemPreviewHorizontalList

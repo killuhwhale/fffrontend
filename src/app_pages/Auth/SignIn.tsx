@@ -2,7 +2,7 @@ import React, {FunctionComponent} from 'react';
 import {View} from 'react-native';
 import {RegularButton} from '../../app_components/Buttons/buttons';
 import {TestIDs} from '../../utils/constants';
-import {RegularText} from '../../app_components/Text/Text';
+import {TSParagrapghText} from '../../app_components/Text/Text';
 import Input, {AutoCaptilizeEnum} from '../../app_components/Input/input';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useTheme} from 'styled-components';
@@ -34,10 +34,10 @@ const SignInComp: FunctionComponent<SignInProps> = ({
   return (
     <View style={{flex: 1, width: '100%'}} testID="signInScreen">
       <View style={{justifyContent: 'space-evenly', height: '35%'}}>
-        <RegularText textStyles={{textAlign: 'center', marginBottom: 16}}>
+        <TSParagrapghText textStyles={{textAlign: 'center', marginBottom: 16}}>
           Sign In
-        </RegularText>
-        <View style={{height: 55, marginBottom: 16}}>
+        </TSParagrapghText>
+        <View style={{height: 35, marginBottom: 16}}>
           <Input
             testID={TestIDs.SignInEmailField.name()}
             onChangeText={onEmailChange}
@@ -52,13 +52,12 @@ const SignInComp: FunctionComponent<SignInProps> = ({
               borderTopEndRadius: 8,
               height: '100%',
             }}
-            fontSize={16}
             value={email}
             leading={<Icon name="person" style={{color: theme.palette.text}} />}
             helperText={emailHelperText}
           />
         </View>
-        <View style={{height: 55, marginBottom: 16}}>
+        <View style={{height: 35, marginBottom: 16}}>
           <Input
             testID={TestIDs.SignInPasswordField.name()}
             onChangeText={onPasswordChange.bind(this)}
@@ -66,10 +65,9 @@ const SignInComp: FunctionComponent<SignInProps> = ({
             placeholder="Password"
             containerStyle={{
               backgroundColor: theme.palette.gray,
-              borderTopStartRadius: 8,
-              borderTopEndRadius: 8,
+              borderBottomStartRadius: 8,
+              borderBottomEndRadius: 8,
             }}
-            fontSize={16}
             value={password}
             secureTextEntry={hidePassword}
             leading={

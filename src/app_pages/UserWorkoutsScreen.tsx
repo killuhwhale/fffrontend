@@ -9,7 +9,11 @@ import {
   useGetProfileViewQuery,
   useGetProfileWorkoutGroupsQuery,
 } from '../redux/api/apiSlice';
-import {LargeText, RegularText, SmallText} from '../app_components/Text/Text';
+import {
+  LargeText,
+  TSParagrapghText,
+  TSCaptionText,
+} from '../app_components/Text/Text';
 import {RegularButton} from '../app_components/Buttons/buttons';
 import * as RootNavigation from '../navigators/RootNavigation';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -91,9 +95,9 @@ const UserWorkoutsScreen: FunctionComponent = props => {
         </View>
       ) : (
         <View style={{height: '100%', width: '100%', justifyContent: 'center'}}>
-          <SmallText textStyles={{textAlign: 'center', marginBottom: 22}}>
+          <TSCaptionText textStyles={{textAlign: 'center', marginBottom: 22}}>
             No workouts!
-          </SmallText>
+          </TSCaptionText>
           {data && !isLoading ? (
             <View style={{width: '50%', alignSelf: 'center'}}>
               <RegularButton
@@ -123,7 +127,7 @@ const UserWorkoutsScreen: FunctionComponent = props => {
                     color={theme.palette.text}
                     style={{fontSize: 32, marginRight: 16}}
                   />
-                  <RegularText>New workout</RegularText>
+                  <TSParagrapghText>New workout</TSParagrapghText>
                 </View>
               </RegularButton>
             </View>

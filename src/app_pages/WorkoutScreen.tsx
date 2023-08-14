@@ -10,7 +10,12 @@ import {
   SCREEN_HEIGHT,
   SCREEN_WIDTH,
 } from '../app_components/shared';
-import {SmallText, RegularText, LargeText} from '../app_components/Text/Text';
+import {
+  TSCaptionText,
+  TSParagrapghText,
+  LargeText,
+  TSTitleText,
+} from '../app_components/Text/Text';
 
 import {useTheme} from 'styled-components';
 import {WorkoutCardFullList} from '../app_components/Cards/cardList';
@@ -80,7 +85,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
   const [showFinishDualWorkoutItems, setShowFinishDualWorkoutItems] =
     useState(false);
 
-    console.log("showFinishDualWorkoutItems: ", showFinishDualWorkoutItems)
+  console.log('showFinishDualWorkoutItems: ', showFinishDualWorkoutItems);
   const {
     id,
     title,
@@ -339,37 +344,37 @@ const WorkoutScreen: FunctionComponent<Props> = ({
     navigation.goBack();
   };
 
-
-  
-
-
   const promptUpdateDualItems = () => {
-    const shouldShow = hasUnfinsihedDualItems(workouts) && owned_by_class === false
+    const shouldShow =
+      hasUnfinsihedDualItems(workouts) && owned_by_class === false;
     if (shouldShow) {
       console.log(
         'User needs to submit their results if this is not owned by a class',
       );
-      console.log("Workouts length: ", workoutGroup.workouts?.length)
+      console.log('Workouts length: ', workoutGroup.workouts?.length);
       // Show a modal to allow the user to enter the information for the workouts
-      setShowFinishDualWorkoutItems(true); 
+      setShowFinishDualWorkoutItems(true);
     }
-    return shouldShow
-  }
+    return shouldShow;
+  };
 
   const _finishGroupWorkout = async () => {
-    console.log('Need to check......: ', hasUnfinsihedDualItems(workouts), workouts);
+    console.log(
+      'Need to check......: ',
+      hasUnfinsihedDualItems(workouts),
+      workouts,
+    );
 
-  // Allow user to submit finish to WorkoutGroup for class.
-  const data = new FormData();
-  data.append('group', oGData.id);
-  try {
-    // const res = await finishWorkoutGroup(data).unwrap();
-    // console.log('res finsih', res);
-    setShowFinishWorkoutGroupModal(false);
-  } catch (err) {
-    console.log('Error finishing workout', err);
-  }
-
+    // Allow user to submit finish to WorkoutGroup for class.
+    const data = new FormData();
+    data.append('group', oGData.id);
+    try {
+      // const res = await finishWorkoutGroup(data).unwrap();
+      // console.log('res finsih', res);
+      setShowFinishWorkoutGroupModal(false);
+    } catch (err) {
+      console.log('Error finishing workout', err);
+    }
   };
 
   const navigateToCompletedWorkoutGroupScreen = () => {
@@ -433,11 +438,11 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                       style={{fontSize: 24}}
                     />
 
-                    <SmallText textStyles={{textAlign: 'center'}}>
+                    <TSCaptionText textStyles={{textAlign: 'center'}}>
                       {showingOGWorkoutGroup && !oGIsLoading
                         ? 'og'
                         : 'completed'}
-                    </SmallText>
+                    </TSCaptionText>
                   </View>
                 </TouchableHighlight>
               ) : (
@@ -445,10 +450,10 @@ const WorkoutScreen: FunctionComponent<Props> = ({
               )}
             </View>
             <View style={{flex: 3}}>
-              <RegularText
+              <TSTitleText
                 textStyles={{textAlign: 'center', marginVertical: 8}}>
                 {workoutGroup.title}
-              </RegularText>
+              </TSTitleText>
             </View>
 
             <View
@@ -506,7 +511,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
           </Row>
         ) : (
           <View style={{margin: 69}}>
-            <SmallText>Add some pictures next time!</SmallText>
+            <TSCaptionText>Add some pictures next time!</TSCaptionText>
           </View>
         )} */}
 
@@ -515,9 +520,9 @@ const WorkoutScreen: FunctionComponent<Props> = ({
             width: '100%',
             alignItems: 'flex-end',
           }}>
-          <SmallText>
+          <TSCaptionText>
             {formatLongDate(new Date(workoutGroup.for_date))}
-          </SmallText>
+          </TSCaptionText>
         </View>
 
         <View
@@ -527,7 +532,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
             padding: 6,
             marginBottom: 12,
           }}>
-          <SmallText>{workoutGroup.caption}</SmallText>
+          <TSCaptionText>{workoutGroup.caption}</TSCaptionText>
         </View>
 
         {params.editable ? (
@@ -650,13 +655,13 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                         }}
                         thumbColor={editable ? 'red' : theme.palette.gray}
                       />
-                      <SmallText
+                      <TSCaptionText
                         textStyles={{color: editable ? 'red' : 'white'}}>
                         Delete mode
                         {editable
                           ? ': hold title of workout below to remove.'
                           : ''}
-                      </SmallText>
+                      </TSCaptionText>
                     </View>
                   </TouchableWithoutFeedback>
                 ) : (
@@ -674,7 +679,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
         {workouts.length ? (
           <>
             <Row style={{width: '100%'}}>
-              <LargeText>Stats</LargeText>
+              <TSTitleText>Stats</TSTitleText>
             </Row>
 
             <View
@@ -693,13 +698,13 @@ const WorkoutScreen: FunctionComponent<Props> = ({
             <Row style={{width: '100%', borderRadius: 8}} />
 
             <Row style={{width: '100%'}}>
-              <LargeText>Workouts</LargeText>
+              <TSTitleText>Workouts</TSTitleText>
             </Row>
 
             <Row style={{width: '100%'}}>
               {(showingOGWorkoutGroup && oGIsLoading) ||
               (!showingOGWorkoutGroup && completedIsLoading) ? (
-                <SmallText>Loading....</SmallText>
+                <TSCaptionText>Loading....</TSCaptionText>
               ) : (showingOGWorkoutGroup && oGIsSuccess) ||
                 (!showingOGWorkoutGroup && completedIsSuccess) ? (
                 <WorkoutCardFullList
@@ -709,11 +714,11 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                 />
               ) : (showingOGWorkoutGroup && oGIsError) ||
                 (!showingOGWorkoutGroup && completedIsError) ? (
-                <SmallText>
+                <TSCaptionText>
                   Error.... {oGError.toString() | completedError.toString()}
-                </SmallText>
+                </TSCaptionText>
               ) : (
-                <SmallText>No Data</SmallText>
+                <TSCaptionText>No Data</TSCaptionText>
               )}
             </Row>
           </>
@@ -737,10 +742,10 @@ const WorkoutScreen: FunctionComponent<Props> = ({
           closeText="Close"
           modalText={`Finish ${title}? \n \t cannot be undone`}
           onAction={() => {
-            setShowFinishWorkoutGroupModal(false)
-          if(!promptUpdateDualItems()){
-            _finishGroupWorkout()
-          }
+            setShowFinishWorkoutGroupModal(false);
+            if (!promptUpdateDualItems()) {
+              _finishGroupWorkout();
+            }
           }}
           modalVisible={showFinishWorkoutGroupModal}
           onRequestClose={() => setShowFinishWorkoutGroupModal(false)}
@@ -773,7 +778,9 @@ const WorkoutScreen: FunctionComponent<Props> = ({
           closeText="Close"
           modalVisible={showFinishDualWorkoutItems}
           onRequestClose={() => setShowFinishDualWorkoutItems(false)}
-          setShowFinishWorkoutGroupModal={() => setShowFinishWorkoutGroupModal(false)}
+          setShowFinishWorkoutGroupModal={() =>
+            setShowFinishWorkoutGroupModal(false)
+          }
         />
       ) : (
         <></>

@@ -24,7 +24,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import RNPickerSelect from 'react-native-picker-select';
 
-import {SmallText} from '../../../../app_components/Text/Text';
+import {TSCaptionText} from '../../../../app_components/Text/Text';
 import {
   WorkoutDualItemProps,
   WorkoutItemProps,
@@ -112,7 +112,7 @@ const EditWorkoutDualItem: FunctionComponent<{
             justifyContent: 'space-between',
             width: '90%',
           }}>
-          <SmallText textStyles={{textAlign: 'center'}}>Sets</SmallText>
+          <TSCaptionText textStyles={{textAlign: 'center'}}>Sets</TSCaptionText>
           <View
             style={{
               marginHorizontal: 8,
@@ -169,7 +169,7 @@ const EditWorkoutDualItem: FunctionComponent<{
             justifyContent: 'space-between',
             width: '90%',
           }}>
-          <SmallText textStyles={{textAlign: 'center'}}>Reps</SmallText>
+          <TSCaptionText textStyles={{textAlign: 'center'}}>Reps</TSCaptionText>
           <View
             style={{
               marginHorizontal: 8,
@@ -233,9 +233,9 @@ const EditWorkoutDualItem: FunctionComponent<{
             justifyContent: 'space-between',
             width: '90%',
           }}>
-          <SmallText textStyles={{textAlign: 'center'}}>
+          <TSCaptionText textStyles={{textAlign: 'center'}}>
             Duration ({DURATION_UNITS[oldDurationUnit]})
-          </SmallText>
+          </TSCaptionText>
           <View
             style={{
               marginHorizontal: 8,
@@ -281,7 +281,6 @@ const EditWorkoutDualItem: FunctionComponent<{
                   }
                   setNewDuration(val);
                 }}
-                fontSize={mdFontSize}
                 value={newDuration}
                 label="Duration"
                 isError={durationError.length > 0}
@@ -345,9 +344,9 @@ const EditWorkoutDualItem: FunctionComponent<{
             justifyContent: 'space-between',
             width: '90%',
           }}>
-          <SmallText textStyles={{textAlign: 'center'}}>
+          <TSCaptionText textStyles={{textAlign: 'center'}}>
             Distance ({DISTANCE_UNITS[oldDistanceUnit]})
-          </SmallText>
+          </TSCaptionText>
           <View
             style={{
               marginHorizontal: 8,
@@ -357,7 +356,6 @@ const EditWorkoutDualItem: FunctionComponent<{
             }}>
             <View style={{flex: 3}}>
               <Input
-                fontSize={mdFontSize}
                 inputStyles={{textAlign: 'center'}}
                 containerStyle={[
                   numberInputStyle.containerStyle,
@@ -459,7 +457,9 @@ const EditWorkoutDualItem: FunctionComponent<{
           justifyContent: 'space-between',
           width: '90%',
         }}>
-        <SmallText textStyles={{textAlign: 'center'}}>Weights</SmallText>
+        <TSCaptionText textStyles={{textAlign: 'center'}}>
+          Weights
+        </TSCaptionText>
         <View
           style={{
             marginHorizontal: 8,
@@ -523,9 +523,9 @@ const EditWorkoutDualItem: FunctionComponent<{
           justifyContent: 'space-between',
           width: '90%',
         }}>
-        <SmallText textStyles={{textAlign: 'center'}}>
+        <TSCaptionText textStyles={{textAlign: 'center'}}>
           Weight Unit ({oldWeightUnit})
-        </SmallText>
+        </TSCaptionText>
         <View
           style={{
             marginHorizontal: 8,

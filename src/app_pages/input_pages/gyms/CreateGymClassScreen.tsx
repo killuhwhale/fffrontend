@@ -1,26 +1,16 @@
 import React, {
   FunctionComponent,
   useState,
-  useContext,
   useCallback,
   useRef,
+  useEffect,
 } from 'react';
-import {
-  Image,
-  Modal,
-  Platform,
-  StyleSheet,
-  View,
-  Switch,
-  ActivityIndicator,
-} from 'react-native';
+import {Image, View, Switch, ActivityIndicator} from 'react-native';
 import styled from 'styled-components/native';
 import {Container, mdFontSize} from '../../../app_components/shared';
 import {
-  SmallText,
-  RegularText,
-  LargeText,
-  TitleText,
+  TSCaptionText,
+  TSParagrapghText,
 } from '../../../app_components/Text/Text';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {launchImageLibrary, Asset} from 'react-native-image-picker';
@@ -122,10 +112,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
   const [isCreating, setIsCreating] = useState(false);
 
   const [showAlert, setShowAlert] = useState(false);
-  const f_createGymClass = () => {
-    console.log('Creatting gym class: ', mainFile, logoFile, title, desc, gym);
-  }
-  
+
   const _createGymClass = async () => {
     console.log('Creatting gym class: ', mainFile, logoFile, title, desc, gym);
 
@@ -167,8 +154,17 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
       console.log('Error creating gym class', err);
     }
     setIsCreating(false);
-    // TODO possibly dispatch to refresh data
   };
+
+  const [showAd, setShowAd] = useState(false);
+  const [readyToCreate, setReadyToCreate] = useState(false);
+  useEffect(() => {
+    if (readyToCreate && !showAd) {
+      _createGymClass()
+        .then(res => setReadyToCreate(false))
+        .catch(err => console.log('Error creating GymClass: ', err));
+    }
+  }, [readyToCreate]);
 
   return (
     <PageContainer>
@@ -177,12 +173,12 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
           <BannerAddMembership />
         </View>
         <View style={{flex: 1}}>
-          <RegularText textStyles={{marginBottom: 8}}>
+          <TSParagrapghText textStyles={{marginBottom: 8}}>
             Create Gym Class
-          </RegularText>
+          </TSParagrapghText>
         </View>
         <View style={{flex: 3}}>
-          <View style={{height: 55, marginBottom: 8}}>
+          <View style={{height: 35, marginBottom: 8}}>
             <Input
               onChangeText={t => setTitle(t)}
               testID={TestIDs.GymClassTitleField.name()}
@@ -193,7 +189,6 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
                 borderRadius: 8,
                 paddingHorizontal: 8,
               }}
-              fontSize={mdFontSize}
               leading={
                 <Icon
                   name="checkmark-circle-outline"
@@ -205,7 +200,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
               placeholder="Title"
             />
           </View>
-          <View style={{height: 50}}>
+          <View style={{height: 35}}>
             <Input
               onChangeText={t => setDesc(t)}
               value={desc}
@@ -216,7 +211,6 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
                 paddingHorizontal: 8,
               }}
               testID={TestIDs.GymClassDescField.name()}
-              fontSize={mdFontSize}
               leading={
                 <Icon
                   name="checkmark-circle-outline"
@@ -241,9 +235,9 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
             />
           </View>
           <View style={{width: '100%'}}>
-            <SmallText textStyles={{textAlign: 'right'}}>
+            <TSCaptionText textStyles={{textAlign: 'right'}}>
               Private class
-            </SmallText>
+            </TSCaptionText>
           </View>
         </View>
         <View style={{flex: 2}}>
@@ -255,9 +249,10 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
                 margin: 6,
                 padding: 6,
               }}>
-              <SmallText textStyles={{textAlign: 'center', marginBottom: 12}}>
+              <TSCaptionText
+                textStyles={{textAlign: 'center', marginBottom: 12}}>
                 Gym
-              </SmallText>
+              </TSCaptionText>
               <RNPickerSelect
                 ref={pickerRef}
                 onValueChange={(itemValue, itemIndex) => setGym(itemValue)}
@@ -279,16 +274,25 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
                     borderLeftWidth: 1,
                     borderRightColor: theme.palette.text,
                     borderRightWidth: 1,
+                    borderRadius: 8,
                   },
                   inputAndroid: {
-                    color: theme.palette.text,
+                    color: theme.palette.primary.main,
+                    backgroundColor: theme.palette.lightGray,
+
+                    borderRadius: 8,
+                    width: '100%',
+                    textAlign: 'center',
                   },
                   inputIOSContainer: {
                     alignItems: 'center',
                   },
                   inputIOS: {
-                    color: theme.palette.text,
                     height: '100%',
+                    color: theme.palette.primary.main,
+                    backgroundColor: theme.palette.lightGray,
+                    width: '100%',
+                    textAlign: 'center',
                   },
                 }}
                 items={data.map((gym, i) => {
@@ -320,19 +324,24 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
             style={{width: '100%', height: 100, resizeMode: 'contain'}}
           />
           {!isCreating ? (
-            nodeEnv === 'test' ? (
+            <>
               <RegularButton
-                testID={TestIDs.GymClassCreateBtn.name()}
-                onPress={() => _createGymClass()}
+                onPress={() => {
+                  setShowAd(true);
+                }}
                 btnStyles={{backgroundColor: theme.palette.darkGray}}
                 text="Create"
               />
-            ) : (
               <InterstitialAdMembership
+                testID={TestIDs.GymClassCreateBtn.name()}
                 text="Create"
-                onClose={() => _createGymClass()}
+                onClose={() => {
+                  setShowAd(false); // return to prev state.
+                  setReadyToCreate(true); // Trigger useEffect
+                }}
+                show={showAd}
               />
-            )
+            </>
           ) : (
             <ActivityIndicator size="small" color={theme.palette.text} />
           )}

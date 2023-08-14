@@ -1,31 +1,18 @@
-import React, {FunctionComponent, useEffect, useState} from 'react';
+import React, {FunctionComponent, useState} from 'react';
 import styled from 'styled-components/native';
-import {
-  Container,
-  MEDIA_CLASSES,
-  SCREEN_HEIGHT,
-  SCREEN_WIDTH,
-  withSpaceURL,
-} from '../app_components/shared';
+import {Container, MEDIA_CLASSES, withSpaceURL} from '../app_components/shared';
 import {
   SmallText,
-  RegularText,
-  LargeText,
-  TitleText,
+  TSCaptionText,
+  TSParagrapghText,
+  TSTitleText,
 } from '../app_components/Text/Text';
 // import { withTheme } from 'styled-components'
 import {useTheme} from 'styled-components';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
-import {
-  Image,
-  ImageBackground,
-  Keyboard,
-  Pressable,
-  TouchableHighlight,
-  View,
-} from 'react-native';
+import {Image, TouchableHighlight, View} from 'react-native';
 import {
   useFavoriteGymMutation,
   useGetGymDataViewQuery,
@@ -142,12 +129,14 @@ const GymScreen: FunctionComponent<Props> = ({navigation, route: {params}}) => {
           width: '100%',
           flex: 1,
           alignItems: 'center',
+          marginTop: 8,
         }}>
         <Image
           style={{
-            height: 92,
-            width: 92,
+            resizeMode: 'center',
             borderRadius: 8,
+            height: '100%',
+            flex: 1,
           }}
           source={useDefault ? moc : {uri: mainURL}}
           onError={() => {
@@ -155,7 +144,7 @@ const GymScreen: FunctionComponent<Props> = ({navigation, route: {params}}) => {
           }}
         />
         <View style={{flex: 1, marginLeft: 16, alignItems: 'center'}}>
-          <RegularText>{title}</RegularText>
+          <TSTitleText>{title}</TSTitleText>
         </View>
 
         <View style={{flex: 1, alignItems: 'center'}}>
@@ -172,7 +161,7 @@ const GymScreen: FunctionComponent<Props> = ({navigation, route: {params}}) => {
           alignItems: 'center',
           marginVertical: 16,
         }}>
-        <SmallText>{desc}</SmallText>
+        <TSCaptionText>{desc}</TSCaptionText>
       </View>
       <View style={{flex: 8, paddingHorizontal: 12}}>
         <FilterGrid

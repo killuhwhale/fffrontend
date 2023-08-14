@@ -1,7 +1,7 @@
 import React, {FunctionComponent} from 'react';
 import styled from 'styled-components/native';
 import {useTheme} from 'styled-components';
-import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
+import {TSParagrapghText} from '../Text/Text';
 import {
   MEDIA_CLASSES,
   SCREEN_HEIGHT,
@@ -9,11 +9,10 @@ import {
   withSpaceURL,
 } from '../shared';
 import {GymClassCardProps} from './types';
-import darkBackground from './../../../assets/bgs/dark_bg.png';
-import mockLogo from './../../../assets/bgs/mock_logo.png';
 import {View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Props as GymScreenProps} from './../../app_pages/GymScreen';
+
 const CardBG = styled.ImageBackground`
   height: ${SCREEN_HEIGHT * 0.25}px;
   width: ${SCREEN_WIDTH * 0.92}px;
@@ -90,9 +89,10 @@ const GymClassCard: FunctionComponent<GymClassCardProps> = props => {
             <CardFooterBG>
               <CardRow style={{height: '100%'}}>
                 <View style={{flex: 3}}>
-                  <RegularText textStyles={{paddingLeft: 16, paddingTop: 8}}>
+                  <TSParagrapghText
+                    textStyles={{paddingLeft: 16, paddingTop: 8}}>
                     {props.title}: {props.id}
-                  </RegularText>
+                  </TSParagrapghText>
                 </View>
                 <LogoImage source={{uri: logoURL}} />
               </CardRow>
@@ -131,10 +131,10 @@ export const GymClassTextCard: FunctionComponent<{
         <TouchableView>
           <CardRow style={{height: '100%'}}>
             <View style={{flex: 3, height: '100%', justifyContent: 'center'}}>
-              <RegularText
+              <TSParagrapghText
                 textStyles={{paddingLeft: 16, textAlignVertical: 'center'}}>
                 {props.card.title}
-              </RegularText>
+              </TSParagrapghText>
             </View>
             <LogoImage source={{uri: logoURL}} />
           </CardRow>

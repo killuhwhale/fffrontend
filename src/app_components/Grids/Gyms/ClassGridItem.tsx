@@ -1,6 +1,6 @@
 import React, {FunctionComponent, useState} from 'react';
 import {useTheme} from 'styled-components';
-import {SmallText} from '../../Text/Text';
+import {TSCaptionText} from '../../Text/Text';
 import {MEDIA_CLASSES, withSpaceURL} from '../../shared';
 import {GymClassCardProps} from '../../Cards/types';
 
@@ -66,9 +66,9 @@ const ClassGridItem: FunctionComponent<{
               }
             />
             <View style={{flex: 1}}>
-              <SmallText textStyles={{textAlign: 'left', marginLeft: 4}}>
+              <TSCaptionText textStyles={{textAlign: 'left', marginLeft: 4}}>
                 {props.card.title}
-              </SmallText>
+              </TSCaptionText>
             </View>
           </View>
         </View>

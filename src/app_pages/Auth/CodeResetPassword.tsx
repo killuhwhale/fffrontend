@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RegularButton} from '../../app_components/Buttons/buttons';
 import Input, {AutoCaptilizeEnum} from '../../app_components/Input/input';
-import {RegularText, SmallText} from '../../app_components/Text/Text';
+import {TSParagrapghText, TSCaptionText} from '../../app_components/Text/Text';
 import {useTheme} from 'styled-components';
 
 interface CodeResetPasswordProps {
@@ -42,20 +42,18 @@ const CodeResetPasswordPage: FunctionComponent<CodeResetPasswordProps> = ({
   const theme = useTheme();
   return (
     <View style={{flex: 10}}>
-      <RegularText textStyles={{textAlign: 'center', marginBottom: 16}}>
-        Enter Code
-      </RegularText>
-      <SmallText textStyles={{textAlign: 'center', marginBottom: 16}}>
-        to
-      </SmallText>
-      <RegularText textStyles={{textAlign: 'center', marginBottom: 16}}>
+      <TSParagrapghText textStyles={{textAlign: 'center', marginBottom: 16}}>
+        Enter Code to
+      </TSParagrapghText>
+      <TSCaptionText textStyles={{textAlign: 'center', marginBottom: 16}}>
         Reset Password
-      </RegularText>
-      <RegularText textStyles={{textAlign: 'center', marginBottom: 16}}>
-        {resetPasswordError}
-      </RegularText>
+      </TSCaptionText>
 
-      <View style={{height: 45, marginBottom: 16}}>
+      <TSParagrapghText textStyles={{textAlign: 'center', marginBottom: 16}}>
+        {resetPasswordError}
+      </TSParagrapghText>
+
+      <View style={{height: 35, marginBottom: 16}}>
         <Input
           containerStyle={{
             backgroundColor: theme.palette.gray,
@@ -64,7 +62,6 @@ const CodeResetPasswordPage: FunctionComponent<CodeResetPasswordProps> = ({
           }}
           label=""
           placeholder="Email"
-          fontSize={16}
           isError={resetEmailError.length > 0}
           helperText={resetEmailError}
           autoCapitalize={AutoCaptilizeEnum.None}
@@ -80,7 +77,7 @@ const CodeResetPasswordPage: FunctionComponent<CodeResetPasswordProps> = ({
           value={resetEmail}
         />
       </View>
-      <View style={{height: 45, marginBottom: 16}}>
+      <View style={{height: 35, marginBottom: 16}}>
         <Input
           onChangeText={setResetCode}
           autoCapitalize={AutoCaptilizeEnum.None}
@@ -88,26 +85,21 @@ const CodeResetPasswordPage: FunctionComponent<CodeResetPasswordProps> = ({
           placeholder="Reset code"
           containerStyle={{
             backgroundColor: theme.palette.gray,
-            borderTopStartRadius: 8,
-            borderTopEndRadius: 8,
           }}
-          fontSize={16}
           value={resetCode}
           inputStyles={{paddingLeft: 24}}
         />
       </View>
 
-      <View style={{height: 45, marginBottom: 16}}>
+      <View style={{height: 35, marginBottom: 16}}>
         <Input
           containerStyle={{
             backgroundColor: theme.palette.gray,
-
-            borderTopStartRadius: 8,
-            borderTopEndRadius: 8,
+            borderBottomStartRadius: 8,
+            borderBottomEndRadius: 8,
           }}
           label=""
           placeholder="Password"
-          fontSize={16}
           value={resetPassword}
           onChangeText={setResetPassword}
           secureTextEntry={hideResetPassword}

@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RegularButton} from '../../app_components/Buttons/buttons';
 import Input, {AutoCaptilizeEnum} from '../../app_components/Input/input';
-import {RegularText, SmallText} from '../../app_components/Text/Text';
+import {TSParagrapghText, TSCaptionText} from '../../app_components/Text/Text';
 import {TestIDs} from '../../utils/constants';
 import {useTheme} from 'styled-components';
 
@@ -48,13 +48,13 @@ const RegisterComp: FunctionComponent<RegisterCompProps> = ({
           justifyContent: 'space-evenly',
           flex: 4,
         }}>
-        <RegularText textStyles={{textAlign: 'center', marginBottom: 16}}>
+        <TSParagrapghText textStyles={{textAlign: 'center', marginBottom: 16}}>
           Sign Up
-        </RegularText>
-        <SmallText textStyles={{textAlign: 'center', marginVertical: 8}}>
+        </TSParagrapghText>
+        <TSCaptionText textStyles={{textAlign: 'center', marginVertical: 8}}>
           {registerError}
-        </SmallText>
-        <View style={{height: 45, marginBottom: 24}}>
+        </TSCaptionText>
+        <View style={{height: 35, marginBottom: 24}}>
           <Input
             testID={TestIDs.AuthSignUpEmail.name()}
             keyboardType="email-address"
@@ -68,49 +68,37 @@ const RegisterComp: FunctionComponent<RegisterCompProps> = ({
               borderTopStartRadius: 8,
               borderTopEndRadius: 8,
             }}
-            fontSize={16}
             value={newEmail}
             leading={<Icon name="person" style={{color: theme.palette.text}} />}
             helperText={newEmailHelperText}
           />
         </View>
 
-        <View style={{height: 45, marginBottom: 24}}>
+        <View style={{height: 35, marginBottom: 24}}>
           <Input
             testID={TestIDs.AuthSignUpPassword.name()}
             containerStyle={{
               backgroundColor: theme.palette.gray,
               paddingLeft: 16,
-              borderTopStartRadius: 8,
-              borderTopEndRadius: 8,
             }}
             label=""
             placeholder="Password"
-            fontSize={16}
             value={newPassword}
             onChangeText={onNewPasswordChange.bind(this)}
             secureTextEntry={hideNewPassword}
-            trailing={
-              <Icon
-                name="eye"
-                style={{fontSize: 24, color: theme.palette.text}}
-                onPress={() => setHideNewPassword(!hideNewPassword)}
-              />
-            }
           />
         </View>
 
-        <View style={{height: 45}}>
+        <View style={{height: 35}}>
           <Input
             testID={TestIDs.AuthSignUpPasswordConfirm.name()}
             containerStyle={{
               backgroundColor: theme.palette.gray,
               paddingLeft: 16,
-              borderTopStartRadius: 8,
-              borderTopEndRadius: 8,
+              borderBottomStartRadius: 8,
+              borderBottomEndRadius: 8,
             }}
             placeholder="Password Confirm"
-            fontSize={16}
             label=""
             value={newPasswordConfirm}
             onChangeText={onNewPasswordConfirmChange}

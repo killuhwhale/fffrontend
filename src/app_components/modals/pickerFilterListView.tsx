@@ -4,7 +4,7 @@ import {useTheme} from 'styled-components';
 
 import RNPickerSelect from 'react-native-picker-select';
 
-import {SmallText} from '../Text/Text';
+import {TSCaptionText} from '../Text/Text';
 import {WorkoutNameProps} from '../Cards/types';
 import {useGetWorkoutNamesQuery} from '../../redux/api/apiSlice';
 import {TestIDs} from '../../utils/constants';
@@ -36,7 +36,7 @@ class WorkoutNameRowItem extends React.PureComponent<WorkoutNameRowItemProps> {
             borderBottomWidth: 1,
             paddingVertical: 8,
           }}>
-          <SmallText>{this.props.workoutName.name}</SmallText>
+          <TSCaptionText>{this.props.workoutName.name}</TSCaptionText>
         </View>
       </TouchableOpacity>
     );
@@ -65,7 +65,7 @@ class WorkoutNameRowItem extends React.PureComponent<WorkoutNameRowItemProps> {
 //           borderBottomWidth: 1,
 //           paddingVertical: 8,
 //         }}>
-//         <SmallText>{props.workoutName.name}</SmallText>
+//         <TSCaptionText>{props.workoutName.name}</TSCaptionText>
 //       </View>
 //     </TouchableHighlight>
 //   );

@@ -1,10 +1,9 @@
-import React, {FunctionComponent, useRef, useState} from 'react';
+import React, {FunctionComponent, useRef} from 'react';
 import styled from 'styled-components/native';
-import {Container, SCREEN_HEIGHT, SCREEN_WIDTH, withSpaceURL} from '../shared';
-import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
-import {useTheme} from 'styled-components';
+import {SCREEN_HEIGHT, SCREEN_WIDTH, withSpaceURL} from '../shared';
+import {TSParagrapghText} from '../Text/Text';
 import {ImageOrVideo} from 'react-native-image-crop-picker';
-import {Button, FlatList, Image, Pressable, View} from 'react-native';
+import {FlatList, Image, Pressable, View} from 'react-native';
 import Video from 'react-native-video';
 
 // Create a duplicate for display of urls via string instead of ImageOrVideo type
@@ -59,7 +58,7 @@ const MediaURLItem: FunctionComponent<{
           props.onTapItem(props.index);
         }}>
         {MIME_VIDEO.has(mimeType) ? (
-          // <RegularText>{props.filename}</RegularText>
+          // <TSParagrapghText>{props.filename}</TSParagrapghText>
           <Video
             source={{
               uri: withSpaceURL(
@@ -214,7 +213,7 @@ class MediaURLSliderClass extends React.Component<
         }}
       />
     ) : (
-      <RegularText> No Media </RegularText>
+      <TSParagrapghText> No Media </TSParagrapghText>
     );
   }
 }
@@ -225,7 +224,7 @@ const MediaItem: FunctionComponent<ImageOrVideo> = props => {
   return (
     <View style={{paddingRight: 20}}>
       {props.mime.split('/')[0] == 'video' ? (
-        // <RegularText>{props.filename}</RegularText>
+        // <TSParagrapghText>{props.filename}</TSParagrapghText>
         <Video
           source={{uri: props.path}}
           ref={ref => {
@@ -275,7 +274,7 @@ const MediaSlider: FunctionComponent<MediaSliderProps> = props => {
       renderItem={({item}: any) => <MediaItem {...item} />}
     />
   ) : (
-    <RegularText> No Media </RegularText>
+    <TSParagrapghText> No Media </TSParagrapghText>
   );
 };
 
@@ -327,6 +326,6 @@ export {MediaSlider, MediaURLSliderClass};
 //       )}
 //     />
 //   ) : (
-//     <RegularText> No Media </RegularText>
+//     <TSParagrapghText> No Media </TSParagrapghText>
 //   );
 // };

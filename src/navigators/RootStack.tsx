@@ -2,7 +2,6 @@ import React, {FunctionComponent, useEffect} from 'react';
 import {
   NavigationContainer,
   NavigationContainerRefWithCurrent,
-  
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -31,7 +30,7 @@ import WorkoutNameDetailScreen from '../app_pages/WorkoutNameDetailScreen';
 import CreateCompletedWorkoutScreen from '../app_pages/input_pages/gyms/CreateCompletedWorkoutScreen';
 import StatsScreen from '../app_pages/StatsScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {SmallText} from '../app_components/Text/Text';
+import {TSCaptionText} from '../app_components/Text/Text';
 import ResetPasswordScreen from '../app_pages/input_pages/users/ResetPassword';
 import {SCREEN_HEIGHT} from '../app_components/shared';
 import UserWorkoutsScreen from '../app_pages/UserWorkoutsScreen';
@@ -102,15 +101,15 @@ function HomePageTabs() {
             paddingBottom: 4,
           },
           tabBarItemStyle: {
-            marginBottom:  Platform.OS === 'ios' ? 12 : 0
+            marginBottom: Platform.OS === 'ios' ? 12 : 0,
           },
           tabBarLabel: ({color, focused, position}) => (
-            <SmallText
+            <TSCaptionText
               textStyles={{
                 color: focused ? theme.palette.accent : theme.palette.text,
               }}>
               Home
-            </SmallText>
+            </TSCaptionText>
           ),
           tabBarIcon: ({color, focused, size}) => (
             <Icon
@@ -134,15 +133,15 @@ function HomePageTabs() {
             paddingBottom: 4,
           },
           tabBarItemStyle: {
-            marginBottom:  Platform.OS === 'ios' ? 12 : 0
+            marginBottom: Platform.OS === 'ios' ? 12 : 0,
           },
           tabBarLabel: ({color, focused, position}) => (
-            <SmallText
+            <TSCaptionText
               textStyles={{
                 color: focused ? theme.palette.accent : theme.palette.text,
               }}>
               My Workouts
-            </SmallText>
+            </TSCaptionText>
           ),
           tabBarIcon: ({color, focused, size}) => (
             <Icon
@@ -166,15 +165,15 @@ function HomePageTabs() {
             paddingBottom: 4,
           },
           tabBarItemStyle: {
-            marginBottom:  Platform.OS === 'ios' ? 12 : 0
+            marginBottom: Platform.OS === 'ios' ? 12 : 0,
           },
           tabBarLabel: ({color, focused, position}) => (
-            <SmallText
+            <TSCaptionText
               textStyles={{
                 color: focused ? theme.palette.accent : theme.palette.text,
               }}>
               Stats
-            </SmallText>
+            </TSCaptionText>
           ),
           tabBarIcon: ({color, focused, size}) => (
             <Icon
@@ -198,16 +197,16 @@ function HomePageTabs() {
             paddingBottom: 4,
           },
           tabBarItemStyle: {
-            marginBottom:  Platform.OS === 'ios' ? 12 : 0
+            marginBottom: Platform.OS === 'ios' ? 12 : 0,
           },
 
           tabBarLabel: ({color, focused, position}) => (
-            <SmallText
+            <TSCaptionText
               textStyles={{
                 color: focused ? theme.palette.accent : theme.palette.text,
               }}>
               Profile
-            </SmallText>
+            </TSCaptionText>
           ),
           tabBarIcon: ({color, focused, size}) => (
             <Icon

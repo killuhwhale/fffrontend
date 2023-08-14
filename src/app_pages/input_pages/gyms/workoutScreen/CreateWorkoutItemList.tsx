@@ -13,7 +13,10 @@ import {useTheme} from 'styled-components';
 import styled from 'styled-components/native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import {SmallText, RegularText} from '../../../../app_components/Text/Text';
+import {
+  TSCaptionText,
+  TSParagrapghText,
+} from '../../../../app_components/Text/Text';
 import {
   Container,
   SCREEN_HEIGHT,
@@ -61,7 +64,7 @@ const CreateWorkoutItemList: FunctionComponent<{
   const theme = useTheme();
   const [allowMarkConstant, setAllowMarkConstant] = useState(false);
   return (
-    <View style={{flex: 4}}>
+    <View style={{flex: 4, width: '100%', height: '100%'}}>
       {schemeType == 0 ? (
         <View
           style={{
@@ -78,10 +81,10 @@ const CreateWorkoutItemList: FunctionComponent<{
               alignContent: 'flex-start',
               justifyContent: 'flex-start',
             }}>
-            <SmallText
+            <TSCaptionText
               textStyles={{color: theme.palette.text, textAlign: 'left'}}>
               Add Superset
-            </SmallText>
+            </TSCaptionText>
             <Switch
               value={showAddSSID}
               onValueChange={v => {
@@ -114,10 +117,10 @@ const CreateWorkoutItemList: FunctionComponent<{
             justifyContent: 'center',
             alignItems: 'baseline',
           }}>
-          <SmallText
+          <TSCaptionText
             textStyles={{color: theme.palette.text, textAlign: 'left'}}>
             Mark item as constant (ignore rep scheme)
-          </SmallText>
+          </TSCaptionText>
           <Switch
             value={allowMarkConstant}
             onValueChange={v => {

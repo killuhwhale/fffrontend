@@ -13,7 +13,10 @@ import {useTheme} from 'styled-components';
 import styled from 'styled-components/native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import {SmallText, RegularText} from '../../../../app_components/Text/Text';
+import {
+  TSCaptionText,
+  TSParagrapghText,
+} from '../../../../app_components/Text/Text';
 import {
   Container,
   SCREEN_HEIGHT,
@@ -55,8 +58,8 @@ const CreateWorkoutDualItemList: FunctionComponent<{
   const [curItem, setCurItem] = useState(0);
   const [text, setText] = useState('');
   return (
-    <View style={{flex: 4}}>
-      <ScrollView>
+    <View style={{flex: 4, width: '100%', height: '100%'}}>
+      <ScrollView style={{marginTop: 12}}>
         {items.map((item, idx) => {
           return (
             <AnimatedButton
@@ -79,6 +82,7 @@ const CreateWorkoutDualItemList: FunctionComponent<{
                     flex: 6,
                     backgroundColor: theme.palette.darkGray,
                     paddingVertical: 3,
+                    borderRadius: 8,
                   }}>
                   <TouchableOpacity
                     onPress={() => {
@@ -89,11 +93,14 @@ const CreateWorkoutDualItemList: FunctionComponent<{
                     style={{
                       flexDirection: 'row',
                       justifyContent: 'center',
+                      borderRadius: 8,
                     }}>
                     {hasPenalty(item) ? (
-                      <SmallText>{item.penalty}</SmallText>
+                      <TSCaptionText textStyles={{textAlign: 'center'}}>
+                        {item.penalty}
+                      </TSCaptionText>
                     ) : (
-                      <SmallText>Penalty +</SmallText>
+                      <TSCaptionText>Penalty +</TSCaptionText>
                     )}
                   </TouchableOpacity>
                   {/* </View>

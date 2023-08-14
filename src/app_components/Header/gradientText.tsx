@@ -2,7 +2,12 @@ import React, {FunctionComponent} from 'react';
 import {Text, StyleSheet, TextStyle, StyleProp} from 'react-native';
 import MaskedView from '@react-native-masked-view/masked-view';
 import LinearGradient from 'react-native-linear-gradient';
-import {LargeText, MediumText, RegularText, SmallText} from '../Text/Text';
+import {
+  LargeText,
+  MediumText,
+  TSParagrapghText,
+  TSCaptionText,
+} from '../Text/Text';
 import {useTheme} from 'styled-components';
 import twrnc from 'twrnc';
 
@@ -23,7 +28,7 @@ const g8 = twrnc.color('bg-emerald-800');
 const g9 = twrnc.color('bg-emerald-900');
 const GradientText: FunctionComponent<GradientTextProps> = props => {
   return (
-    <MaskedView maskElement={<RegularText>{props.text}</RegularText>}>
+    <MaskedView maskElement={<TSParagrapghText>{props.text}</TSParagrapghText>}>
       <LinearGradient
         colors={[
           g1 ?? '#0F0',
@@ -40,10 +45,10 @@ const GradientText: FunctionComponent<GradientTextProps> = props => {
         end={{x: 1, y: 1}}
         angle={props.angle || 180}
         angleCenter={{x: 0.5, y: 0.5}}>
-        <RegularText textStyles={{color: '#00000000'}}>
+        <TSParagrapghText textStyles={{color: '#00000000'}}>
           {' '}
           {props.text}
-        </RegularText>
+        </TSParagrapghText>
       </LinearGradient>
     </MaskedView>
   );

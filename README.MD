@@ -114,20 +114,18 @@ git push origin HEAD:staging HEAD
 # TODO
 
 - Splash Screen Updates
+
   - Change name, remove react native
 
 - Add Complete list of names
 
 - Update UI to take screenshots for App Store
 
-- TextFields for number input need Number keyboards
-
 - Class Desription overlaps with Image
 
 - Username on Profile overlaps when really long. Textview then overlaps edit icon and cant reedit...
 
-
-
+- Workout Icon should be changed.... kinda lame - Maybe we can use a letter to indicate Day of Week
 
 StatsScreen
 

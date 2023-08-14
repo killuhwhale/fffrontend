@@ -6,7 +6,7 @@ import {ContributionGraph} from 'react-native-chart-kit';
 import {ContributionChartValue} from 'react-native-chart-kit/dist/contribution-graph/ContributionGraph';
 import {RectProps} from 'react-native-svg/lib/typescript/elements/Rect';
 
-import {RegularText} from '../Text/Text';
+import {TSParagrapghText} from '../Text/Text';
 import {Container, SCREEN_WIDTH} from '../shared';
 import {WorkoutCardProps, WorkoutGroupProps} from '../Cards/types';
 
@@ -119,7 +119,7 @@ const FreqCalendar: FunctionComponent<{
         // borderBottomWidth: 1,
         // borderColor: theme.palette.text,
       }}>
-      <RegularText>{calendarText}</RegularText>
+      <TSParagrapghText>{calendarText}</TSParagrapghText>
       <ScrollView horizontal>
         <ContributionGraph
           tooltipDataAttrs={(

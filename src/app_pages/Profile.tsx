@@ -6,7 +6,11 @@ import React, {
 } from 'react';
 import styled from 'styled-components/native';
 import {Container, mdFontSize, smFontSize} from '../app_components/shared';
-import {SmallText, RegularText, MediumText} from '../app_components/Text/Text';
+import {
+  TSCaptionText,
+  TSParagrapghText,
+  MediumText,
+} from '../app_components/Text/Text';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {useTheme} from 'styled-components';
@@ -181,10 +185,10 @@ const UserInfoPanel: FunctionComponent<UserInfoPanelProps> = props => {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <RegularText textStyles={{textAlign: 'center'}}>
+            <TSParagrapghText textStyles={{textAlign: 'center'}}>
               {newUsername}
-            </RegularText>
-            <SmallText
+            </TSParagrapghText>
+            <TSCaptionText
               textStyles={{
                 color: `${
                   isDateInFuture(sub_end_date) ? '#FFD700' : '#C0C000'
@@ -196,7 +200,7 @@ const UserInfoPanel: FunctionComponent<UserInfoPanelProps> = props => {
                 alignItems: 'center',
               }}>
               {isDateInFuture(sub_end_date) ? 'Member' : 'Non-member'}
-            </SmallText>
+            </TSCaptionText>
           </View>
         )}
       </View>
@@ -242,7 +246,7 @@ const GymsPanel: FunctionComponent<GymsPanelProps> = ({data, onDelete}) => {
                   width: '100%',
                   height: '100%',
                 }}>
-                <RegularText>{title}</RegularText>
+                <TSParagrapghText>{title}</TSParagrapghText>
                 <Icon
                   name="remove-circle-sharp"
                   color={'red'}
@@ -290,7 +294,7 @@ const FavGymsPanel: FunctionComponent<FavGymsPanelProps> = props => {
                   color={theme.palette.text}
                   style={{fontSize: 24, margin: 12}}
                 />
-                <SmallText>{title}</SmallText>
+                <TSCaptionText>{title}</TSCaptionText>
               </View>
             </Touchable>
           </View>
@@ -342,9 +346,9 @@ const FavGymClassesPanel: FunctionComponent<
                   style={{fontSize: 24, margin: 12}}
                 />
 
-                <SmallText>
+                <TSCaptionText>
                   {title} - {gymTitle}
-                </SmallText>
+                </TSCaptionText>
               </View>
             </Touchable>
           </View>
@@ -395,7 +399,7 @@ export const ActionCancelModal: FunctionComponent<{
                 alignItems: 'center',
                 marginBottom: 12,
               }}>
-              <RegularText>{props.modalText}</RegularText>
+              <TSParagrapghText>{props.modalText}</TSParagrapghText>
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <RegularButton
@@ -495,7 +499,7 @@ const ProfileSettingsModal: FunctionComponent<{
               marginBottom: 12,
               flex: 1,
             }}>
-            <RegularText>Settings</RegularText>
+            <TSParagrapghText>Settings</TSParagrapghText>
           </View>
 
           <View
@@ -524,7 +528,7 @@ const ProfileSettingsModal: FunctionComponent<{
                   color="red"
                   style={{fontSize: 24, marginRight: 4}}
                 />
-                <SmallText>Logout</SmallText>
+                <TSCaptionText>Logout</TSCaptionText>
               </View>
             </TouchableHighlight>
           </View>
@@ -684,7 +688,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
     <PageContainer>
       <BannerAddMembership />
       {isLoading ? (
-        <SmallText>Loading....</SmallText>
+        <TSCaptionText>Loading....</TSCaptionText>
       ) : isSuccess ? (
         <View style={{flex: 1, width: '100%'}}>
           <View
@@ -755,7 +759,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
                     color={theme.palette.text}
                     style={{fontSize: 32}}
                   />
-                  <SmallText>New workout</SmallText>
+                  <TSCaptionText>New workout</TSCaptionText>
                 </View>
               </TouchableHighlight>
             </View> */}
@@ -763,7 +767,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
 
           {dataGymFavs?.favorite_gyms?.length > 0 ? (
             <View style={{flex: 4, width: '100%'}}>
-              <SmallText>Favorite Gyms</SmallText>
+              <TSCaptionText>Favorite Gyms</TSCaptionText>
               <ScrollView>
                 <FavGymsPanel data={dataGymFavs?.favorite_gyms} />
               </ScrollView>
@@ -774,7 +778,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
 
           {dataGymClassFavs?.favorite_gym_classes?.length > 0 ? (
             <View style={{flex: 4, width: '100%'}}>
-              <SmallText> Favorite Gym Classes</SmallText>
+              <TSCaptionText> Favorite Gym Classes</TSCaptionText>
               <ScrollView>
                 <FavGymClassesPanel
                   data={dataGymClassFavs?.favorite_gym_classes}
@@ -787,7 +791,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
 
           {usersGyms?.length ? (
             <View style={{flex: 8, width: '100%'}}>
-              <RegularText>My Gyms</RegularText>
+              <TSParagrapghText>My Gyms</TSParagrapghText>
               <ScrollView style={{width: '100%'}}>
                 <GymsPanel data={usersGyms} onDelete={onConfirmDelete} />
               </ScrollView>
@@ -821,9 +825,9 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
           />
         </View>
       ) : isError ? (
-        <SmallText>Error.... {error.toString()}</SmallText>
+        <TSCaptionText>Error.... {error.toString()}</TSCaptionText>
       ) : (
-        <SmallText>No Data</SmallText>
+        <TSCaptionText>No Data</TSCaptionText>
       )}
     </PageContainer>
   );

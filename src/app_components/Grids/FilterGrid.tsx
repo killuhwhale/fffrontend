@@ -60,7 +60,6 @@ const FilterGrid: FunctionComponent<{
               borderRadius: 8,
               // paddingHorizontal: 8,
             }}
-            fontSize={16}
             leading={
               <Icon
                 name="search"

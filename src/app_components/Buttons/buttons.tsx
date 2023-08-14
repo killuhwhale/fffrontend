@@ -18,7 +18,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import {RegularText, SmallText} from '../Text/Text';
+import {TSParagrapghText, TSCaptionText} from '../Text/Text';
 
 import {useTheme} from 'styled-components';
 const ButtonView = styled.TouchableOpacity`
@@ -61,7 +61,9 @@ const RegularButton: FunctionComponent<ButtonProps> = props => {
         props.btnStyles,
       ]}>
       {props.text ? (
-        <RegularText textStyles={props.textStyles}>{props.text}</RegularText>
+        <TSParagrapghText textStyles={props.textStyles}>
+          {props.text}
+        </TSParagrapghText>
       ) : (
         <>{props.children}</>
       )}

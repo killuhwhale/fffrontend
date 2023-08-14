@@ -1,16 +1,8 @@
 import React, {FunctionComponent, useState} from 'react';
-import styled from 'styled-components/native';
 import {useTheme} from 'styled-components';
-import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
-import {
-  MEDIA_CLASSES,
-  SCREEN_HEIGHT,
-  SCREEN_WIDTH,
-  withSpaceURL,
-} from '../shared';
+import {TSCaptionText, TSParagrapghText} from '../Text/Text';
+import {MEDIA_CLASSES, withSpaceURL} from '../shared';
 import {GymCardProps} from './types';
-import darkBackground from './../../../assets/bgs/dark_bg.png';
-import mockLogo from './../../../assets/bgs/mock_logo.png';
 import {Image, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Props as HomeScreenProps} from '../../app_pages/home';
@@ -92,12 +84,12 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
                 marginLeft: 8,
                 justifyContent: 'space-around',
               }}>
-              <RegularText textStyles={{textAlign: 'left'}}>
+              <TSParagrapghText textStyles={{textAlign: 'left'}}>
                 {props.title}
-              </RegularText>
-              <SmallText textStyles={{marginLeft: 2, textAlign: 'left'}}>
+              </TSParagrapghText>
+              <TSCaptionText textStyles={{marginLeft: 2, textAlign: 'left'}}>
                 {props.desc.slice(0, 40)} {props.desc.length > 40 ? '...' : ''}
-              </SmallText>
+              </TSCaptionText>
             </View>
           </View>
         </View>

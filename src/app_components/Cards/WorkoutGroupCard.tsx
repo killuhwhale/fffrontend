@@ -1,12 +1,10 @@
 import React, {FunctionComponent} from 'react';
 import styled from 'styled-components/native';
 import {useTheme} from 'styled-components';
-import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
+import {TSCaptionText, TSParagrapghText} from '../Text/Text';
 import {useNavigation} from '@react-navigation/native';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../shared';
 import {WorkoutGroupCardProps} from './types';
-import grayGradient from './../../../assets/bgs/graygrad.png';
-import greenGrad from './../../../assets/bgs/greenGrad.png';
 import bluish from './../../../assets/bgs/bluish.png';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {View} from 'react-native';
@@ -105,8 +103,10 @@ const WorkoutGroupCard: FunctionComponent<{
               alignItems: 'flex-end',
               paddingRight: 16,
             }}>
-            <RegularText>{props.card.caption}</RegularText>
-            <SmallText>{dateFormat(new Date(props.card.for_date))}</SmallText>
+            <TSParagrapghText>{props.card.caption}</TSParagrapghText>
+            <TSCaptionText>
+              {dateFormat(new Date(props.card.for_date))}
+            </TSCaptionText>
           </View>
 
           <CardRow style={{height: '25%'}}>
@@ -120,20 +120,20 @@ const WorkoutGroupCard: FunctionComponent<{
                     alignItems: 'center',
                   }}>
                   <View style={{flex: 5}}>
-                    <RegularText
+                    <TSParagrapghText
                       textStyles={{textAlign: 'left', marginLeft: 16}}>
                       {props.card.title}
-                    </RegularText>
+                    </TSParagrapghText>
                   </View>
                   {props.card.owned_by_class === true ? (
                     <></>
                   ) : (
                     <View style={{flex: 2}}>
-                      <SmallText
+                      <TSCaptionText
                         textStyles={{textAlign: 'right', marginRight: 14}}>
                         created by:{' '}
                         {props.card.owned_by_class === false ? 'you' : 'class'}
-                      </SmallText>
+                      </TSCaptionText>
                     </View>
                   )}
                   <View

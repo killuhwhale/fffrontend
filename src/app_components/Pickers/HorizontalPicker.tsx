@@ -11,7 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import {SCREEN_WIDTH} from '../shared';
-import {SmallText} from '../Text/Text';
+import {SmallText, TSCaptionText} from '../Text/Text';
 
 {
   /* https://www.youtube.com/watch?v=PVSjPswRn0U&ab_channel=WilliamCandillon */
@@ -156,7 +156,9 @@ const HorizontalPicker: FunctionComponent<{
               width: itemWidth,
             },
           ]}>
-          <SmallText textStyles={{textAlign: 'center'}}>{label}</SmallText>
+          <TSCaptionText textStyles={{textAlign: 'center'}}>
+            {label}
+          </TSCaptionText>
         </View>,
       );
     }

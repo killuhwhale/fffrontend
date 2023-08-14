@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
-import {RegularText, SmallText} from '../Text/Text';
+import {TSParagrapghText, TSCaptionText} from '../Text/Text';
 
 import {Modal, ScrollView, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -274,7 +274,7 @@ const FinishDualWorkoutItems: FunctionComponent<{
           <View
             style={{height: '100%', flex: 1, justifyContent: 'space-between'}}>
             <View style={{marginTop: 50}}>
-              <RegularText>{bodyText}</RegularText>
+              <TSParagrapghText>{bodyText}</TSParagrapghText>
             </View>
             <ScrollView style={{flex: 1, width: '100%'}}>
               {editedWorkoutGroup.workouts?.map(
@@ -284,7 +284,7 @@ const FinishDualWorkoutItems: FunctionComponent<{
                     <View key={`${workout.id}_${workout.title}_updateWorkout`}>
                       {containsDualItems ? (
                         <>
-                          <SmallText>{workout.title}</SmallText>
+                          <TSCaptionText>{workout.title}</TSCaptionText>
                           {workout.workout_items?.map((item, itemIdx) => {
                             return (
                               <View
@@ -309,7 +309,7 @@ const FinishDualWorkoutItems: FunctionComponent<{
                           })}
                         </>
                       ) : (
-                        // <SmallText>Not a dually - {workout.title}</SmallText>
+                        // <TSCaptionText>Not a dually - {workout.title}</TSCaptionText>
                         <></>
                       )}
                     </View>

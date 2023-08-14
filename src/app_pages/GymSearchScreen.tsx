@@ -1,25 +1,18 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
-import {Container, SCREEN_HEIGHT, SCREEN_WIDTH} from '../app_components/shared';
-import {
-  SmallText,
-  RegularText,
-  LargeText,
-  TitleText,
-} from '../app_components/Text/Text';
+import {Container} from '../app_components/shared';
+import {TSCaptionText} from '../app_components/Text/Text';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as RootNavigation from '../navigators/RootNavigation';
 import {useTheme} from 'styled-components';
 import {GymCardList} from '../app_components/Cards/cardList';
-import {useAppSelector, useAppDispatch} from '../redux/hooks';
-import {useGetGymsQuery, useGetUserInfoQuery} from '../redux/api/apiSlice';
+import {useGetGymsQuery} from '../redux/api/apiSlice';
 import AuthManager from '../utils/auth';
 import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
-import {Keyboard, Text, View} from 'react-native';
+import {View} from 'react-native';
 import {filter} from '../utils/algos';
 import Input from '../app_components/Input/input';
-
 import BannerAddMembership from '../app_components/ads/BannerAd';
 
 export type Props = StackScreenProps<RootStackParamList, 'HomePage'>;
@@ -76,7 +69,6 @@ const GymSearchScreen: FunctionComponent<Props> = ({navigation}) => {
         <Input
           onChangeText={filterText}
           value={term}
-          fontSize={16}
           containerStyle={{
             width: '100%',
             backgroundColor: theme.palette.darkGray,
@@ -96,17 +88,17 @@ const GymSearchScreen: FunctionComponent<Props> = ({navigation}) => {
         />
       </View>
       {isTokenError ? (
-        <SmallText>bad token....</SmallText>
+        <TSCaptionText>bad token....</TSCaptionText>
       ) : isLoading ? (
-        <SmallText>Loading....</SmallText>
+        <TSCaptionText>Loading....</TSCaptionText>
       ) : data !== undefined && isSuccess && !isTokenError ? (
         <GymCardList
           data={data.filter((_, i) => filterResult.indexOf(i) >= 0)}
         />
       ) : isError || isTokenError ? (
-        <SmallText>Error.... {error?.toString()}</SmallText>
+        <TSCaptionText>Error.... {error?.toString()}</TSCaptionText>
       ) : (
-        <SmallText>No Data</SmallText>
+        <TSCaptionText>No Data</TSCaptionText>
       )}
     </HomePageContainer>
   );

@@ -1,37 +1,16 @@
 import React, {FunctionComponent} from 'react';
 import styled from 'styled-components/native';
+import {Container, MEDIA_CLASSES} from '../app_components/shared';
 import {
-  Container,
-  DISTANCE_UNITS,
-  DURATION_UNITS,
-  CREATIVE_W,
-  formatLongDate,
-  MEDIA_CLASSES,
-  REPS_W,
-  ROUNDS_W,
-  SCREEN_HEIGHT,
-  SCREEN_WIDTH,
-  STANDARD_W,
-  WORKOUT_TYPES,
-} from '../app_components/shared';
-import {
-  SmallText,
-  RegularText,
+  TSCaptionText,
   LargeText,
-  TitleText,
   MediumText,
 } from '../app_components/Text/Text';
 // import { withTheme } from 'styled-components'
 import {useTheme} from 'styled-components';
-
 import {RootStackParamList} from '../navigators/RootStack';
 import {StackScreenProps} from '@react-navigation/stack';
-import {StyleSheet, View} from 'react-native';
-import {
-  WorkoutCardProps,
-  WorkoutItemListProps,
-  WorkoutItemProps,
-} from '../app_components/Cards/types';
+import {View} from 'react-native';
 import {MediaURLSliderClass} from '../app_components/MediaSlider/MediaSlider';
 import BannerAddMembership from '../app_components/ads/BannerAd';
 export type Props = StackScreenProps<
@@ -69,7 +48,7 @@ const WorkoutNameDetailScreen: FunctionComponent<Props> = ({
           textStyles={{marginBottom: 32, color: theme.palette.secondary.main}}>
           Primary category: {primary?.title ? primary.title : ''}
         </MediumText>
-        <SmallText>{desc}</SmallText>
+        <TSCaptionText>{desc}</TSCaptionText>
 
         <MediaURLSliderClass
           data={JSON.parse(media_ids)}

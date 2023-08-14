@@ -1,26 +1,18 @@
 import React, {FunctionComponent} from 'react';
 import styled from 'styled-components/native';
-import {Container, SCREEN_HEIGHT, SCREEN_WIDTH} from '../shared';
-import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
 import {useTheme} from 'styled-components';
 import {
   GymCardListProps,
   GymClassCardListProps,
-  WorkoutGroupCardListProps,
   WorkoutCardListProps,
-  WorkoutItemListProps,
-  WorkoutItemProps,
-  WorkoutGroupCardProps,
   GymCardProps,
   GymClassCardProps,
   WorkoutDualItemProps,
   WorkkoutItemsList,
 } from './types';
 import GymCard from './GymCard';
-import GymClassCard, {GymClassTextCard} from './GymClassCard';
+import GymClassCard from './GymClassCard';
 import WorkoutCard from './WorkoutCard';
-
-import WorkoutGroupCard from './WorkoutGroupCard';
 
 import {FlatList, View} from 'react-native';
 import {NamePanelItem, TagPanelItem, WorkoutStats} from '../Stats/StatsPanel';

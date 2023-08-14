@@ -1,31 +1,9 @@
-import React, {FunctionComponent, useEffect, useRef, useState} from 'react';
-import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
+import React, {FunctionComponent, useEffect, useState} from 'react';
 import {useTheme} from 'styled-components';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {
-  Modal,
-  ScrollView,
-  TouchableOpacity,
-  View,
-  TextInput as TTextInput,
-} from 'react-native';
-import {
-  useCreateCoachMutation,
-  useDeleteCoachMutation,
-  useGetCoachesForGymClassQuery,
-  useGetUsersQuery,
-} from '../../redux/api/apiSlice';
-
+import {Modal, TouchableOpacity, View} from 'react-native';
 import {filter} from '../../utils/algos';
-
-import {ActionCancelModal} from '../../app_pages/Profile';
-import {
-  centeredViewStyle,
-  modalViewStyle,
-  filterInputModalViewStyle,
-  settingsModalViewStyle,
-} from './modalStyles';
-import {mdFontSize, smFontSize} from '../shared';
+import {centeredViewStyle, modalViewStyle} from './modalStyles';
 import Input from '../Input/input';
 import {WorkoutNameProps} from '../Cards/types';
 import {TestIDs} from '../../utils/constants';
@@ -132,7 +110,6 @@ const FilterItemsModal: FunctionComponent<{
                       backgroundColor: theme.palette.backgroundColor,
                       borderRadius: 8,
                     }}
-                    fontSize={16}
                     leading={
                       <Icon
                         name="search"

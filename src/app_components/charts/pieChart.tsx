@@ -3,14 +3,14 @@ import {ScrollView, View} from 'react-native';
 
 import {useTheme} from 'styled-components';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
+import {TSParagrapghText} from '../Text/Text';
 import {SCREEN_WIDTH} from '../shared';
 
-import {BarChart, PieChart} from 'react-native-chart-kit';
+import {PieChart} from 'react-native-chart-kit';
 import HorizontalPicker from '../Pickers/HorizontalPicker';
 import {chartConfig} from '../../app_pages/StatsScreen';
-import {ChartData} from 'react-native-chart-kit/dist/HelperTypes';
 import twrnc from 'twrnc';
+
 export const dateFormat = (d: Date) => {
   return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
 };
@@ -131,7 +131,7 @@ const TotalsBarChart: FunctionComponent<{
         borderColor: theme.palette.text,
       }}>
       <View style={{width: '100%', flexDirection: 'row'}}>
-        <RegularText>Totals</RegularText>
+        <TSParagrapghText>Totals</TSParagrapghText>
       </View>
       <View style={{width: '100%', flexDirection: 'row'}}>
         <Icon

@@ -7,7 +7,7 @@ import {NavigationContext, useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as RootNavigation from '../../navigators/RootNavigation';
 import {TouchableOpacity, View} from 'react-native';
-import {RegularText} from '../Text/Text';
+import {TSParagrapghText} from '../Text/Text';
 import {TestIDs} from '../../utils/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import GradientText from './gradientText';

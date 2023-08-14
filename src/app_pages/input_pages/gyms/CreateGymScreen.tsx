@@ -3,6 +3,7 @@ import React, {
   useState,
   useContext,
   useCallback,
+  useEffect,
 } from 'react';
 import styled from 'styled-components/native';
 import {ActivityIndicator, Image, View} from 'react-native';
@@ -137,13 +138,22 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
     // TODO possibly dispatch to refresh data
   };
 
+  const [showAd, setShowAd] = useState(false);
+  const [readyToCreate, setReadyToCreate] = useState(false);
+  useEffect(() => {
+    if (readyToCreate && !showAd) {
+      _createGym()
+        .then(res => setReadyToCreate(false))
+        .catch(err => console.log('Error creating Gym: ', err));
+    }
+  }, [readyToCreate]);
   return (
     <PageContainer>
       <BannerAddMembership />
       <LargeText textStyles={{marginBottom: 8}}>Create Gym</LargeText>
       <View style={{height: '100%', width: '100%'}}>
         <View style={{flex: 1}}>
-          <View style={{height: 55, marginBottom: 8}}>
+          <View style={{height: 35, marginBottom: 8}}>
             <Input
               onChangeText={t => setTitle(t)}
               testID={TestIDs.GymTitleField.name()}
@@ -154,7 +164,6 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
                 borderRadius: 8,
                 paddingHorizontal: 8,
               }}
-              fontSize={mdFontSize}
               leading={
                 <Icon
                   name="checkmark-circle-outline"
@@ -166,7 +175,7 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
               placeholder="Title"
             />
           </View>
-          <View style={{height: 55, marginBottom: 8}}>
+          <View style={{height: 35, marginBottom: 8}}>
             <Input
               onChangeText={t => setDesc(t)}
               value={desc}
@@ -177,7 +186,6 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
                 borderRadius: 8,
                 paddingHorizontal: 8,
               }}
-              fontSize={mdFontSize}
               leading={
                 <Icon
                   name="checkmark-circle-outline"
@@ -204,19 +212,24 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
             style={{width: '100%', height: 100, resizeMode: 'contain'}}
           />
           {!isCreating ? (
-            nodeEnv === 'test' ? (
+            <>
               <RegularButton
-                testID={TestIDs.GymSubmitBtn.name()}
-                onPress={_createGym.bind(this)}
+                onPress={() => {
+                  setShowAd(true);
+                }}
                 btnStyles={{backgroundColor: theme.palette.darkGray}}
                 text="Create"
               />
-            ) : (
               <InterstitialAdMembership
+                testID={TestIDs.GymSubmitBtn.name()}
                 text="Create"
-                onClose={_createGym.bind(this)}
+                onClose={() => {
+                  setShowAd(false); // return to prev state.
+                  setReadyToCreate(true); // Trigger useEffect
+                }}
+                show={showAd}
               />
-            )
+            </>
           ) : (
             <ActivityIndicator size="small" color={theme.palette.text} />
           )}

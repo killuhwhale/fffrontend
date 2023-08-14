@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, useState} from 'react';
 import {TouchableHighlight, View} from 'react-native';
 import {useTheme} from 'styled-components';
 import {COLORSPALETTE} from '../../app_pages/input_pages/gyms/CreateWorkoutScreen';
@@ -13,10 +13,12 @@ import {
   DURATION_UNITS,
   SCREEN_HEIGHT,
 } from '../shared';
-import {SmallText} from '../Text/Text';
+import {TSCaptionText} from '../Text/Text';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as RootNavigation from '../../navigators/RootNavigation';
 import LinearGradient from 'react-native-linear-gradient';
+import AlertModal from '../modals/AlertModal';
+import PenaltyDisplayModal from '../modals/PenaltyDisplayModal';
 
 export const isDual = (item: any) => {
   return item.penalty !== undefined;
@@ -57,11 +59,11 @@ const WorkoutItemRest: FunctionComponent<{
     item.rest_duration_unit;
 
   return (
-    <SmallText textStyles={{alignSelf: 'center'}}>
+    <TSCaptionText textStyles={{alignSelf: 'center'}}>
       {restDuration > 0
         ? `Rest: ${restDuration} ${DURATION_UNITS[restDurationUnit]}`
         : ''}
-    </SmallText>
+    </TSCaptionText>
   );
 };
 const WorkoutItemWeights: FunctionComponent<{
@@ -81,11 +83,11 @@ const WorkoutItemWeights: FunctionComponent<{
       {weights &&
       JSON.parse(weights).length > 0 &&
       JSON.parse(weights)[0] > 0 ? (
-        <SmallText>
+        <TSCaptionText>
           {`@ ${displayJList(weights)} ${
             item.weight_unit === '%' ? '' : weightUnit
           }`}
-        </SmallText>
+        </TSCaptionText>
       ) : (
         <></>
       )}
@@ -93,7 +95,7 @@ const WorkoutItemWeights: FunctionComponent<{
       {weightUnit === '%' &&
       JSON.parse(weights)[0] > 0 &&
       JSON.parse(weights).legnth > 1 ? (
-        <SmallText>{`Percent of ${percentOf}`}</SmallText>
+        <TSCaptionText>{`Percent of ${percentOf}`}</TSCaptionText>
       ) : (
         <></>
       )}
@@ -115,33 +117,33 @@ const WorkoutItemRepsDurDistance: FunctionComponent<{
         <>
           {displayJList(item.reps)}
           {` `}
-          <SmallText textStyles={{color: recordedTextColor}}>
+          <TSCaptionText textStyles={{color: recordedTextColor}}>
             {recordedInfo('reps', item, ownedByClass)}
-          </SmallText>
+          </TSCaptionText>
         </>
       ) : item.distance !== '[0]' ? (
         <>
           {displayJList(item.distance)}
           {DISTANCE_UNITS[item.distance_unit]}
           {` `}
-          <SmallText textStyles={{color: recordedTextColor}}>
+          <TSCaptionText textStyles={{color: recordedTextColor}}>
             {recordedInfo('distance', item, ownedByClass)}
-          </SmallText>
+          </TSCaptionText>
         </>
       ) : item.duration !== '[0]' ? (
         <>
           {displayJList(item.duration)}
           {DISTANCE_UNITS[item.duration_unit]}
           {` `}
-          <SmallText textStyles={{color: recordedTextColor}}>
+          <TSCaptionText textStyles={{color: recordedTextColor}}>
             {recordedInfo('duration', item, ownedByClass)}
-          </SmallText>
+          </TSCaptionText>
         </>
       ) : (
         ''
       )}
 
-      {item.constant ? <SmallText>per round</SmallText> : <></>}
+      {item.constant ? <TSCaptionText>per round</TSCaptionText> : <></>}
     </>
   );
 };
@@ -154,6 +156,10 @@ const WorkoutItemPanel: FunctionComponent<{
   idx?: number;
 }> = ({item, schemeType, itemWidth, idx, ownedByClass}) => {
   const theme = useTheme();
+
+  const [currentPenalty, setCurrentPenalty] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
+
   let _item;
   if (isDual(item)) {
     _item = item as WorkoutItemProps;
@@ -192,18 +198,53 @@ const WorkoutItemPanel: FunctionComponent<{
         alignItems: 'center',
       }}>
       <View style={{position: 'absolute', top: 6, left: 6, flex: 1}}>
-        <SmallText>{idx}</SmallText>
+        <TSCaptionText>{idx}</TSCaptionText>
       </View>
-      <View style={{flex: 4}}>
-        <SmallText textStyles={{textAlign: 'center'}}>
-          {_item.name.name}
-        </SmallText>
-        {<SmallText>{_item.penalty}</SmallText>}
+      <View style={{flex: 4, width: '100%'}}>
+        {isDual(_item) && _item.penalty.length > 0 ? (
+          <TouchableHighlight
+            onPress={() => {
+              setCurrentPenalty(_item.penalty);
+              setShowAlert(true);
+            }}
+            style={{width: '100%', height: '100%'}}
+            underlayColor={theme.palette.transparent}
+            activeOpacity={0.9}>
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                justifyContent: 'center',
+              }}>
+              <TSCaptionText textStyles={{textAlign: 'center'}}>
+                {_item.name.name}
+              </TSCaptionText>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                  height: '100%',
+                  marginLeft: 6,
+                }}>
+                <Icon
+                  name="alert-circle-outline"
+                  color={theme.palette.text}
+                  style={{fontSize: 16}}
+                />
+              </View>
+            </View>
+          </TouchableHighlight>
+        ) : (
+          <TSCaptionText textStyles={{textAlign: 'center'}}>
+            {_item.name.name}
+          </TSCaptionText>
+        )}
 
         {item.pause_duration > 0 ? (
-          <SmallText textStyles={{textAlign: 'center'}}>
+          <TSCaptionText textStyles={{textAlign: 'center'}}>
             for: {item.pause_duration} s
-          </SmallText>
+          </TSCaptionText>
         ) : (
           <></>
         )}
@@ -241,14 +282,14 @@ const WorkoutItemPanel: FunctionComponent<{
             />
 
             {schemeType == 0 && item.ssid >= 0 ? (
-              <SmallText
+              <TSCaptionText
                 textStyles={{
                   color: COLORSPALETTE[item.ssid],
                   textAlign: 'center',
                   marginBottom: 6,
                 }}>
                 SS
-              </SmallText>
+              </TSCaptionText>
             ) : (
               <></>
             )}
@@ -262,19 +303,25 @@ const WorkoutItemPanel: FunctionComponent<{
           width: '100%',
           justifyContent: 'center',
         }}>
-        <SmallText textStyles={{textAlign: 'center'}}>
+        <TSCaptionText textStyles={{textAlign: 'center'}}>
           {item.sets > 0 && schemeType === 0 ? `${item.sets} x ` : ''}
           <WorkoutItemRepsDurDistance
             item={item}
             ownedByClass={ownedByClass}
             schemeType={schemeType}
           />
-        </SmallText>
+        </TSCaptionText>
       </View>
       <View style={{alignItems: 'center', flex: 5, width: '100%'}}>
         <WorkoutItemWeights item={item} ownedByClass={ownedByClass} />
         <WorkoutItemRest item={item} ownedByClass={ownedByClass} />
       </View>
+      <PenaltyDisplayModal
+        closeText="Close"
+        bodyText={currentPenalty}
+        modalVisible={showAlert}
+        onRequestClose={() => setShowAlert(false)}
+      />
     </LinearGradient>
   );
 };

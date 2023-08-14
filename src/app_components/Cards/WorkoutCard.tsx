@@ -1,16 +1,10 @@
-import React, {FunctionComponent, useState} from 'react';
+import React, {FunctionComponent} from 'react';
 import styled from 'styled-components/native';
 import {useTheme} from 'styled-components';
-import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
+import {TSCaptionText, TSParagrapghText} from '../Text/Text';
 import {useNavigation} from '@react-navigation/native';
-import {
-  displayJList,
-  SCREEN_HEIGHT,
-  SCREEN_WIDTH,
-  WORKOUT_TYPES,
-  WORKOUT_TYPE_LABELS,
-} from '../shared';
-import {GymClassCardProps, WorkoutCardProps} from './types';
+import {displayJList, SCREEN_WIDTH, WORKOUT_TYPE_LABELS} from '../shared';
+import {WorkoutCardProps} from './types';
 import {View} from 'react-native';
 import {Props as GymClassScreenProps} from '../../app_pages/GymClassScreen';
 import {AnimatedButton} from '../Buttons/buttons';
@@ -105,13 +99,13 @@ const WorkoutCard: FunctionComponent<WorkoutCardProps> = props => {
                 paddingVertical: 8,
                 paddingHorizontal: 8,
               }}>
-              <RegularText>{props.title} </RegularText>
-              <SmallText>
+              <TSParagrapghText>{props.title} </TSParagrapghText>
+              <TSCaptionText>
                 {displayJList(props.scheme_rounds)} {props.instruction}{' '}
                 {props.scheme_type <= 2
                   ? WORKOUT_TYPE_LABELS[props.scheme_type]
                   : ''}
-              </SmallText>
+              </TSCaptionText>
 
               <Icon
                 name="chevron-forward-outline"

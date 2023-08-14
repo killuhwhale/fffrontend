@@ -1,26 +1,12 @@
 import React, {FunctionComponent, useState} from 'react';
 import styled from 'styled-components/native';
 import {Container} from '../app_components/shared';
-import {
-  SmallText,
-  RegularText,
-  LargeText,
-  TitleText,
-} from '../app_components/Text/Text';
-import Icon from 'react-native-vector-icons/Ionicons';
-
 // import { withTheme } from 'styled-components'
 import {useTheme} from 'styled-components';
 import AuthManager from '../utils/auth';
-import {TouchableOpacity, View} from 'react-native';
-import Input, {AutoCaptilizeEnum} from '../app_components/Input/input';
-import {ResetPassword} from '../app_components/email/email';
 import {validEmailRegex} from '../utils/algos';
 import {post} from '../utils/fetchAPI';
-import {BASEURL, TestIDs} from '../utils/constants';
-import {RegularButton} from '../app_components/Buttons/buttons';
-
-import tw from 'twrnc';
+import {BASEURL} from '../utils/constants';
 import SignInComp from './Auth/SignIn';
 import RegisterComp from './Auth/Register';
 import ResetPasswordAuthPage from './Auth/ResetPasswordAuthPage';

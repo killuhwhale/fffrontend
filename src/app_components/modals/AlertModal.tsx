@@ -1,18 +1,15 @@
-import React, {FunctionComponent, useEffect, useState} from 'react';
-import {RegularText, SmallText} from '../Text/Text';
+import React, {FunctionComponent} from 'react';
+import {TSParagrapghText} from '../Text/Text';
 
 import {Modal, View} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 import {useTheme} from 'styled-components';
 import {RegularButton} from '../Buttons/buttons';
-import Input from '../Input/input';
-import {mdFontSize} from '../shared';
 import {centeredViewStyle, modalViewStyle} from './modalStyles';
 
 const AlertModal: FunctionComponent<{
   modalVisible: boolean;
   onRequestClose(): void;
-  closeText: string;
+  closeText?: string;
   bodyText: string;
 }> = ({modalVisible, onRequestClose, closeText, bodyText}) => {
   const theme = useTheme();
@@ -33,7 +30,7 @@ const AlertModal: FunctionComponent<{
           <View
             style={{height: '100%', flex: 1, justifyContent: 'space-between'}}>
             <View style={{marginTop: 50}}>
-              <RegularText>{bodyText}</RegularText>
+              <TSParagrapghText>{bodyText}</TSParagrapghText>
             </View>
             <RegularButton
               onPress={() => {
@@ -42,7 +39,7 @@ const AlertModal: FunctionComponent<{
               btnStyles={{
                 backgroundColor: theme.palette.tertiary.main,
               }}
-              text="Close"
+              text={closeText ?? 'Close'}
             />
           </View>
         </View>

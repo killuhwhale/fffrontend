@@ -1,7 +1,7 @@
 import {FunctionComponent, useState} from 'react';
 import {ImageBackground, View} from 'react-native';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from './shared';
-import {SmallText} from './Text/Text';
+import {TSCaptionText} from './Text/Text';
 
 const IntroHelp: FunctionComponent = () => {
   const [step, setStep] = useState(0);
@@ -26,7 +26,7 @@ const IntroHelp: FunctionComponent = () => {
           source={require('../../assets/bgs/upArrow.png')}
           style={{height: 40, width: 40, justifyContent: 'center'}}
           resizeMode="cover"></ImageBackground>
-        <SmallText textStyles={{marginLeft: 12}}>Home</SmallText>
+        <TSCaptionText textStyles={{marginLeft: 12}}>Home</TSCaptionText>
       </View>
       <View
         style={{
@@ -40,12 +40,12 @@ const IntroHelp: FunctionComponent = () => {
             source={require('../../assets/bgs/downLeftArrow.png')}
             style={{height: 40, width: 40, justifyContent: 'center'}}
             resizeMode="cover"></ImageBackground>
-          <SmallText textStyles={{marginLeft: 2}}>Home</SmallText>
+          <TSCaptionText textStyles={{marginLeft: 2}}>Home</TSCaptionText>
         </View>
         <View style={{width: SCREEN_WIDTH / 4}}>
-          <SmallText textStyles={{marginLeft: 6}}>
+          <TSCaptionText textStyles={{marginLeft: 6}}>
             Home a;sld;alsdk al;sdk ak a;slkd as;ldk asd
-          </SmallText>
+          </TSCaptionText>
           <ImageBackground
             source={require('../../assets/bgs/downLeftArrow.png')}
             style={{height: 40, width: 40, justifyContent: 'center'}}
@@ -56,14 +56,14 @@ const IntroHelp: FunctionComponent = () => {
             source={require('../../assets/bgs/downRightArrow.png')}
             style={{height: 40, width: 40, justifyContent: 'center'}}
             resizeMode="cover"></ImageBackground>
-          <SmallText textStyles={{marginLeft: 6}}>Home</SmallText>
+          <TSCaptionText textStyles={{marginLeft: 6}}>Home</TSCaptionText>
         </View>
         <View style={{width: SCREEN_WIDTH / 4}}>
           <ImageBackground
             source={require('../../assets/bgs/downRightArrow.png')}
             style={{height: 40, width: 40, justifyContent: 'center'}}
             resizeMode="cover"></ImageBackground>
-          <SmallText textStyles={{marginLeft: 6}}>Home</SmallText>
+          <TSCaptionText textStyles={{marginLeft: 6}}>Home</TSCaptionText>
         </View>
       </View>
       {/* <Canvas

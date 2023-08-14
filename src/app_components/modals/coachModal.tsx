@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useEffect, useRef, useState} from 'react';
-import {SmallText, RegularText, LargeText, TitleText} from '../Text/Text';
+import {TSParagrapghText} from '../Text/Text';
 import {useTheme} from 'styled-components';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Modal, ScrollView, View} from 'react-native';
@@ -14,7 +14,7 @@ import {filter} from '../../utils/algos';
 
 import {ActionCancelModal} from '../../app_pages/Profile';
 import {centeredViewStyle, settingsModalViewStyle} from './modalStyles';
-import {mdFontSize, smFontSize} from '../shared';
+import {mdFontSize} from '../shared';
 import Input from '../Input/input';
 import {RegularButton} from '../Buttons/buttons';
 
@@ -137,7 +137,7 @@ const ManageCoachesModal: FunctionComponent<{
               marginBottom: 12,
               flex: 1,
             }}>
-            <RegularText>Manage Coaches</RegularText>
+            <TSParagrapghText>Manage Coaches</TSParagrapghText>
           </View>
 
           <View
@@ -162,7 +162,6 @@ const ManageCoachesModal: FunctionComponent<{
                       borderRadius: 8,
                       paddingHorizontal: 8,
                     }}
-                    fontSize={mdFontSize}
                     leading={
                       <Icon
                         name="search"
@@ -258,9 +257,9 @@ const ManageCoachesModal: FunctionComponent<{
             )}
           </View>
           <View style={{flex: 1, width: '100%'}}>
-            <RegularText textStyles={{alignSelf: 'flex-start'}}>
+            <TSParagrapghText textStyles={{alignSelf: 'flex-start'}}>
               Coaches
-            </RegularText>
+            </TSParagrapghText>
           </View>
 
           {!coachesLoading ? (
@@ -293,7 +292,7 @@ const ManageCoachesModal: FunctionComponent<{
                             alignItems: 'flex-start',
                             paddingLeft: 16,
                           }}>
-                          <RegularText>{coach.username}</RegularText>
+                          <TSParagrapghText>{coach.username}</TSParagrapghText>
                         </View>
                         <View style={{flex: 1}}>
                           <Icon
