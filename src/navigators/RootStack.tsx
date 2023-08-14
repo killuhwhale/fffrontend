@@ -30,7 +30,7 @@ import WorkoutNameDetailScreen from '../app_pages/WorkoutNameDetailScreen';
 import CreateCompletedWorkoutScreen from '../app_pages/input_pages/gyms/CreateCompletedWorkoutScreen';
 import StatsScreen from '../app_pages/StatsScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {TSCaptionText} from '../app_components/Text/Text';
+import {SmallText} from '../app_components/Text/Text';
 import ResetPasswordScreen from '../app_pages/input_pages/users/ResetPassword';
 import {SCREEN_HEIGHT} from '../app_components/shared';
 import UserWorkoutsScreen from '../app_pages/UserWorkoutsScreen';
@@ -104,12 +104,12 @@ function HomePageTabs() {
             marginBottom: Platform.OS === 'ios' ? 12 : 0,
           },
           tabBarLabel: ({color, focused, position}) => (
-            <TSCaptionText
+            <SmallText
               textStyles={{
                 color: focused ? theme.palette.accent : theme.palette.text,
               }}>
               Home
-            </TSCaptionText>
+            </SmallText>
           ),
           tabBarIcon: ({color, focused, size}) => (
             <Icon
@@ -136,12 +136,12 @@ function HomePageTabs() {
             marginBottom: Platform.OS === 'ios' ? 12 : 0,
           },
           tabBarLabel: ({color, focused, position}) => (
-            <TSCaptionText
+            <SmallText
               textStyles={{
                 color: focused ? theme.palette.accent : theme.palette.text,
               }}>
               My Workouts
-            </TSCaptionText>
+            </SmallText>
           ),
           tabBarIcon: ({color, focused, size}) => (
             <Icon
@@ -168,12 +168,12 @@ function HomePageTabs() {
             marginBottom: Platform.OS === 'ios' ? 12 : 0,
           },
           tabBarLabel: ({color, focused, position}) => (
-            <TSCaptionText
+            <SmallText
               textStyles={{
                 color: focused ? theme.palette.accent : theme.palette.text,
               }}>
               Stats
-            </TSCaptionText>
+            </SmallText>
           ),
           tabBarIcon: ({color, focused, size}) => (
             <Icon
@@ -201,12 +201,12 @@ function HomePageTabs() {
           },
 
           tabBarLabel: ({color, focused, position}) => (
-            <TSCaptionText
+            <SmallText
               textStyles={{
                 color: focused ? theme.palette.accent : theme.palette.text,
               }}>
               Profile
-            </TSCaptionText>
+            </SmallText>
           ),
           tabBarIcon: ({color, focused, size}) => (
             <Icon

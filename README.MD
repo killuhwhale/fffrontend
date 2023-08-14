@@ -2,6 +2,8 @@
 
 # FitForm
 
+## https://www.appicon.co/
+
 // sudo keytool -genkey -v -keystore fitform-upload-key.keystore -alias fitform-signing-key -keyalg RSA -keysize 2048 -validity 10000
 
 Git
@@ -122,6 +124,15 @@ git push origin HEAD:staging HEAD
 - Update UI to take screenshots for App Store
 
 - Class Desription overlaps with Image
+
+- TInput fields for text should show and limit the text to respect the model limits.
+
+  - Gym
+    - Title, desc
+  - GymClass
+    - Title, desc
+  - Workout
+    - Title, caption,
 
 - Username on Profile overlaps when really long. Textview then overlaps edit icon and cant reedit...
 

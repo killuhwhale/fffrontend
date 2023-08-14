@@ -62,7 +62,7 @@ const Header: FunctionComponent<{showBackButton: boolean}> = ({
               color: '#0F9D58',
             }}
           />
-          <GradientText text="FitForm" />
+          <GradientText text="FitTrackrr" />
         </View>
       </TouchableOpacity>
     </View>
