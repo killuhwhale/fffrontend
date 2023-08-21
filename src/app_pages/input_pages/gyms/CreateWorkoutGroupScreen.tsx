@@ -8,12 +8,16 @@ import styled from 'styled-components/native';
 import {ActivityIndicator, View} from 'react-native';
 import {
   Container,
+  limitTextLength,
   mdFontSize,
   SCREEN_HEIGHT,
+  WorkoutGroupDescLimit,
+  WorkoutGroupTitleLimit,
 } from '../../../app_components/shared';
 import {
   TSCaptionText,
   TSParagrapghText,
+  TSTitleText,
 } from '../../../app_components/Text/Text';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
@@ -180,9 +184,9 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
           <BannerAddMembership />
         </View>
         <View style={{flex: 1}}>
-          <TSParagrapghText textStyles={{marginBottom: 8}}>
+          <TSTitleText textStyles={{marginBottom: 8, textAlign: 'center'}}>
             Create Workout Group
-          </TSParagrapghText>
+          </TSTitleText>
         </View>
 
         <View style={{flex: 5}}>
@@ -190,7 +194,9 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
             <Input
               placeholder="Title"
               testID={TestIDs.WorkoutGroupTitleField.name()}
-              onChangeText={t => setTitle(t)}
+              onChangeText={t =>
+                setTitle(limitTextLength(t, WorkoutGroupTitleLimit))
+              }
               value={title || ''}
               label="Title"
               containerStyle={{
@@ -201,7 +207,7 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
               }}
               leading={
                 <Icon
-                  name="checkmark-circle-outline"
+                  name="information-circle-outline"
                   color={theme.palette.text}
                   style={{fontSize: mdFontSize}}
                 />
@@ -212,7 +218,9 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
             <Input
               placeholder="Caption"
               testID={TestIDs.WorkoutGroupCaptionField.name()}
-              onChangeText={setCaption}
+              onChangeText={t =>
+                setCaption(limitTextLength(t, WorkoutGroupDescLimit))
+              }
               value={caption || ''}
               label="Caption"
               containerStyle={{
@@ -223,7 +231,7 @@ const CreateWorkoutGroupScreen: FunctionComponent<Props> = ({
               }}
               leading={
                 <Icon
-                  name="checkmark-circle-outline"
+                  name="information-circle-outline"
                   color={theme.palette.text}
                   style={{fontSize: mdFontSize}}
                 />

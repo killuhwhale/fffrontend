@@ -70,29 +70,10 @@ const GymClassCardList: FunctionComponent<GymClassCardListProps> = props => {
   );
 };
 
-const WorkoutCardList: FunctionComponent<WorkoutCardListProps> = props => {
-  const theme = useTheme();
-
-  return (
-    <StyledList
-      data={props.data}
-      horizontal={false}
-      contentContainerStyle={{
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}
-      keyExtractor={({id}: any) => id.toString()}
-      renderItem={({item}: any) => (
-        <WorkoutCard editable={props.editable} {...item} />
-      )}
-    />
-  );
-};
-
 const WorkoutCardFullList: FunctionComponent<WorkoutCardListProps> = props => {
   const theme = useTheme();
   // Testing
-  // WorkoutCardList - 1 list of all Workoutsworkout
+
   // WorkoutCardItemList - List containing WorkoutItems, count for items per workout
   return (
     <View
@@ -108,6 +89,7 @@ const WorkoutCardFullList: FunctionComponent<WorkoutCardListProps> = props => {
             testID={`${TestIDs.WorkoutCardItemList}_${item.title}_${num_items}`}
             key={`wcfl__${item.id}`}
             editable={props.editable}
+            for_date={props.group.for_date}
             {...item}
             ownedByClass={props.group.owned_by_class}
           />
@@ -206,7 +188,6 @@ const WorkoutStatsByNameHorizontalList: FunctionComponent<{
 export {
   GymCardList,
   GymClassCardList,
-  WorkoutCardList,
   WorkoutItemPreviewHorizontalList,
   WorkoutStatsByTagHorizontalList,
   WorkoutStatsByNameHorizontalList,

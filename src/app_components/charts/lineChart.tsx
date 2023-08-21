@@ -146,10 +146,6 @@ const TotalsLineChart: FunctionComponent<{
   ); // Which data to show in the LineChart
 
   const [__filteredDataTypes, __filteredDataTypesAbbrev] = useMemo(() => {
-    console.log(
-      'Filtering: ',
-      showTags ? showLineChartTagType : showLineChartNameType,
-    );
     return filterLineDataTypes(
       showTags
         ? sTagLabels[showLineChartTagType]

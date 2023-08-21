@@ -20,6 +20,9 @@ import {
   STANDARD_W,
   WEIGHT_UNITS,
   WORKOUT_TYPES,
+  limitTextLength,
+  CompletedWorkoutGroupCaptionLimit,
+  MaxDigits,
 } from '../../../app_components/shared';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -49,7 +52,7 @@ import {
   // pickerStyle,
   verifyWorkoutItem,
 } from './CreateWorkoutScreen';
-import {ActionCancelModal} from '../../Profile';
+import ActionCancelModal from '../../../app_components/modals/ActionCancelModal';
 import {dateFormat} from '../../StatsScreen';
 export type Props = StackScreenProps<
   RootStackParamList,
@@ -144,12 +147,14 @@ const EditWorkoutItem: FunctionComponent<{
   );
   const editItemWidth = '65%';
   return (
-    <View style={{width: '100%'}}>
+    <View style={{width: '100%', padding: 12}}>
       <View
         style={{
           flexDirection: 'row',
           width: '100%',
           justifyContent: 'space-between',
+          backgroundColor: theme.palette.secondary.main,
+          borderRadius: 4,
         }}>
         <ItemString item={workoutItem} prefix="" schemeType={schemeType} />
       </View>
@@ -158,10 +163,11 @@ const EditWorkoutItem: FunctionComponent<{
         <View
           style={{
             flexDirection: 'row',
-            flex: 1,
+            height: 35,
             alignItems: 'center',
             justifyContent: 'space-between',
             width: '90%',
+            marginTop: 4,
           }}>
           <TSCaptionText textStyles={{textAlign: 'center'}}>Sets</TSCaptionText>
           <View
@@ -183,7 +189,7 @@ const EditWorkoutItem: FunctionComponent<{
               onChangeText={(t: string) => {
                 let val = '';
 
-                val = numFilter(t);
+                val = limitTextLength(numFilter(t), MaxDigits);
 
                 const {success, errorType, errorMsg} = props.editItem(
                   props.workoutIdx,
@@ -209,7 +215,7 @@ const EditWorkoutItem: FunctionComponent<{
         <View
           style={{
             flexDirection: 'row',
-            flex: 1,
+            height: 35,
             alignItems: 'center',
             justifyContent: 'space-between',
             width: '90%',
@@ -238,9 +244,9 @@ const EditWorkoutItem: FunctionComponent<{
                   WORKOUT_TYPES[props.schemeType] == REPS_W ||
                   WORKOUT_TYPES[props.schemeType] == CREATIVE_W
                 ) {
-                  val = numFilter(t);
+                  val = limitTextLength(numFilter(t), MaxDigits);
                 } else {
-                  val = numFilterWithSpaces(t);
+                  val = limitTextLength(numFilterWithSpaces(t), MaxDigits);
                 }
 
                 const {success, errorType, errorMsg} = props.editItem(
@@ -267,7 +273,7 @@ const EditWorkoutItem: FunctionComponent<{
         <View
           style={{
             flexDirection: 'row',
-            flex: 1,
+            height: 35,
             alignItems: 'center',
             justifyContent: 'space-between',
             width: '90%',
@@ -297,9 +303,9 @@ const EditWorkoutItem: FunctionComponent<{
                     WORKOUT_TYPES[props.schemeType] == REPS_W ||
                     WORKOUT_TYPES[props.schemeType] == CREATIVE_W
                   ) {
-                    val = numFilter(t);
+                    val = limitTextLength(numFilter(t), MaxDigits);
                   } else {
-                    val = numFilterWithSpaces(t);
+                    val = limitTextLength(numFilterWithSpaces(t), MaxDigits);
                   }
 
                   const {success, errorType, errorMsg} = props.editItem(
@@ -402,7 +408,7 @@ const EditWorkoutItem: FunctionComponent<{
         <View
           style={{
             flexDirection: 'row',
-            flex: 1,
+            height: 35,
             alignItems: 'center',
             justifyContent: 'space-between',
             width: '90%',
@@ -436,10 +442,10 @@ const EditWorkoutItem: FunctionComponent<{
                     WORKOUT_TYPES[props.schemeType] == CREATIVE_W
                   ) {
                     // updateItem('distance', numFilter(t))
-                    val = numFilter(t);
+                    val = limitTextLength(numFilter(t), MaxDigits);
                   } else {
                     // updateItem('distance', numFilterWithSpaces(t))
-                    val = numFilterWithSpaces(t);
+                    val = limitTextLength(numFilterWithSpaces(t), MaxDigits);
                   }
                   const {success, errorType, errorMsg} = props.editItem(
                     props.workoutIdx,
@@ -539,7 +545,7 @@ const EditWorkoutItem: FunctionComponent<{
         <View
           style={{
             flexDirection: 'row',
-            flex: 1,
+            height: 35,
             alignItems: 'center',
             justifyContent: 'space-between',
             width: '90%',
@@ -569,9 +575,9 @@ const EditWorkoutItem: FunctionComponent<{
                   WORKOUT_TYPES[props.schemeType] == REPS_W ||
                   WORKOUT_TYPES[props.schemeType] == ROUNDS_W
                 ) {
-                  val = numFilterWithSpaces(t);
+                  val = limitTextLength(numFilterWithSpaces(t), MaxDigits);
                 } else {
-                  val = numFilter(t);
+                  val = limitTextLength(numFilter(t), MaxDigits);
                 }
 
                 const {success, errorType, errorMsg} = props.editItem(
@@ -601,7 +607,7 @@ const EditWorkoutItem: FunctionComponent<{
         <View
           style={{
             flexDirection: 'row',
-            flex: 1,
+            height: 45,
             alignItems: 'center',
             justifyContent: 'space-between',
             width: '90%',
@@ -971,6 +977,13 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
       ? editedWorkoutGroup.workouts[selectedWorkoutIdx]
       : ({workout_items: []} as unknown as WorkoutCardProps);
 
+  const numWorkouts = editedWorkoutGroup.workouts?.length ?? 0;
+  const workoutScrollViewSectionFlex = numWorkouts > 2 ? 4 : 1;
+  console.log(
+    'editedWorkoutGroup.workouts?.length ',
+    numWorkouts,
+    workoutScrollViewSectionFlex,
+  );
   return (
     <PageContainer>
       <View style={{width: '100%', flex: 1}}>
@@ -978,12 +991,13 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
           <TSParagrapghText textStyles={{textAlign: 'center'}}>
             Complete: {params.title}
           </TSParagrapghText>
-        </View>
-
-        <View style={{flex: 1, justifyContent: 'center'}}>
-          <View style={{height: 40, marginTop: 16}}>
+          <View style={{height: 35, marginTop: 16}}>
             <Input
-              onChangeText={setCaption}
+              onChangeText={t =>
+                setCaption(
+                  limitTextLength(t, CompletedWorkoutGroupCaptionLimit),
+                )
+              }
               value={caption}
               containerStyle={{
                 width: '100%',
@@ -993,7 +1007,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
               }}
               leading={
                 <Icon
-                  name="checkmark-circle-outline"
+                  name="information-circle-outline"
                   style={{fontSize: 16}}
                   color={theme.palette.text}
                 />
@@ -1010,6 +1024,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
             flexDirection: 'row',
             margin: 10,
             alignItems: 'center',
+            justifyContent: 'center',
             width: '100%',
           }}>
           <TSCaptionText textStyles={{textAlign: 'center', paddingLeft: 16}}>
@@ -1036,7 +1051,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
         ) : (
           <></>
         )} */}
-        <View style={{flex: 4}}>
+        <View style={{flex: workoutScrollViewSectionFlex}}>
           <ScrollView>
             <View style={{flex: 3}}>
               <TSParagrapghText>Edit workouts below</TSParagrapghText>
@@ -1046,11 +1061,16 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
                   <TouchableHighlight
                     onPress={() => setSelectedWorkoutIdx(i)}
                     key={`editworkout_${workout.id}`}
+                    underlayColor={
+                      selectedWorkoutIdx === i
+                        ? theme.palette.tertiary.main
+                        : theme.palette.primary.main
+                    }
                     style={{
                       backgroundColor:
                         selectedWorkoutIdx === i
                           ? theme.palette.primary.main
-                          : theme.palette.secondary.main,
+                          : theme.palette.tertiary.main,
                       justifyContent: 'center',
                       alignContent: 'center',
                       alignItems: 'center',
@@ -1085,14 +1105,20 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
                       workoutIdx={selectedWorkoutIdx}
                     />
                   ) : (
-                    <ScrollView style={{flex: 1, height: '100%'}}>
+                    <ScrollView
+                      style={{flex: 1, height: '100%'}}
+                      key={`edititem_${selectedWorkoutIdx}_${item.id}`}>
                       <View style={{height: '100%', padding: 12}}>
                         <View
-                          style={{backgroundColor: '#3b82f6', borderRadius: 4}}>
+                          style={{
+                            backgroundColor: theme.palette.secondary.main,
+                            borderRadius: 4,
+                          }}>
                           <ItemString
                             item={item}
                             schemeType={selectedWorkout.scheme_type}
                             prefix="Total completed for: "
+                            color={theme.palette.lightGray}
                           />
                         </View>
                         <View style={{marginBottom: 12}}>
@@ -1116,7 +1142,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
             </View>
           </ScrollView>
         </View>
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, justifyContent: 'center', marginBottom: 2}}>
           {!isCreating ? (
             <RegularButton
               onPress={() => setShowCompleteWorkout(true)}
@@ -1130,6 +1156,7 @@ const CreateCompletedWorkoutScreen: FunctionComponent<Props> = ({
           )}
         </View>
       </View>
+
       <ActionCancelModal
         actionText="Complete"
         closeText="Close"

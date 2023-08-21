@@ -5,7 +5,13 @@ import React, {
   useState,
 } from 'react';
 import styled from 'styled-components/native';
-import {Container, mdFontSize, smFontSize} from '../app_components/shared';
+import {
+  Container,
+  SCREEN_WIDTH,
+  darkRed,
+  mdFontSize,
+  smFontSize,
+} from '../app_components/shared';
 import {
   TSCaptionText,
   TSParagrapghText,
@@ -36,7 +42,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import AuthManager from '../utils/auth';
+
 import {
   GymCardProps,
   GymClass,
@@ -44,16 +50,12 @@ import {
 } from '../app_components/Cards/types';
 import Input from '../app_components/Input/input';
 import {debounce} from '../utils/algos';
-import {
-  centeredViewStyle,
-  modalViewStyle,
-  settingsModalViewStyle,
-} from '../app_components/modals/modalStyles';
 import DeleteActionCancelModal from '../app_components/modals/deleteByNameModal';
 import {RegularButton} from '../app_components/Buttons/buttons';
 import {TestIDs} from '../utils/constants';
 import {UserProps} from './types';
 import BannerAddMembership from '../app_components/ads/BannerAd';
+import ProfileSettingsModal from '../app_components/modals/profileSettingsModal';
 
 export type Props = StackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -99,8 +101,6 @@ function isDateInFuture(date: Date): boolean {
   if (typeof date == typeof '') {
     date = new Date(date);
   }
-
-  console.log('COMPARING DATES!~! !', date, currentDate, date > currentDate);
   return date > currentDate;
 }
 
@@ -153,6 +153,7 @@ const UserInfoPanel: FunctionComponent<UserInfoPanelProps> = props => {
             fontSize: 24,
             marginRight: 8,
             marginLeft: 8,
+            zIndex: 99,
           }}
           onPress={() => {
             setShowEditUsername(!showEditusername);
@@ -185,7 +186,7 @@ const UserInfoPanel: FunctionComponent<UserInfoPanelProps> = props => {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <TSParagrapghText textStyles={{textAlign: 'center'}}>
+            <TSParagrapghText textStyles={{textAlign: 'center', flexShrink: 1}}>
               {newUsername}
             </TSParagrapghText>
             <TSCaptionText
@@ -223,7 +224,7 @@ const GymsPanel: FunctionComponent<GymsPanelProps> = ({data, onDelete}) => {
         return (
           <View
             style={{
-              height: 50,
+              height: 35,
               justifyContent: 'space-between',
               borderWidth: 1,
               borderColor: theme.palette.darkGray,
@@ -249,7 +250,7 @@ const GymsPanel: FunctionComponent<GymsPanelProps> = ({data, onDelete}) => {
                 <TSParagrapghText>{title}</TSParagrapghText>
                 <Icon
                   name="remove-circle-sharp"
-                  color={'red'}
+                  color={darkRed}
                   style={{
                     fontSize: 24,
                   }}
@@ -294,7 +295,9 @@ const FavGymsPanel: FunctionComponent<FavGymsPanelProps> = props => {
                   color={theme.palette.text}
                   style={{fontSize: 24, margin: 12}}
                 />
-                <TSCaptionText>{title}</TSCaptionText>
+                <TSCaptionText numberOfLines={1} textStyles={{width: '80%'}}>
+                  {title}
+                </TSCaptionText>
               </View>
             </Touchable>
           </View>
@@ -346,7 +349,7 @@ const FavGymClassesPanel: FunctionComponent<
                   style={{fontSize: 24, margin: 12}}
                 />
 
-                <TSCaptionText>
+                <TSCaptionText numberOfLines={1} textStyles={{width: '85%'}}>
                   {title} - {gymTitle}
                 </TSCaptionText>
               </View>
@@ -355,277 +358,6 @@ const FavGymClassesPanel: FunctionComponent<
         );
       })}
     </View>
-  );
-};
-
-export const ActionCancelModal: FunctionComponent<{
-  modalVisible: boolean;
-  onRequestClose(): void;
-  closeText: string;
-  actionText: string;
-  modalText: string;
-  onAction(): void;
-  containerStyle?: StyleProp<ViewStyle>;
-}> = props => {
-  const theme = useTheme();
-  return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={props.modalVisible}
-      onRequestClose={props.onRequestClose}>
-      <View
-        style={[
-          centeredViewStyle.centeredView,
-          {backgroundColor: '#000000DD'},
-        ]}>
-        <TouchableOpacity
-          style={[
-            centeredViewStyle.centeredView,
-            {width: '100%', height: '100%'},
-          ]}
-          onPress={() => props.onRequestClose()}>
-          <View
-            style={[
-              modalViewStyle.modalView,
-              {
-                backgroundColor: theme.palette.darkGray,
-              },
-              props.containerStyle,
-            ]}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginBottom: 12,
-              }}>
-              <TSParagrapghText>{props.modalText}</TSParagrapghText>
-            </View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <RegularButton
-                onPress={props.onRequestClose}
-                btnStyles={{
-                  backgroundColor: '#DB4437',
-                  marginRight: 4,
-                }}
-                text={props.closeText}
-              />
-
-              <RegularButton
-                onPress={props.onAction}
-                btnStyles={{
-                  backgroundColor: theme.palette.primary.main,
-                  marginLeft: 4,
-                }}
-                text={props.actionText}
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
-      </View>
-    </Modal>
-  );
-};
-
-const ProfileSettingsModalRow: FunctionComponent<{
-  onAction(): void;
-  title: string;
-  testID?: string;
-}> = props => {
-  const theme = useTheme();
-  return (
-    <View
-      style={{
-        width: '100%',
-        height: 45,
-        justifyContent: 'center',
-        marginVertical: 8,
-      }}>
-      <TouchableHighlight
-        style={{
-          width: '100%',
-          height: '100%',
-          justifyContent: 'center',
-          borderRadius: 8,
-          paddingLeft: 8,
-        }}
-        testID={props.testID}
-        underlayColor={theme.palette.transparent}
-        onPress={() => {
-          props.onAction();
-        }}>
-        <MediumText textStyles={{textAlign: 'left'}}>{props.title}</MediumText>
-      </TouchableHighlight>
-    </View>
-  );
-};
-
-const ProfileSettingsModal: FunctionComponent<{
-  user: {email: string; id: string; username: string};
-  modalVisible: boolean;
-  onRequestClose(): void;
-}> = props => {
-  const theme = useTheme();
-  const auth = AuthManager;
-
-  const [showConfirmLogout, setShowConfirmLogout] = useState(false);
-
-  const logout = () => {
-    console.log('Loggin out');
-    auth
-      .logout()
-      .then(res => {
-        console.log('ProfileSettings: Logged out');
-      })
-      .catch(err => console.log('ProfileSettings Logout Error', err));
-  };
-
-  return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={props.modalVisible}
-      onRequestClose={props.onRequestClose}>
-      <View style={centeredViewStyle.centeredView}>
-        <View
-          style={{
-            ...settingsModalViewStyle.settingsModalView,
-            backgroundColor: theme.palette.darkGray,
-          }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginBottom: 12,
-              flex: 1,
-            }}>
-            <TSParagrapghText>Settings</TSParagrapghText>
-          </View>
-
-          <View
-            style={{
-              alignItems: 'flex-end',
-              width: '100%',
-              justifyContent: 'center',
-              marginBottom: 32,
-
-              flex: 1,
-            }}>
-            <TouchableHighlight
-              underlayColor="#00000022"
-              style={{borderRadius: 8}}
-              onPress={() => {
-                setShowConfirmLogout(true);
-              }}>
-              <View
-                style={{
-                  alignItems: 'flex-end',
-                  width: '100%',
-                  padding: 12,
-                }}>
-                <Icon
-                  name="log-out"
-                  color="red"
-                  style={{fontSize: 24, marginRight: 4}}
-                />
-                <TSCaptionText>Logout</TSCaptionText>
-              </View>
-            </TouchableHighlight>
-          </View>
-
-          <View style={{flex: 4, width: '100%'}}>
-            <ProfileSettingsModalRow
-              testID={TestIDs.CreateGymScreenBtn.name()}
-              onAction={() => {
-                RootNavigation.navigate('CreateGymScreen', {});
-                props.onRequestClose();
-              }}
-              title="Create Gym"
-            />
-            <View
-              style={{
-                borderTopWidth: 1,
-                height: 1,
-                borderColor: theme.palette.text,
-              }}
-            />
-            <ProfileSettingsModalRow
-              testID={TestIDs.CreateGymClassScreenBtn.name()}
-              onAction={() => {
-                RootNavigation.navigate('CreateGymClassScreen', {});
-                props.onRequestClose();
-              }}
-              title="Create Gym Class"
-            />
-            <View
-              style={{
-                borderTopWidth: 1,
-                height: 1,
-                borderColor: theme.palette.text,
-              }}
-            />
-            <ProfileSettingsModalRow
-              testID={TestIDs.CreateWorkoutGroupScreenBtn.name()}
-              onAction={() => {
-                RootNavigation.navigate('CreateWorkoutGroupScreen', {
-                  ownedByClass: false,
-                  ownerID: props.user.id,
-                });
-                props.onRequestClose();
-              }}
-              title="Create Personal Workout Group"
-            />
-            <View
-              style={{
-                borderTopWidth: 1,
-                height: 1,
-                borderColor: theme.palette.text,
-              }}
-            />
-            <ProfileSettingsModalRow
-              testID={TestIDs.ResetPasswordScreenBtn.name()}
-              onAction={() => {
-                RootNavigation.navigate('ResetPasswordScreen', {});
-                props.onRequestClose();
-              }}
-              title="Change Password"
-            />
-          </View>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'flex-end',
-              alignContent: 'flex-end',
-              flex: 2,
-              height: '100%',
-              width: '100%',
-              justifyContent: 'center',
-            }}>
-            <RegularButton
-              testID={TestIDs.CloseProfileSettingsBtn.name()}
-              underlayColor="#CACACACA"
-              onPress={props.onRequestClose}
-              btnStyles={{
-                backgroundColor: theme.palette.tertiary.main,
-                width: '75%',
-              }}
-              text="Close"
-            />
-          </View>
-
-          <ActionCancelModal
-            containerStyle={{borderWidth: 2, borderColor: 'white'}}
-            actionText="Logout"
-            closeText="Close"
-            modalText={'Are you sure?'}
-            onAction={logout}
-            modalVisible={showConfirmLogout}
-            onRequestClose={() => setShowConfirmLogout(false)}
-          />
-        </View>
-      </View>
-    </Modal>
   );
 };
 
@@ -725,46 +457,6 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
             </View>
           </View>
 
-          <View
-            style={{
-              flexDirection: 'row',
-              flex: 2,
-              width: '100%',
-              marginBottom: 16,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            {/* <View
-              style={{
-                flex: 2,
-                alignContent: 'center',
-                alignItems: 'center',
-              }}>
-              <TouchableHighlight
-                onPress={() => {
-                  RootNavigation.navigate('CreateWorkoutGroupScreen', {
-                    ownedByClass: false,
-                    ownerID: data.user.id,
-                  });
-                }}
-                testID={TestIDs.CreatePersonalWorkoutGroupBtn.name()}
-                style={{
-                  flex: 1,
-                  height: '100%',
-                  justifyContent: 'center',
-                }}>
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <Icon
-                    name="barbell-outline"
-                    color={theme.palette.text}
-                    style={{fontSize: 32}}
-                  />
-                  <TSCaptionText>New workout</TSCaptionText>
-                </View>
-              </TouchableHighlight>
-            </View> */}
-          </View>
-
           {dataGymFavs?.favorite_gyms?.length > 0 ? (
             <View style={{flex: 4, width: '100%'}}>
               <TSCaptionText>Favorite Gyms</TSCaptionText>
@@ -799,15 +491,6 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
           ) : (
             <View style={{flex: 6}} />
           )}
-          {/* <View style={{flex: 1, marginBottom: 8}}>
-            <RegularButton
-              onPress={() => navigation.navigate('UserWorkoutsScreen')}
-              btnStyles={{
-                backgroundColor: theme.palette.primary.main,
-              }}
-              text='Workouts
-              />
-          </View> */}
 
           <ProfileSettingsModal
             modalVisible={modalVisible}

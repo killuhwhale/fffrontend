@@ -24,8 +24,9 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import auth from './src/utils/auth';
 import twrnc from 'twrnc';
 
-const primaryColor = twrnc.color('bg-sky-800');
-const secondaryColor = twrnc.color('bg-emerald-900');
+const primaryColor = twrnc.color('bg-blue-600');
+// const secondaryColor = twrnc.color('bg-emerald-900');
+const secondaryColor = twrnc.color('bg-rose-900');
 const tertiaryColor = twrnc.color('bg-violet-500');
 
 const d_accent = twrnc.color('bg-sky-400');

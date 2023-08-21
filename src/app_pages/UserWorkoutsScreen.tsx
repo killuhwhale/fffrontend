@@ -71,13 +71,13 @@ const UserWorkoutsScreen: FunctionComponent = props => {
                 });
               }}
               style={{
+                backgroundColor: theme.palette.accent,
                 padding: 4,
-                backgroundColor: theme.palette.tertiary.main,
                 borderRadius: 112,
               }}>
               <Icon
                 name="add"
-                color={theme.palette.accent}
+                color={theme.palette.text}
                 style={{fontSize: 24}}
               />
             </TouchableOpacity>

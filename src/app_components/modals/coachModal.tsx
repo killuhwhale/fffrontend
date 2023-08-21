@@ -12,7 +12,7 @@ import {
 import RNPickerSelect from 'react-native-picker-select';
 import {filter} from '../../utils/algos';
 
-import {ActionCancelModal} from '../../app_pages/Profile';
+import ActionCancelModal from '../../app_components/modals/ActionCancelModal';
 import {centeredViewStyle, settingsModalViewStyle} from './modalStyles';
 import {mdFontSize} from '../shared';
 import Input from '../Input/input';
@@ -46,8 +46,6 @@ const ManageCoachesModal: FunctionComponent<{
     useDeleteCoachMutation();
   const [showRemoveCoach, setShowRemoveCoach] = useState(false);
   const [coachToRemove, setCoachToRemove] = useState(-1);
-
-  // console.log('Coaches user data:  ', allCoaches);
 
   const addNewCoach = () => {
     console.log('Adding ', newCoach, data[newCoach]);

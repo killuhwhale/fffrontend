@@ -85,13 +85,11 @@ const StatsScreen: FunctionComponent<Props> = ({
       const calc = new CalcWorkoutStats();
 
       data.forEach((workoutGroup: WorkoutGroupProps) => {
-        console.log('\n .Workout Group ', workoutGroup, '\n');
         const workouts: WorkoutCardProps[] =
           (workoutGroup.completed_workouts
             ? workoutGroup.completed_workouts
             : workoutGroup.workouts) ?? [];
 
-        console.log('Workout groups workouts: ', workouts);
         _allWorkouts.push(...workouts); // Collect all workouts for bar data
 
         calc.calcMulti(workouts);

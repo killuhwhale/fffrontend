@@ -12,7 +12,7 @@ import {
 import RNPickerSelect from 'react-native-picker-select';
 import {filter} from '../../utils/algos';
 
-import {ActionCancelModal} from '../../app_pages/Profile';
+import ActionCancelModal from '../../app_components/modals/ActionCancelModal';
 import {mdFontSize} from '../shared';
 import Input from '../Input/input';
 import {RegularButton} from '../Buttons/buttons';
@@ -44,8 +44,6 @@ const ManageMembersModal: FunctionComponent<{
     useDeleteMemberMutation();
   const [showRemoveMember, setShowRemoveMember] = useState(false);
   const [memberToRemove, setMemberToRemove] = useState(-1);
-
-  console.log('Members user data:  ', allMembers);
 
   const addNewMember = () => {
     console.log('Adding ', data[newMember]);

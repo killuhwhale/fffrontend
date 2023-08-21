@@ -9,13 +9,18 @@ const ItemString: FunctionComponent<{
   item: WorkoutItemProps;
   schemeType: number;
   prefix: string;
-}> = ({item, schemeType, prefix}) => {
+  color?: string;
+}> = ({item, schemeType, prefix, color}) => {
   const theme = useTheme();
   // console.log('Diplaying item: ', item);
   return (
     <View
-      style={{width: '100%', borderRadius: 8, marginVertical: 6, padding: 6}}>
-      <TSCaptionText>
+      style={{
+        width: '100%',
+        borderRadius: 8,
+        padding: 4,
+      }}>
+      <TSCaptionText textStyles={{color: color ?? 'white'}}>
         {`${prefix} `}
         {item.sets > 0 && schemeType === 0 ? `${item.sets} x ` : ''}
 

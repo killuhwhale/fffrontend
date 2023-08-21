@@ -10,6 +10,7 @@ import {Props as GymScreenProps} from '../../../app_pages/GymScreen';
 
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import moc from '../../../../assets/bgs/moc.png';
+import LinearGradient from 'react-native-linear-gradient';
 
 const ClassGridItem: FunctionComponent<{
   card: GymClassCardProps;
@@ -40,38 +41,45 @@ const ClassGridItem: FunctionComponent<{
         flex: 1,
       }}>
       <TouchableHighlight onPress={handlePress}>
-        <View
-          style={{
-            flex: 1,
-            borderRadius: 16,
-            backgroundColor: theme.palette.primary.main,
-          }}>
+        <LinearGradient
+          colors={['#00000000', theme.palette.secondary.main ?? '#0F0']} // Turquoise
+          start={{x: 0.05, y: 0}}
+          end={{x: 0.75, y: 1}}
+          style={{flex: 1, borderRadius: 16}}>
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              flex: 1,
+              borderRadius: 16,
             }}>
-            <Image
-              style={{width: 40, height: 40, borderRadius: 16}}
-              onError={() => {
-                handleError();
-              }}
-              source={
-                useDefault
-                  ? moc
-                  : {
-                      uri: logoURL,
-                    }
-              }
-            />
-            <View style={{flex: 1}}>
-              <TSCaptionText textStyles={{textAlign: 'left', marginLeft: 4}}>
-                {props.card.title}
-              </TSCaptionText>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+              <Image
+                style={{width: 40, height: 40, borderRadius: 16}}
+                onError={() => {
+                  handleError();
+                }}
+                source={
+                  useDefault
+                    ? moc
+                    : {
+                        uri: logoURL,
+                      }
+                }
+              />
+              <View style={{flex: 1}}>
+                <TSCaptionText
+                  numberOfLines={1}
+                  textStyles={{textAlign: 'left', marginLeft: 4}}>
+                  {props.card.title}
+                </TSCaptionText>
+              </View>
             </View>
           </View>
-        </View>
+        </LinearGradient>
       </TouchableHighlight>
     </View>
   );

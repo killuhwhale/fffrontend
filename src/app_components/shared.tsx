@@ -9,6 +9,9 @@ import {
   AnyWorkoutItem,
   WorkoutItemProps,
 } from './Cards/types';
+
+import twrnc from 'twrnc';
+
 export const Container = styled.View`
   flex: 1;
   align-items: center;
@@ -42,6 +45,9 @@ export function lightenHexColor(hexColor: string, factor: number): string {
     .padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
 }
 
+export const lightRed = twrnc.color('bg-red-400');
+export const darkRed = twrnc.color('bg-red-800');
+
 export const tsPageTitle: number = Platform.OS === 'ios' ? 20 : 20;
 export const tsParagrapgh: number = Platform.OS === 'ios' ? 14 : 14;
 export const tsListTitle: number = Platform.OS === 'ios' ? 14 : 14; // medium weight
@@ -61,9 +67,7 @@ export const STANDARD_W = 'STANDARD';
 export const REPS_W = 'REPS';
 export const ROUNDS_W = 'ROUNDS';
 export const CREATIVE_W = 'CREATIVE';
-// export const CREATIVE_W = 'DURATION';
-export const TIMESCORE_W = 'TIMESCORE';
-export const TIMELIMIT_W = 'TIMELIMIT';
+
 export const WORKOUT_TYPES: Array<string> = [
   STANDARD_W,
   REPS_W,
@@ -101,6 +105,20 @@ export const MEDIA_CLASSES: Array<string> = [
   'users',
   'completedWorkouts',
 ];
+
+export const GymTitleLimit = 50;
+export const GymDescLimit = 280;
+export const GymClassTitleLimit = 50;
+export const GymClassDescLimit = 280;
+export const WorkoutGroupTitleLimit = 50;
+export const WorkoutGroupDescLimit = 280;
+export const WorkoutTitleLimit = 50;
+export const WorkoutDescLimit = 280;
+export const CompletedWorkoutGroupCaptionLimit = 280;
+export const WorkoutDualItemCreativePenaltyLimit = 280;
+export const MaxDigits = 9;
+export const SchemeTextLimit = 20;
+export const CreateSchemeInstructionLimit = 100;
 
 // Url for Digital Ocean Spaces API
 export const withSpaceURL = (
@@ -693,3 +711,7 @@ export const formatLongDate = date => {
   // console.log('Long date: ', monthNames[monthIndex] + ' ' + day + ', ' + year);
   return monthNames[monthIndex] + ' ' + day + ', ' + year;
 };
+
+export function limitTextLength(t: string, limit: number) {
+  return t.length > limit ? t.substring(0, limit) : t;
+}

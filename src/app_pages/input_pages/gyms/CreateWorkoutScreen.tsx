@@ -30,8 +30,12 @@ import {
   parseNumList,
   jList,
   mdFontSize,
-  TIMESCORE_W,
-  TIMELIMIT_W,
+  limitTextLength,
+  WorkoutDualItemCreativePenaltyLimit,
+  WorkoutTitleLimit,
+  WorkoutDescLimit,
+  SchemeTextLimit,
+  CreateSchemeInstructionLimit,
 } from '../../../app_components/shared';
 import {useAppDispatch} from '../../../redux/hooks';
 import {
@@ -59,6 +63,7 @@ import AddItem from './AddWorkoutItemPanel';
 import AlertModal from '../../../app_components/modals/AlertModal';
 import CreateWorkoutItemList from './workoutScreen/CreateWorkoutItemList';
 import CreateWorkoutDualItemList from './workoutScreen/CreateWorkoutDualItemList';
+import SchemeField from './workoutScreen/Schemes';
 export type Props = StackScreenProps<RootStackParamList, 'CreateWorkoutScreen'>;
 
 export const COLORSPALETTE = [
@@ -96,251 +101,6 @@ interface AddWorkoutItemProps {
   errorType: number;
   errorMsg: string;
 }
-
-const RepSheme: FunctionComponent<{
-  onSchemeRoundChange(scheme: string);
-  schemeRounds: string;
-  editable?: boolean;
-}> = props => {
-  const theme = useTheme();
-
-  return (
-    <View style={{marginBottom: 15, height: 35}}>
-      <Input
-        placeholder="Reps"
-        editable={props.editable}
-        onChangeText={props.onSchemeRoundChange}
-        value={props.schemeRounds}
-        label="Reps"
-        containerStyle={{
-          width: '100%',
-          backgroundColor: theme.palette.darkGray,
-          borderRadius: 8,
-          paddingHorizontal: 8,
-        }}
-        leading={
-          <Icon
-            name="person"
-            color={theme.palette.text}
-            style={{fontSize: mdFontSize}}
-          />
-        }
-      />
-    </View>
-  );
-};
-
-const RoundSheme: FunctionComponent<{
-  onSchemeRoundChange(scheme: string);
-  schemeRounds: string;
-  isError: boolean;
-  editable?: boolean;
-}> = props => {
-  const theme = useTheme();
-  const errorStyles = props.isError
-    ? {
-        borderBottomWidth: 2,
-        borderColor: 'red',
-      }
-    : {};
-  return (
-    <View style={{marginBottom: 15, height: 35}}>
-      <Input
-        placeholder="Rounds"
-        onChangeText={props.onSchemeRoundChange}
-        value={props.schemeRounds}
-        label=""
-        helperText="Please enter number of rounds"
-        isError={props.isError}
-        editable={props.editable}
-        containerStyle={{
-          width: '100%',
-          backgroundColor: theme.palette.darkGray,
-          borderRadius: 8,
-          paddingHorizontal: 8,
-        }}
-        leading={
-          <Icon
-            name="person"
-            color={theme.palette.text}
-            style={{fontSize: mdFontSize}}
-          />
-        }
-      />
-    </View>
-  );
-};
-
-const CreativeScheme: FunctionComponent<{
-  onSchemeInstructionChange(instructions: string);
-  instruction: string;
-}> = props => {
-  const theme = useTheme();
-  return (
-    <View style={{marginBottom: 15, height: 35}}>
-      <Input
-        placeholder="20 min AMRAP"
-        onChangeText={props.onSchemeInstructionChange}
-        value={props.instruction}
-        label="Instructions"
-        helperText=""
-        containerStyle={{
-          width: '100%',
-          backgroundColor: theme.palette.darkGray,
-          borderRadius: 8,
-          paddingHorizontal: 8,
-        }}
-        leading={
-          <Icon
-            name="person"
-            color={theme.palette.text}
-            style={{fontSize: mdFontSize}}
-          />
-        }
-      />
-    </View>
-  );
-};
-
-// Depracated
-const TimeScoreScheme: FunctionComponent<{
-  onSchemeRoundChange(scheme: string);
-  schemeRounds: string;
-}> = props => {
-  const theme = useTheme();
-  return (
-    <View style={{marginBottom: 15, height: 35}}>
-      <Input
-        placeholder="Time limit (mins)"
-        onChangeText={props.onSchemeRoundChange}
-        value={props.schemeRounds}
-        label="Time limit (mins)"
-        helperText="Please enter number of rounds"
-        containerStyle={{
-          width: '100%',
-          backgroundColor: theme.palette.darkGray,
-          borderRadius: 8,
-          paddingHorizontal: 8,
-        }}
-        leading={
-          <Icon
-            name="person"
-            color={theme.palette.text}
-            style={{fontSize: mdFontSize}}
-          />
-        }
-      />
-    </View>
-  );
-};
-
-// Depracated
-const TimeLimitScheme: FunctionComponent<{
-  onSchemeRoundChange(scheme: string);
-  schemeRounds: string;
-}> = props => {
-  const theme = useTheme();
-  return (
-    <View style={{marginBottom: 15, height: 35}}>
-      <Input
-        placeholder="Time limit (mins)"
-        onChangeText={props.onSchemeRoundChange}
-        value={props.schemeRounds}
-        label="Rep Challenge"
-        helperText="Please enter number of rounds"
-        containerStyle={{
-          width: '100%',
-          backgroundColor: theme.palette.darkGray,
-          borderRadius: 8,
-          paddingHorizontal: 8,
-        }}
-        leading={
-          <Icon
-            name="person"
-            color={theme.palette.text}
-            style={{fontSize: mdFontSize}}
-          />
-        }
-      />
-    </View>
-  );
-};
-
-const SchemeField: FunctionComponent<{
-  schemeType: number;
-  setSchemeRounds(a: string): void;
-  setInstruction(a: string): void;
-  schemeRounds: string;
-  instruction?: string;
-  setSchemeRoundsError(a: boolean): void;
-  schemeRoundsError: boolean;
-}> = ({
-  schemeType,
-  setSchemeRounds,
-  schemeRounds,
-  setSchemeRoundsError,
-  schemeRoundsError,
-  instruction,
-  setInstruction,
-}) => {
-  return (
-    <View
-      style={{
-        flex:
-          WORKOUT_TYPES[schemeType] == STANDARD_W ||
-          WORKOUT_TYPES[schemeType] == TIMESCORE_W
-            ? 1
-            : 2,
-      }}>
-      {WORKOUT_TYPES[schemeType] == STANDARD_W ? (
-        <></>
-      ) : WORKOUT_TYPES[schemeType] == REPS_W ? (
-        <>
-          <TSCaptionText>Rep Scheme</TSCaptionText>
-          <RepSheme
-            onSchemeRoundChange={t => setSchemeRounds(numFilterWithSpaces(t))}
-            schemeRounds={schemeRounds}
-          />
-        </>
-      ) : WORKOUT_TYPES[schemeType] == ROUNDS_W ? (
-        <>
-          <TSCaptionText>Number of Rounds</TSCaptionText>
-          <RoundSheme
-            onSchemeRoundChange={t => {
-              // Reset
-              if (schemeRoundsError) {
-                setSchemeRoundsError(false);
-              }
-              setSchemeRounds(numFilter(t));
-            }}
-            isError={schemeRoundsError}
-            schemeRounds={schemeRounds}
-          />
-        </>
-      ) : WORKOUT_TYPES[schemeType] == CREATIVE_W ? (
-        <>
-          <TSListTitleText>Duration of workout</TSListTitleText>
-          <CreativeScheme
-            onSchemeInstructionChange={t => setInstruction(t)}
-            instruction={instruction ?? ''}
-          />
-        </>
-      ) : WORKOUT_TYPES[schemeType] == TIMESCORE_W ? (
-        <></>
-      ) : WORKOUT_TYPES[schemeType] == TIMELIMIT_W ? (
-        <>
-          <TSCaptionText>Workout Time Limit</TSCaptionText>
-          <TimeLimitScheme
-            onSchemeRoundChange={t => setSchemeRounds(numFilter(t))}
-            schemeRounds={schemeRounds}
-          />
-        </>
-      ) : (
-        <></>
-      )}
-    </View>
-  );
-};
 
 export const ColorPalette: FunctionComponent<{
   onSelect(colorIdx: number);
@@ -638,8 +398,6 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
     }
   };
 
-  // const [allowMarkConstant, setAllowMarkConstant] = useState(false);
-
   const updateItemConstant = (idx: number) => {
     // Determines if an item should ignore a RepScheme.
     // "Do a constant number of reps each round."
@@ -685,7 +443,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
         <View style={{height: 35, marginBottom: 8}}>
           <Input
             onChangeText={t => {
-              setTitle(t);
+              setTitle(limitTextLength(t, WorkoutTitleLimit));
               setCreateWorkoutError('');
               setIsCreating(false);
             }}
@@ -719,7 +477,7 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
             placeholder="Description"
             testID={TestIDs.CreateWorkoutDescField.name()}
             value={desc}
-            onChangeText={d => setDesc(d)}
+            onChangeText={t => setDesc(limitTextLength(t, WorkoutDescLimit))}
             containerStyle={{
               width: '100%',
               backgroundColor: theme.palette.darkGray,
@@ -735,11 +493,16 @@ const CreateWorkoutScreen: FunctionComponent<Props> = ({
             }
           />
         </View>
+
         <SchemeField
           schemeType={schemeType}
           schemeRounds={schemeRounds}
-          setSchemeRounds={setSchemeRounds}
-          setInstruction={setInstruction}
+          setSchemeRounds={t =>
+            setSchemeRounds(limitTextLength(t, SchemeTextLimit))
+          }
+          setInstruction={t =>
+            setInstruction(limitTextLength(t, CreateSchemeInstructionLimit))
+          }
           schemeRoundsError={schemeRoundsError}
           setSchemeRoundsError={setSchemeRoundsError}
           instruction={instruction}

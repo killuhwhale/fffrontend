@@ -1,43 +1,9 @@
 import React, {FunctionComponent, useState} from 'react';
-
-import {
-  StyleSheet,
-  View,
-  Switch,
-  ScrollView,
-  TouchableWithoutFeedback,
-  ActivityIndicator,
-} from 'react-native';
-
+import {View, ScrollView} from 'react-native';
 import {useTheme} from 'styled-components';
-import styled from 'styled-components/native';
-
-import Icon from 'react-native-vector-icons/Ionicons';
-import {
-  TSCaptionText,
-  TSParagrapghText,
-} from '../../../../app_components/Text/Text';
-import {
-  Container,
-  SCREEN_HEIGHT,
-  WORKOUT_TYPES,
-  STANDARD_W,
-  ROUNDS_W,
-  CREATIVE_W,
-  REPS_W,
-  numFilter,
-  numFilterWithSpaces,
-  parseNumList,
-  jList,
-  mdFontSize,
-  TIMESCORE_W,
-  TIMELIMIT_W,
-} from '../../../../app_components/shared';
-import {COLORSPALETTE, ColorPalette} from '../CreateWorkoutScreen';
-import {
-  WorkoutDualItemProps,
-  WorkoutItemProps,
-} from '../../../../app_components/Cards/types';
+import {TSCaptionText} from '../../../../app_components/Text/Text';
+import {SCREEN_HEIGHT} from '../../../../app_components/shared';
+import {WorkoutDualItemProps} from '../../../../app_components/Cards/types';
 import ItemString from '../../../../app_components/WorkoutItems/ItemString';
 import {AnimatedButton} from '../../../../app_components/Buttons/buttons';
 import {TouchableOpacity} from 'react-native-gesture-handler';

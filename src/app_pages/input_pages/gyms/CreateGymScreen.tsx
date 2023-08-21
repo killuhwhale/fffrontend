@@ -7,7 +7,13 @@ import React, {
 } from 'react';
 import styled from 'styled-components/native';
 import {ActivityIndicator, Image, View} from 'react-native';
-import {Container, mdFontSize} from '../../../app_components/shared';
+import {
+  Container,
+  GymDescLimit,
+  GymTitleLimit,
+  limitTextLength,
+  mdFontSize,
+} from '../../../app_components/shared';
 import {LargeText} from '../../../app_components/Text/Text';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {launchImageLibrary, Asset} from 'react-native-image-picker';
@@ -155,7 +161,7 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
         <View style={{flex: 1}}>
           <View style={{height: 35, marginBottom: 8}}>
             <Input
-              onChangeText={t => setTitle(t)}
+              onChangeText={t => setTitle(limitTextLength(t, GymTitleLimit))}
               testID={TestIDs.GymTitleField.name()}
               value={title}
               containerStyle={{
@@ -166,7 +172,7 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
               }}
               leading={
                 <Icon
-                  name="checkmark-circle-outline"
+                  name="information-circle-outline"
                   style={{fontSize: mdFontSize}}
                   color={theme.palette.text}
                 />
@@ -177,7 +183,7 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
           </View>
           <View style={{height: 35, marginBottom: 8}}>
             <Input
-              onChangeText={t => setDesc(t)}
+              onChangeText={t => setDesc(limitTextLength(t, GymDescLimit))}
               value={desc}
               testID={TestIDs.GymDescField.name()}
               containerStyle={{
@@ -188,7 +194,7 @@ const CreateGymScreen: FunctionComponent<Props> = ({navigation}) => {
               }}
               leading={
                 <Icon
-                  name="checkmark-circle-outline"
+                  name="information-circle-outline"
                   style={{fontSize: mdFontSize}}
                   color={theme.palette.text}
                 />

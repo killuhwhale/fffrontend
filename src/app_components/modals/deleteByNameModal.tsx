@@ -4,13 +4,9 @@ import {useTheme} from 'styled-components';
 import {Modal, View} from 'react-native';
 import {centeredViewStyle, modalViewStyle} from './modalStyles';
 import Input from '../Input/input';
-import {mdFontSize} from '../shared';
+import {darkRed, lightRed, mdFontSize, smFontSize} from '../shared';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RegularButton} from '../Buttons/buttons';
-import twrnc from 'twrnc';
-
-const lightRed = twrnc.color('bg-red-400');
-const darkRed = twrnc.color('bg-red-900');
 
 const DeleteActionCancelModal: FunctionComponent<{
   modalVisible: boolean;
@@ -71,12 +67,12 @@ const DeleteActionCancelModal: FunctionComponent<{
                   borderRadius: 8,
                   paddingHorizontal: 8,
                 }}
-                fontSize={mdFontSize}
+                fontSize={smFontSize}
                 leading={
                   <Icon
                     name="checkmark-circle-outline"
                     style={{fontSize: mdFontSize}}
-                    color={theme.palette.text}
+                    color={isValid() ? darkRed : theme.palette.text}
                   />
                 }
                 label=""
@@ -98,7 +94,7 @@ const DeleteActionCancelModal: FunctionComponent<{
               onPress={() =>
                 isValid() ? props.onAction() : console.log('Invalid name')
               }
-              underlayColor={isValid() ? '' : lightRed}
+              underlayColor={isValid() ? darkRed : theme.palette.text}
               btnStyles={{
                 marginLeft: 4,
                 backgroundColor: isValid() ? darkRed : lightRed,

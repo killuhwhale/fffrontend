@@ -1,37 +1,14 @@
 import React, {FunctionComponent, useState} from 'react';
-
-import {
-  StyleSheet,
-  View,
-  Switch,
-  ScrollView,
-  TouchableWithoutFeedback,
-  ActivityIndicator,
-} from 'react-native';
-
+import {View, Switch, ScrollView, TouchableWithoutFeedback} from 'react-native';
 import {useTheme} from 'styled-components';
-import styled from 'styled-components/native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import {TSCaptionText} from '../../../../app_components/Text/Text';
 import {
-  TSCaptionText,
-  TSParagrapghText,
-} from '../../../../app_components/Text/Text';
-import {
-  Container,
   SCREEN_HEIGHT,
   WORKOUT_TYPES,
   STANDARD_W,
-  ROUNDS_W,
-  CREATIVE_W,
   REPS_W,
-  numFilter,
-  numFilterWithSpaces,
-  parseNumList,
-  jList,
-  mdFontSize,
-  TIMESCORE_W,
-  TIMELIMIT_W,
 } from '../../../../app_components/shared';
 import {COLORSPALETTE, ColorPalette} from '../CreateWorkoutScreen';
 import {WorkoutItemProps} from '../../../../app_components/Cards/types';

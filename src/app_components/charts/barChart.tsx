@@ -25,7 +25,6 @@ const barData = (tags, metric) => {
       labels.push(key);
       if (tags[key] && tags[key][metric]) {
         const val = parseInt(tags[key][metric]);
-        console.log('Val: ', key, metric, val);
         data.push(val);
       } else {
         data.push(0);

@@ -84,6 +84,7 @@ const WorkoutDetailScreen: FunctionComponent<Props> = ({
     scheme_type,
     instruction,
     editable,
+    for_date,
     ownedByClass,
   } = params || {};
   const items = workout_items
@@ -105,9 +106,13 @@ const WorkoutDetailScreen: FunctionComponent<Props> = ({
       <BannerAddMembership />
       <View style={{width: '100%', flex: 1}}>
         <View style={{flex: 1}}>
-          <TSTitleText>{title}</TSTitleText>
+          <TSTitleText>
+            {title.length < 1 ? 'Title here...' : title}
+          </TSTitleText>
 
-          <TSCaptionText textStyles={{padding: 6}}>{desc}</TSCaptionText>
+          <TSCaptionText textStyles={{padding: 6}}>
+            {desc.length < 1 ? 'Description here...' : desc}
+          </TSCaptionText>
           {instruction ? (
             <TSParagrapghText textStyles={{padding: 6}}>
               {instruction}
@@ -116,7 +121,9 @@ const WorkoutDetailScreen: FunctionComponent<Props> = ({
             <></>
           )}
           <TSCaptionText textStyles={{padding: 6}}>
-            {formatLongDate(new Date(date))}
+            {for_date
+              ? formatLongDate(new Date(for_date))
+              : 'Unsure which date this is for...'}
           </TSCaptionText>
         </View>
 
@@ -124,7 +131,7 @@ const WorkoutDetailScreen: FunctionComponent<Props> = ({
           <StatsPanel tags={tags} names={names} />
         </View>
 
-        <View style={{flex: 2, justifyContent: 'center'}}>
+        <View style={{flex: 3, justifyContent: 'center'}}>
           <View style={{marginTop: 8, padding: 6}}>
             <TSParagrapghText>
               {WORKOUT_TYPES[scheme_type]} {displayJList(scheme_rounds)}

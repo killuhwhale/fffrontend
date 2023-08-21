@@ -1,13 +1,8 @@
 import React, {FunctionComponent} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {RegularButton} from '../../app_components/Buttons/buttons';
 import {TestIDs} from '../../utils/constants';
-import {TSParagrapghText, TSCaptionText} from '../../app_components/Text/Text';
-import Input, {AutoCaptilizeEnum} from '../../app_components/Input/input';
-import Icon from 'react-native-vector-icons/Ionicons';
+import {TSCaptionText} from '../../app_components/Text/Text';
 import {useTheme} from 'styled-components';
-import tw from 'twrnc';
-import {SCREEN_WIDTH} from '../../app_components/shared';
 import {Style} from 'twrnc/dist/esm/types';
 
 interface AuthNavCompProps {
@@ -21,10 +16,12 @@ const AuthNavComp: FunctionComponent<AuthNavCompProps> = ({
   authMode,
   setAuthMode,
 }) => {
+  const theme = useTheme();
+
   const selectedStyle = (_authMode: number): Style => {
     return authModes[authMode] == _authMode
-      ? tw`bg-emerald-700`
-      : tw`bg-sky-800`;
+      ? {backgroundColor: theme.palette.secondary.main}
+      : {backgroundColor: theme.palette.primary.main};
   };
 
   return (

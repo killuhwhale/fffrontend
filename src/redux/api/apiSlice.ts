@@ -4,7 +4,6 @@ import {
   createApi,
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react';
-import {WorkoutCardProps} from '../../app_components/Cards/types';
 
 // import EncryptedStorage from 'react-native-encrypted-storage';
 import RNSecureStorage, {ACCESSIBLE} from 'killuhwhal3-rn-secure-storage';

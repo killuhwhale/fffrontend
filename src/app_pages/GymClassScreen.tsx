@@ -4,6 +4,7 @@ import {
   Container,
   MEDIA_CLASSES,
   SCREEN_WIDTH,
+  darkRed,
   withSpaceURL,
 } from '../app_components/shared';
 import {
@@ -93,7 +94,7 @@ const FavoriteGymClass: FunctionComponent<{
       isFavorited(dataGymClassFavs?.favorite_gym_classes) ? (
         <TouchableHighlight onPress={() => unfavoriteGymClassMutation(favObj)}>
           <View style={{alignItems: 'center'}}>
-            <Icon name="star" color="red" style={{fontSize: 24}} />
+            <Icon name="star" color={darkRed} style={{fontSize: 24}} />
             <SmallText>Unfavorite</SmallText>
           </View>
         </TouchableHighlight>
@@ -195,8 +196,9 @@ const GymClassScreen: FunctionComponent<Props> = ({
           flexDirection: 'row',
           paddingLeft: 32,
           width: '100%',
-          flex: 1,
+          flex: 2,
           alignItems: 'center',
+          flexShrink: 1,
         }}>
         <Image
           style={{
@@ -212,7 +214,12 @@ const GymClassScreen: FunctionComponent<Props> = ({
             handleError();
           }}
         />
-        <View style={{flex: 2, marginLeft: 16, alignItems: 'center'}}>
+        <View
+          style={{
+            flex: 2,
+            marginLeft: 16,
+            alignItems: 'center',
+          }}>
           <TSTitleText textStyles={{textAlign: 'center'}}>
             {title}{' '}
             {data?.user_is_owner
@@ -297,7 +304,6 @@ const GymClassScreen: FunctionComponent<Props> = ({
                 borderRadius: 8,
                 flexDirection: 'row',
                 justifyContent: 'center',
-                backgroundColor: theme.palette.secondary.main,
               }}
               onPress={() => {
                 navigation.navigate('CreateWorkoutGroupScreen', {
@@ -309,13 +315,15 @@ const GymClassScreen: FunctionComponent<Props> = ({
               testID={TestIDs.CreateWorkoutGroupScreenForClassBtn.name()}>
               <View
                 style={{
-                  backgroundColor: theme.palette.primary.main,
-                  borderRadius: 8,
+                  backgroundColor: theme.palette.accent,
+                  padding: 2,
+                  marginRight: 8,
+                  borderRadius: 112,
                 }}>
                 <Icon
-                  name="add-outline"
+                  name="add"
                   color={theme.palette.text}
-                  style={{fontSize: 24, margin: 1}}
+                  style={{fontSize: 24}}
                 />
               </View>
             </TouchableHighlight>
@@ -324,7 +332,7 @@ const GymClassScreen: FunctionComponent<Props> = ({
               <Icon
                 onPress={onConfirmDelete}
                 name="remove-circle-sharp"
-                color="red"
+                color={darkRed}
                 style={{fontSize: 24, marginHorizontal: 8}}
               />
             ) : (

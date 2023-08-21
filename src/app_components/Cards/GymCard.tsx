@@ -8,6 +8,8 @@ import {useNavigation} from '@react-navigation/native';
 import {Props as HomeScreenProps} from '../../app_pages/home';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import moc from '../../../assets/bgs/moc.png';
+import LinearGradient from 'react-native-linear-gradient';
+import twrnc from 'twrnc';
 
 const GymCard: FunctionComponent<GymCardProps> = props => {
   const theme = useTheme();
@@ -38,62 +40,54 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
         borderBottomLeftRadius: 16,
         borderTopRightRadius: bRadiusRight,
         borderBottomRightRadius: bRadiusRight,
+
+        paddingRight: 12,
       }}>
-      <View
-        style={{
-          backgroundColor: theme.palette.primary.main,
-          flex: 1,
-          borderTopLeftRadius: 16,
-          borderBottomLeftRadius: 16,
-          borderTopRightRadius: bRadiusRight,
-          borderBottomRightRadius: bRadiusRight,
-        }}>
+      <LinearGradient
+        colors={['#00000000', theme.palette.primary.main ?? '#0F0']} // Turquoise
+        start={{x: 0.05, y: 0}}
+        end={{x: 0.75, y: 1}}
+        style={{flex: 1, borderRadius: 16}}>
         <View
           style={{
-            borderWidth: 1,
-            borderTopLeftRadius: 16,
-            borderBottomLeftRadius: 16,
-            borderTopRightRadius: bRadiusRight,
-            borderBottomRightRadius: bRadiusRight,
+            flexDirection: 'row',
+            flex: 1,
+            marginLeft: 36,
           }}>
+          <Image
+            style={{
+              borderTopLeftRadius: 16,
+              borderBottomLeftRadius: 16,
+              borderTopRightRadius: 0,
+              borderBottomRightRadius: 0,
+              width: 50,
+              height: 50,
+            }}
+            source={
+              useDefault
+                ? moc
+                : {
+                    uri: logoURL,
+                  }
+            }
+            onError={() => handleError()}
+          />
           <View
             style={{
-              flexDirection: 'row',
-              flex: 1,
+              marginLeft: 8,
+              justifyContent: 'space-around',
             }}>
-            <Image
-              style={{
-                borderTopLeftRadius: 16,
-                borderBottomLeftRadius: 16,
-                borderTopRightRadius: 0,
-                borderBottomRightRadius: 0,
-                width: 50,
-                height: 50,
-              }}
-              source={
-                useDefault
-                  ? moc
-                  : {
-                      uri: logoURL,
-                    }
-              }
-              onError={() => handleError()}
-            />
-            <View
-              style={{
-                marginLeft: 8,
-                justifyContent: 'space-around',
-              }}>
-              <TSParagrapghText textStyles={{textAlign: 'left'}}>
-                {props.title}
-              </TSParagrapghText>
-              <TSCaptionText textStyles={{marginLeft: 2, textAlign: 'left'}}>
-                {props.desc.slice(0, 40)} {props.desc.length > 40 ? '...' : ''}
-              </TSCaptionText>
-            </View>
+            <TSParagrapghText
+              numberOfLines={1}
+              textStyles={{textAlign: 'left', width: '80%'}}>
+              {props.title}
+            </TSParagrapghText>
+            <TSCaptionText textStyles={{marginLeft: 2, textAlign: 'left'}}>
+              {props.desc.slice(0, 40)} {props.desc.length > 40 ? '...' : ''}
+            </TSCaptionText>
           </View>
         </View>
-      </View>
+      </LinearGradient>
     </TouchableHighlight>
   );
 };

@@ -142,6 +142,7 @@ export interface WorkoutCardProps {
   scheme_type: number;
   scheme_rounds: string;
   date: string;
+  for_date?: string;
   editable?: boolean;
   testID?: string;
   ownedByClass: boolean;

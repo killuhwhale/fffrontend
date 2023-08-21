@@ -48,7 +48,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {MediaURLSliderClass} from '../app_components/MediaSlider/MediaSlider';
-import {ActionCancelModal} from './Profile';
+import ActionCancelModal from '../app_components/modals/ActionCancelModal';
 import {StatsPanel} from '../app_components/Stats/StatsPanel';
 import {RegularButton} from '../app_components/Buttons/buttons';
 import {TestIDs} from '../utils/constants';
@@ -85,7 +85,6 @@ const WorkoutScreen: FunctionComponent<Props> = ({
   const [showFinishDualWorkoutItems, setShowFinishDualWorkoutItems] =
     useState(false);
 
-  console.log('showFinishDualWorkoutItems: ', showFinishDualWorkoutItems);
   const {
     id,
     title,
@@ -161,7 +160,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
     // console.log('OG workout owneed by class');
     const {data, isLoading, isSuccess, isError, error} =
       useGetWorkoutsForGymClassWorkoutGroupQuery(id);
-    console.log('Owned by class, data: ', data);
+    // console.log('Owned by class, data: ', data);
     oGData = data;
     oGIsLoading = isLoading;
     oGIsSuccess = isSuccess;
@@ -217,7 +216,6 @@ const WorkoutScreen: FunctionComponent<Props> = ({
       ? completedData
       : ({} as WorkoutGroupProps);
 
-  console.log('WorkoutGroups num workouts: ', workoutGroup.workouts?.length);
   // const isOGWorkoutGroup = workoutGroup.workouts ? true : false
   mediaClass = showingOGWorkoutGroup ? WORKOUT_MEDIA : COMPLETED_WORKOUT_MEDIA;
 
@@ -355,22 +353,24 @@ const WorkoutScreen: FunctionComponent<Props> = ({
       // Show a modal to allow the user to enter the information for the workouts
       setShowFinishDualWorkoutItems(true);
     }
+
+    console.log('Should prompt user to complete dual items: ', shouldShow);
     return shouldShow;
   };
 
   const _finishGroupWorkout = async () => {
-    console.log(
-      'Need to check......: ',
-      hasUnfinsihedDualItems(workouts),
-      workouts,
-    );
+    // console.log(
+    //   'Need to check......: ',
+    //   hasUnfinsihedDualItems(workouts),
+    //   workouts,
+    // );
 
     // Allow user to submit finish to WorkoutGroup for class.
     const data = new FormData();
     data.append('group', oGData.id);
     try {
-      // const res = await finishWorkoutGroup(data).unwrap();
-      // console.log('res finsih', res);
+      const res = await finishWorkoutGroup(data).unwrap();
+      console.log('res finsih', res);
       setShowFinishWorkoutGroupModal(false);
     } catch (err) {
       console.log('Error finishing workout', err);
@@ -679,7 +679,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
         {workouts.length ? (
           <>
             <Row style={{width: '100%'}}>
-              <TSTitleText>Stats</TSTitleText>
+              <TSTitleText textStyles={{marginLeft: 6}}>Stats</TSTitleText>
             </Row>
 
             <View
@@ -698,7 +698,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
             <Row style={{width: '100%', borderRadius: 8}} />
 
             <Row style={{width: '100%'}}>
-              <TSTitleText>Workouts</TSTitleText>
+              <TSTitleText textStyles={{marginLeft: 6}}>Workouts</TSTitleText>
             </Row>
 
             <Row style={{width: '100%'}}>
@@ -744,7 +744,9 @@ const WorkoutScreen: FunctionComponent<Props> = ({
           onAction={() => {
             setShowFinishWorkoutGroupModal(false);
             if (!promptUpdateDualItems()) {
-              _finishGroupWorkout();
+              _finishGroupWorkout()
+                .then(res => console.log('workout group finished', res))
+                .catch(err => console.log('Failed to finish workout: ', err));
             }
           }}
           modalVisible={showFinishWorkoutGroupModal}

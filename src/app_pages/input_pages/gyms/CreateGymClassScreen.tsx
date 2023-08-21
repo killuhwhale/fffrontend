@@ -7,7 +7,13 @@ import React, {
 } from 'react';
 import {Image, View, Switch, ActivityIndicator} from 'react-native';
 import styled from 'styled-components/native';
-import {Container, mdFontSize} from '../../../app_components/shared';
+import {
+  Container,
+  GymClassDescLimit,
+  GymClassTitleLimit,
+  limitTextLength,
+  mdFontSize,
+} from '../../../app_components/shared';
 import {
   TSCaptionText,
   TSParagrapghText,
@@ -180,7 +186,9 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
         <View style={{flex: 3}}>
           <View style={{height: 35, marginBottom: 8}}>
             <Input
-              onChangeText={t => setTitle(t)}
+              onChangeText={t =>
+                setTitle(limitTextLength(t, GymClassTitleLimit))
+              }
               testID={TestIDs.GymClassTitleField.name()}
               value={title}
               containerStyle={{
@@ -191,7 +199,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
               }}
               leading={
                 <Icon
-                  name="checkmark-circle-outline"
+                  name="information-circle-outline"
                   style={{fontSize: mdFontSize}}
                   color={theme.palette.text}
                 />
@@ -202,7 +210,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
           </View>
           <View style={{height: 35}}>
             <Input
-              onChangeText={t => setDesc(t)}
+              onChangeText={t => setDesc(limitTextLength(t, GymClassDescLimit))}
               value={desc}
               containerStyle={{
                 width: '100%',
@@ -213,7 +221,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
               testID={TestIDs.GymClassDescField.name()}
               leading={
                 <Icon
-                  name="checkmark-circle-outline"
+                  name="information-circle-outline"
                   style={{fontSize: mdFontSize}}
                   color={theme.palette.text}
                 />
@@ -251,7 +259,7 @@ const CreateGymClassScreen: FunctionComponent<Props> = ({navigation}) => {
               }}>
               <TSCaptionText
                 textStyles={{textAlign: 'center', marginBottom: 12}}>
-                Gym
+                Select Gym
               </TSCaptionText>
               <RNPickerSelect
                 ref={pickerRef}

@@ -115,28 +115,18 @@ git push origin HEAD:staging HEAD
 
 # TODO
 
-- Splash Screen Updates
-
-  - Change name, remove react native
-
 - Add Complete list of names
 
-- Update UI to take screenshots for App Store
+  - Not exactly sure what I am missing but there are a few that Ive stumbled across that are missing.
 
-- Class Desription overlaps with Image
+- Take screenshots for App Store
 
-- TInput fields for text should show and limit the text to respect the model limits.
+  - Create a Full List og Gyms
 
-  - Gym
-    - Title, desc
-  - GymClass
-    - Title, desc
-  - Workout
-    - Title, caption,
+    - Create 1 Class with full list of workouts
 
-- Username on Profile overlaps when really long. Textview then overlaps edit icon and cant reedit...
-
-- Workout Icon should be changed.... kinda lame - Maybe we can use a letter to indicate Day of Week
+  - Create a full list of Personal Workouts
+  - Create 1 Full WorkoutGroup with Each type.
 
 StatsScreen
 
@@ -176,8 +166,6 @@ StatsScreen
 - Live Stripe
 - Live Google Ads
 - Update registration email to explain to upgrade to Membership,
-
-- ## Create a drop down on CreateWorkoutScreen so that Title, Desc and Rep Schemes are able to be hidden to fgive more room for workouts.
 
 - Lock to portrait only - Need to Change on iOS still.
   On iOS, in the General tab and Deployment Info section of Xcode enable the Device Orientation you want to support (ensure you have selected iPhone from the Devices menu when making the changes). For Android, open the AndroidManifest.xml file and within the activity element add 'android:screenOrientation="portrait"' to lock to portrait or 'android:screenOrientation="landscape"' to lock to landscape.

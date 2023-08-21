@@ -107,10 +107,10 @@ const EditWorkoutDualItem: FunctionComponent<{
         <View
           style={{
             flexDirection: 'row',
-            flex: 1,
             alignItems: 'center',
             justifyContent: 'space-between',
             width: '90%',
+            height: 35,
           }}>
           <TSCaptionText textStyles={{textAlign: 'center'}}>Sets</TSCaptionText>
           <View
@@ -163,7 +163,7 @@ const EditWorkoutDualItem: FunctionComponent<{
         <View
           style={{
             flexDirection: 'row',
-            flex: 1,
+            height: 35,
 
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -228,7 +228,7 @@ const EditWorkoutDualItem: FunctionComponent<{
         <View
           style={{
             flexDirection: 'row',
-            flex: 1,
+            height: 35,
             alignItems: 'center',
             justifyContent: 'space-between',
             width: '90%',
@@ -339,7 +339,7 @@ const EditWorkoutDualItem: FunctionComponent<{
         <View
           style={{
             flexDirection: 'row',
-            flex: 1,
+            height: 35,
             alignItems: 'center',
             justifyContent: 'space-between',
             width: '90%',
@@ -452,7 +452,7 @@ const EditWorkoutDualItem: FunctionComponent<{
       <View
         style={{
           flexDirection: 'row',
-          flex: 1,
+          height: 35,
           alignItems: 'center',
           justifyContent: 'space-between',
           width: '90%',
@@ -518,7 +518,7 @@ const EditWorkoutDualItem: FunctionComponent<{
       <View
         style={{
           flexDirection: 'row',
-          flex: 1,
+          height: 45,
           alignItems: 'center',
           justifyContent: 'space-between',
           width: '90%',

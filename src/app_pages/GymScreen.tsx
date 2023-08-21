@@ -1,6 +1,11 @@
 import React, {FunctionComponent, useState} from 'react';
 import styled from 'styled-components/native';
-import {Container, MEDIA_CLASSES, withSpaceURL} from '../app_components/shared';
+import {
+  Container,
+  MEDIA_CLASSES,
+  darkRed,
+  withSpaceURL,
+} from '../app_components/shared';
 import {
   SmallText,
   TSCaptionText,
@@ -75,7 +80,7 @@ const FavoriteGym: FunctionComponent<{
           <View style={{alignItems: 'center'}}>
             <Icon
               name="star"
-              color="red"
+              color={darkRed}
               style={{fontSize: 24}}
               onPress={() => unfavoriteGymMutation(favObj)}
             />
@@ -127,15 +132,17 @@ const GymScreen: FunctionComponent<Props> = ({navigation, route: {params}}) => {
           flexDirection: 'row',
           paddingLeft: 32,
           width: '100%',
-          flex: 1,
+          flex: 2,
           alignItems: 'center',
           marginTop: 8,
+          flexShrink: 1,
         }}>
         <Image
           style={{
             resizeMode: 'center',
             borderRadius: 8,
             height: '100%',
+
             flex: 1,
           }}
           source={useDefault ? moc : {uri: mainURL}}
@@ -143,7 +150,7 @@ const GymScreen: FunctionComponent<Props> = ({navigation, route: {params}}) => {
             handleError();
           }}
         />
-        <View style={{flex: 1, marginLeft: 16, alignItems: 'center'}}>
+        <View style={{flex: 2, marginLeft: 16, alignItems: 'center'}}>
           <TSTitleText>{title}</TSTitleText>
         </View>
 

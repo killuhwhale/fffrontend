@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item
-        android:drawable="@color/common_google_signin_btn_text_dark"/>
+    <item android:drawable="@drawable/gradient_background"/>
 
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@drawable/splashandroid"/>
     </item>
 
 </layer-list>

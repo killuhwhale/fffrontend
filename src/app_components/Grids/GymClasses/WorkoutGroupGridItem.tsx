@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from 'react';
 import {useTheme} from 'styled-components';
-import {TSCaptionText, TSParagrapghText} from '../../Text/Text';
+import {SmallText, TSCaptionText, TSParagrapghText} from '../../Text/Text';
 import {useNavigation} from '@react-navigation/native';
 
 import {WorkoutGroupCardProps} from '../../Cards/types';
@@ -10,9 +10,6 @@ import {Image, TouchableHighlight, View} from 'react-native';
 import {Props as GymClassScreenProps} from '../../../app_pages/GymClassScreen';
 import {dateFormat} from '../../../app_pages/StatsScreen';
 import LinearGradient from 'react-native-linear-gradient';
-import twrnc from 'twrnc';
-
-const g1 = twrnc.color('bg-sky-400');
 
 const WorkoutGroupGridItem: FunctionComponent<{
   card: WorkoutGroupCardProps;
@@ -34,11 +31,14 @@ const WorkoutGroupGridItem: FunctionComponent<{
         flexDirection: 'column',
         margin: 8,
       }}>
-      <TouchableHighlight onPress={handlePress}>
+      <TouchableHighlight
+        onPress={handlePress}
+        style={{borderRadius: 16}}
+        underlayColor="transparent">
         <LinearGradient
-          colors={['#00000000', g1 ?? '#0F0']} // Turquoise
-          start={{x: 0.2, y: 0}}
-          end={{x: 0.42, y: 1}}
+          colors={['#00000000', theme.palette.accent]} // Turquoise
+          start={{x: 0.05, y: 0}}
+          end={{x: 0.75, y: 1}}
           style={{flex: 1, borderRadius: 16}}>
           <View
             style={{
@@ -46,39 +46,33 @@ const WorkoutGroupGridItem: FunctionComponent<{
               justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <Image
-              style={{width: 40, height: 40, borderRadius: 16}}
-              source={{
-                uri: 'https://i.etsystatic.com/11209681/r/il/fa7063/847010458/il_794xN.847010458_dalj.jpg',
-              }}
-            />
+            <View style={{width: 20, height: 40}} />
             <View style={{flex: 5}}>
               <View style={{marginVertical: 4}}>
-                <TSParagrapghText textStyles={{marginLeft: 16}}>
+                <TSParagrapghText
+                  numberOfLines={1}
+                  textStyles={{marginLeft: 16}}>
                   {props.card.title}
                 </TSParagrapghText>
-                <TSCaptionText textStyles={{textAlign: 'left', marginLeft: 16}}>
-                  {dateFormat(new Date(props.card.for_date))}
+                <TSCaptionText
+                  numberOfLines={1}
+                  textStyles={{textAlign: 'left', marginLeft: 16}}>
+                  {dateFormat(new Date(props.card.for_date))}{' '}
                 </TSCaptionText>
               </View>
             </View>
             <View style={{flex: 1, alignItems: 'center'}}>
               <Icon
                 name="checkmark-circle-outline"
-                color={
-                  props.card.completed
-                    ? theme.palette.primary.main
-                    : theme.palette.text
-                }
-                style={{fontSize: 28, marginRight: 8}}
+                color={props.card.completed ? '#00FF00' : theme.palette.text}
+                style={{fontSize: 18, marginRight: 8}}
               />
               {props.card.owned_by_class === true ? (
                 <></>
               ) : (
-                <TSCaptionText
-                  textStyles={{textAlign: 'right', marginRight: 14}}>
+                <SmallText textStyles={{textAlign: 'right', marginRight: 14}}>
                   {props.card.owned_by_class === false ? 'you' : 'class'}
-                </TSCaptionText>
+                </SmallText>
               )}
             </View>
           </View>

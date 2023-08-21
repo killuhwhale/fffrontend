@@ -147,36 +147,54 @@ const TSTitleText: FunctionComponent<TextProps> = props => {
 };
 const TSParagrapghText: FunctionComponent<TextProps> = props => {
   return (
-    <StyledTSParagrapgh style={props.textStyles}>
+    <StyledTSParagrapgh
+      numberOfLines={props.numberOfLines}
+      style={props.textStyles}>
       {props.children}
     </StyledTSParagrapgh>
   );
 };
 const TSListTitleText: FunctionComponent<TextProps> = props => {
   return (
-    <StyledTSListTitle style={props.textStyles}>
+    <StyledTSListTitle
+      numberOfLines={props.numberOfLines}
+      style={props.textStyles}>
       {props.children}
     </StyledTSListTitle>
   );
 };
 const TSSnippetText: FunctionComponent<TextProps> = props => {
   return (
-    <StyledTSSnippet style={props.textStyles}>{props.children}</StyledTSSnippet>
+    <StyledTSSnippet
+      numberOfLines={props.numberOfLines}
+      style={props.textStyles}>
+      {props.children}
+    </StyledTSSnippet>
   );
 };
 const TSCaptionText: FunctionComponent<TextProps> = props => {
   return (
-    <StyledTSCaption style={props.textStyles}>{props.children}</StyledTSCaption>
+    <StyledTSCaption
+      numberOfLines={props.numberOfLines}
+      style={props.textStyles}>
+      {props.children}
+    </StyledTSCaption>
   );
 };
 const TSButtonText: FunctionComponent<TextProps> = props => {
   return (
-    <StyledTSButton style={props.textStyles}>{props.children}</StyledTSButton>
+    <StyledTSButton
+      numberOfLines={props.numberOfLines}
+      style={props.textStyles}>
+      {props.children}
+    </StyledTSButton>
   );
 };
 const TSInputText: FunctionComponent<TextProps> = props => {
   return (
-    <StyledTSInput style={props.textStyles}>{props.children}</StyledTSInput>
+    <StyledTSInput numberOfLines={props.numberOfLines} style={props.textStyles}>
+      {props.children}
+    </StyledTSInput>
   );
 };
 

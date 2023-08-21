@@ -86,7 +86,11 @@ const ResetPasswordViaEmail: FunctionComponent = () => {
 
       <View style={{alignItems: 'center'}}>
         <RegularButton
-          btnStyles={{width: '100%', justifyContent: 'center'}}
+          btnStyles={{
+            width: '100%',
+            justifyContent: 'center',
+            backgroundColor: theme.palette.primary.main,
+          }}
           textStyles={{textAlign: 'center', fontSize: 16}}
           onPress={sendEmail}
           text="Send Reset Code"
