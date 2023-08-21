@@ -643,7 +643,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                 {workouts.length ? (
                   <TouchableWithoutFeedback
                     onPress={() => setEditable(!editable)}>
-                    <View style={{justifyContent: 'flex-end'}}>
+                    <View style={{alignItems: 'flex-end'}}>
                       <Switch
                         value={editable}
                         onValueChange={v => {
