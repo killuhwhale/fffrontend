@@ -30,7 +30,7 @@ import WorkoutNameDetailScreen from '../app_pages/WorkoutNameDetailScreen';
 import CreateCompletedWorkoutScreen from '../app_pages/input_pages/gyms/CreateCompletedWorkoutScreen';
 import StatsScreen from '../app_pages/StatsScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {SmallText} from '../app_components/Text/Text';
+import {XSmallText} from '../app_components/Text/Text';
 import ResetPasswordScreen from '../app_pages/input_pages/users/ResetPassword';
 import {SCREEN_HEIGHT} from '../app_components/shared';
 import UserWorkoutsScreen from '../app_pages/UserWorkoutsScreen';
@@ -38,6 +38,7 @@ import {TestIDs} from '../utils/constants';
 import GymSearchScreen from '../app_pages/GymSearchScreen';
 import {Platform, StyleSheet, View} from 'react-native';
 import twrnc from 'twrnc';
+import DailySnapshotScreen from '../app_pages/DailySnapshot';
 // Screens and props each screen expects...
 export type RootStackParamList = {
   HomePage: undefined;
@@ -54,6 +55,7 @@ export type RootStackParamList = {
   Profile: undefined;
   AuthScreen: undefined;
   Header: undefined;
+  DailySnapshotScreen: undefined;
   CreateGymScreen: undefined;
   CreateGymClassScreen: undefined;
   CreateWorkoutGroupScreen: {
@@ -104,22 +106,23 @@ function HomePageTabs() {
             marginBottom: Platform.OS === 'ios' ? 12 : 0,
           },
           tabBarLabel: ({color, focused, position}) => (
-            <SmallText
+            <XSmallText
               textStyles={{
                 color: focused ? theme.palette.accent : theme.palette.text,
               }}>
               Home
-            </SmallText>
+            </XSmallText>
           ),
           tabBarIcon: ({color, focused, size}) => (
             <Icon
               name="planet"
               color={focused ? theme.palette.accent : theme.palette.text}
-              style={{fontSize: size}}
+              style={{fontSize: size - 4}}
             />
           ),
         }}
       />
+
       <Tab.Screen
         name="My Workouts"
         component={UserWorkoutsScreen}
@@ -136,22 +139,56 @@ function HomePageTabs() {
             marginBottom: Platform.OS === 'ios' ? 12 : 0,
           },
           tabBarLabel: ({color, focused, position}) => (
-            <SmallText
+            <XSmallText
               textStyles={{
                 color: focused ? theme.palette.accent : theme.palette.text,
               }}>
               My Workouts
-            </SmallText>
+            </XSmallText>
           ),
           tabBarIcon: ({color, focused, size}) => (
             <Icon
               name="barbell-outline"
               color={focused ? theme.palette.accent : theme.palette.text}
-              style={{fontSize: size}}
+              style={{fontSize: size - 4}}
             />
           ),
         }}
       />
+
+      <Tab.Screen
+        name="Snapshot"
+        component={DailySnapshotScreen}
+        options={{
+          headerShown: false,
+          tabBarTestID: '',
+
+          tabBarStyle: {
+            backgroundColor: tabBarColor,
+            flex: tabBarFlex,
+            paddingBottom: 4,
+          },
+          tabBarItemStyle: {
+            marginBottom: Platform.OS === 'ios' ? 12 : 0,
+          },
+          tabBarLabel: ({color, focused, position}) => (
+            <XSmallText
+              textStyles={{
+                color: focused ? theme.palette.accent : theme.palette.text,
+              }}>
+              Snapshot
+            </XSmallText>
+          ),
+          tabBarIcon: ({color, focused, size}) => (
+            <Icon
+              name="apps-outline"
+              color={focused ? theme.palette.accent : theme.palette.text}
+              style={{fontSize: size - 4}}
+            />
+          ),
+        }}
+      />
+
       <Tab.Screen
         name="Stats"
         component={StatsScreen}
@@ -168,18 +205,18 @@ function HomePageTabs() {
             marginBottom: Platform.OS === 'ios' ? 12 : 0,
           },
           tabBarLabel: ({color, focused, position}) => (
-            <SmallText
+            <XSmallText
               textStyles={{
                 color: focused ? theme.palette.accent : theme.palette.text,
               }}>
               Stats
-            </SmallText>
+            </XSmallText>
           ),
           tabBarIcon: ({color, focused, size}) => (
             <Icon
               name="stats-chart-outline"
               color={focused ? theme.palette.accent : theme.palette.text}
-              style={{fontSize: size}}
+              style={{fontSize: size - 4}}
             />
           ),
         }}
@@ -201,18 +238,18 @@ function HomePageTabs() {
           },
 
           tabBarLabel: ({color, focused, position}) => (
-            <SmallText
+            <XSmallText
               textStyles={{
                 color: focused ? theme.palette.accent : theme.palette.text,
               }}>
               Profile
-            </SmallText>
+            </XSmallText>
           ),
           tabBarIcon: ({color, focused, size}) => (
             <Icon
               name="finger-print"
               color={focused ? theme.palette.accent : theme.palette.text}
-              style={{fontSize: size}}
+              style={{fontSize: size - 4}}
             />
           ),
         }}
@@ -240,7 +277,13 @@ const RootStack: FunctionComponent<RootstackProps> = props => {
     const routeNameUnsub = props.navref.current?.addListener('state', state => {
       // console.log('Header state: ', props.navref.current?.getCurrentRoute());
       const cr = props.navref.current?.getCurrentRoute()?.name;
-      const homeRoutes = ['HomePage', 'My Workouts', 'Stats', 'Profile'];
+      const homeRoutes = [
+        'HomePage',
+        'My Workouts',
+        'Snapshot',
+        'Stats',
+        'Profile',
+      ];
       if (cr && homeRoutes.indexOf(cr) < 0) {
         // console.log('setShowBackButton(true): ');
         props.setShowBackButton(true);
@@ -348,6 +391,11 @@ const RootStack: FunctionComponent<RootstackProps> = props => {
         <Stack.Screen
           name="StatsScreen"
           component={StatsScreen}
+          options={{headerTitle: '', headerShown: false}}
+        />
+        <Stack.Screen
+          name="DailySnapshotScreen"
+          component={DailySnapshotScreen}
           options={{headerTitle: '', headerShown: false}}
         />
         <Stack.Screen

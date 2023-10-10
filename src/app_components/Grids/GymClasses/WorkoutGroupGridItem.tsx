@@ -1,6 +1,11 @@
 import React, {FunctionComponent} from 'react';
 import {useTheme} from 'styled-components';
-import {SmallText, TSCaptionText, TSParagrapghText} from '../../Text/Text';
+import {
+  SmallText,
+  TSCaptionText,
+  TSParagrapghText,
+  XSmallText,
+} from '../../Text/Text';
 import {useNavigation} from '@react-navigation/native';
 
 import {WorkoutGroupCardProps} from '../../Cards/types';
@@ -10,6 +15,7 @@ import {Image, TouchableHighlight, View} from 'react-native';
 import {Props as GymClassScreenProps} from '../../../app_pages/GymClassScreen';
 import {dateFormat} from '../../../app_pages/StatsScreen';
 import LinearGradient from 'react-native-linear-gradient';
+import {green} from '../../shared';
 
 const WorkoutGroupGridItem: FunctionComponent<{
   card: WorkoutGroupCardProps;
@@ -64,15 +70,15 @@ const WorkoutGroupGridItem: FunctionComponent<{
             <View style={{flex: 1, alignItems: 'center'}}>
               <Icon
                 name="checkmark-circle-outline"
-                color={props.card.completed ? '#00FF00' : theme.palette.text}
-                style={{fontSize: 18, marginRight: 8}}
+                color={props.card.completed ? green : theme.palette.text}
+                style={{fontSize: 24, marginRight: 8}}
               />
               {props.card.owned_by_class === true ? (
                 <></>
               ) : (
-                <SmallText textStyles={{textAlign: 'right', marginRight: 14}}>
+                <XSmallText textStyles={{textAlign: 'right', marginRight: 14}}>
                   {props.card.owned_by_class === false ? 'you' : 'class'}
-                </SmallText>
+                </XSmallText>
               )}
             </View>
           </View>

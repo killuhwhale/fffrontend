@@ -162,5 +162,3 @@ const WorkoutGroupCard: FunctionComponent<{
     </CardBG>
   );
 };
-
-export default WorkoutGroupCard;

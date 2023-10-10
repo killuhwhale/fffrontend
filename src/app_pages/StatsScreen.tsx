@@ -31,8 +31,10 @@ const ScreenContainer = styled(Container)`
   justify-content: space-between;
   width: 100%;
 `;
-export const dateFormat = (d: Date) => {
-  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+export const dateFormat = (dd: Date) => {
+  // return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+  const d = new Date(dd);
+  return `${d.getUTCFullYear()}-${d.getUTCMonth() + 1}-${d.getUTCDate()}`;
 };
 
 export const chartConfig = {

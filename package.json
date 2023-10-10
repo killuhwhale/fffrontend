@@ -40,7 +40,7 @@
     "react-native-gesture-handler": "^2.5.0",
     "react-native-google-mobile-ads": "^11.1.1",
     "react-native-image-crop-picker": "^0.38.0",
-    "react-native-image-picker": "^4.8.5",
+    "react-native-image-picker": "^7.0.0",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-picker-select": "^8.0.4",
     "react-native-reanimated": "^2.12.0",

@@ -46,7 +46,9 @@ export function lightenHexColor(hexColor: string, factor: number): string {
 }
 
 export const lightRed = twrnc.color('bg-red-400');
+export const red = twrnc.color('bg-red-500');
 export const darkRed = twrnc.color('bg-red-800');
+export const green = twrnc.color('bg-emerald-600');
 
 export const tsPageTitle: number = Platform.OS === 'ios' ? 20 : 20;
 export const tsParagrapgh: number = Platform.OS === 'ios' ? 14 : 14;
@@ -56,12 +58,13 @@ export const tsCaption: number = Platform.OS === 'ios' ? 14 : 14; // lighter col
 export const tsButton: number = Platform.OS === 'ios' ? 14 : 14; // medium weight
 export const tsInput: number = Platform.OS === 'ios' ? 16 : 16;
 
-export const titleFontSize: number = Platform.OS === 'ios' ? 48 : 44;
-export const lgFontSize: number = Platform.OS === 'ios' ? 36 : 32;
-export const regFontSize: number = Platform.OS === 'ios' ? 24 : 20;
+// Deprecated....
+export const titleFontSize: number = Platform.OS === 'ios' ? 44 : 44;
+export const lgFontSize: number = Platform.OS === 'ios' ? 32 : 32;
+export const regFontSize: number = Platform.OS === 'ios' ? 20 : 20;
 export const mdFontSize: number = Platform.OS === 'ios' ? 18 : 18;
 export const smFontSize: number = Platform.OS === 'ios' ? 12 : 12;
-export const xsmFontSize: number = Platform.OS === 'ios' ? 8 : 8;
+export const xsmFontSize: number = Platform.OS === 'ios' ? 10 : 10;
 
 export const STANDARD_W = 'STANDARD';
 export const REPS_W = 'REPS';

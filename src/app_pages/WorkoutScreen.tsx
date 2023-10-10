@@ -9,6 +9,9 @@ import {
   formatLongDate,
   SCREEN_HEIGHT,
   SCREEN_WIDTH,
+  lightRed,
+  red,
+  green,
 } from '../app_components/shared';
 import {
   TSCaptionText,
@@ -607,9 +610,7 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                     onPress={() => setShowCreate(!showCreate)}
                     testID={TestIDs.ToggleShowCreateWorkoutBtns.name()}
                     btnStyles={{
-                      backgroundColor: showCreate
-                        ? theme.palette.gray
-                        : '#0F9D58',
+                      backgroundColor: showCreate ? theme.palette.gray : green,
                     }}
                     text={showCreate ? 'X' : 'Add Workout'}
                   />
@@ -653,10 +654,10 @@ const WorkoutScreen: FunctionComponent<Props> = ({
                           true: theme.palette.primary.contrastText,
                           false: theme.palette.primary.contrastText,
                         }}
-                        thumbColor={editable ? 'red' : theme.palette.gray}
+                        thumbColor={editable ? red : theme.palette.gray}
                       />
                       <TSCaptionText
-                        textStyles={{color: editable ? 'red' : 'white'}}>
+                        textStyles={{color: editable ? red : 'white'}}>
                         Delete mode
                         {editable
                           ? ': hold title of workout below to remove.'

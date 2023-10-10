@@ -223,6 +223,7 @@ export const apiSlice = createApi({
     'GymFavs',
     'GymClassFavs',
     'StatsQuery',
+    'DailySnapshot',
   ],
   endpoints: builder => ({
     // Users, Coaches and Members
@@ -478,7 +479,10 @@ export const apiSlice = createApi({
         // inavlidates query for useGetWorkoutsForGymClassWorkoutGroupQuery
         const data = new Map<string, string>(arg._parts);
 
-        return [{type: 'WorkoutGroupWorkouts', id: data.get('group')}];
+        return [
+          {type: 'WorkoutGroupWorkouts', id: data.get('group')},
+          'DailySnapshot',
+        ];
       },
     }),
     deleteWorkoutGroup: builder.mutation({
@@ -496,8 +500,11 @@ export const apiSlice = createApi({
         const data = new Map<string, string>(arg._parts);
 
         return data.get('owned_by_class')
-          ? [{type: 'GymClassWorkoutGroups', id: data.get('owner_id')}]
-          : ['UserWorkoutGroups'];
+          ? [
+              {type: 'GymClassWorkoutGroups', id: data.get('owner_id')},
+              'DailySnapshot',
+            ]
+          : ['UserWorkoutGroups', 'DailySnapshot'];
       },
     }),
 
@@ -557,6 +564,7 @@ export const apiSlice = createApi({
           {type: 'WorkoutGroupWorkouts', id: data.get('workout_group')},
           {type: 'UserWorkoutGroups'},
           {type: 'StatsQuery'},
+          {type: 'DailySnapshot'},
         ];
       },
     }),
@@ -579,6 +587,7 @@ export const apiSlice = createApi({
           {type: 'WorkoutGroupWorkouts', id: data.get('workout_group')},
           {type: 'UserWorkoutGroups'},
           {type: 'StatsQuery'},
+          {type: 'DailySnapshot'},
         ];
       },
     }),
@@ -597,6 +606,7 @@ export const apiSlice = createApi({
           {type: 'WorkoutGroupWorkouts', id: data.get('workout_group')},
           {type: 'UserWorkoutGroups'},
           {type: 'StatsQuery'},
+          {type: 'DailySnapshot'},
         ];
       },
     }),
@@ -637,6 +647,7 @@ export const apiSlice = createApi({
           'UserWorkoutGroups', // Reset Profile workout list
           {type: 'GymClassWorkoutGroups', id: data.get('owner_id')},
           {type: 'StatsQuery'},
+          {type: 'DailySnapshot'},
         ];
       },
     }),
@@ -743,6 +754,13 @@ export const apiSlice = createApi({
         return [{type: 'StatsQuery', id: arg}];
       },
     }),
+
+    getDailySnapshot: builder.query({
+      query: id => {
+        return {url: 'snapshot/user_daily/'};
+      },
+      providesTags: ['DailySnapshot'],
+    }),
   }),
 });
 
@@ -804,5 +822,6 @@ export const {
   useUpdateWorkoutDualItemsMutation,
   useCreateCompletedWorkoutMutation,
   useGetCompletedWorkoutGroupsForUserByDateRangeQuery,
+  useGetDailySnapshotQuery,
   // usesTagLabelsGroupsForUserByDateRangeQuery,
 } = apiSlice;

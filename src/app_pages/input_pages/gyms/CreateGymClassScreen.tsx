@@ -19,7 +19,7 @@ import {
   TSParagrapghText,
 } from '../../../app_components/Text/Text';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {launchImageLibrary, Asset} from 'react-native-image-picker';
+import {launchImageLibrary, Asset} from 'react-native-image-picker/src';
 import RNPickerSelect from 'react-native-picker-select';
 
 import DocumentPicker from 'react-native-document-picker';

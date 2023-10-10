@@ -80,7 +80,7 @@ const MediumText: FunctionComponent<TextProps> = props => {
     </StyledMediumText>
   );
 };
-// Depreacted
+
 const SmallText: FunctionComponent<TextProps> = props => {
   return (
     <StyledSmallText style={props.textStyles}>{props.children}</StyledSmallText>
