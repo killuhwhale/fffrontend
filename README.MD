@@ -162,6 +162,7 @@ StatsScreen
     - google@fittrackrr.com
     - !Google1
 
+- Remove Contribution Graph on iOS since the squres dont wanna show up...
 - Images for App Stores
 - Live Stripe
 - Live Google Ads

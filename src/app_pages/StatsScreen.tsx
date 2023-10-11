@@ -1,5 +1,10 @@
 import React, {FunctionComponent, useMemo, useState} from 'react';
-import {ScrollView, TouchableWithoutFeedback, View} from 'react-native';
+import {
+  Platform,
+  ScrollView,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import styled from 'styled-components/native';
 import {useTheme} from 'styled-components';
 import {TSCaptionText} from '../app_components/Text/Text';
@@ -206,11 +211,15 @@ const StatsScreen: FunctionComponent<Props> = ({
         <ScrollView>
           {dataReady ? (
             <>
-              <FreqCalendar
-                startDate={startDate}
-                endDate={endDate}
-                data={data}
-              />
+              {Platform.OS === 'ios' ? (
+                <></>
+              ) : (
+                <FreqCalendar
+                  startDate={startDate}
+                  endDate={endDate}
+                  data={data}
+                />
+              )}
               <View style={{marginBottom: 24}}>
                 <StatsPanel tags={tags} names={names} />
               </View>
