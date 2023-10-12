@@ -1,6 +1,5 @@
-# Gym Bay
-
-# FitForm
+- Privacy Policy - add https://fittrackrr.com/privacy
+- Delete Account w/ all data - add https://fittrackrr.com/removeAccount
 
 ## https://www.appicon.co/
 
@@ -15,12 +14,6 @@ git push origin HEAD
 
 brew install node
 brew install watchman
-
-sudo gem install cocoapods
-sudo arch -x86_64 gem install ffi
-arch -x86_64 pod install
-
-env /usr/bin/arch -arm64 /bin/bash --login
 
 # NPM Package
 
@@ -94,6 +87,13 @@ cd android/ && ./gradlew clean && ./gradlew bundleRelease && cd .. && npx react-
 Versions:
 To change the version of your iOS app, you will need to modify the CFBundleShortVersionString and CFBundleVersion keys in your app's Info.plist file.
 
+## POD install
+
+sudo gem install cocoapods
+sudo arch -x86_64 gem install ffi
+arch -x86_64 pod install
+env /usr/bin/arch -arm64 /bin/bash --login
+
 Double click on YOUR_APP_NAME.xcworkspace
 Product → Build
 Product → Archive
@@ -119,28 +119,7 @@ git push origin HEAD:staging HEAD
 
   - Not exactly sure what I am missing but there are a few that Ive stumbled across that are missing.
 
-- Take screenshots for App Store
-
-  - Create a Full List og Gyms
-
-    - Create 1 Class with full list of workouts
-
-  - Create a full list of Personal Workouts
-  - Create 1 Full WorkoutGroup with Each type.
-
-StatsScreen
-
-- When workout changes, it seems to break stuff
-- Maybe a simple key that correlates with the current search even if Math.random()
-
-  - This way things are reset properly? Not a huge deal but kinda crusty..
-
 - Apple Connect
-
-  - App Access - Account Creds for Apple
-
-    - apple@fittrackrr.com
-    - !Apple1
 
   - ## Support URL
 
@@ -156,49 +135,15 @@ StatsScreen
     - Upload up to eight 10-inch tablet screenshots. Screenshots must be PNG or JPEG, up to 8 MB each, 16:9 or 9:16 aspect ratio, with each side between 1,080 px and 7,680 px
     - Upload 4-8 screenshots. Screenshots must be PNG or JPEG, up to 8 MB each, 16:9 or 9:16 aspect ratio, with each side between 1,080 px and 7,680 px
 
-  - Privacy Policy - add https://fittrackrr.com/privacy
-  - Delete Account w/ all data - add https://fittrackrr.com/removeAccount
-  - App Access - Account Creds for Google
-    - google@fittrackrr.com
-    - !Google1
-
-- Remove Contribution Graph on iOS since the squres dont wanna show up...
-- Images for App Stores
+- Take screenshots for App Store
+  - Create a Full List og Gyms
+    - Create 1 Class with full list of workouts
+  - Create a full list of Personal Workouts
+  - Create 1 Full WorkoutGroup with Each type.
+- Create a demo gyms and workouts for Screenshots
+- Create test account for Apple and Google
 - Live Stripe
 - Live Google Ads
-- Update registration email to explain to upgrade to Membership,
-
-- Lock to portrait only - Need to Change on iOS still.
-  On iOS, in the General tab and Deployment Info section of Xcode enable the Device Orientation you want to support (ensure you have selected iPhone from the Devices menu when making the changes). For Android, open the AndroidManifest.xml file and within the activity element add 'android:screenOrientation="portrait"' to lock to portrait or 'android:screenOrientation="landscape"' to lock to landscape.
-
-- Create good sample workout
-  - Good for demos and screenshots
-- Create a Few gyms and populate with workouts daily.
-
 - Create workout engine.
 
 # Bugs:
-
-(Fixed)
-
-- Sending null files
-  - Request success, backend success, front end response failure...
-
-'''
-Ready to try an app that is designed to help you track and visualize your workouts to reach your fitness goals. With FitForm Trackerr, you can easily log your exercises and view your progress over time. Our user-friendly interface allows you to set goals and track your progress towards achieving them. Get started today and see the progress you can make with our app!
-
-I have an app with the description: "Ready to try an app that is designed to help you track and visualize your workouts to reach your fitness goals. With FitForm Trackerr, you can easily log your exercises and view your progress over time. Our user-friendly interface allows you to set goals and track your progress towards achieving them. Get started today and see the progress you can make with our app!"
-
-It can track personal workouts, allows users to create classes and add workouts in order to provide workouts to class members. users can compete workouts created by classes and modify the details to reflect what they did. They can visialize the data via graphs with date ranges to see break downs by exercise or exercise category.
-'''
-
-V2 Features:
-Remove account
-
-    This can be a V2, in the event it happens, user can reopen the app.
-    - New login method
-        - When user opens app when server is not running, error getting data.
-            - Data doesnt refetch
-        - user is logged in if keys are present.
-            - Possibly send request?
-            - Seems like we should just focus on retries....
