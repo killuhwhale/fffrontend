@@ -1,5 +1,11 @@
 import React, {FunctionComponent, useState} from 'react';
-import {Modal, TouchableHighlight, View} from 'react-native';
+import {
+  Linking,
+  Modal,
+  TouchableHighlight,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {useTheme} from 'styled-components';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RegularButton} from '../Buttons/buttons';
@@ -14,30 +20,54 @@ const ProfileSettingsModalRow: FunctionComponent<{
   onAction(): void;
   title: string;
   testID?: string;
+  color?: string;
+  variant?: number;
 }> = props => {
   const theme = useTheme();
+
+  const variantStyles = [
+    {
+      width: '100%',
+      height: '100%',
+      justifyContent: 'center',
+      borderRadius: 8,
+      paddingLeft: 8,
+    },
+    {
+      width: '75%',
+      height: '60%',
+      justifyContent: 'center',
+      borderRadius: 8,
+      paddingLeft: 8,
+    },
+  ] as ViewStyle[];
+
+  const variant = props.variant ? props.variant : 0;
   return (
     <View
       style={{
         width: '100%',
         height: 45,
         justifyContent: 'center',
+        alignContent: 'center',
+        alignItems: 'center',
         marginVertical: 8,
       }}>
       <TouchableHighlight
-        style={{
-          width: '100%',
-          height: '100%',
-          justifyContent: 'center',
-          borderRadius: 8,
-          paddingLeft: 8,
-        }}
+        style={[variantStyles[variant]]}
         testID={props.testID}
         underlayColor={theme.palette.transparent}
         onPress={() => {
           props.onAction();
         }}>
-        <MediumText textStyles={{textAlign: 'left'}}>{props.title}</MediumText>
+        <MediumText
+          textStyles={{
+            textAlign: variant === 0 ? 'left' : 'center',
+            color:
+              variant === 0 ? theme.palette.text : theme.palette.secondary.main,
+          }}>
+          {props.title}
+        </MediumText>
       </TouchableHighlight>
     </View>
   );
@@ -172,6 +202,23 @@ const ProfileSettingsModal: FunctionComponent<{
                 props.onRequestClose();
               }}
               title="Change Password"
+            />
+            <View
+              style={{
+                borderTopWidth: 1,
+                height: 1,
+                borderColor: theme.palette.text,
+              }}
+            />
+            <ProfileSettingsModalRow
+              testID={TestIDs.ResetPasswordScreenBtn.name()}
+              onAction={() => {
+                Linking.openURL('https://fittrackrr.com/removeAccount');
+                props.onRequestClose();
+              }}
+              variant={1}
+              color={theme.palette.secondary.main}
+              title="Remove Account"
             />
           </View>
 
