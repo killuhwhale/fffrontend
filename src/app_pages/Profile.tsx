@@ -11,6 +11,7 @@ import {
   darkRed,
   mdFontSize,
   smFontSize,
+  isDateInFuture,
 } from '../app_components/shared';
 import {
   TSCaptionText,
@@ -96,13 +97,7 @@ interface FavGymClassesPanelProps {
   data: FavGymClassCardProps[];
 }
 
-function isDateInFuture(date: Date): boolean {
-  const currentDate = new Date();
-  if (typeof date == typeof '') {
-    date = new Date(date);
-  }
-  return date > currentDate;
-}
+
 
 const UserInfoPanel: FunctionComponent<UserInfoPanelProps> = props => {
   const theme = useTheme();
@@ -208,6 +203,18 @@ const UserInfoPanel: FunctionComponent<UserInfoPanelProps> = props => {
     </View>
   );
 };
+
+
+const IAPPanel: FunctionComponent<{user: UserProps}> = ({user}) => {  
+console.log("IAPPanel user: ", user)
+  return(
+    <View>
+      <RegularButton onPress={() => RootNavigation.navigate("IAPScreen", user)}>
+        <TSCaptionText>{isDateInFuture(user.sub_end_date) ? "Manage membership": "Become a Member"}</TSCaptionText>
+      </RegularButton>
+    </View>
+  )
+}
 
 const GymsPanel: FunctionComponent<GymsPanelProps> = ({data, onDelete}) => {
   const theme = useTheme();
@@ -433,6 +440,7 @@ const Profile: FunctionComponent<Props> = ({navigation, route}) => {
             }}>
             <View style={{flex: 5}}>
               <UserInfoPanel user={data.user} />
+              <IAPPanel user={data.user} />
             </View>
             <View style={{flex: 1}}>
               <TouchableHighlight

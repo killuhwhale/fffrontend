@@ -44,7 +44,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>NSMicrophoneUsageDescription</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>NSPhotoLibraryUsageDescription</string>
+	<string>We need access to your photo library to let you upload an image and logo for your gym and classes.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

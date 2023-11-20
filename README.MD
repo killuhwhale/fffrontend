@@ -107,6 +107,8 @@ npx react-native run-ios --configuration Release
 When deleteing build folder or using new simulator, needed to remove DervivedData
 rm -r /Users/chrisandaya/Library/Developer/Xcode/DerivedData
 
+
+npx react-native start
 npx react-native run-ios --udid CCF49CB5-3952-4D51-8830-27A2BA1FEB1B
 iphone x simulator
 npx react-native run-ios --udid 237DB837-16ED-4279-889A-9D2E5EB393E6

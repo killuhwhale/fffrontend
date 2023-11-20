@@ -19,6 +19,7 @@
 		B80727984E664029BF98224B /* Baloo2-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 94B810D7073F40579D791DD0 /* Baloo2-Bold.ttf */; };
 		C6BF4174273F42D5A8653769 /* Baloo2-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3AF2026588242D2ACF9BA30 /* Baloo2-SemiBold.ttf */; };
 		CF953AB594B2407780BB3710 /* Baloo2-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7D8A0F763E66462BAC513BB1 /* Baloo2-Medium.ttf */; };
+		DBB59B132B006A8700CE176C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBB59B122B006A8700CE176C /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,8 @@
 		89C6BE57DB24E9ADA2F236DE /* Pods-FitForm-FitFormTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FitForm-FitFormTests.release.xcconfig"; path = "Target Support Files/Pods-FitForm-FitFormTests/Pods-FitForm-FitFormTests.release.xcconfig"; sourceTree = "<group>"; };
 		94B810D7073F40579D791DD0 /* Baloo2-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Baloo2-Bold.ttf"; path = "../assets/fonts/Baloo2-Bold.ttf"; sourceTree = "<group>"; };
 		B3AF2026588242D2ACF9BA30 /* Baloo2-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Baloo2-SemiBold.ttf"; path = "../assets/fonts/Baloo2-SemiBold.ttf"; sourceTree = "<group>"; };
+		DBB59B122B006A8700CE176C /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		DBB59B142B01BEDE00CE176C /* storekitConfig.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = storekitConfig.storekit; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -70,6 +73,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C80B921A6F3F58F76C31292 /* libPods-FitForm.a in Frameworks */,
+				DBB59B132B006A8700CE176C /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +113,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DBB59B122B006A8700CE176C /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-FitForm.a */,
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-FitForm-FitFormTests.a */,
@@ -126,6 +131,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				DBB59B142B01BEDE00CE176C /* storekitConfig.storekit */,
 				DBE5CAC728AC64620055DF79 /* Fonts */,
 				13B07FAE1A68108700A75B9A /* FitForm */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -535,7 +541,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = NS279G83V7;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = FitForm/Info.plist;
@@ -543,7 +549,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 0.0.10;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -567,14 +573,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = NS279G83V7;
 				INFOPLIST_FILE = FitForm/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 0.0.10;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

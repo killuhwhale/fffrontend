@@ -715,6 +715,20 @@ export const formatLongDate = date => {
   return monthNames[monthIndex] + ' ' + day + ', ' + year;
 };
 
+export function isDateInFuture(date: Date): boolean {
+  const currentDate = new Date();
+  if (typeof date == typeof '') {
+    date = new Date(date);
+  }
+  return date > currentDate;
+}
+
+
 export function limitTextLength(t: string, limit: number) {
   return t.length > limit ? t.substring(0, limit) : t;
+}
+
+
+export const isMember = (sub_end_date: Date) => {
+  return sub_end_date && new Date(sub_end_date) > new Date()
 }

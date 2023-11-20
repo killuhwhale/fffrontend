@@ -11,6 +11,13 @@ import {Props as GymScreenProps} from '../../../app_pages/GymScreen';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import moc from '../../../../assets/bgs/moc.png';
 import LinearGradient from 'react-native-linear-gradient';
+import twrnc from 'twrnc';
+
+const startColor = twrnc.color('bg-stone-950');
+const endColor = twrnc.color('bg-rose-900');
+const textColor = twrnc.color('bg-rose-50');
+// '#00000000', theme.palette.secondary.main ?? '#0F0'
+
 
 const ClassGridItem: FunctionComponent<{
   card: GymClassCardProps;
@@ -40,9 +47,9 @@ const ClassGridItem: FunctionComponent<{
         margin: 8,
         flex: 1,
       }}>
-      <TouchableHighlight onPress={handlePress}>
+      <TouchableHighlight onPress={handlePress} style={{borderRadius: 12}}>
         <LinearGradient
-          colors={['#00000000', theme.palette.secondary.main ?? '#0F0']} // Turquoise
+          colors={[startColor!, endColor!]} // Turquoise
           start={{x: 0.05, y: 0}}
           end={{x: 0.75, y: 1}}
           style={{flex: 1, borderRadius: 16}}>
@@ -73,7 +80,7 @@ const ClassGridItem: FunctionComponent<{
               <View style={{flex: 1}}>
                 <TSCaptionText
                   numberOfLines={1}
-                  textStyles={{textAlign: 'left', marginLeft: 4}}>
+                  textStyles={{textAlign: 'left', marginLeft: 4, color: textColor}}>
                   {props.card.title}
                 </TSCaptionText>
               </View>

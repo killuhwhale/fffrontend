@@ -11,6 +11,13 @@ import moc from '../../../assets/bgs/moc.png';
 import LinearGradient from 'react-native-linear-gradient';
 import twrnc from 'twrnc';
 
+
+const startColor = twrnc.color('bg-stone-950');
+const endColor = twrnc.color('bg-blue-500');
+const textColor = twrnc.color('bg-blue-50');
+// colors={['#00000000', theme.palette.primary.main ?? '#0F0']} // Turquoise
+
+
 const GymCard: FunctionComponent<GymCardProps> = props => {
   const theme = useTheme();
   // Tells react where we are navigating from
@@ -44,7 +51,7 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
         paddingRight: 12,
       }}>
       <LinearGradient
-        colors={['#00000000', theme.palette.primary.main ?? '#0F0']} // Turquoise
+        colors={[startColor!, endColor!]} // Turquoise
         start={{x: 0.05, y: 0}}
         end={{x: 0.75, y: 1}}
         style={{flex: 1, borderRadius: 16}}>
@@ -52,7 +59,7 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
           style={{
             flexDirection: 'row',
             flex: 1,
-            marginLeft: 36,
+            
           }}>
           <Image
             style={{
@@ -61,7 +68,8 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
               borderTopRightRadius: 0,
               borderBottomRightRadius: 0,
               width: 50,
-              height: 50,
+              height: 40,
+              marginRight: 24,
             }}
             source={
               useDefault
@@ -79,12 +87,12 @@ const GymCard: FunctionComponent<GymCardProps> = props => {
             }}>
             <TSParagrapghText
               numberOfLines={1}
-              textStyles={{textAlign: 'left', width: '80%'}}>
+              textStyles={{textAlign: 'left', width: '80%', color: textColor}}>
               {props.title}
             </TSParagrapghText>
-            <TSCaptionText textStyles={{marginLeft: 2, textAlign: 'left'}}>
+            {/* <TSCaptionText textStyles={{marginLeft: 2, textAlign: 'left'}}>
               {props.desc.slice(0, 40)} {props.desc.length > 40 ? '...' : ''}
-            </TSCaptionText>
+            </TSCaptionText> */}
           </View>
         </View>
       </LinearGradient>

@@ -18,9 +18,10 @@ import {
   WorkoutGroupProps,
   WorkoutNameProps,
 } from '../app_components/Cards/types';
-import {useTheme} from 'styled-components';
+import {DefaultTheme, useTheme} from 'styled-components';
 import Profile from '../app_pages/Profile';
 import AuthScreen from '../app_pages/AuthScreen';
+import IAPScreen from '../app_pages/iap';
 import CreateGymScreen from '../app_pages/input_pages/gyms/CreateGymScreen';
 import CreateGymClassScreen from '../app_pages/input_pages/gyms/CreateGymClassScreen';
 import CreateWorkoutGroupScreen from '../app_pages/input_pages/gyms/CreateWorkoutGroupScreen';
@@ -39,6 +40,7 @@ import GymSearchScreen from '../app_pages/GymSearchScreen';
 import {Platform, StyleSheet, View} from 'react-native';
 import twrnc from 'twrnc';
 import DailySnapshotScreen from '../app_pages/DailySnapshot';
+import { UserProps } from '../app_pages/types';
 // Screens and props each screen expects...
 export type RootStackParamList = {
   HomePage: undefined;
@@ -52,6 +54,7 @@ export type RootStackParamList = {
   WorkoutDetailScreen: WorkoutCardProps;
   WorkoutNameDetailScreen: WorkoutNameProps;
   UserWorkoutsScreen: undefined;
+  IAPScreen: UserProps;
   Profile: undefined;
   AuthScreen: undefined;
   Header: undefined;
@@ -78,12 +81,30 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const tabBarFlex = Platform.OS === 'ios' ? 0.12 : 0.09;
-const tabIconColor = (focused: boolean): string => {
-  return (
-    (focused ? twrnc.color(`bg-emerald-900`) : twrnc.color(`bg-slate-200`)) ??
-    'white'
-  );
-};
+const tabBarMarginBottom = Platform.OS === 'ios' ? 12 : 0;
+
+const tabBarStyle = (tabBarColor: string | undefined) => ({
+  backgroundColor: tabBarColor,
+  flex: tabBarFlex,
+  paddingBottom: 4,
+})
+
+const tabBarLabel = (labelText: string, focused: boolean, theme: DefaultTheme) => (
+  <XSmallText
+    textStyles={{
+      color: focused ? theme.palette.accent : theme.palette.text,
+      height: Platform.OS === 'ios' ? "50%" : "0%",
+    }}>
+    {labelText}
+  </XSmallText>
+)
+const tabBarIcon = (iconName: string, focused: boolean, size: number, theme: DefaultTheme) => (
+  <Icon
+  name={iconName}
+  color={focused ? theme.palette.accent : theme.palette.text}
+  style={{fontSize: size - 4}}
+/>
+)
 
 function HomePageTabs() {
   const theme = useTheme();
@@ -96,29 +117,15 @@ function HomePageTabs() {
         options={{
           headerShown: false,
           tabBarTestID: TestIDs.HomeTab.name(),
-
-          tabBarStyle: {
-            backgroundColor: tabBarColor,
-            flex: tabBarFlex,
-            paddingBottom: 4,
-          },
+          tabBarStyle: tabBarStyle(tabBarColor),
           tabBarItemStyle: {
-            marginBottom: Platform.OS === 'ios' ? 12 : 0,
+            marginBottom: tabBarMarginBottom,
           },
           tabBarLabel: ({color, focused, position}) => (
-            <XSmallText
-              textStyles={{
-                color: focused ? theme.palette.accent : theme.palette.text,
-              }}>
-              Home
-            </XSmallText>
+            tabBarLabel("Home", focused, theme)
           ),
           tabBarIcon: ({color, focused, size}) => (
-            <Icon
-              name="planet"
-              color={focused ? theme.palette.accent : theme.palette.text}
-              style={{fontSize: size - 4}}
-            />
+            tabBarIcon("planet", focused, size, theme)
           ),
         }}
       />
@@ -129,29 +136,15 @@ function HomePageTabs() {
         options={{
           headerShown: false,
           tabBarTestID: TestIDs.HomeTab.name(),
-
-          tabBarStyle: {
-            backgroundColor: tabBarColor,
-            flex: tabBarFlex,
-            paddingBottom: 4,
-          },
+          tabBarStyle: tabBarStyle(tabBarColor),
           tabBarItemStyle: {
-            marginBottom: Platform.OS === 'ios' ? 12 : 0,
+            marginBottom: tabBarMarginBottom,
           },
           tabBarLabel: ({color, focused, position}) => (
-            <XSmallText
-              textStyles={{
-                color: focused ? theme.palette.accent : theme.palette.text,
-              }}>
-              My Workouts
-            </XSmallText>
+            tabBarLabel("My Workouts", focused, theme)
           ),
           tabBarIcon: ({color, focused, size}) => (
-            <Icon
-              name="barbell-outline"
-              color={focused ? theme.palette.accent : theme.palette.text}
-              style={{fontSize: size - 4}}
-            />
+            tabBarIcon("barbell-outline", focused, size, theme)
           ),
         }}
       />
@@ -162,29 +155,15 @@ function HomePageTabs() {
         options={{
           headerShown: false,
           tabBarTestID: '',
-
-          tabBarStyle: {
-            backgroundColor: tabBarColor,
-            flex: tabBarFlex,
-            paddingBottom: 4,
-          },
+          tabBarStyle: tabBarStyle(tabBarColor),
           tabBarItemStyle: {
-            marginBottom: Platform.OS === 'ios' ? 12 : 0,
+            marginBottom: tabBarMarginBottom,
           },
           tabBarLabel: ({color, focused, position}) => (
-            <XSmallText
-              textStyles={{
-                color: focused ? theme.palette.accent : theme.palette.text,
-              }}>
-              Snapshot
-            </XSmallText>
+            tabBarLabel("Snapshot", focused, theme)
           ),
           tabBarIcon: ({color, focused, size}) => (
-            <Icon
-              name="apps-outline"
-              color={focused ? theme.palette.accent : theme.palette.text}
-              style={{fontSize: size - 4}}
-            />
+            tabBarIcon("apps-outline", focused, size, theme)
           ),
         }}
       />
@@ -195,29 +174,15 @@ function HomePageTabs() {
         options={{
           headerShown: false,
           tabBarTestID: TestIDs.HomeTab.name(),
-
-          tabBarStyle: {
-            backgroundColor: tabBarColor,
-            flex: tabBarFlex,
-            paddingBottom: 4,
-          },
+          tabBarStyle: tabBarStyle(tabBarColor),
           tabBarItemStyle: {
-            marginBottom: Platform.OS === 'ios' ? 12 : 0,
+            marginBottom: tabBarMarginBottom,
           },
           tabBarLabel: ({color, focused, position}) => (
-            <XSmallText
-              textStyles={{
-                color: focused ? theme.palette.accent : theme.palette.text,
-              }}>
-              Stats
-            </XSmallText>
+            tabBarLabel("Stats", focused, theme)
           ),
           tabBarIcon: ({color, focused, size}) => (
-            <Icon
-              name="stats-chart-outline"
-              color={focused ? theme.palette.accent : theme.palette.text}
-              style={{fontSize: size - 4}}
-            />
+            tabBarIcon("stats-chart-outline", focused, size, theme)
           ),
         }}
       />
@@ -228,36 +193,23 @@ function HomePageTabs() {
         options={{
           headerShown: false,
           tabBarTestID: TestIDs.ProfileTab.name(),
-          tabBarStyle: {
-            backgroundColor: tabBarColor,
-            flex: tabBarFlex,
-            paddingBottom: 4,
-          },
+          tabBarStyle: tabBarStyle(tabBarColor),
           tabBarItemStyle: {
-            marginBottom: Platform.OS === 'ios' ? 12 : 0,
+            marginBottom: tabBarMarginBottom,
           },
-
           tabBarLabel: ({color, focused, position}) => (
-            <XSmallText
-              textStyles={{
-                color: focused ? theme.palette.accent : theme.palette.text,
-              }}>
-              Profile
-            </XSmallText>
+            tabBarLabel("Profile", focused, theme)
           ),
           tabBarIcon: ({color, focused, size}) => (
-            <Icon
-              name="finger-print"
-              color={focused ? theme.palette.accent : theme.palette.text}
-              style={{fontSize: size - 4}}
-            />
+            tabBarIcon("finger-print", focused, size, theme)
           ),
         }}
       />
-      {/* Profile and other tabs here */}
     </Tab.Navigator>
   );
 }
+
+
 
 interface RootstackProps {
   // navref: string;
@@ -353,6 +305,11 @@ const RootStack: FunctionComponent<RootstackProps> = props => {
           component={AuthScreen}
           options={{headerTitle: '', headerShown: false}}
         />
+         <Stack.Screen
+          name="IAPScreen"
+          component={IAPScreen}
+          options={{headerTitle: '', headerShown: false}}
+        />
         <Stack.Screen
           name="CreateGymScreen"
           component={CreateGymScreen}
@@ -402,8 +359,8 @@ const RootStack: FunctionComponent<RootstackProps> = props => {
           name="ResetPasswordScreen"
           component={ResetPasswordScreen}
           options={{headerTitle: '', headerShown: false}}
-        />
-      </Stack.Navigator>
+          />
+          </Stack.Navigator>
     </NavigationContainer>
   );
 };

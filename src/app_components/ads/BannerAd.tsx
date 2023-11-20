@@ -6,6 +6,7 @@ import {
 } from 'react-native-google-mobile-ads';
 import React, {FunctionComponent} from 'react';
 import {UserProps} from '../../app_pages/types';
+import { isMember } from '../shared';
 
 const BannerAddMembership: FunctionComponent = () => {
   const {
@@ -24,8 +25,7 @@ const BannerAddMembership: FunctionComponent = () => {
         <></>
       ) : !userIsloading &&
         userData &&
-        userData.sub_end_date &&
-        new Date(userData.sub_end_date) > new Date() ? (
+        isMember(userData.sub_end_date) ? (
         <></>
       ) : (
         <GAMBannerAd

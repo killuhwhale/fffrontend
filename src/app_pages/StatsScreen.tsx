@@ -36,10 +36,24 @@ const ScreenContainer = styled(Container)`
   justify-content: space-between;
   width: 100%;
 `;
+export const DAYSOFWEEK = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+]
 export const dateFormat = (dd: Date) => {
   // return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
   const d = new Date(dd);
   return `${d.getUTCFullYear()}-${d.getUTCMonth() + 1}-${d.getUTCDate()}`;
+};
+export const dateFormatDayOfWeek = (dd: Date) => {
+  // return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+  const d = new Date(dd);
+  return `${DAYSOFWEEK[d.getUTCDay()]} ${d.getUTCMonth() + 1}-${d.getUTCDate()}-${d.getUTCFullYear()}`;
 };
 
 export const chartConfig = {
